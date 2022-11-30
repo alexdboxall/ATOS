@@ -2,6 +2,7 @@
 #include <machine/symbols.h>
 #include <errno.h>
 #include <string.h>
+#include <kprintf.h>
 #include <panic.h>
 
 bool is_elf_valid(struct Elf32_Ehdr* header) {
@@ -27,8 +28,8 @@ static size_t elf_load_program_headers(void* data, size_t relocation_point, bool
     struct Elf32_Ehdr* elf_header = (struct Elf32_Ehdr*) data;
 	struct Elf32_Phdr* prog_headers = (struct Elf32_Phdr*) addToVoidPointer(data, elf_header->e_phoff);
 
-    size_t entry_point = elf_header->e_entry;
-    size_t sbrk_address = entry_point;
+    size_t base_point = 0xD0000000U;
+    size_t sbrk_address = base_point;
 
     for (int i = 0; i < elf_header->e_phnum; ++i) {
         struct Elf32_Phdr* prog_header = prog_headers + i;
@@ -44,8 +45,8 @@ static size_t elf_load_program_headers(void* data, size_t relocation_point, bool
 				panic("loading normal programs not supported yet");
 
 			} else {
-				memcpy((void*) (address + relocation_point - entry_point), (const void*) addToVoidPointer(data, offset), size);
-				memset((void*) (address + relocation_point - entry_point + size), 0, zerosize - size);
+				memcpy((void*) (address + relocation_point - base_point), (const void*) addToVoidPointer(data, offset), size);
+				memset((void*) (address + relocation_point - base_point + size), 0, zerosize - size);
 			}
 		}
     }
@@ -70,7 +71,7 @@ static char* elf_lookup_string(void* data, int offset) {
 	return string_table + offset;
 }
 
-static size_t elf_get_symbol_value(void* data, int table, size_t index, bool* error, size_t relocation_point, size_t entry_point) {
+static size_t elf_get_symbol_value(void* data, int table, size_t index, bool* error, size_t relocation_point, size_t base_address) {
     *error = false;
 
 	if (table == SHN_UNDEF || index == SHN_UNDEF) {
@@ -91,7 +92,8 @@ static size_t elf_get_symbol_value(void* data, int table, size_t index, bool* er
 	struct Elf32_Sym* symbol = ((struct Elf32_Sym*) addToVoidPointer(data, symbol_table->sh_offset)) + index;
 
 	if (symbol->st_shndx == SHN_UNDEF) {
-		// external symbol (i.e. from the kernel)
+
+		// external symbol (i.e. kernel symbol)
 
 		struct Elf32_Shdr* string_table = sect_headers + symbol_table->sh_link;
 		const char* name = (const char*) addToVoidPointer(data, string_table->sh_offset + symbol->st_name);
@@ -103,6 +105,8 @@ static size_t elf_get_symbol_value(void* data, int table, size_t index, bool* er
 				*error = true;
 			}
 
+            kprintf("missing symbol: %s\n", name);
+
 			return 0;
 
 		} else {
@@ -113,23 +117,21 @@ static size_t elf_get_symbol_value(void* data, int table, size_t index, bool* er
 		return symbol->st_value;
 
 	} else {
-		return symbol->st_value + (relocation_point - entry_point);
+		return symbol->st_value + (relocation_point - base_address);
 	}
 }
 
 static bool elf_perform_relocation(void* data, size_t relocation_point, struct Elf32_Shdr* section, struct Elf32_Rel* relocation_table)
 {
-    struct Elf32_Ehdr* elf_header = (struct Elf32_Ehdr*) data;
+	size_t base_address = 0xD0000000U;
 
-	size_t entry_point = elf_header->e_entry;
-
-	size_t addr = (size_t) relocation_point - entry_point + relocation_table->r_offset;
+	size_t addr = (size_t) relocation_point - base_address + relocation_table->r_offset;
 	size_t* ref = (size_t*) addr;
 
 	int symbolValue = 0;
 	if (ELF32_R_SYM(relocation_table->r_info) != SHN_UNDEF) {
 		bool error = false;
-		symbolValue = elf_get_symbol_value(data, section->sh_link, ELF32_R_SYM(relocation_table->r_info), &error, relocation_point, entry_point);
+		symbolValue = elf_get_symbol_value(data, section->sh_link, ELF32_R_SYM(relocation_table->r_info), &error, relocation_point, base_address);
 		if (error) {
 			return false;
 		}
@@ -143,7 +145,7 @@ static bool elf_perform_relocation(void* data, size_t relocation_point, struct E
 		*ref = DO_386_PC32(symbolValue, *ref, (size_t) ref);
 
 	} else if (type == R_386_RELATIVE) {
-		*ref = DO_386_RELATIVE((relocation_point - entry_point), *ref);
+		*ref = DO_386_RELATIVE((relocation_point - base_address), *ref);
 
 	} else {
 		return false;
@@ -215,7 +217,7 @@ static size_t elf_load(void* data, size_t relocation_point, bool relocate) {
     if (relocate) {
         bool success = elf_perform_relocations(data, relocation_point);
         if (success) {
-            return relocation_point;
+            return elf_header->e_entry - 0xD0000000U + relocation_point;
         } else {
             return 0;
         }
@@ -227,14 +229,10 @@ static size_t elf_load(void* data, size_t relocation_point, bool relocate) {
 size_t arch_load_driver(void* data, size_t data_size, size_t relocation_point) {
     (void) data_size;
 
+    /* Zero is returned on error. */
     size_t result = elf_load(data, relocation_point, true);
 
-    /* Zero is returned on error. */
-    if (result == 0) {
-        return 0;
-    }
-
-    return relocation_point;
+    return result;
 }
 
 int arch_start_driver(size_t driver, void* argument) {

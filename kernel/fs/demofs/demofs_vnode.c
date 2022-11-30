@@ -83,7 +83,7 @@ static int demofs_vnode_readdir_file(struct vnode* node, struct uio* io) {
 
 
 /*
-* Now for the actually (somewhate) interesting functions.
+* Now for the actually (somewhat) interesting functions.
 */
 
 static uint8_t demofs_vnode_dirent_type_file(struct vnode* node) {
@@ -144,6 +144,7 @@ static int demofs_vnode_follow_dir(struct vnode* node, struct vnode** out, const
     * TODO: don't create if one already exists in the table (which we haven't
     * implemented yet)
     */
+   
     struct vnode* child_node;
     if (INODE_IS_DIR(child_inode)) {
         child_node = demofs_create_dir_vnode();

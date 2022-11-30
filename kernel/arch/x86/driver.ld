@@ -8,15 +8,11 @@ SECTIONS
 	.text ALIGN(4096) : AT (ADDR (.text))
 	{
 		*(.text)
-	}
-	
-	.rodata ALIGN(4096) : AT (ADDR (.rodata))
-	{
 		*(.rodata)
 		*(.symtab)
 		*(.strtab)
 	}
-
+	
 	.data ALIGN(4096) : AT (ADDR (.data))
 	{
 		*(.data)

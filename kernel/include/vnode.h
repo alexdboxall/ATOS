@@ -93,7 +93,6 @@ struct vnode {
 
 /*
 * Allocates a new vnode for a given device and set of operations.
-* TODO: huh? why does it take in a device? what about files??
 */
 struct vnode* vnode_init(struct std_device_interface* dev, struct vnode_operations ops);
 

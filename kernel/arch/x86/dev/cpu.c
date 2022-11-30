@@ -7,6 +7,7 @@
 #include <heap.h>
 #include <assert.h>
 #include <spinlock.h>
+#include <loader.h>
 #include <machine/beeper.h>
 #include <machine/config.h>
 #include <machine/console.h>
@@ -32,17 +33,34 @@
 size_t x86_allow_interrupts = 0;
 
 /*
-* Finds all of the devices on the system and adds them to the VFS.
+* Finds the devices on the system and adds them to the VFS.
+* The _no_fs function runs first, and doesn't have access to the filesystem
+* (and thus cannot load drivers from the disk). It *must* load a disk driver.
+* Everything else can go afterward (in the future PCI would probably go
+* in here too).
 */
-void arch_initialise_devices(void)
-{
-	x86_beeper_register();
+void arch_initialise_devices_no_fs(void)
+{    
+	//floppy_initialise();
+	ide_initialise();
+}
 
-	vga_init();
-	ps2_initialise();
+/*
+* Finds the devices on the system and adds them to the VFS.
+* This runs after _no_fs, and thus has access to the filesystem.
+*/
+void arch_initialise_devices_with_fs(void) {
+    x86_beeper_register();
 
-	floppy_initialise();
-	//ide_initialise();
+    /*
+    * Don't swap out the VGA console driver, as the page fault
+    * handler might use it (to kprintf() or panic())
+    */
+    load_driver("sys:/VGACON.SYS", true);
+
+    load_driver("sys:/PS2.SYS", false);
+
+    //load_driver("sys:/ACPICA.SYS", false);
 }
 
 /*
@@ -69,7 +87,7 @@ void arch_cpu_initialise_bootstrap(void)
 
 	x86_interrupt_initialise();
 	pic_initialise(); 
-	pit_initialise(100);
+	pit_initialise(500);
 }
 
 void arch_all_cpus_are_done(void) {

@@ -47,8 +47,8 @@ void spinlock_init(struct spinlock* lock, const char* name)
 * until it can acquire the lock.
 */
 void spinlock_acquire(struct spinlock* lock)
-{
-	assert_with_message(!spinlock_is_held(lock), lock->name);
+{    
+    assert_with_message(!spinlock_is_held(lock), lock->name);
 	arch_irq_spinlock_acquire(&lock->lock);
 }
 
@@ -56,7 +56,29 @@ void spinlock_acquire(struct spinlock* lock)
 * Releases a spinlock which is currently held.
 */
 void spinlock_release(struct spinlock* lock)
-{	
-	assert_with_message(spinlock_is_held(lock), lock->name);
+{	       
+    assert_with_message(spinlock_is_held(lock), lock->name);
 	arch_irq_spinlock_release(&lock->lock);
+}
+
+
+/*
+* Will acquire the lock if it is unlocked, or do nothing if the lock is already held.
+* Returns true we acquired the lock, or false if it was already locked.
+*
+* This is a dangerous function - it allows for spinlocks to be nested. It should
+* only ever be used by scary kernel internals, such as to handle nested VAS locks in the
+* handling of low memory page faults.
+*/
+bool spinlock_acquire_if_unlocked(struct spinlock* lock) {
+    /*
+    * TODO: THIS IS NOT ATOMIC, as the lock can change state in between spinlock_is_held() and spinlock_acquire
+    *       (i.e. make an arch_ function which somehow atomically does it)
+    *        it is okay for this code to be slow, it only should occur on certain low memory page faults
+    */
+    if (!spinlock_is_held(lock)) {
+        spinlock_acquire(lock);
+        return true;
+    }
+    return false;
 }

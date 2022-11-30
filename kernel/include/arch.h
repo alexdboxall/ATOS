@@ -56,7 +56,8 @@ void arch_cpu_initialise_bootstrap(void);
 */
 void arch_all_cpus_are_done(void);
 
-void arch_initialise_devices(void);
+void arch_initialise_devices_no_fs(void);
+void arch_initialise_devices_with_fs(void);
 
 /*
 * Only to be called in very specific places, e.g. turning interrupts
@@ -98,6 +99,7 @@ void arch_vas_copy(struct virtual_address_space* in, struct virtual_address_spac
 void arch_vas_destroy(void* vas);
 void arch_vas_load(void* vas);
 void arch_vas_set_entry(struct virtual_address_space* vas_, size_t virt_addr, size_t phys_addr, int flags);
+void arch_vas_get_entry(struct virtual_address_space* vas_, size_t virt_addr, size_t* phys_addr_out, int* flags_out);
 
 
 
@@ -120,3 +122,5 @@ uint64_t arch_read_timestamp(void);
 
 size_t arch_load_driver(void* data, size_t data_size, size_t relocation_point);
 int arch_start_driver(size_t driver, void* argument);
+
+size_t arch_find_page_replacement_virt_address(struct virtual_address_space* vas);

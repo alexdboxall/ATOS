@@ -57,6 +57,7 @@ struct semaphore* ide_lock = NULL;
 
 struct ide_data {
     int disk_num;
+    uint16_t* transfer_buffer;
 };
 
 int ide_check_errors(int disk_num) {
@@ -127,7 +128,7 @@ int ide_poll(int disk_num) {
 static int ide_io(struct std_device_interface* dev, struct uio* io) {
     struct ide_data* data = dev->data;
     int disk_num = data->disk_num;
-
+    
     /*
     * IDE devices do not contain an (accessible) disk buffer in PIO mode, as
     * they transfer data through the IO ports. Hence we must read/write into
@@ -137,7 +138,8 @@ static int ide_io(struct std_device_interface* dev, struct uio* io) {
     * Allow up to 4KB sector sizes. Make sure there is enough room on the
     * stack to handle this.
     */
-    uint16_t buffer[2048];
+    uint16_t* buffer = data->transfer_buffer;
+    
     assert(dev->block_size <= 4096);    
 
     /*
@@ -155,7 +157,7 @@ static int ide_io(struct std_device_interface* dev, struct uio* io) {
     if (io->length_remaining % dev->block_size != 0) {
         return EINVAL;
     }
-    if (count <= 0 || count > 0xFF || sector < 0 || sector > 0xFFFFFFF || (uint64_t) sector >= dev->num_blocks) {
+    if (count <= 0 || sector < 0 || sector > 0xFFFFFFF || (uint64_t) sector + count >= dev->num_blocks) {
         return EINVAL;
     }
 
@@ -164,73 +166,97 @@ static int ide_io(struct std_device_interface* dev, struct uio* io) {
     uint16_t base = disk_num >= 2 ? CHANNEL_2_BASE : CHANNEL_1_BASE;
     uint16_t dev_ctrl_reg = disk_num >= 2 ? CHANNEL_2_DEV_CTRL : CHANNEL_1_DEV_CTRL;
 
-    if (io->direction == UIO_WRITE) {
-        uio_move(buffer, io, dev->block_size);
-    }
+    while (count > 0) {
+        int sectors_in_this_transfer = count < 256 ? count : 255;
 
-    /*
-    * Send a whole heap of flags and the high 4 bits of the LBA to the controller.
-    * Hardware designs can be weird sometimes.
-    */
-    outb(base + 0x6, 0xE0 | ((disk_num & 1) << 4) | ((sector >> 24) & 0xF));
-
-    /*
-    * Disable interrupts, we are going to use polling.
-    */
-    outb(dev_ctrl_reg, 2);
-
-    /*
-    * May not be needed, but it doesn't hurt to do it.
-    */
-    outb(base + 0x1, 0x00);
-
-    /*
-    * Send the number of sectors, and the sector's LBA.
-    */
-    outb(base + 0x2, count);
-    outb(base + 0x3, (sector >> 0) & 0xFF);
-    outb(base + 0x4, (sector >> 8) & 0xFF);
-    outb(base + 0x5, (sector >> 16) & 0xFF);
-
-    /*
-    * Send either the read or write command.
-    */
-    outb(base + 0x7, io->direction == UIO_WRITE ? 0x30 : 0x20);
-
-    /*
-    * Wait for the data to be ready.
-    */
-    ide_poll(disk_num);
-
-    /*
-    * Read/write the data from/to the disk using ports.
-    */
-    if (io->direction == UIO_WRITE) {
-        for (uint64_t i = 0; i < dev->block_size / 2; ++i) {
-            outw(base + 0x00, buffer[i]);
+        if (io->direction == UIO_WRITE) {
+            uio_move(buffer, io, dev->block_size);
         }
 
         /*
-        * We need to flush the disk's cache if we are writing.
+        * Send a whole heap of flags and the high 4 bits of the LBA to the controller.
+        * Hardware designs can be weird sometimes.
         */
-        outb(base + 0x7, 0xE7);
+        outb(base + 0x6, 0xE0 | ((disk_num & 1) << 4) | ((sector >> 24) & 0xF));
+
+        /*
+        * Disable interrupts, we are going to use polling.
+        */
+        outb(dev_ctrl_reg, 2);
+
+        /*
+        * May not be needed, but it doesn't hurt to do it.
+        */
+        outb(base + 0x1, 0x00);
+
+        /*
+        * Send the number of sectors, and the sector's LBA.
+        */
+        outb(base + 0x2, sectors_in_this_transfer);
+        outb(base + 0x3, (sector >> 0) & 0xFF);
+        outb(base + 0x4, (sector >> 8) & 0xFF);
+        outb(base + 0x5, (sector >> 16) & 0xFF);
+
+        /*
+        * Send either the read or write command.
+        */
+        outb(base + 0x7, io->direction == UIO_WRITE ? 0x30 : 0x20);
+
+        /*
+        * Wait for the data to be ready.
+        */
         ide_poll(disk_num);
 
-    } else {
-        int err = ide_check_errors(disk_num);
-        if (err) {
-            semaphore_release(ide_lock);
-            return err;
-        }
-        
-        for (uint64_t i = 0; i < dev->block_size / 2; ++i) {
-            buffer[i] = inw(base + 0x00);
+        /*
+        * Read/write the data from/to the disk using ports.
+        */
+        if (io->direction == UIO_WRITE) {
+            for (int c = 0; c < sectors_in_this_transfer; ++c) {
+                if (c != 0) {
+                    uio_move(buffer, io, dev->block_size);
+                    ide_poll(disk_num);
+                }
+                
+                for (uint64_t i = 0; i < dev->block_size / 2; ++i) {
+                    outw(base + 0x00, buffer[i]);
+                }
+            }
+
+            /*
+            * We need to flush the disk's cache if we are writing.
+            */
+            outb(base + 0x7, 0xE7);
+            ide_poll(disk_num);
+
+        } else {
+            int err = ide_check_errors(disk_num);
+            if (err) {
+                semaphore_release(ide_lock);
+                return err;
+            }
+            
+            for (int c = 0; c < sectors_in_this_transfer; ++c) {
+                if (c != 0) {
+                    ide_poll(disk_num);
+                }
+
+                for (uint64_t i = 0; i < dev->block_size / 2; ++i) {
+                    buffer[i] = inw(base + 0x00);
+                }
+
+                uio_move(buffer, io, dev->block_size);
+            }
         }
 
-        uio_move(buffer, io, dev->block_size);
+        /*
+        * Get ready for the next part of the transfer.
+        */
+        count -= sectors_in_this_transfer;
+        sector += sectors_in_this_transfer;
     }
 
     semaphore_release(ide_lock);
+
     return 0;
 }
 
@@ -282,6 +308,7 @@ void ide_initialise(void) {
 
     struct ide_data* data = malloc(sizeof(struct ide_data));
     data->disk_num = 0;
+    data->transfer_buffer = malloc(4096);
     dev.data = data;
 
     dev.block_size = 512;

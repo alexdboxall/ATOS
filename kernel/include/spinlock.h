@@ -19,3 +19,8 @@ void spinlock_init(struct spinlock* lock, const char* name);
 void spinlock_acquire(struct spinlock* lock);
 void spinlock_release(struct spinlock* lock);
 bool spinlock_is_held(struct spinlock* lock);
+
+/*
+* Don't use unless you *really* know what you're doing.
+*/
+bool spinlock_acquire_if_unlocked(struct spinlock* lock);

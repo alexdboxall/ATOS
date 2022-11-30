@@ -22,7 +22,7 @@
 *
 * Floppy drives are very shit, but it's the only way I can test on real hardware
 * at the moment, because I'm not installing this on my main computer, and my only other
-* computer with me at the moment is a laptop from 1996 and doesn't support USB boot.
+* computer with me at the moment is a laptop from 1996 that doesn't support USB boot.
 *
 * This is a 'quick-and-dirty' read-only floppy driver. It doesn't support locking,
 * and does barely any error correction.
@@ -43,6 +43,7 @@ bool got_cylinder_zero = false;
 #define CMD_RECALIBRATE 0x07
 #define CMD_SENSE_INT   0x08
 #define CMD_SEEK        0x0F
+#define CMD_CONFIGURE   0x13
 
 static void floppy_write_cmd(int base, int cmd) {
     /*
@@ -111,19 +112,16 @@ static void floppy_motor(int base, bool state) {
         */
         if (!floppy_motor_state) {
             outb(base + FLOPPY_DOR, 0x1C);
+            thread_nano_sleep(150000000);
         }
         floppy_motor_state = 1;
 
     } else {
-        if (floppy_motor_state == 2) {
-            kprintf("strange...\n");
-        }
-
         /*
         * Put it into the 'waiting to be turned off' state
         */
         floppy_motor_state = 2;
-        floppy_motor_ticks = 300;
+        floppy_motor_ticks = 1000;
     }
 }
 
@@ -144,10 +142,11 @@ static void floppy_irq_wait() {
     floppy_got_irq = false;
 }
 
-static void floppy_irq_handler(struct x86_regs* r) {
+static int floppy_irq_handler(struct x86_regs* r) {
     (void) r;
 
     floppy_got_irq = true;
+    return 0;
 }
 
 static void floppy_timer(void* arg) {
@@ -207,6 +206,14 @@ static int floppy_calibrate(int base) {
     return EIO;
 }
 
+
+static void floppy_configure(int base) {
+    floppy_write_cmd(base, CMD_CONFIGURE);
+    floppy_write_cmd(base, 0x00);
+    floppy_write_cmd(base, 0x08);
+    floppy_write_cmd(base, 0x00);
+}
+
 /*
 * Reset the floppy disk controller. The only way to recover from some errors.
 */
@@ -216,16 +223,26 @@ static int floppy_reset(int base) {
 
     floppy_irq_wait();
 
-    {
+    for (int i = 0; i < 4; ++i) {
         int st0, cyl;
         floppy_check_interrupt(base, &st0, &cyl);
     }
 
     outb(base + FLOPPY_CCR, 0x00);
 
+    floppy_motor(base, true);
+
     floppy_write_cmd(base, CMD_SPECIFY);
     floppy_write_cmd(base, 0xDF);
     floppy_write_cmd(base, 0x02);
+
+    thread_nano_sleep(300000000);
+
+    floppy_configure(base);
+
+    thread_nano_sleep(300000000);
+
+    floppy_motor(base, false);
 
     return floppy_calibrate(base);
 }
@@ -311,6 +328,17 @@ static int floppy_do_cylinder(int base, int cylinder) {
     */
     for (int i = 0; i < 20; ++i) {
         floppy_motor(base, true);
+
+        if (i % 5 == 4) {
+            if (i % 10 == 8) {
+                floppy_reset(base);
+            }
+
+            floppy_calibrate(base);
+
+            if (floppy_seek(base, cylinder, 0) != 0) return EIO;
+            if (floppy_seek(base, cylinder, 1) != 0) return EIO;
+        }
 
         floppy_dma_init();
 
@@ -438,7 +466,6 @@ next_sector:;
             int error = floppy_do_cylinder(0x3F0, cylinder);
 
             if (error != 0) {
-                floppy_reset(0x3F0);
                 return error;
             }
 
@@ -458,7 +485,6 @@ next_sector:;
             int error = floppy_do_cylinder(0x3F0, cylinder);
 
             if (error != 0) {
-                floppy_reset(0x3F0);
                 return error;
             }
         }
@@ -481,7 +507,6 @@ next_sector:;
     return 0;
 }
 
-
 void floppy_initialise(void) {
     static struct std_device_interface dev;
 
@@ -498,9 +523,9 @@ void floppy_initialise(void) {
 
     x86_register_interrupt_handler(PIC_IRQ_BASE + 6, floppy_irq_handler);
 
-    cylinder_buffer = (uint8_t*) virt_allocate_krnl_region(0x4800);
+    cylinder_buffer = (uint8_t*) virt_allocate_unbacked_krnl_region(0x4800);
     for (int i = 0; i < 5; ++i) {
-        vas_map(current_cpu->current_vas, 0x10000 + i * 4096, (size_t) cylinder_buffer + i * 4096, VAS_FLAG_PRESENT | VAS_FLAG_WRITABLE);
+        vas_map(current_cpu->current_vas, 0x10000 + i * 4096, (size_t) cylinder_buffer + i * 4096, VAS_FLAG_LOCKED | VAS_FLAG_WRITABLE);
     }
     
     thread_create(floppy_timer, NULL, current_cpu->current_vas);

@@ -31,7 +31,7 @@ global isr18
 global isr19
 global isr20
 global isr21
-global isr128
+global isr96
 global irq0
 global irq1
 global irq2
@@ -158,9 +158,9 @@ isr21:
 
 
 ; This is our system call handler
-isr128:
+isr96:
     push byte 0
-    push 128
+    push 96
     jmp int_common_handler
 
 

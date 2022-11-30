@@ -9,6 +9,9 @@
 #include <spinlock.h>
 #include <panic.h>
 #include <kprintf.h>
+#include <virtual.h>
+#include <bitarray.h>
+#include <thread.h>
 
 /*
 * mem/physical.c - Physical Memory Manager
@@ -51,7 +54,7 @@ static void phys_mark_as_free(size_t page_num)
 	assert(page_num < MAX_PAGES);
 	assert(spinlock_is_held(&phys_lock));
 
-	page_allocation_bitmap[page_num / 8] |= (1 << (page_num % 8));
+    bitarray_set(page_allocation_bitmap, page_num);
 }
 
 static void phys_mark_as_used(size_t page_num)
@@ -59,7 +62,7 @@ static void phys_mark_as_used(size_t page_num)
 	assert(page_num < MAX_PAGES);
 	assert(spinlock_is_held(&phys_lock));
 
-	page_allocation_bitmap[page_num / 8] &= ~(1 << (page_num % 8));
+    bitarray_clear(page_allocation_bitmap, page_num);
 }
 
 static bool phys_is_page_free(size_t page_num)
@@ -67,7 +70,7 @@ static bool phys_is_page_free(size_t page_num)
 	assert(page_num < MAX_PAGES);
 	assert(spinlock_is_held(&phys_lock));
 
-	return page_allocation_bitmap[page_num / 8] & (1 << (page_num % 8));
+    return bitarray_is_set(page_allocation_bitmap, page_num);
 }
 
 int num_pages_used = 0;
@@ -102,6 +105,7 @@ void phys_init(void)
 			size_t last_page = (range->start + range->length) / ARCH_PAGE_SIZE;
 
 			while (first_page < last_page && first_page < MAX_PAGES) {
+                kprintf("can use 0x%X\n", first_page * ARCH_PAGE_SIZE);
 				phys_mark_as_free(first_page++);
 				++num_pages_total;
 			}
@@ -111,6 +115,18 @@ void phys_init(void)
 	spinlock_release(&phys_lock);
 }
 
+
+
+/*
+* Must not be called while the scheduler lock is held. This is because a page fault will
+* cause the disk driver to try to acquire a semaphore - which in turn needs the scheduler
+* lock to be clear.
+*
+* OR: modify something so semaphores can check if in page fault handler, and if the lock
+*     is already held, then don't bother locking/unlocking it (assuming noone tries to 
+*     allocate a page with any thread lists in an inconsistent state, as then the semaphore
+*     acquire will corrupt it).
+*/
 size_t phys_allocate_page(void)
 {
 	spinlock_acquire(&phys_lock);
@@ -135,18 +151,17 @@ size_t phys_allocate_page(void)
 		if (phys_is_page_free(page_num)) {
 			phys_mark_as_used(page_num);
 			spinlock_release(&phys_lock);
-
 			return page_num * ARCH_PAGE_SIZE;
 		}
-	}
+    } 
+
+	spinlock_release(&phys_lock);
 
 	/*
-	* No pages left. Page replacements could be done (i.e. putting moving pages
-	* on the hard drive), but that is unnecessary for this kernel. The locking
-	* would also needed to be changed, as the disk cant't be accessed while a
-	* spinlock is held.
+	* No pages left. Stick one on the disk.
 	*/
-	panic("No pages left");
+    size_t ret = vas_perform_page_replacement();
+	return ret;
 }
 
 void phys_free_page(size_t phys_addr)

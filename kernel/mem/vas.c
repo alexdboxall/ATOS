@@ -24,9 +24,9 @@
 struct virtual_address_space* vas_create(void)
 {
 	struct virtual_address_space* vas = (struct virtual_address_space*) malloc(sizeof(struct virtual_address_space));
-	vas->copied_from = NULL;
+    vas->copied_from = NULL;
     spinlock_init(&vas->lock, "per-vas lock");
-	arch_vas_create(vas);
+    arch_vas_create(vas);
 	return vas;
 }
 
@@ -108,21 +108,62 @@ struct virtual_address_space* vas_copy(struct virtual_address_space* original)
 void vas_map(struct virtual_address_space* vas, size_t phys_addr, size_t virt_addr, int flags)
 {
 	assert(vas);
-	
+
 	flags |= VAS_FLAG_PRESENT;
-	
+
 	assert(phys_addr % ARCH_PAGE_SIZE == 0);
+    assert(virt_addr % ARCH_PAGE_SIZE == 0);
+    assert((flags & ~(VAS_FLAG_WRITABLE | VAS_FLAG_EXECUTABLE | VAS_FLAG_USER | VAS_FLAG_COPY_ON_WRITE | VAS_FLAG_PRESENT | VAS_FLAG_LOCKED | VAS_FLAG_ALLOCATE_ON_ACCESS)) == 0);
+    
+    spinlock_acquire(&vas->lock);
+    arch_vas_set_entry(vas, virt_addr, phys_addr, flags | VAS_FLAG_USER);
+    spinlock_release(&vas->lock);
+}
+
+
+/*
+* Modifies the flags on a page. Does not automatically set VAS_FLAG_PRESENT.
+*/
+void vas_reflag(struct virtual_address_space* vas, size_t virt_addr, int flags)
+{
+	assert(vas);
+		
 	assert(virt_addr % ARCH_PAGE_SIZE == 0);
-	assert((flags & ~(VAS_FLAG_WRITABLE | VAS_FLAG_EXECUTABLE | VAS_FLAG_USER | VAS_FLAG_COPY_ON_WRITE | VAS_FLAG_PRESENT | VAS_FLAG_LOCKED)) == 0);
+	assert((flags & ~(VAS_FLAG_WRITABLE | VAS_FLAG_EXECUTABLE | VAS_FLAG_USER | VAS_FLAG_COPY_ON_WRITE | VAS_FLAG_PRESENT | VAS_FLAG_LOCKED | VAS_FLAG_ALLOCATE_ON_ACCESS)) == 0);
 
     spinlock_acquire(&vas->lock);
+
+    int old_flags;
+    size_t phys_addr;
+    arch_vas_get_entry(vas, virt_addr, &phys_addr, &old_flags);
 	arch_vas_set_entry(vas, virt_addr, phys_addr, flags);
     spinlock_release(&vas->lock);
 }
 
+
+/*
+* Modifies the flags on a page. Does not automatically set VAS_FLAG_PRESENT.
+*/
+size_t vas_virtual_to_physical(struct virtual_address_space* vas, size_t virt_addr)
+{
+	assert(vas);
+	assert(virt_addr % ARCH_PAGE_SIZE == 0);
+
+    spinlock_acquire(&vas->lock);
+
+    int old_flags;
+    size_t phys_addr;
+    arch_vas_get_entry(vas, virt_addr, &phys_addr, &old_flags);
+    spinlock_release(&vas->lock);
+
+    return phys_addr;
+}
+
+
 /*
 * Unmap a page of virtual memory, and therefore making it so that virtual address can
-* no longer be accessed. Returns the old physical address that was mapped.
+* no longer be accessed. Returns the old physical address that was mapped, or 0 if none
+* was mapped.
 */
 size_t vas_unmap(struct virtual_address_space* vas, size_t virt_addr)
 {
@@ -131,17 +172,90 @@ size_t vas_unmap(struct virtual_address_space* vas, size_t virt_addr)
 	
     spinlock_acquire(&vas->lock);
 
-	size_t old_phys_addr = 0xDEAD0000;
+    /*
+    * TODO: how does this go with pages on disk? or ALLOCATE_ON_WRITE, etc.??
+    */
+
+    int old_flags;
+	size_t old_phys_addr;
+	arch_vas_get_entry(vas, virt_addr, &old_phys_addr, &old_flags);
 	arch_vas_set_entry(vas, virt_addr, 0, 0);
 
     spinlock_release(&vas->lock);
 
 	assert(old_phys_addr % ARCH_PAGE_SIZE == 0);
 
-	/*
-	* TODO: vas_unmap needs to return the old physical address
-	*/
-	kprintf("TODO: vas_unmap return value\n");
+    if (old_flags & VAS_FLAG_COPY_ON_WRITE) {
+        panic("TODO: how should vas_unmap work on VAS_FLAG_COPY_ON_WRITE");
+    }
 
-	return old_phys_addr;
+    if (!(old_flags & VAS_FLAG_PRESENT) || (old_flags & VAS_FLAG_ALLOCATE_ON_ACCESS)) {
+        return 0;
+    }
+
+    return old_phys_addr;
+}
+
+
+/*
+* Performs a page replacement, and returns the newly freed physical address.
+*/
+size_t vas_perform_page_replacement(void) {
+    struct virtual_address_space* vas = vas_get_current_vas();
+
+    /*
+    * Somewhere in the page fault handling code, we need nested spinlocks. This is because
+    * handling a page fault may require memory to be allocated, and thus the VAS would already
+    * be locked. This is where we will use them. We will not lock again if we are already
+    * locked, hence the use of spinlock_acquire_if_unlocked.
+    */
+
+    bool needs_unlocking = spinlock_acquire_if_unlocked(&vas->lock);
+
+    /*
+    * Find our next victim.
+    */
+    size_t unlucky_addr = arch_find_page_replacement_virt_address(vas);
+
+    /*
+    * We need to release our lock in order to write to the disk, so lock the page 
+    * so nothing happens to it.
+    */
+    int old_flags;
+    size_t phys_addr;
+    arch_vas_get_entry(vas, unlucky_addr, &phys_addr, &old_flags);
+	arch_vas_set_entry(vas, unlucky_addr, phys_addr, old_flags | VAS_FLAG_LOCKED);
+
+    /*
+    * We don't need to be (spin)locked any longer, as we are only writing out the page, which is
+    * already marked as locked.
+    */
+    if (needs_unlocking) {
+        spinlock_release(&vas->lock);
+    }
+
+    /*
+    * Save our page onto the disk.
+    */
+    size_t id = swapfile_write((uint8_t*) unlucky_addr);
+
+    /*
+    * Reading/writing to page tables again requires us to lock.
+    */
+    needs_unlocking = spinlock_acquire_if_unlocked(&vas->lock);
+
+    /*
+    * Unmap the page, and then write the swapfile id to the page entry.
+    * (Don't override the value of phys_addr, as we need to return it, so use a dummy variable.)
+    */
+    arch_vas_set_entry(vas, unlucky_addr, id * ARCH_PAGE_SIZE, old_flags & ~(VAS_FLAG_LOCKED | VAS_FLAG_PRESENT));
+
+    size_t dummy;
+    arch_vas_get_entry(vas, unlucky_addr, &dummy, &old_flags);
+
+    if (needs_unlocking) {
+        spinlock_release(&vas->lock);
+    }
+
+    return phys_addr;
 }

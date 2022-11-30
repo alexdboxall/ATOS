@@ -22,14 +22,21 @@
 
 /*
 * Local fixed sized arrays and variables need to fit on the kernel stack.
-* The disk driver gets a bit ambitous with its use of local arrays, so allocate a 
-* generous amount.
+* Allocate at least 4KB (depending on the system page size).
 *
 * Please note that overflowing the kernel stack into non-paged memory will lead to
 * an immediate and unrecoverable crash on most systems.
 */
-#define KERNEL_STACK_SIZE       (1024 * 32)
-#define USER_STACK_DEFAULT_SIZE (1024 * 64)
+#define KERNEL_STACK_SIZE   (virt_bytes_to_pages(4096) * ARCH_PAGE_SIZE)
+
+/*
+* The user stack is allocated as needed - this is the maximum size of the stack in
+* user virtual memory. (However, a larger max stack means more page tables need to be
+* allocated to store it - even if there are no actual stack pages in yet).
+*
+* On x86, allocating a 4MB region only requires one page table, hence we'll use that.
+*/
+#define USER_STACK_MAX_SIZE (virt_bytes_to_pages(4 * 1024 * 1024) * ARCH_PAGE_SIZE)
 
 /*
 * The scheduler lock must be held whenever calling thread_schedule(), and also must
@@ -52,6 +59,8 @@ static struct thread* last_ready_thread = NULL;
 * Scheduler lock must be held while accessing.
 */
 static struct thread* sleeping_thread_list = NULL;
+
+struct thread* terminated_thread_list = NULL;
 
 
 /*
@@ -77,28 +86,6 @@ static struct spinlock time_since_boot_lock;
 
 
 /*
-* Canary support is a good candidate for an early student assignment, seeing as
-* it can be done in around 20 lines, but still requires a good understanding of 
-* how stacks work. 
-*
-* ASSGN: If a stack overflow occurs on a kernel stack, the system will reboot due
-*        to the fact the page fault handler (caused by accessing memory beyond the
-*        end of the stack) cannot run (as the stack is still invalid).
-*
-*        Your task: implement a canary mechanism to detect stack overflows.
-*                   See https://en.wikipedia.org/wiki/Buffer_overflow_protection#Canaries
-*
-*        You should be able to detect *most* kernel stack overflows  (it is not possible to
-*        detect all of them), and raise a kernel panic should one occur.
-*
-*        You should test your code with the test_kernel_stack_canary() function.
-*
-*        You should only modifiy the code in thread/thread.c, and possibly include/thread.h
-*
-*        The sample solution adds around 20 lines of new code, and modifies 3 lines of existing code.
-*/
-
-/*
 * Kernel stack overflow normally results in a total system crash/reboot because 
 * fault handlers will not work (they push data to a non-existent stack!).
 *
@@ -109,25 +96,47 @@ static struct spinlock time_since_boot_lock;
 * Note that we can still overflow 'badly' if someone makes an allocation on the
 * stack lwhich is larger than the remaining space on the stack and the canary size
 * combined.
+*
+* If the canary page is only partially used for the canary, the remainder of the
+* page is able to be used normally. Hence at the moment kernel pages are 6KB.
 */
-#define NUM_CANARY_PAGES 2
+#define NUM_CANARY_BYTES 2048
+#define NUM_CANARY_PAGES (virt_bytes_to_pages(NUM_CANARY_BYTES))
+
 #define CANARY_VALUE     0x8BADF00D
 
 static void thread_stack_canary_create(size_t canary_base) {
     uint32_t* canary_ptr = (uint32_t*) canary_base;
-    for (size_t i = 0; i < NUM_CANARY_PAGES * ARCH_PAGE_SIZE / sizeof(uint32_t); ++i) {
+
+#ifdef ARCH_STACK_GROWS_DOWNWARD
+
+    for (size_t i = 0; i < NUM_CANARY_BYTES / sizeof(uint32_t); ++i) {
         *canary_ptr++ = CANARY_VALUE;
     }
+
+#elif ARCH_STACK_GROWS_UPWARD
+    #error "please implement thread_stack_canary_create for upward stacks"
+#else
+    #error "machine/config.h has not defined ARCH_STACK_GROWS_UPWARD or ARCH_STACK_GROWS_DOWNWARD"
+#endif
 }
 
 /*static*/ void thread_stack_check_canary(size_t canary_base) {
     uint32_t* canary_ptr = (uint32_t*) canary_base;
 
-    for (size_t i = 0; i < NUM_CANARY_PAGES * ARCH_PAGE_SIZE / sizeof(uint32_t); ++i) {
+#ifdef ARCH_STACK_GROWS_DOWNWARD
+
+    for (size_t i = 0; i < NUM_CANARY_BYTES / sizeof(uint32_t); ++i) {
         if (*canary_ptr++ != CANARY_VALUE) {
             panic("Kernel stack overflow detected!");
         }
     }
+
+#elif ARCH_STACK_GROWS_UPWARD
+    #error "please implement thread_stack_check_canary for upward stacks"
+#else
+    #error "machine/config.h has not defined ARCH_STACK_GROWS_UPWARD or ARCH_STACK_GROWS_DOWNWARD"
+#endif
 }
 
 /*
@@ -138,12 +147,14 @@ static void thread_stack_canary_create(size_t canary_base) {
 static size_t thread_create_kernel_stack(int size, size_t* canary_position) {
     int num_pages = virt_bytes_to_pages(size) + NUM_CANARY_PAGES;
     
-    size_t stack_bottom = virt_allocate_pages(num_pages, VAS_FLAG_WRITABLE);
+    size_t stack_bottom = virt_allocate_backed_pages(num_pages, VAS_FLAG_WRITABLE | VAS_FLAG_LOCKED);
     size_t stack_top = stack_bottom + num_pages * ARCH_PAGE_SIZE;
 
 #ifdef ARCH_STACK_GROWS_DOWNWARD
+
     *canary_position = stack_bottom;
     thread_stack_canary_create(*canary_position);
+
     return stack_top;
 
 #elif ARCH_STACK_GROWS_UPWARD
@@ -153,7 +164,6 @@ static size_t thread_create_kernel_stack(int size, size_t* canary_position) {
 #endif
 }
 
-
 static size_t thread_create_user_stack(int size) {
     int num_pages = virt_bytes_to_pages(size);
 
@@ -162,15 +172,14 @@ static size_t thread_create_user_stack(int size) {
     * mappings to physical memory.
     */
 
-    /*
-    * TODO: add guard pages so the stack can grow.
-    */
-
 #ifdef ARCH_STACK_GROWS_DOWNWARD
     size_t stack_base = ARCH_USER_STACK_LIMIT - num_pages * ARCH_PAGE_SIZE;
     
-    for (int i = 0; i < num_pages; ++i) {
-        vas_map(current_cpu->current_thread->vas, phys_allocate_page(), stack_base + i * ARCH_PAGE_SIZE, VAS_FLAG_USER | VAS_FLAG_WRITABLE);
+    for (int i = 0; i < num_pages; ++i) {        
+        //size_t phys = phys_allocate_page();
+        //vas_map(current_cpu->current_thread->vas, phys, stack_base + i * ARCH_PAGE_SIZE, VAS_FLAG_USER | VAS_FLAG_WRITABLE);
+        
+        vas_reflag(vas_get_current_vas(), stack_base + i * ARCH_PAGE_SIZE, VAS_FLAG_USER | VAS_FLAG_WRITABLE | VAS_FLAG_ALLOCATE_ON_ACCESS);
     }
 
     return ARCH_USER_STACK_LIMIT;
@@ -189,11 +198,15 @@ void thread_execute_in_usermode(void* addr) {
     * stack when it switches to kernel mode for interrupt handling, as we will
     * not return from here, and thus the existing stack can be overwritten.
     */
+    size_t new_stack = thread_create_user_stack(USER_STACK_MAX_SIZE);
+
     spinlock_acquire(&scheduler_lock);
-    size_t new_stack = thread_create_user_stack(USER_STACK_DEFAULT_SIZE);
     current_cpu->current_thread->stack_pointer = new_stack;
     spinlock_release(&scheduler_lock);
 
+    vas_reflag(vas_get_current_vas(), 0xc0109000, VAS_FLAG_PRESENT | VAS_FLAG_USER | VAS_FLAG_LOCKED | VAS_FLAG_WRITABLE);
+    arch_flush_tlb();
+    
     arch_switch_to_usermode((size_t) addr, new_stack);
 
     panic("thread_execute_in_usermode: usermode returned!");
@@ -290,8 +303,7 @@ struct thread* thread_init(void) {
     thr->vas = vas_get_current_vas();
 
     thr->kernel_stack_top = thread_create_kernel_stack(KERNEL_STACK_SIZE, &thr->canary_position);
-    thr->kernel_stack_size = KERNEL_STACK_SIZE;
-    thr->thread_id = next_thread_id++;
+    thr->kernel_stack_size = KERNEL_STACK_SIZE + NUM_CANARY_PAGES * ARCH_PAGE_SIZE;
     thr->state = THREAD_STATE_RUNNING;  
     thr->time_used = 0;
     thr->next = NULL;
@@ -300,10 +312,15 @@ struct thread* thread_init(void) {
     thr->sleep_expiry = 0;
     thr->timeslice_expiry = 1;
     thr->process = NULL;
-    
+    thr->argument = NULL;
+
+    spinlock_acquire(&scheduler_lock);
+    thr->thread_id = next_thread_id++;
     current_cpu->current_thread = thr;
+    spinlock_release(&scheduler_lock);
 
     idle_thread_init();
+    cleaner_thread_init();
 
     return thr;
 }
@@ -313,18 +330,16 @@ int thread_fork(void) {
 
     struct thread* parent_thread = current_cpu->current_thread;
 
-    spinlock_acquire(&scheduler_lock);
-
     /*
     * Copy all thread data from the currently running thread.
-    */
-    *thr = *parent_thread;
-
-    /*
     * The thread ID must be unique, so update it. The linked list pointer
     * should also be cleared so it can be added to the ready list.
     */
+    spinlock_acquire(&scheduler_lock);
+    *thr = *parent_thread;
     thr->thread_id = next_thread_id++;
+    spinlock_release(&scheduler_lock);
+
     thr->next = NULL;
     thr->time_used = 0;
 
@@ -334,36 +349,41 @@ int thread_fork(void) {
     thr->state = THREAD_STATE_READY;
 
     /*
+    * Perform the memory allocation steps while the lock isn't held. It is okay to
+    * fiddle with thr without the lock held, until thread_add_to_ready_list is called. 
+    */
+
+    /*
     * Create a new address space for the thread with everything marked as
     * copy-on-write.
     */
+    kprintf("TODO: vas_copy allocates a lot of memory, but it also needs to lock the VAS! (which the pf handler also needs to do!)\n");
     thr->vas = vas_copy(thr->vas);
 
-    /*
-    * Must be done before both threads start executing.
-    */
-    thread_add_to_ready_list(thr, false);
-
-    /*
-    * Forks create a new process too.
-    */
     struct process* process = process_create_with_vas(thr->vas);
+
+    thr->kernel_stack_top = thread_create_kernel_stack(KERNEL_STACK_SIZE, &thr->canary_position);
+    thr->kernel_stack_size = KERNEL_STACK_SIZE + NUM_CANARY_PAGES * ARCH_PAGE_SIZE;
     process_add_thread(process, thr);
     thr->process = process;
 
     /*
+    * Must be done before both threads start executing.
+    */
+    spinlock_acquire(&scheduler_lock);
+    thread_add_to_ready_list(thr, false);
+
+    /*
     * Copy the stack data and set the stack pointer to the correct position in the new stack.
     * Both threads resume immediately after arch_set_forked_kernel_stack.
-    */
-    thr->kernel_stack_top = thread_create_kernel_stack(KERNEL_STACK_SIZE, &thr->canary_position);
-    thr->kernel_stack_size = KERNEL_STACK_SIZE;
+    */    
     arch_set_forked_kernel_stack(parent_thread, thr);
 
     /*
-    * Both threads resume execution here.
+    * Both threads resume execution here
     */
 
-    size_t retv = current_cpu->current_thread == parent_thread;
+    size_t retv = current_cpu->current_thread == parent_thread ? 0 : 1;
     
     /*
     * Both threads release the lock - which is correct. The parent thread will always
@@ -375,17 +395,20 @@ int thread_fork(void) {
     */
     spinlock_release(&scheduler_lock);
 
-    return retv;
+    /*
+    * The x86 implementation doesn't save some registers, so we don't have access to
+    * local variables. Hence the awkward way of getting the process instead of just using
+    * process. (TODO: need to fix the x86 implementation)
+    */
+    return retv == 0 ? 0 : current_cpu->current_thread->process->pid;
 }
 
 /*
 * Allocates and initialises a thread structure for new threads and adds it
 * to the ready list.
 */
-struct thread* thread_create(void (*initial_address)(void*), void* argument, struct virtual_address_space* vas) {
+struct thread* thread_create(void (*initial_address)(void*), void* argument, struct virtual_address_space* vas) {    
     struct thread* thr = malloc(sizeof(struct thread));
-
-    spinlock_acquire(&scheduler_lock);
 
     thr->state = THREAD_STATE_READY;
     thr->initial_address = initial_address;
@@ -396,7 +419,6 @@ struct thread* thread_create(void (*initial_address)(void*), void* argument, str
     thr->priority = PRIORITY_NORMAL;
     thr->sleep_expiry = 0;
     thr->timeslice_expiry = 1;
-    thr->thread_id = next_thread_id++;
     thr->process = NULL;
 
     /*
@@ -406,10 +428,14 @@ struct thread* thread_create(void (*initial_address)(void*), void* argument, str
     * We still keep the existing kernel stack for kernel switches.
     */
     thr->kernel_stack_top = thread_create_kernel_stack(KERNEL_STACK_SIZE, &thr->canary_position);
-    thr->kernel_stack_size = KERNEL_STACK_SIZE;
+    thr->kernel_stack_size = KERNEL_STACK_SIZE + NUM_CANARY_PAGES * ARCH_PAGE_SIZE;
     thr->stack_pointer = arch_prepare_stack(thr->kernel_stack_top);
+
     thr->vas = vas;
 
+    spinlock_acquire(&scheduler_lock);
+
+    thr->thread_id = next_thread_id++;
     thread_add_to_ready_list(thr, false);
 
     spinlock_release(&scheduler_lock);
@@ -493,15 +519,16 @@ void thread_end_postpone_switches(void) {
 
     /*
     * We must release the postpone lock before calling schedule. Trust me,
-    * it gets ugly if you don't. (The thread being switch to has no idea the
+    * it gets ugly if you don't. (The thread being switched to has no idea the
     * lock is still held, and so doesn't release it).
     */
     if (have_postponed_switch) {
-        have_postponed_switch = false;        
-
+        have_postponed_switch = false;   
+        
         spinlock_release(&postpone_lock);
 
         assert(spinlock_is_held(&scheduler_lock));
+
         thread_schedule();
 
     } else {
@@ -516,8 +543,8 @@ void thread_end_postpone_switches(void) {
 static void thread_reset_timeslice(void) {
     spinlock_acquire(&time_since_boot_lock);
 
-    /* 50 ms timeslice */
-    current_cpu->current_thread->timeslice_expiry = time_since_boot + 50000000;
+    /* 25 ms timeslice */
+    current_cpu->current_thread->timeslice_expiry = time_since_boot + 25000000;
 
     spinlock_release(&time_since_boot_lock);
 }
@@ -552,7 +579,6 @@ void thread_schedule(void) {
         have_postponed_switch = true;
         return;
     }
-
 
     /*
     * This is only NULL if there are no other threads to switch to.
@@ -599,11 +625,10 @@ void thread_schedule(void) {
                 /* 
                 * No choice but to run the idle thread.
                 */
-
                 assert(thr != NULL);
             }
         }
-        
+
         /*
         * If the current thread is still running (i.e. it did not block),
         * then re-add to the list for next time. If it did block, we have to
@@ -614,10 +639,16 @@ void thread_schedule(void) {
         }
 
         thr->state = THREAD_STATE_RUNNING;
-        arch_switch_thread(thr);
+
+        /*
+        * We load the VAS beforehand, as threads which are just starting will not
+        * execute anything after arch_switch_thread (they will go to their entry point
+        * when arch_switch_thread returns).
+        */
         vas_load(thr->vas);
+        arch_switch_thread(thr);
     }
-    
+
     thread_reset_timeslice();
 }
  
@@ -676,18 +707,46 @@ void thread_sleep(int seconds) {
     thread_nano_sleep((uint64_t) seconds * 1000000000ULL);
 }
 
+void thread_yield(void) {
+    spinlock_acquire(&scheduler_lock);
+    thread_schedule();
+    spinlock_release(&scheduler_lock);
+}
+
+
 
 
 void thread_terminate(void) {
     /*
-    * TODO: implement this function properly
+    * TODO: close files, free userspace memory, etc... up here
     */
 
-    while (1) {
-        spinlock_acquire(&scheduler_lock);
-        thread_block(THREAD_STATE_TERMINATED);
-        spinlock_release(&scheduler_lock);
-    }   
+    /*
+    * We are not currently using the userspace stack, so it is okay to free it.
+    * The cleaner will be in a different VAS and therefore cannot do it.
+    * Doesn't need to be locked, as we cannot return to userspace in this thread
+    * now.
+    */
+
+    for (size_t i = ARCH_USER_STACK_LIMIT - USER_STACK_MAX_SIZE; i < ARCH_USER_STACK_LIMIT; i += ARCH_PAGE_SIZE) {
+        size_t physical = vas_unmap(vas_get_current_vas(), i);
+        if (physical != 0) {
+            phys_free_page(physical);
+        }
+    }
+        
+    spinlock_acquire(&scheduler_lock);
+    thread_postpone_switches();
+
+    current_cpu->current_thread->next = terminated_thread_list;
+    terminated_thread_list = current_cpu->current_thread;
+
+    thread_block(THREAD_STATE_TERMINATED);
+
+    cleaner_thread_awaken();
+
+    thread_end_postpone_switches();
+    spinlock_release(&scheduler_lock);
 }
 
 

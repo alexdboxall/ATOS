@@ -19,6 +19,8 @@
 static void idle_function(void* arg) {
     (void) arg;
 
+    thread_set_priority(PRIORITY_IDLE);
+
     /*
     * Keep the CPU into a low-power mode until we are preempted.
     */
@@ -31,6 +33,5 @@ static void idle_function(void* arg) {
 * Starts the idle thread. Must be called per-CPU so every CPU can run an idle thread.
 */
 void idle_thread_init() {
-    struct thread* idle_thread = thread_create(idle_function, NULL, current_cpu->current_vas);
-    idle_thread->priority = PRIORITY_IDLE;
+    thread_create(idle_function, NULL, current_cpu->current_vas);
 }

@@ -12,6 +12,8 @@ global arch_disable_interrupts
 global arch_stall_processor
 global arch_flush_tlb
 global arch_read_timestamp
+global x86_get_cr2
+global x86_are_irqs_on
 
 arch_read_timestamp:
 	rdtsc
@@ -33,3 +35,14 @@ arch_flush_tlb:
 	mov eax, cr3
 	mov cr3, eax
 	ret
+
+x86_get_cr2:
+    mov eax, cr2
+    ret
+
+x86_are_irqs_on:
+    pushf
+    pop eax
+    and eax, 0x200
+    shr eax, 9
+    ret

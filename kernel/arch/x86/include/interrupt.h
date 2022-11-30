@@ -17,4 +17,4 @@ struct x86_regs
 };
 
 void x86_interrupt_initialise(void);
-int x86_register_interrupt_handler(int num, void(*handler)(struct x86_regs*));
+int x86_register_interrupt_handler(int num, int(*handler)(struct x86_regs*));

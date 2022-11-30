@@ -1,4 +1,13 @@
 
+/*
+* memcpy and memset call the GCC's 'builtin' version of the function.
+* These may be optimised for the target platform, which increases efficiency
+* without resorting to writing custom versions for each architecture.
+*
+* If they are not supported by your compiler or platform, or simply end up calling
+* themselves, use the commented-out implementations instead.
+*/
+
 #include <string.h>
 #include <errno.h>
 #include <stdint.h>
@@ -27,7 +36,7 @@ void* memchr(const void* addr, int c, size_t n)
 
 int memcmp(const void* addr1, const void* addr2, size_t n)
 {
-	const uint8_t* a = (const uint8_t*) addr1;
+    const uint8_t* a = (const uint8_t*) addr1;
 	const uint8_t* b = (const uint8_t*) addr2;
 
 	for (size_t i = 0; i < n; ++i) {
@@ -40,14 +49,20 @@ int memcmp(const void* addr1, const void* addr2, size_t n)
 
 void* memcpy(void* dst, const void* src, size_t n)
 {
-	uint8_t* a = (uint8_t*) dst;
+    /*
+    * Use the compiler's platform-specific optimised version.
+    * If that doesn't work for your system, use the below implementation.
+    */
+    return __builtin_memcpy(dst, src, n);
+
+	/*uint8_t* a = (uint8_t*) dst;
 	const uint8_t* b = (const uint8_t*) src;
 
 	for (size_t i = 0; i < n; ++i) {
 		a[i] = b[i];
 	}
 
-	return dst;
+	return dst;*/
 }
 
 void* memmove(void* dst, const void* src, size_t n)
@@ -73,12 +88,18 @@ void* memmove(void* dst, const void* src, size_t n)
 
 void* memset(void* addr, int c, size_t n)
 {
-	uint8_t* ptr = (uint8_t*) addr;
+    /*
+    * Use the compiler's platform-specific optimised version.
+    * If that doesn't work for your system or compiler, use the below implementation.
+    */
+    return __builtin_memset(addr, c, n);
+
+	/*uint8_t* ptr = (uint8_t*) addr;
 	for (size_t i = 0; i < n; ++i) {
 		ptr[i] = c;
 	}
 
-	return addr;
+	return addr;*/
 }
 
 char* strcat(char* dst, const char* src)

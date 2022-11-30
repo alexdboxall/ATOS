@@ -1,6 +1,5 @@
 
 #include <interface.h>
-#include <arch.h>
 #include <beeper.h>
 #include <random.h>
 #include <console.h>
@@ -13,8 +12,6 @@
 void interface_init() {
 	console_init();
     random_init();
-    
-    arch_initialise_devices();
 }
 
 

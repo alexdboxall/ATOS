@@ -2,9 +2,11 @@
 #include <interface.h>
 #include <spinlock.h>
 #include <device.h>
+#include <kprintf.h>
 #include <errno.h>
 #include <console.h>
 #include <panic.h>
+#include <string.h>
 #include <synch.h>
 #include <adt.h>
 #include <beeper.h>
@@ -23,7 +25,6 @@
 * a thread is reading from the console at the same time another thread is writing to it.
 * This should be fixable by ensuring writes go into a seperate buffer if the line
 * buffer has any characters in it, and then flushing it as soon as the line buffer empties.  
-*
 */
 
 #define INPUT_BUFFER_SIZE   1024
@@ -50,12 +51,24 @@ static void console_add_to_line_buffer(char c, int width) {
 static void console_flush_line_buffer(void) {
     /*
     * Flush the line buffer.
+    * For *reasons* we shouldn't do any important cleanup after the last character.
+    * 
+    * (it's because that causes the main thread to start running again, causing
+    *  it to block for keyboard. that causes a task switch which *may* go to us, in
+    *  which case we can cleanup. but if it does to another thread that doesn't yield
+    *  control, the preempter won't have anything to go to because the other thread
+    *  is blocking for keyboard. as we are actually part of that thread (just in the
+    *  keyboard handler, the cleanup won't run until after the next line flush, which
+    *  causes a double input of the inputted line)
     */
-    for (int i = 0; i < line_buffer_pos; i++) {
-        adt_blocking_byte_buffer_add(input_buffer, line_buffer[i]);
-    }
+
+    int line_buffer_pos_copy = line_buffer_pos;
 
     line_buffer_pos = 0;
+
+    for (int i = 0; i < line_buffer_pos_copy; i++) {
+        adt_blocking_byte_buffer_add(input_buffer, line_buffer[i]);
+    }
 }
 
 
@@ -215,6 +228,7 @@ static int console_io(struct std_device_interface* dev, struct uio* io) {
                     break;
                 }
             }
+            
             int status = uio_move(&c, io, 1);
             if (status != 0) {
                 return status;
@@ -252,6 +266,8 @@ void console_init(void) {
     */
     static struct std_device_interface dev;
 
+    spinlock_init(&console_driver_lock, "console driver lock");
+
     dev.data = NULL;
     dev.block_size = 0;
     dev.num_blocks = 0;
@@ -264,9 +280,16 @@ void console_init(void) {
     vfs_add_device(&dev, "con");
 }
 
+void console_panic(const char* message) {
+    /*
+    * No point locking at this point. If we did lock, it's possible we would
+    * deadlock before showing the BSOD, which is not ideal.
+    */
+    default_console_driver->panic(message);
+}
 
 /*
-* A little secret, console_io does not use the value of the device passed in.
+* console_io does not use the value of the device passed in.
 * Therefore we can just pass in NULL.
 */
 void console_putc(char c) {
@@ -277,6 +300,7 @@ void console_putc(char c) {
 char console_getc(void) {
     char c;
     struct uio io = uio_construct_read(&c, 1, 0);
+
     console_io(NULL, &io);
     return c;
 }
@@ -292,6 +316,7 @@ void console_gets(char* buffer, int size) {
     * OR: this could be done in console_io (use adt_blocking_byte_buffer_get for the
     * first character, then adt_blocking_byte_buffer_try_get every other iteration)
     */
+
     for (int i = 0; i < size - 1; ++i) {
         char c = console_getc();
 

@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <assert.h>
 #include <spinlock.h>
+#include <kprintf.h>
 #include <heap.h>
 
 static struct spinlock pid_spinlock;
@@ -26,16 +27,6 @@ struct process* process_create(void) {
     return process_create_with_vas(vas_create());
 }
 
-/*
-* Cleans up a process after all threads have been destoryed.
-*/
-/*static*/ void process_destroy(struct process* process) {
-    (void) process;
-
-    assert(adt_list_size(process->threads) == 0);
-
-    // TODO: how do we destroy the VAS??? what if we're using it???
-}
 
 /*
 * Destroys all threads in the process and then deletes it.

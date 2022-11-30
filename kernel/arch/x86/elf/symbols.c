@@ -12,13 +12,13 @@
 struct adt_hashmap* loaded_symbols = NULL;
 
 static void ksymbol_init(void) {
-    loaded_symbols = adt_hashmap_create(512, adt_hashmap_null_terminated_string_hash_function);
+    loaded_symbols = adt_hashmap_create(512, adt_hashmap_null_terminated_string_hash_function, adt_hashmap_null_terminated_string_equality_function);
 
     /*
     * Open the kernel file so we can read its symbol table.
     */
     struct vnode* file;
-    int ret = vfs_open("hd0:/System/kernel.exe", O_RDONLY, 0, &file);
+    int ret = vfs_open("sys:/kernel.exe", O_RDONLY, 0, &file);
     if (ret != 0) {
         goto fail;
     }
@@ -108,7 +108,7 @@ static void ksymbol_init(void) {
     */
     const char* string_table = malloc(string_table_length);
     uio = uio_construct_read((void*) string_table, string_table_length, string_table_offset);
-    ret = vfs_read(file, &uio);
+    ret = vfs_read(file, &uio); 
     if (ret != 0) {
         goto fail;
     }
@@ -122,8 +122,6 @@ static void ksymbol_init(void) {
         if (symbol.st_value == 0) { 
             continue;
         }
-
-        //kprintf("%d: about to load symbol @ offset %d (table size = %d,%d (str/sym) @ 0x%X,0x%X)\n", i, symbol.st_name, string_table_length, symbol_table_length, string_table_offset, symbol_table_offset);
 
         char* name = strdup(string_table + symbol.st_name);
         ksymbol_add_symbol(name, symbol.st_value);

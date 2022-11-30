@@ -32,7 +32,7 @@ for path, subdirs, files in os.walk(os.getcwd()):
             lines += j
             if n.find('test/') != -1 or n.find('test\\') != -1:
                 testing += j
-            if n.find('arch/') != -1 or n.find('arch\\') != -1:
+            if n.find('arch/') != -1 or n.find('arch\\') != -1 or n.find('x86/') != -1 or n.find('x86\\') != -1:
                 platlines += j
         
 print('{} lines (of those, {}, or {}% are platform specific)'.format(lines, platlines, round(platlines * 100 / lines, 1)))

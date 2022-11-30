@@ -11,8 +11,8 @@ git commit -m "%COMMIT_MSG%"
 git push
 make osrelease || (pause & exit)
 
-rem qemu-system-i386 -monitor stdio -soundhw pcspk -hda build/output/disk.bin -serial file:log.txt -m 3 -rtc base=localtime -d guest_errors,cpu_reset 
+qemu-system-i386 -monitor stdio -soundhw pcspk -hda build/output/disk.bin -serial file:log.txt -m 3 -rtc base=localtime -d guest_errors,cpu_reset 
 
-qemu-system-i386 -soundhw pcspk -fda build/output/floppy.img -serial file:log.txt -m 3 -rtc base=localtime -d guest_errors,cpu_reset
+rem qemu-system-i386 -soundhw pcspk -fda build/output/floppy.img -serial file:log.txt -m 3 -rtc base=localtime -d guest_errors,cpu_reset
  
 pause

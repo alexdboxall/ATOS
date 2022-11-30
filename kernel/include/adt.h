@@ -64,10 +64,11 @@ void* adt_list_circulate(struct adt_list* list);
 
 
 
-struct adt_hashmap* adt_hashmap_create(int num_buckets, uint32_t (*hash_function)(void*)); 
+struct adt_hashmap* adt_hashmap_create(int num_buckets, uint32_t (*hash_function)(void*), bool (*equality_function)(void*, void*)); 
 bool adt_hashmap_contains(struct adt_hashmap* map, void* key);
 void adt_hashmap_add(struct adt_hashmap* map, void* key, void* value);
 void* adt_hashmap_get(struct adt_hashmap* map, void* key);
 int adt_hashmap_size(struct adt_hashmap* map);
 
 uint32_t adt_hashmap_null_terminated_string_hash_function(void* arg);
+bool adt_hashmap_null_terminated_string_equality_function(void* s1, void* s2);

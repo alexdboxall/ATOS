@@ -67,7 +67,7 @@ void semaphore_acquire(struct semaphore* sem) {
         * Add the current thread to the waiting list, then block.
         */
         current_cpu->current_thread->next = NULL;
-        
+
         if (sem->first_waiting_thread == NULL) {
             sem->first_waiting_thread = current_cpu->current_thread;
         } else {
@@ -78,6 +78,7 @@ void semaphore_acquire(struct semaphore* sem) {
 
         thread_block(THREAD_STATE_UNINTERRUPTIBLE);
         thread_end_postpone_switches();
+
     }
 
     spinlock_release(&scheduler_lock);

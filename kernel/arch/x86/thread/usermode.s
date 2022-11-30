@@ -36,3 +36,19 @@ arch_switch_to_usermode:
 
     ; Pop all of that off the stack and go to usermode.
     iretd
+
+
+global usermode_stub
+
+align 4096
+usermode_stub:
+    push eax
+    pop eax
+
+.yield
+    mov eax, 0
+    int 96
+
+    jmp short .yield
+
+align 4096

@@ -38,7 +38,7 @@ size_t kernel_sbrk = ARCH_KRNL_SBRK_BASE;
 */
 void virt_init(void)
 {
-	
+	spinlock_init(&virt_lock, "virt lock");
 }
 
 
@@ -56,7 +56,7 @@ size_t virt_bytes_to_pages(size_t bytes) {
 *
 * The current implementation is very simple and does not allow freeing.
 */ 
-size_t virt_allocate_krnl_region(size_t bytes)
+size_t virt_allocate_unbacked_krnl_region(size_t bytes)
 {
 	assert(bytes != 0);
 
@@ -74,13 +74,14 @@ size_t virt_allocate_krnl_region(size_t bytes)
 	return old_sbrk;
 }
 
-void virt_deallocate_krnl_region(size_t virt_addr)
+void virt_deallocate_unbacked_krnl_region(size_t virt_addr, size_t num_pages)
 {
 	/*
-	* Do nothing for now.
-    * TODO: probably scan thru region checking what's there, freeing any phys pages marked as allocated
+	* Do nothing for now, as we just use a sbrk() style allocation that doesn't
+    * allow for freeing.
 	*/
 	(void) virt_addr;
+    (void) num_pages;
 }
 
 
@@ -88,19 +89,23 @@ void virt_deallocate_krnl_region(size_t virt_addr)
 * Map physical memory to a region of physical memory. Any higher-level memory
 * functions (such as the heap) should be built on top of this.
 */
-size_t virt_allocate_pages(size_t pages, int flags) {
+size_t virt_allocate_backed_pages(size_t pages, int flags) {
 	assert(pages != 0);
 	
-	size_t virt_addr = virt_allocate_krnl_region(pages * ARCH_PAGE_SIZE);
+	size_t virt_addr = virt_allocate_unbacked_krnl_region(pages * ARCH_PAGE_SIZE);
 
 	for (size_t i = 0; i < pages; ++i) {
-		vas_map(vas_get_current_vas(), phys_allocate_page(), virt_addr + i * ARCH_PAGE_SIZE, flags);
+        size_t p = phys_allocate_page();
+
+        struct virtual_address_space* v = vas_get_current_vas();
+
+		vas_map(v, p, virt_addr + i * ARCH_PAGE_SIZE, flags);
 
 		/*
 		* Fill memory with '0xDEADBEEF', which is an easy value to see when debugging.
 		*/
-		for (int j = 0; j < ARCH_PAGE_SIZE / 4; ++j) {
-			*(uint32_t*)(virt_addr + i * ARCH_PAGE_SIZE + j * 4) = 0xDEADBEEF;
+		for (size_t j = 0; j < ARCH_PAGE_SIZE / sizeof(size_t); ++j) {
+			*(size_t*)(virt_addr + i * ARCH_PAGE_SIZE + j * sizeof(size_t)) = 0xDEADBEEF;
 		}
 	}
 
@@ -109,10 +114,13 @@ size_t virt_allocate_pages(size_t pages, int flags) {
 	return virt_addr;
 }
 
-void virt_free_pages(size_t virt_addr) {
-	// TODO: we need to deallocate the physical pages (and work out how long the range is...)
-
-    kprintf("virt free\n");
+void virt_free_backed_pages(size_t virt_addr, size_t num_pages) {
+    for (size_t i = 0; i < num_pages; ++i) {
+        size_t physical = vas_unmap(vas_get_current_vas(), virt_addr + i * ARCH_PAGE_SIZE);
+        if (physical != 0) {
+            phys_free_page(physical);
+        }
+    }
 	
-	virt_deallocate_krnl_region(virt_addr);
+	virt_deallocate_unbacked_krnl_region(virt_addr, num_pages);
 }

@@ -56,6 +56,8 @@ int random_io(struct std_device_interface* dev, struct uio* io) {
 void random_init(void) {
     static struct std_device_interface dev;
 
+    spinlock_init(&random_lock, "random lock");
+
     dev.data = NULL;
     dev.block_size = 1;
     dev.num_blocks = 0;

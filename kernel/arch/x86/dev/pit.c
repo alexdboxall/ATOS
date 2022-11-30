@@ -16,13 +16,14 @@
 
 uint64_t pit_hertz = 0;
 
-static void pit_handler(struct x86_regs* r) {
+static int pit_handler(struct x86_regs* r) {
     assert(pit_hertz != 0);
 	
 	(void) r;
 
 	thread_received_timer_interrupt_bsp(1000000000ULL / pit_hertz);
 	thread_received_timer_interrupt();
+    return 0;
 }
 
 void pit_initialise(int hertz) { 

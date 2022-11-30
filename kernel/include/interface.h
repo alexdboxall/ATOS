@@ -39,6 +39,7 @@ struct beeper_device_interface
 struct console_device_interface
 {
 	void (*putc)(struct console_device_interface*, char c);
+    void (*panic)(const char* message);
 	void* data;
 };
 

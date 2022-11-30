@@ -51,8 +51,9 @@ void arch_set_forked_kernel_stack(struct thread* original, struct thread* forked
     * off the stack and then return to the caller (thread_fork). We must fiddle
     * with the stack a bit to get these values on there.
     * 
-    * EBX, ESI and EDI really should be saved - but it is unlikely thread_fork
-    * wouldn't have saved the value of these.
+    * EBX, ESI and EDI really should be saved (but it has to be the value *before*
+    * we entered this stack frame, i.e. the values we saved on the stack at the start
+    * of the function)
     */
     size_t* stack = (size_t*) forked->stack_pointer;
     *(--stack) = (size_t) __builtin_return_address(0);                  // return value

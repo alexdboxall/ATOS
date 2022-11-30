@@ -6,12 +6,14 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <kprintf.h>
+#include <string.h>
 #include <heap.h>
 
 /* TODO: semaphore/mutex for accessing the buckets */
 
 struct adt_hashmap {
     uint32_t (*hash_function)(void*);
+    bool (*equality_function)(void*, void*);
 
     struct adt_list** buckets;
 
@@ -24,13 +26,14 @@ struct node {
     void* value;
 };
 
-struct adt_hashmap* adt_hashmap_create(int num_buckets, uint32_t (*hash_function)(void*)) {
+struct adt_hashmap* adt_hashmap_create(int num_buckets, uint32_t (*hash_function)(void*), bool (*equality_function)(void*, void*)) {
     struct adt_hashmap* map = malloc(sizeof(struct adt_hashmap));
 
     if (num_buckets < 1) {
         panic("adt_hashmap_create: cannot have less than 1 bucket!");
     }
 
+    map->equality_function = equality_function;
     map->hash_function = hash_function;
     map->num_buckets = num_buckets;
     map->size = 0;
@@ -57,7 +60,7 @@ bool adt_hashmap_contains(struct adt_hashmap* map, void* key) {
         struct node* item = adt_list_get_next(list);
 
         if (item != NULL) {
-            if (item->key == key) {
+            if (map->equality_function(item->key, key)) {
                 return true;
             }
         }
@@ -98,7 +101,7 @@ void* adt_hashmap_get(struct adt_hashmap* map, void* key) {
         struct node* item = adt_list_get_next(list);
 
         if (item != NULL) {
-            if (item->key == key) {
+            if (map->equality_function(item->key, key)) {
                 return item->value;
             }
         }
@@ -126,4 +129,8 @@ uint32_t adt_hashmap_null_terminated_string_hash_function(void* arg) {
     }
 
     return hash;
+}
+
+bool adt_hashmap_null_terminated_string_equality_function(void* s1, void* s2) {
+    return !strcmp((const char*) s1, (const char*) s2);
 }

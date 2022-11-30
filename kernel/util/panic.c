@@ -3,10 +3,13 @@
 #include <arch.h>
 #include <kprintf.h>
 #include <assert.h>
+#include <console.h>
 
 _Noreturn void panic(const char* message)
 {
 	kprintf("Kernel panic: %s\n", message);
+
+    console_panic(message);
 
 	while (1) {
 		arch_disable_interrupts();

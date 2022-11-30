@@ -43,14 +43,6 @@ int demofs_read_inode(struct demofs* fs, ino_t inode, uint8_t* buffer) {
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 int demofs_read_file(struct demofs* fs, ino_t file, uint32_t file_size_left, struct uio* io) {
-    /*
-    * TODO: this needs to take into account the length of the file and stop reads before
-    *       we go past it!!!!!
-    * 
-    *       a struct uio* is allowed to attempt to read past the end (e.g. file is length 10, 
-    *       but wants to read 20)!!
-    */
-
     if (io->offset >= file_size_left) {
         return 0;
     }

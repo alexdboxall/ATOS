@@ -7,33 +7,37 @@
 #include <string.h>
 #include <assert.h>
 #include <kprintf.h>
+#include <process.h>
 #include <uio.h>
 #include <cpu.h>
 #include <vfs.h>
 #include <fcntl.h>
+#include <loader.h>
 #include <device.h>
 #include <console.h>
 #include <process.h>
+#include <syscall.h>
 #include <test.h>
-#include <machine/symbols.h>                // JUST FOR TESTING THINGS OUT
 #include <thread.h>
 #include <fs/demofs/demofs.h>
 
+extern size_t usermode_stub;
 
-/*
-* Possible Assignments:
-*	- thread switching code (arch/thread/switch.s)
-*	- better memory management (malloc)
-*   - disk driver
-*   - adding VFS directory iteration functions (enough to get a dir command to work)
-*	- idle tasks / task priorities
-*	- stack canary
-*	- adding the the beeper when ^G is pressed (maybe even remove the PC speaker code and include that as part of the assignment)
-*	- filesystem
-*	- locks and synchronization
-*	- system call implementation
-* 
-*/
+void fault_tester(void* arg) {
+    (void) arg;
+
+    kprintf("result is %d\n", 1 / ((size_t) arg));
+
+    while (true) {
+        kprintf("... ");
+    }
+}
+
+void terminate_test(void* arg) {
+    (void) arg;
+
+    thread_terminate();
+}
 
 void fake_shell(void* arg) {
 	(void) arg;
@@ -44,9 +48,10 @@ void fake_shell(void* arg) {
 	* Just pretend to launch into a command line shell.
 	*/
 	while (1) {
-		kprintf(">");
+        kprintf(">");
+
 		char buffer[256];
-		console_gets(buffer, sizeof(buffer));
+        console_gets(buffer, sizeof(buffer));
 
 		/*
 		* Must check for an empty string to guard the following strlen()
@@ -120,8 +125,38 @@ void fake_shell(void* arg) {
                 thread_sleep(1);
             }
 
-        } else if (!strcmp(buffer, "driver")) {
-            ksymbol_get_address_from_name("kernel_main");
+        } else if (!strcmp(buffer, "fault")) {
+            thread_create(fault_tester, NULL, vas_get_current_vas());
+			continue;
+
+        } else if (!strcmp(buffer, "eat")) {
+            size_t p = phys_allocate_page();
+            (void) p;
+			continue;
+
+        } else if (!strcmp(buffer, "eat mid")) {
+            for (int i = 0; i < 16; ++i) {
+                size_t p = phys_allocate_page();
+                (void) p;
+            }
+            
+			continue;
+
+        } else if (!strcmp(buffer, "eat lots")) {
+            for (int i = 0; i < 64; ++i) {
+                size_t p = phys_allocate_page();
+                (void) p;
+            }
+            
+			continue;
+
+        } else if (!strcmp(buffer, "user")) {
+            struct process* p = process_create();
+            thread_create(thread_execute_in_usermode, &usermode_stub, p->vas);
+            continue;
+            
+        } else if (!strcmp(buffer, "terminate")) {
+            thread_create(terminate_test, NULL, vas_get_current_vas());
             continue;
 
 		} else if (!strcmp(buffer, "restart")) {
@@ -145,25 +180,32 @@ void kernel_main()
 	* be initialised in order of least dependent on other systems to most dependent.
 	*/
 
+    kprintf("\nkernel_main\n");
 	phys_init();
 	virt_init();
+    
 	heap_init();
 	cpu_init();
-	thread_init();
+    heap_reinit();
+    thread_init();  
     process_init();
-	vfs_init();
+    vfs_init();
 	interface_init();
 
+    arch_initialise_devices_no_fs();
+
 	vfs_mount_filesystem("hd0", demofs_root_creator);
+    vfs_add_virtual_mount_point("sys", "hd0:/System");
+    swapfile_init();
+    syscall_init();
+
+    arch_initialise_devices_with_fs();
 
 #ifndef NDEBUG
-    kprintf("Running kernel tests... ");
 	test_kernel();
-    kprintf("done.\n");
 #endif
 
 	thread_create(fake_shell, NULL, current_cpu->current_vas);
-
 
 	/*
 	* We ought not run anything else in this bootstrap thread,

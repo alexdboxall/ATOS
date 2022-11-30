@@ -77,6 +77,7 @@ void thread_unblock(struct thread* thr);
 void thread_nano_sleep_until(uint64_t when);
 void thread_nano_sleep(uint64_t amount);
 void thread_sleep(int seconds);
+void thread_yield(void);
 void thread_received_timer_interrupt_bsp(uint64_t delta);
 void thread_received_timer_interrupt_bsp(uint64_t delta);
 void thread_received_timer_interrupt(void);
@@ -84,6 +85,8 @@ void thread_postpone_switches(void);
 void thread_end_postpone_switches(void);
 void thread_terminate(void);
 int thread_set_priority(int priority);
+
+extern struct thread* terminated_thread_list;
 
 /*
 * Pass this into thread_create
@@ -95,4 +98,5 @@ uint64_t get_time_since_boot(void);
 extern struct spinlock scheduler_lock;
 
 void idle_thread_init(void);
-
+void cleaner_thread_init(void);
+void cleaner_thread_awaken(void);

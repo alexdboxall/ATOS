@@ -96,7 +96,7 @@ void vfs_init(void)
 /*
 * Checks that a component has a valid filename, i.e. contains no colons, or slashes.
 */ 
-static int vfs_check_valid_filename(const char* name)
+static int vfs_check_valid_component_name(const char* name)
 {
 	assert(name != NULL);
 	
@@ -188,7 +188,7 @@ int vfs_get_path_component(const char* path, int* ptr, char* output_buffer, int 
 	/*
 	* Ensure that there are no colons or backslashes in the filename itself.
 	*/
-	return vfs_check_valid_filename(output_buffer);
+	return vfs_check_valid_component_name(output_buffer);
 }
 
 
@@ -450,6 +450,56 @@ int vfs_mount_filesystem(const char* filesystem_name, int (*vnode_creator)(struc
 }
 
 /*
+* Mounts a directory as a root mount (e.g. mapping hd0:/System to sys:)
+*/
+int vfs_add_virtual_mount_point(const char* mount_name, const char* filename) {
+    if (mount_name == NULL) {
+        return EINVAL;
+    }
+    
+    if (strlen(mount_name) >= MAX_COMPONENT_LENGTH) {
+        return ENAMETOOLONG;
+    }
+
+    int status = vfs_check_valid_component_name(mount_name);
+	if (status != 0) {
+		return status;
+	}
+
+    struct vnode* file;
+    status = vfs_open(filename, O_RDONLY, 0, &file);
+    if (status != 0) {
+        return status;
+    }
+
+    uint8_t type = vnode_op_dirent_type(file);
+    if (type != DT_DIR) {
+        return ENOTDIR;
+    }
+
+	spinlock_acquire(&vfs_lock);
+
+    /*
+	* We must acquire the spinlock before doing this, in case someone
+	* else adds (or removes) a device while we weren't looking.
+	*/
+	if (vfs_check_device_name_not_used(mount_name) != 0) {
+		spinlock_release(&vfs_lock);
+		return EEXIST;
+	}
+
+	struct mounted_device* mount = malloc(sizeof(struct mounted_device));
+	mount->name = strdup(mount_name);
+	mount->node = file;
+
+	adt_list_add_back(mount_list, mount);
+	
+	spinlock_release(&vfs_lock);
+
+	return 0;
+}
+
+/*
 * Add a device/filesystem as a root mount point in the virtual file system. 
 */
 int vfs_add_device(struct std_device_interface* dev, const char* name)
@@ -462,7 +512,7 @@ int vfs_add_device(struct std_device_interface* dev, const char* name)
 		return ENAMETOOLONG;
 	}
 
-	int status = vfs_check_valid_filename(name);
+	int status = vfs_check_valid_component_name(name);
 	if (status != 0) {
 		return status;
 	}
@@ -499,7 +549,7 @@ int vfs_remove_device(const char* name) {
 		return EINVAL;
 	}
 
-	if (vfs_check_valid_filename(name) != 0) {
+	if (vfs_check_valid_component_name(name) != 0) {
 		return EINVAL;
 	}
 
@@ -547,7 +597,7 @@ int vfs_close(struct vnode* node) {
 * Open a file from a path. Currently only accepts absolute paths.
 */
 int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out) {
-	if (path == NULL || out == NULL) {
+	if (path == NULL || out == NULL || strlen(path) <= 0) {
 		return EINVAL;
 	}
 

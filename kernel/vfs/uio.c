@@ -14,7 +14,6 @@
         with setjmp and all that)
 */
 int uio_move(void* trusted_buffer, struct uio* untrusted_buffer, size_t len) {
-    
     assert(trusted_buffer != NULL);
     assert(untrusted_buffer != NULL && untrusted_buffer->address != NULL);
     assert(untrusted_buffer->direction == UIO_READ || untrusted_buffer->direction == UIO_WRITE);

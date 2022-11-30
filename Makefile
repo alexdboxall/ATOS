@@ -7,7 +7,7 @@ BUILD_DRIVER_SOURCE_DIR = $(ROOT_BUILD_DIR)/drvsrc
 BUILD_SOURCE_DIR = $(ROOT_BUILD_DIR)/source
 BUILD_OUTPUT_DIR = $(ROOT_BUILD_DIR)/output
 KERNEL_DIR = ./kernel
-DRIVER_DIR = ./drivers
+DRIVER_DIR = ./drivers/$(TARGET)
 FREESTANDING_LIBC_DIR = ./libc/common
 SYSROOT = ./sysroot
 
@@ -18,7 +18,8 @@ debug_compile:
 	
 release_compile:
 	rm -r $(BUILD_SOURCE_DIR)/test/internal
-	$(MAKE) -C $(BUILD_SOURCE_DIR) CPPDEFINES=-DNDEBUG LINKER_STRIP=-s
+	$(MAKE) -C $(BUILD_SOURCE_DIR) CPPDEFINES=-DNDEBUG 
+	# we can't set LINKER_STRIP=-s, as it removes .symtab and .strtab, which we need
 	
 common_header:
 	rm -r $(ROOT_BUILD_DIR) || true
@@ -41,6 +42,7 @@ common_footer:
 	cp $(BUILD_SOURCE_DIR)/kernel.map $(BUILD_OUTPUT_DIR)/kernel.map
 	objdump -drwC -Mintel $(BUILD_OUTPUT_DIR)/kernel.exe >> $(BUILD_OUTPUT_DIR)/disassembly.txt
 	nasm bootloader.s -o bootloader.bin
+	rm $(BUILD_OUTPUT_DIR)/drivers/TEMPLATE.SYS
 	cp -r $(BUILD_OUTPUT_DIR)/drivers/* $(SYSROOT)/System
 	cp $(BUILD_OUTPUT_DIR)/kernel.exe $(SYSROOT)/System
 	./tools/mkdemofs.exe 64 $(BUILD_OUTPUT_DIR)/kernel.exe $(SYSROOT) $(BUILD_OUTPUT_DIR)/disk.bin bootloader.bin
@@ -49,8 +51,9 @@ common_footer:
 
 driver_header:
 	mkdir $(BUILD_DRIVER_SOURCE_DIR)
+	mkdir $(BUILD_DRIVER_SOURCE_DIR)/drivers
 	mkdir $(BUILD_OUTPUT_DIR)/drivers
-	cp -r $(DRIVER_DIR) $(BUILD_DRIVER_SOURCE_DIR)
+	cp -r $(DRIVER_DIR)/* $(BUILD_DRIVER_SOURCE_DIR)/drivers
 
 driver_all:
 	for dir in $(wildcard ./$(BUILD_DRIVER_SOURCE_DIR)/drivers/*/.); do \

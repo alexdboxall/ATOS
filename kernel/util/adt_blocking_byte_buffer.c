@@ -5,6 +5,7 @@
 #include <heap.h>
 #include <synch.h>
 #include <spinlock.h>
+#include <kprintf.h>
 
 /*
 * util/adt_character_buffer.c - Blocking Character Buffer
@@ -67,9 +68,12 @@ uint8_t adt_blocking_byte_buffer_get(struct adt_blocking_byte_buffer* buffer) {
     semaphore_acquire(buffer->sem);
 
     spinlock_acquire(&buffer->lock);
+
     uint8_t c = buffer->buffer[buffer->start_pos];
+
     buffer->start_pos = (buffer->start_pos + 1) % buffer->total_size;
     buffer->used_size--;
+
     spinlock_release(&buffer->lock);
 
     return c;
@@ -80,9 +84,12 @@ int adt_blocking_byte_buffer_try_get(struct adt_blocking_byte_buffer* buffer, ui
 
     if (status == 0) {
         spinlock_acquire(&buffer->lock);
+
         *char_out = buffer->buffer[buffer->start_pos];
+        
         buffer->start_pos = (buffer->start_pos + 1) % buffer->total_size;
         buffer->used_size--;
+
         spinlock_release(&buffer->lock);
     }
 

@@ -26,3 +26,4 @@ int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out);
 int vfs_read(struct vnode* node, struct uio* io);
 int vfs_write(struct vnode* node, struct uio* io);
 int vfs_close(struct vnode* node);
+int vfs_add_virtual_mount_point(const char* mount_point, const char* filename);

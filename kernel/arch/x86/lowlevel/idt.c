@@ -38,7 +38,7 @@ extern void isr18();
 extern void isr19();
 extern void isr20();
 extern void isr21();
-extern void isr128();
+extern void isr96();
 extern void irq0();
 extern void irq1();
 extern void irq2();
@@ -108,7 +108,7 @@ void x86_idt_initialise(void)
 	* Install our system call handler. Note that the flag byte is 0xEE instead of 0x8E,
 	* this allows user code to directly invoke this interrupt.
 	*/
-	x86_idt_set_entry(128, (size_t) isr128, 0xEE);
+	x86_idt_set_entry(96, (size_t) isr96, 0xEE);
 	
 	cpu_data->idtr.location = (size_t) &cpu_data->idt;
 	cpu_data->idtr.size = sizeof(cpu_data->idt) - 1;

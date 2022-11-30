@@ -9,3 +9,4 @@ void console_received_character(char c, bool control_held);
 void console_putc(char c);
 char console_getc(void);
 void console_gets(char* buffer, int size);
+void console_panic(const char* message);

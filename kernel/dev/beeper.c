@@ -12,9 +12,17 @@
 
 struct beeper_device_interface* default_beeper_driver = NULL;
 struct spinlock beeper_lock;
+bool init_lock_yet = false;
+
+
 
 int beeper_start(int freq)
 {
+    if (!init_lock_yet) {
+        spinlock_init(&beeper_lock, "beeper lock");
+        init_lock_yet = true;
+    }
+
 	spinlock_acquire(&beeper_lock);
 
 	if (default_beeper_driver != NULL) {
@@ -29,7 +37,12 @@ int beeper_start(int freq)
 }
 
 int beeper_stop(void)
-{
+{    
+    if (!init_lock_yet) {
+        spinlock_init(&beeper_lock, "beeper lock");
+        init_lock_yet = true;
+    }
+
 	spinlock_acquire(&beeper_lock);
 
 	if (default_beeper_driver != NULL) {
@@ -48,6 +61,11 @@ int beeper_register_driver(struct beeper_device_interface* driver)
 	if (driver == NULL) {
 		return ENODEV;
 	}
+    
+    if (!init_lock_yet) {
+        spinlock_init(&beeper_lock, "beeper lock");
+        init_lock_yet = true;
+    }
 	
 	spinlock_acquire(&beeper_lock);
 

@@ -10,6 +10,7 @@
 #include <heap.h>
 #include <cpu.h>
 #include <spinlock.h>
+#include <errno.h>
 #include <kprintf.h>
 
 /*
@@ -29,9 +30,9 @@
 *
 *	 CR3			Page			  Page Tables
 * 				  Directory				_______
-*   		    					   |_______| ----> 4KB of physical RAM
-*  _______         _______			   |_______| ----> 4KB of physical RAM
-* |_______|  ---> |_______|  --------> |_______| ----> 4KB of physical RAM
+*   		    			     ----> |_______| ----> 4KB of physical RAM
+*  _______         _______		/	   |_______| ----> 4KB of physical RAM
+* |_______|  ---> |_______|  ---       |_______| ----> 4KB of physical RAM
 *                 |_______|  --        |_______| ----> ...
 *                 |_______|    \		  etc.
 *                 |_______|     \       _______
@@ -56,7 +57,7 @@
 * say it is 0xABCDE000). We then add 0x678 to get the offset in the page. 
 * Hence virtual address 0x12345678 is mapped to physical address 0xABCDE678.
 *
-* Note that we had to read from memory multiple times to convert virtual to physical.
+* Note that the CPU had to read from memory multiple times to convert virtual to physical.
 * This happens on every single memory access we do! Hence the CPU contains a cache of
 * the page directory/tables called the TLB. We need to flush the TLB when we modify
 * page tables to ensure we don't keep using outdated page mappings.
@@ -70,7 +71,8 @@
 #define x86_PAGE_PRESENT				(1 << 0)
 #define x86_PAGE_WRITABLE				(1 << 1)
 #define x86_PAGE_USER					(1 << 2)
-#define x86_PAGE_LOCKED					(1 << 10)
+#define x86_PAGE_LOCKED					(1 << 8)
+#define x86_PAGE_ALLOCATE_ON_ACCESS		(1 << 10)
 #define x86_PAGE_COPY_ON_WRITE			(1 << 11)
 
 #define KERNEL_VIRT_ADDR				0xC0000000
@@ -80,9 +82,11 @@
 #define PAGE_SIZE						4096
 
 /*
-* This is really very bad.
+* NOTE: for the write/user flags to work, it must be set in BOTH the directory
+*       and the table. Hence we will always set the write flag in the directory,
+*       and user flag if we are below 0xC0000000
+*
 */
-struct spinlock x86_big_paging_lock;
 
 /*
 * Set the CR3 control register. Defined in x86/mem/virtual.s
@@ -140,19 +144,23 @@ size_t lowmem_physical_to_virtual(size_t physical)
 */
 static void allocate_page_table(struct virtual_address_space* vas, size_t* page_dir, int entry_num) {
 	assert(entry_num >= 0 || entry_num < 1024);
+    assert(spinlock_is_held(&vas->lock));
 
 	size_t p_addr = phys_allocate_page();
 	size_t v_addr = (size_t) temp_virtual_page;
-
+    
 	/*
 	* In order to clear the page, we need to temporarily map it into memory.
 	*/
-    arch_vas_set_entry(vas, v_addr, p_addr, VAS_FLAG_WRITABLE | VAS_FLAG_PRESENT);
-	memset((void*) v_addr, 0, 4096);
+    arch_vas_set_entry(vas, v_addr, p_addr, VAS_FLAG_WRITABLE | VAS_FLAG_PRESENT | VAS_FLAG_LOCKED);
+
+    vas_flush_tlb();
+    memset((void*) v_addr, 0, 4096);
     arch_vas_set_entry(vas, v_addr, p_addr, 0);
 
 	// Add it to the page directory
-	page_dir[entry_num] = p_addr | x86_PAGE_PRESENT | x86_PAGE_WRITABLE /* | x86_PAGE_USER ? */;
+	page_dir[entry_num] = p_addr | x86_PAGE_PRESENT | x86_PAGE_LOCKED | x86_PAGE_WRITABLE | (entry_num < 768 ? x86_PAGE_USER : 0);
+    vas_flush_tlb();
 }
 
 static void setup_current_cpu() {
@@ -169,13 +177,13 @@ static void setup_current_cpu() {
 	* time, as they should share it.
 	*/
 	if (cpu_get_count() == 0) {
-		current_cpu = (struct cpu*) virt_allocate_krnl_region(sizeof(struct cpu));
+		current_cpu = (struct cpu*) virt_allocate_unbacked_krnl_region(sizeof(struct cpu));
 	}
 
 	/*
 	* Map in a 'local' physical address
 	*/
-	vas_map(&kernel_vas[cpu_get_count()], phys_allocate_page(), (size_t) current_cpu, VAS_FLAG_WRITABLE);
+	vas_map(&kernel_vas[cpu_get_count()], phys_allocate_page(), (size_t) current_cpu, VAS_FLAG_WRITABLE | VAS_FLAG_LOCKED);
 
 	current_cpu->current_vas = &kernel_vas[cpu_get_count()];
 	current_cpu->cpu_number = cpu_get_count();
@@ -195,28 +203,51 @@ void x86_per_cpu_virt_initialise(void)
 {
 	memset(kernel_page_directory, 0, PAGE_SIZE);
 
+    extern size_t _kernel_end;
+	size_t max_kernel_addr = (((size_t) &_kernel_end) + 0xFFF) & ~0xFFF;
+
 	/*
-	* Map the kernel
+	* Map the kernel by mapping the first 1MB + kernel size up to 0xC0000000 (assumes the kernel is 
+    * less than 4MB). This needs to match what kernel_entry.s exactly.
+    * 
+    * We need to ensure all the memory actually exists (the disk swapper will hate you if you refer 
+    * to memory that doesn't actually exist). Therefore, we just map the first 1.5MB (meaning the kernel
+    * can be up to 0.5MB in size, as it loads at 1MB).
+    * 
+    * We must lock the entire section. We can never swap out a page table, as when we swap it back in
+    * back stuff happens (it gets filled with 0xDEADBEEF, and then because it's a page table, *those*
+    * 0xDEADBEEFs are seen as pages by the code that searches for which page to switch out.)
 	*/
-	kernel_page_directory[768] = ((size_t) first_page_table - KERNEL_VIRT_ADDR) | x86_PAGE_PRESENT | x86_PAGE_WRITABLE;
-	for (int i = 0; i < 1024; ++i) {
-		first_page_table[i] = (i * PAGE_SIZE) | x86_PAGE_PRESENT | x86_PAGE_WRITABLE;
+    kprintf("max_kernel_addr = 0x%X\n", max_kernel_addr);
+
+    size_t num_pages = (max_kernel_addr - 0xC0000000) / PAGE_SIZE;
+
+	kernel_page_directory[768] = ((size_t) first_page_table - KERNEL_VIRT_ADDR) | x86_PAGE_PRESENT | x86_PAGE_WRITABLE | x86_PAGE_USER | x86_PAGE_LOCKED;
+	/* <= is required to make it match kernel_entry.s */
+    for (size_t i = 0; i < num_pages; ++i) {
+		first_page_table[i] = (i * PAGE_SIZE) | x86_PAGE_PRESENT | x86_PAGE_LOCKED;
+	}
+    for (size_t i = num_pages + 1; i < 1024; ++i) {
+		first_page_table[i] = 0;
 	}
 
 	/*
 	* Set up recursive mapping by mapping the 1024th page table to
-	* the page directory.
-	* See arch_vas_set_entry for an explaination of why we do this.
+	* the page directory. See arch_vas_set_entry for an explaination of why we do this.
+    * "Locking" this page directory entry is the only we can lock the final page of virtual
+    * memory, due to the recursive nature of this entry.
 	*/
-	kernel_page_directory[1023] = ((size_t) kernel_page_directory - KERNEL_VIRT_ADDR) | x86_PAGE_PRESENT | x86_PAGE_WRITABLE;
+	kernel_page_directory[1023] = ((size_t) kernel_page_directory - KERNEL_VIRT_ADDR) | x86_PAGE_PRESENT | x86_PAGE_WRITABLE | x86_PAGE_LOCKED;
 
 	/*
 	* Setup the virtual_address_space* structure correctly.
 	*/
+	spinlock_init(&kernel_vas[cpu_get_count()].lock, "kernel vas lock");
+
 	kernel_vas[cpu_get_count()].data = &kernel_vas_x86[cpu_get_count()];
 	kernel_vas_x86[cpu_get_count()].page_dir_phys = (size_t) kernel_page_directory - KERNEL_VIRT_ADDR;
 	kernel_vas_x86[cpu_get_count()].page_dir_virt = (size_t) kernel_page_directory;
-	
+    
 	/*
 	* Load the virtual address space.
 	*
@@ -251,14 +282,18 @@ void x86_per_cpu_virt_initialise(void)
 * Creates a new virtual address space with recursive page table mapping, and the kernel mapped.
 */
 void arch_vas_create(struct virtual_address_space* vas)
-{   
+{       
 	vas->data = malloc(sizeof(struct x86_vas));
 
 	struct x86_vas* data = (struct x86_vas*) (vas->data);
-	data->page_dir_phys = phys_allocate_page();
-	data->page_dir_virt = virt_allocate_krnl_region(4096);
+    data->page_dir_phys = phys_allocate_page();
+    data->page_dir_virt = virt_allocate_unbacked_krnl_region(4096);
 
-    arch_vas_set_entry(vas_get_current_vas(), data->page_dir_virt, data->page_dir_phys, VAS_FLAG_WRITABLE | VAS_FLAG_PRESENT);
+    /*
+    * Map in the page directory.
+    * Paging out the page directory would be a catastrophe, so lock it.
+    */
+    arch_vas_set_entry(vas_get_current_vas(), data->page_dir_virt, data->page_dir_phys, VAS_FLAG_PRESENT | VAS_FLAG_LOCKED | VAS_FLAG_USER | VAS_FLAG_WRITABLE);
 
 	size_t* page_dir_entries = (size_t*) data->page_dir_virt;
 
@@ -276,7 +311,7 @@ void arch_vas_create(struct virtual_address_space* vas)
 	/*
 	* Set up recursive mapping (see arch_vas_set_entry)
 	*/
-	page_dir_entries[1023] = data->page_dir_phys | x86_PAGE_PRESENT | x86_PAGE_WRITABLE;
+	page_dir_entries[1023] = data->page_dir_phys | x86_PAGE_PRESENT | x86_PAGE_LOCKED | x86_PAGE_WRITABLE;
 }
 
 
@@ -328,8 +363,8 @@ void arch_vas_copy(struct virtual_address_space* in, struct virtual_address_spac
 			int flags = in_page_dir[table_num] & 0xFFF;
 
 			size_t new_phys = phys_allocate_page();
-			size_t new_virt = virt_allocate_krnl_region(4096);
-			vas_map(vas_get_current_vas(), new_phys, new_virt, VAS_FLAG_WRITABLE);
+			size_t new_virt = virt_allocate_unbacked_krnl_region(4096);
+			arch_vas_set_entry(vas_get_current_vas(), new_virt, new_phys, VAS_FLAG_PRESENT | VAS_FLAG_WRITABLE | VAS_FLAG_LOCKED);
 
 			out_page_dir[table_num] = new_phys | flags;
 
@@ -357,7 +392,7 @@ void arch_vas_copy(struct virtual_address_space* in, struct virtual_address_spac
 				}
 			}
 
-			vas_unmap(vas_get_current_vas(), new_virt);
+			arch_vas_set_entry(vas_get_current_vas(), new_virt, 0, 0);
 
 		} else {
 			out_page_dir[table_num] = in_page_dir[table_num];
@@ -372,11 +407,25 @@ static int x86_generic_flags_to_real(int flags)
 {
 	int out = 0;
 
-	if (flags & VAS_FLAG_WRITABLE)		out |= x86_PAGE_WRITABLE;
-	if (flags & VAS_FLAG_USER)			out |= x86_PAGE_USER;
-	if (flags & VAS_FLAG_PRESENT)		out |= x86_PAGE_PRESENT;
-	if (flags & VAS_FLAG_LOCKED)		out |= x86_PAGE_LOCKED;
-	if (flags & VAS_FLAG_COPY_ON_WRITE)	out |= x86_PAGE_COPY_ON_WRITE;
+	if (flags & VAS_FLAG_WRITABLE)		        out |= x86_PAGE_WRITABLE;
+	if (flags & VAS_FLAG_USER)			        out |= x86_PAGE_USER;
+	if (flags & VAS_FLAG_PRESENT)		        out |= x86_PAGE_PRESENT;
+	if (flags & VAS_FLAG_LOCKED)		        out |= x86_PAGE_LOCKED;
+	if (flags & VAS_FLAG_COPY_ON_WRITE)	        out |= x86_PAGE_COPY_ON_WRITE;
+	if (flags & VAS_FLAG_ALLOCATE_ON_ACCESS)	out |= x86_PAGE_ALLOCATE_ON_ACCESS;
+
+	return out;
+}
+
+static int x86_real_flags_to_generic(int flags) {
+    int out = 0;
+
+	if (flags & x86_PAGE_WRITABLE)		        out |= VAS_FLAG_WRITABLE;
+	if (flags & x86_PAGE_USER)			        out |= VAS_FLAG_USER;
+	if (flags & x86_PAGE_PRESENT)		        out |= VAS_FLAG_PRESENT;
+	if (flags & x86_PAGE_LOCKED)		        out |= VAS_FLAG_LOCKED;
+	if (flags & x86_PAGE_COPY_ON_WRITE)	        out |= VAS_FLAG_COPY_ON_WRITE;
+	if (flags & x86_PAGE_ALLOCATE_ON_ACCESS)	out |= VAS_FLAG_ALLOCATE_ON_ACCESS;
 
 	return out;
 }
@@ -451,6 +500,7 @@ size_t* x86_get_entry(struct virtual_address_space* vas_, size_t virt_addr, bool
 	* Map a page not in the current address space.
 	*/
 	if (virt_addr < KERNEL_VIRT_ADDR && current_vas_base != vas->page_dir_phys) {
+        kprintf("weirdo mapping\n");
         kernel_page_directory[1022] = current_vas_base | x86_PAGE_PRESENT | x86_PAGE_WRITABLE;
 		vas_flush_tlb();
 
@@ -458,8 +508,9 @@ size_t* x86_get_entry(struct virtual_address_space* vas_, size_t virt_addr, bool
 	}
 
 	page_table = (size_t*) (recursive_base_addr + table_num * PAGE_SIZE);
-
-	return page_table + page_num;
+    
+    assert(((size_t) page_table) + page_num * sizeof(size_t) >= RECURSIVE_MAPPING_ADDR);
+    return page_table + page_num;
 }
 
 static void x86_unmark_copy_on_write(struct virtual_address_space* vas, size_t virt_addr) {
@@ -509,11 +560,15 @@ static void x86_perform_copy_on_write(size_t virt_addr) {
 	x86_unmark_copy_on_write(current_cpu->current_vas, virt_addr);
 }
 
-/*
-* TODO: surely needs locking...
-*/
-void arch_handle_page_fault(size_t virt_addr) {
+
+extern size_t x86_get_cr2(void);
+
+int x86_handle_page_fault(struct x86_regs* regs) {
+    size_t virt_addr = x86_get_cr2();
+
     spinlock_acquire(&current_cpu->current_vas->lock);
+
+    kprintf("PF (cr2 = 0x%X, eip = 0x%X, err = 0x%X)\n", virt_addr, regs->eip, regs->err_code);
 
 	size_t* entry = x86_get_entry(current_cpu->current_vas, virt_addr, false);
 
@@ -521,19 +576,59 @@ void arch_handle_page_fault(size_t virt_addr) {
 	* The page table doesn't exist for this address.
 	*/
 	if (entry == NULL) {
-		panic("page fault!!!");
+        kprintf("entry == NULL (cr2 = 0x%X, eip = 0x%X, err = 0x%X)\n", virt_addr, regs->eip, regs->err_code);
+		return EFAULT;
 	}
+
+    if ((*entry & x86_PAGE_ALLOCATE_ON_ACCESS) && !(*entry & x86_PAGE_PRESENT)) {
+        size_t page = phys_allocate_page();
+        *entry &= ~x86_PAGE_ALLOCATE_ON_ACCESS;
+        *entry |= x86_PAGE_PRESENT;
+        *entry |= page;
+        arch_flush_tlb();
+        spinlock_release(&current_cpu->current_vas->lock);
+        return 0;
+    }
 
 	if ((*entry & x86_PAGE_COPY_ON_WRITE) && (*entry & x86_PAGE_PRESENT)) {
 		assert(!(*entry & x86_PAGE_WRITABLE));
 	
 		x86_perform_copy_on_write(virt_addr);
         spinlock_release(&current_cpu->current_vas->lock);
-
-        return;
+        return 0;
 	} 
-	
-	panic("page fault!!!");
+
+    if (*entry & x86_PAGE_LOCKED) {
+		kprintf("x86_PAGE_LOCKED (cr2 = 0x%X, eip = 0x%X, err = 0x%X)\n", virt_addr, regs->eip, regs->err_code);
+        while (1) {
+            ;
+        }
+        return EFAULT;
+    }
+
+    /*
+    * Reload the page from the swapfile.
+    */
+    size_t id = (*entry) >> 12;
+
+    /*
+    * Need to release the lock, as phys_allocate_page() may cause a page to be
+    * written to the disk.
+    */
+    spinlock_release(&current_cpu->current_vas->lock);
+
+    size_t phys_page = phys_allocate_page();
+
+    spinlock_acquire(&current_cpu->current_vas->lock);
+
+    arch_vas_set_entry(vas_get_current_vas(), virt_addr & ~0xFFF, phys_page, VAS_FLAG_LOCKED | VAS_FLAG_PRESENT);
+    swapfile_read((uint8_t*) (virt_addr & ~0xFFF), id);
+
+    spinlock_release(&current_cpu->current_vas->lock);
+
+    arch_flush_tlb();
+
+	return 0;
 }
 
 
@@ -545,10 +640,50 @@ void arch_handle_page_fault(size_t virt_addr) {
 void arch_vas_set_entry(struct virtual_address_space* vas, size_t virt_addr, size_t phys_addr, int flags)
 {
 	flags = x86_generic_flags_to_real(flags);
-
+    
 	size_t* page_entry = x86_get_entry(vas, virt_addr, true);
 	assert(page_entry != NULL);
 	*page_entry = phys_addr | flags;
 }
 
-//  *x86_get_entry(vas_, virt_addr) = phys_addr | x86_generic_flags_to_real(flags);
+void arch_vas_get_entry(struct virtual_address_space* vas, size_t virt_addr, size_t* phys_addr_out, int* flags_out) {
+	size_t* page_entry = x86_get_entry(vas, virt_addr, true);
+	assert(page_entry != NULL);
+
+    *flags_out = x86_real_flags_to_generic(*page_entry & 0xFFF);
+    *phys_addr_out = *page_entry & ~0xFFF;
+}
+
+size_t arch_find_page_replacement_virt_address(struct virtual_address_space* vas) {
+    /*
+    * TODO: keep track of the position so next time we don't start from the start again
+    */
+
+    for (size_t i = 0x00000000U; i < 0xFF800000U; i += ARCH_PAGE_SIZE) {
+        /* 
+        * We definitely don't want to allocate page tables if we're already out of memory.
+        */
+        size_t* page_entry = x86_get_entry(vas, i, false);
+
+        if (page_entry != NULL) {
+            if ((*page_entry & x86_PAGE_PRESENT) && !(*page_entry & x86_PAGE_LOCKED)) {
+                return i;
+            }
+
+        } else {
+            /*
+            * The page directory there doesn't exist - can skip to the nearest 4MB to save
+            * time (this check is to prevent any overflow).
+            */
+            if (i < 0xFF400000) {
+                i = (i + 0x400000) & ~0x3FFFFF;
+
+                /* Counteract the the i += 4096 in the loop */
+                i -= ARCH_PAGE_SIZE;
+            }
+        }
+    }
+
+    panic("out of memory");
+    return 0;
+} 
