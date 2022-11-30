@@ -1,0 +1,771 @@
+Phys: 1/736
+Phys: 2/736
+Phys: 3/736
+Phys: 4/736
+Phys: 5/736
+Phys: 6/736
+Phys: 7/736
+Phys: 8/736
+Phys: 9/736
+Phys: 10/736
+Phys: 11/736
+Phys: 12/736
+Phys: 13/736
+Phys: 14/736
+Phys: 15/736
+Phys: 16/736
+Phys: 17/736
+Phys: 18/736
+Phys: 19/736
+Phys: 20/736
+Phys: 21/736
+Phys: 22/736
+Phys: 23/736
+Phys: 24/736
+Phys: 25/736
+Phys: 26/736
+Phys: 27/736
+Phys: 28/736
+Phys: 29/736
+Phys: 30/736
+Phys: 31/736
+Phys: 32/736
+Phys: 33/736
+Phys: 34/736
+Phys: 35/736
+Phys: 36/736
+Phys: 37/736
+Phys: 38/736
+Phys: 39/736
+Phys: 40/736
+Phys: 41/736
+Phys: 42/736
+Phys: 43/736
+Phys: 44/736
+Phys: 45/736
+Phys: 46/736
+Phys: 47/736
+Phys: 48/736
+Phys: 49/736
+Phys: 50/736
+Phys: 51/736
+Phys: 52/736
+Phys: 53/736
+Phys: 54/736
+Phys: 55/736
+Phys: 56/736
+Phys: 57/736
+Phys: 58/736
+Phys: 59/736
+Phys: 60/736
+Phys: 61/736
+Phys: 62/736
+Phys: 63/736
+Phys: 64/736
+Phys: 65/736
+Phys: 66/736
+Phys: 67/736
+Phys: 68/736
+Phys: 69/736
+Phys: 70/736
+Phys: 71/736
+Phys: 72/736
+Phys: 73/736
+Phys: 74/736
+Phys: 75/736
+Phys: 76/736
+Phys: 77/736
+Phys: 78/736
+Phys: 79/736
+Phys: 80/736
+Phys: 81/736
+Phys: 82/736
+Phys: 83/736
+Phys: 84/736
+Phys: 85/736
+Phys: 86/736
+Phys: 87/736
+Phys: 88/736
+Phys: 89/736
+Phys: 90/736
+Phys: 91/736
+Phys: 92/736
+Phys: 93/736
+Phys: 94/736
+Phys: 95/736
+Phys: 96/736
+Phys: 97/736
+Phys: 98/736
+Phys: 99/736
+Phys: 100/736
+Phys: 101/736
+Phys: 102/736
+Phys: 103/736
+Phys: 104/736
+Phys: 105/736
+Phys: 106/736
+Phys: 107/736
+Phys: 108/736
+Phys: 109/736
+Phys: 110/736
+Phys: 111/736
+Phys: 112/736
+Phys: 113/736
+Phys: 114/736
+Phys: 115/736
+Phys: 116/736
+Phys: 117/736
+Phys: 118/736
+Phys: 119/736
+Phys: 120/736
+Phys: 121/736
+Phys: 122/736
+Phys: 123/736
+Phys: 124/736
+Phys: 125/736
+Phys: 126/736
+Phys: 127/736
+Phys: 128/736
+Phys: 129/736
+Phys: 130/736
+Phys: 131/736
+Phys: 132/736
+Phys: 133/736
+Phys: 134/736
+Phys: 135/736
+Phys: 136/736
+Phys: 137/736
+Phys: 138/736
+Phys: 139/736
+Phys: 140/736
+Phys: 141/736
+Phys: 142/736
+Phys: 143/736
+Phys: 144/736
+Phys: 145/736
+Phys: 146/736
+Phys: 147/736
+Phys: 148/736
+Phys: 149/736
+Phys: 150/736
+Phys: 151/736
+Phys: 152/736
+Phys: 153/736
+Phys: 154/736
+Phys: 155/736
+Phys: 156/736
+Phys: 157/736
+Phys: 158/736
+Phys: 159/736
+Phys: 160/736
+Phys: 161/736
+Phys: 162/736
+Phys: 163/736
+Phys: 164/736
+Phys: 165/736
+Phys: 166/736
+Phys: 167/736
+Phys: 168/736
+Phys: 169/736
+Phys: 170/736
+Phys: 171/736
+Phys: 172/736
+Phys: 173/736
+Phys: 174/736
+Phys: 175/736
+Phys: 176/736
+Phys: 177/736
+Phys: 178/736
+Phys: 179/736
+Phys: 180/736
+Phys: 181/736
+Phys: 182/736
+Phys: 183/736
+Phys: 184/736
+Phys: 185/736
+Phys: 186/736
+Phys: 187/736
+Phys: 188/736
+Phys: 189/736
+Phys: 190/736
+Phys: 191/736
+Phys: 192/736
+Phys: 193/736
+Phys: 194/736
+Phys: 195/736
+Phys: 196/736
+Phys: 197/736
+Phys: 198/736
+Phys: 199/736
+Phys: 200/736
+Phys: 201/736
+Phys: 202/736
+Phys: 203/736
+Phys: 204/736
+Phys: 205/736
+Phys: 206/736
+Phys: 207/736
+Phys: 208/736
+Phys: 209/736
+Phys: 210/736
+Phys: 211/736
+Phys: 212/736
+Phys: 213/736
+Phys: 214/736
+Phys: 215/736
+Phys: 216/736
+Phys: 217/736
+Phys: 218/736
+Phys: 219/736
+Phys: 220/736
+Phys: 221/736
+Phys: 222/736
+Phys: 223/736
+Phys: 224/736
+Phys: 225/736
+Phys: 226/736
+Phys: 227/736
+Phys: 228/736
+Phys: 229/736
+Phys: 230/736
+Phys: 231/736
+Phys: 232/736
+Phys: 233/736
+Phys: 234/736
+Phys: 235/736
+Phys: 236/736
+Phys: 237/736
+Phys: 238/736
+Phys: 239/736
+Phys: 240/736
+Phys: 241/736
+Phys: 242/736
+Phys: 243/736
+Phys: 244/736
+Phys: 245/736
+Phys: 246/736
+Phys: 247/736
+Phys: 248/736
+Phys: 249/736
+Phys: 250/736
+Phys: 251/736
+Phys: 252/736
+Phys: 253/736
+Phys: 254/736
+Phys: 255/736
+Phys: 256/736
+Phys: 257/736
+Phys: 258/736
+Phys: 259/736
+Phys: 260/736
+Phys: 261/736
+Phys: 262/736
+Phys: 263/736
+Phys: 264/736
+Phys: 265/736
+Phys: 266/736
+Phys: 267/736
+Phys: 268/736
+Phys: 269/736
+Phys: 270/736
+Phys: 271/736
+Phys: 272/736
+Phys: 273/736
+Phys: 274/736
+Phys: 275/736
+Phys: 276/736
+Phys: 277/736
+Phys: 278/736
+Phys: 279/736
+Phys: 280/736
+Phys: 281/736
+Phys: 282/736
+Phys: 283/736
+Phys: 284/736
+Phys: 285/736
+Phys: 286/736
+Phys: 287/736
+Phys: 288/736
+Phys: 289/736
+Phys: 290/736
+Phys: 291/736
+Phys: 292/736
+Running kernel tests... Testing basic insert_back and iter                                  ... passed
+Testing basic insert_front and iter                                 ... passed
+Testing basic get_head and tail                                     ... passed
+Testing circulate                                                   ... passed
+Testing insert alternating                                          ... passed
+Testing insert back updates tail correctly                          ... passed
+Testing insert front updates head correctly                         ... passed
+Testing remove back updates tail correctly                          ... passed
+Testing remove front updates head correctly                         ... passed
+Testing remove both ends                                            ... passed
+Testing remove final via back                                       ... passed
+Testing remove final via front                                      ... passed
+Testing add first via front                                         ... passed
+Testing add first via back                                          ... passed
+Testing reset                                                       ... passed
+Testing list remove element middle                                  ... passed
+Testing list remove element first                                   ... passed
+Testing list remove element last                                    ... passed
+Testing list remove element only                                    ... passed
+Testing list remove element non existent                            ... passed
+Testing finding the root drive of a path                            ... passed
+Testing splitting file paths                                        ... passed
+Testing splitting file paths with multiple slashes                  ... passed
+Testing colons in filenames                                         ... passed
+Testing backslashes in filenames                                    ... passed
+Testing long filenames (1)                                          ... passed
+Testing long filenames (2)                                          ... passed
+Testing long filenames (3)                                          ... passed
+Testing long filenames (4)                                          ... passed
+Testing finding the last file in a path with a trailing slash       ... passed
+Testing finding the last file in a path                             ... passed
+Testing finding the root drive with a slash after the colon         ... passed
+Testing finding each segment of a filepath                          ... passed
+Testing opening a file                                              ... passed
+Testing reading a file                                              ... passed
+Testing reading a file from an offset                               ... passed
+Testing reading a file past the end                                 ... passed
+Testing reading a directory with the file read function             ...Phys: 293/736
+ passed
+Testing reading a file twice                                        ... passed
+Testing opening a file with a dot slash in the path (1)             ... passed
+Testing opening a file with a dot slash in the path (2)             ... passed
+Testing opening a file with a dot slash after the path              ... passed
+Testing opening a file in a subdirectory                            ... passed
+Testing opening a directory                                         ... passed
+Testing opening a file for writing                                  ... passed
+Testing opening a directory for writing                             ... passed
+Testing opening a file with a non-existent device                   ... passed
+Testing opening a file that doesn't exist                           ... passed
+Testing opening a file in the middle of a path                      ...Phys: 294/736
+ passed
+Testing opening the filesystem root                                 ... passed
+Testing backtracking through a filepath twice (1)                   ... passed
+Testing backtracking through a filepath once (2)                    ... passed
+Testing backtracking through a filepath twice (1)                   ... passed
+Testing backtracking through a filepath twice (2)                   ... passed
+Testing backtracking past the root                                  ...Phys: 295/736
+ passed
+Testing backtracking through invalid filepath components            ... passed
+Testing backtracking after a file has been reached                  ...Phys: 296/736
+ passed
+done.
+Phys: 297/736
+Phys: 298/736
+Phys: 299/736
+Phys: 300/736
+Phys: 301/736
+Phys: 302/736
+Phys: 303/736
+Phys: 304/736
+Phys: 305/736
+Phys: 306/736
+
+ ATOS Kernel
+     Copyright Alex Boxall 2022
+
+>Phys: 307/736
+Phys: 308/736
+Phys: 309/736
+Phys: 310/736
+Phys: 311/736
+Phys: 312/736
+Phys: 313/736
+Phys: 314/736
+Phys: 315/736
+Phys: 316/736
+Phys: 317/736
+Phys: 318/736
+Phys: 319/736
+Phys: 320/736
+Phys: 321/736
+Phys: 322/736
+>>>Phys: 1/736
+Phys: 2/736
+Phys: 3/736
+Phys: 4/736
+Phys: 5/736
+Phys: 6/736
+Phys: 7/736
+Phys: 8/736
+Phys: 9/736
+Phys: 10/736
+Phys: 11/736
+Phys: 12/736
+Phys: 13/736
+Phys: 14/736
+Phys: 15/736
+Phys: 16/736
+Phys: 17/736
+Phys: 18/736
+Phys: 19/736
+Phys: 20/736
+Phys: 21/736
+Phys: 22/736
+Phys: 23/736
+Phys: 24/736
+Phys: 25/736
+Phys: 26/736
+Phys: 27/736
+Phys: 28/736
+Phys: 29/736
+Phys: 30/736
+Phys: 31/736
+Phys: 32/736
+Phys: 33/736
+Phys: 34/736
+Phys: 35/736
+Phys: 36/736
+Phys: 37/736
+Phys: 38/736
+Phys: 39/736
+Phys: 40/736
+Phys: 41/736
+Phys: 42/736
+Phys: 43/736
+Phys: 44/736
+Phys: 45/736
+Phys: 46/736
+Phys: 47/736
+Phys: 48/736
+Phys: 49/736
+Phys: 50/736
+Phys: 51/736
+Phys: 52/736
+Phys: 53/736
+Phys: 54/736
+Phys: 55/736
+Phys: 56/736
+Phys: 57/736
+Phys: 58/736
+Phys: 59/736
+Phys: 60/736
+Phys: 61/736
+Phys: 62/736
+Phys: 63/736
+Phys: 64/736
+Phys: 65/736
+Phys: 66/736
+Phys: 67/736
+Phys: 68/736
+Phys: 69/736
+Phys: 70/736
+Phys: 71/736
+Phys: 72/736
+Phys: 73/736
+Phys: 74/736
+Phys: 75/736
+Phys: 76/736
+Phys: 77/736
+Phys: 78/736
+Phys: 79/736
+Phys: 80/736
+Phys: 81/736
+Phys: 82/736
+Phys: 83/736
+Phys: 84/736
+Phys: 85/736
+Phys: 86/736
+Phys: 87/736
+Phys: 88/736
+Phys: 89/736
+Phys: 90/736
+Phys: 91/736
+Phys: 92/736
+Phys: 93/736
+Phys: 94/736
+Phys: 95/736
+Phys: 96/736
+Phys: 97/736
+Phys: 98/736
+Phys: 99/736
+Phys: 100/736
+Phys: 101/736
+Phys: 102/736
+Phys: 103/736
+Phys: 104/736
+Phys: 105/736
+Phys: 106/736
+Phys: 107/736
+Phys: 108/736
+Phys: 109/736
+Phys: 110/736
+Phys: 111/736
+Phys: 112/736
+Phys: 113/736
+Phys: 114/736
+Phys: 115/736
+Phys: 116/736
+Phys: 117/736
+Phys: 118/736
+Phys: 119/736
+Phys: 120/736
+Phys: 121/736
+Phys: 122/736
+Phys: 123/736
+Phys: 124/736
+Phys: 125/736
+Phys: 126/736
+Phys: 127/736
+Phys: 128/736
+Phys: 129/736
+Phys: 130/736
+Phys: 131/736
+Phys: 132/736
+Phys: 133/736
+Phys: 134/736
+Phys: 135/736
+Phys: 136/736
+Phys: 137/736
+Phys: 138/736
+Phys: 139/736
+Phys: 140/736
+Phys: 141/736
+Phys: 142/736
+Phys: 143/736
+Phys: 144/736
+Phys: 145/736
+Phys: 146/736
+Phys: 147/736
+Phys: 148/736
+Phys: 149/736
+Phys: 150/736
+Phys: 151/736
+Phys: 152/736
+Phys: 153/736
+Phys: 154/736
+Phys: 155/736
+Phys: 156/736
+Phys: 157/736
+Phys: 158/736
+Phys: 159/736
+Phys: 160/736
+Phys: 161/736
+Phys: 162/736
+Phys: 163/736
+Phys: 164/736
+Phys: 165/736
+Phys: 166/736
+Phys: 167/736
+Phys: 168/736
+Phys: 169/736
+Phys: 170/736
+Phys: 171/736
+Phys: 172/736
+Phys: 173/736
+Phys: 174/736
+Phys: 175/736
+Phys: 176/736
+Phys: 177/736
+Phys: 178/736
+Phys: 179/736
+Phys: 180/736
+Phys: 181/736
+Phys: 182/736
+Phys: 183/736
+Phys: 184/736
+Phys: 185/736
+Phys: 186/736
+Phys: 187/736
+Phys: 188/736
+Phys: 189/736
+Phys: 190/736
+Phys: 191/736
+Phys: 192/736
+Phys: 193/736
+Phys: 194/736
+Phys: 195/736
+Phys: 196/736
+Phys: 197/736
+Phys: 198/736
+Phys: 199/736
+Phys: 200/736
+Phys: 201/736
+Phys: 202/736
+Phys: 203/736
+Phys: 204/736
+Phys: 205/736
+Phys: 206/736
+Phys: 207/736
+Phys: 208/736
+Phys: 209/736
+Phys: 210/736
+Phys: 211/736
+Phys: 212/736
+Phys: 213/736
+Phys: 214/736
+Phys: 215/736
+Phys: 216/736
+Phys: 217/736
+Phys: 218/736
+Phys: 219/736
+Phys: 220/736
+Phys: 221/736
+Phys: 222/736
+Phys: 223/736
+Phys: 224/736
+Phys: 225/736
+Phys: 226/736
+Phys: 227/736
+Phys: 228/736
+Phys: 229/736
+Phys: 230/736
+Phys: 231/736
+Phys: 232/736
+Phys: 233/736
+Phys: 234/736
+Phys: 235/736
+Phys: 236/736
+Phys: 237/736
+Phys: 238/736
+Phys: 239/736
+Phys: 240/736
+Phys: 241/736
+Phys: 242/736
+Phys: 243/736
+Phys: 244/736
+Phys: 245/736
+Phys: 246/736
+Phys: 247/736
+Phys: 248/736
+Phys: 249/736
+Phys: 250/736
+Phys: 251/736
+Phys: 252/736
+Phys: 253/736
+Phys: 254/736
+Phys: 255/736
+Phys: 256/736
+Phys: 257/736
+Phys: 258/736
+Phys: 259/736
+Phys: 260/736
+Phys: 261/736
+Phys: 262/736
+Phys: 263/736
+Phys: 264/736
+Phys: 265/736
+Phys: 266/736
+Phys: 267/736
+Phys: 268/736
+Phys: 269/736
+Phys: 270/736
+Phys: 271/736
+Phys: 272/736
+Phys: 273/736
+Phys: 274/736
+Phys: 275/736
+Phys: 276/736
+Phys: 277/736
+Phys: 278/736
+Phys: 279/736
+Phys: 280/736
+Phys: 281/736
+Phys: 282/736
+Phys: 283/736
+Phys: 284/736
+Phys: 285/736
+Phys: 286/736
+Phys: 287/736
+Phys: 288/736
+Phys: 289/736
+Phys: 290/736
+Phys: 291/736
+Phys: 292/736
+Running kernel tests... Testing basic insert_back and iter                                  ... passed
+Testing basic insert_front and iter                                 ... passed
+Testing basic get_head and tail                                     ... passed
+Testing circulate                                                   ... passed
+Testing insert alternating                                          ... passed
+Testing insert back updates tail correctly                          ... passed
+Testing insert front updates head correctly                         ... passed
+Testing remove back updates tail correctly                          ... passed
+Testing remove front updates head correctly                         ... passed
+Testing remove both ends                                            ... passed
+Testing remove final via back                                       ... passed
+Testing remove final via front                                      ... passed
+Testing add first via front                                         ... passed
+Testing add first via back                                          ... passed
+Testing reset                                                       ... passed
+Testing list remove element middle                                  ... passed
+Testing list remove element first                                   ... passed
+Testing list remove element last                                    ... passed
+Testing list remove element only                                    ... passed
+Testing list remove element non existent                            ... passed
+Testing finding the root drive of a path                            ... passed
+Testing splitting file paths                                        ... passed
+Testing splitting file paths with multiple slashes                  ... passed
+Testing colons in filenames                                         ... passed
+Testing backslashes in filenames                                    ... passed
+Testing long filenames (1)                                          ... passed
+Testing long filenames (2)                                          ... passed
+Testing long filenames (3)                                          ... passed
+Testing long filenames (4)                                          ... passed
+Testing finding the last file in a path with a trailing slash       ... passed
+Testing finding the last file in a path                             ... passed
+Testing finding the root drive with a slash after the colon         ... passed
+Testing finding each segment of a filepath                          ... passed
+Testing opening a file                                              ... passed
+Testing reading a file                                              ... passed
+Testing reading a file from an offset                               ... passed
+Testing reading a file past the end                                 ... passed
+Testing reading a directory with the file read function             ...Phys: 293/736
+ passed
+Testing reading a file twice                                        ... passed
+Testing opening a file with a dot slash in the path (1)             ... passed
+Testing opening a file with a dot slash in the path (2)             ... passed
+Testing opening a file with a dot slash after the path              ... passed
+Testing opening a file in a subdirectory                            ... passed
+Testing opening a directory                                         ... passed
+Testing opening a file for writing                                  ... passed
+Testing opening a directory for writing                             ... passed
+Testing opening a file with a non-existent device                   ... passed
+Testing opening a file that doesn't exist                           ... passed
+Testing opening a file in the middle of a path                      ...Phys: 294/736
+ passed
+Testing opening the filesystem root                                 ... passed
+Testing backtracking through a filepath twice (1)                   ... passed
+Testing backtracking through a filepath once (2)                    ... passed
+Testing backtracking through a filepath twice (1)                   ... passed
+Testing backtracking through a filepath twice (2)                   ... passed
+Testing backtracking past the root                                  ...Phys: 295/736
+ passed
+Testing backtracking through invalid filepath components            ... passed
+Testing backtracking after a file has been reached                  ...Phys: 296/736
+ passed
+done.
+Phys: 297/736
+Phys: 298/736
+Phys: 299/736
+Phys: 300/736
+Phys: 301/736
+Phys: 302/736
+Phys: 303/736
+Phys: 304/736
+Phys: 305/736
+Phys: 306/736
+
+ ATOS Kernel
+     Copyright Alex Boxall 2022
+
+>Unsupported command ' driver'
+
+>Phys: 307/736
+Phys: 308/736
+Phys: 309/736
+Phys: 310/736
+Phys: 311/736
+Phys: 312/736
+Phys: 313/736
+Phys: 314/736
+Phys: 315/736
+Phys: 316/736
+Phys: 317/736
+Phys: 318/736
+Phys: 319/736
+Phys: 320/736
+Phys: 321/736
+Phys: 322/736
+>
