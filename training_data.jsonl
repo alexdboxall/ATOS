@@ -1,0 +1,76 @@
+{
+    "prompt": "To enrol in this course you must have completed 6 units of MATH courses and COMP1100 or COMP1130.", 
+    "completion": "6 * MATH_ & <COMP1100 | COMP1130>"
+}
+{
+    "prompt": "To enrol in this course you must have successfully completed COMP1100 or COMP1130, and COMP1110 or COMP1140 or COMP1510, and 6 units of 1000 level MATH.", 
+    "completion": "<COMP1100 | COMP1130> & <COMP1110 | COMP1140 | COMP1510> & 6 * MATH1_"
+}
+{
+    "prompt": "To enrol in this course you must have successfully completed COMP1130.", 
+    "completion": "COMP1130"
+}
+{
+    "prompt": "To enrol in this course you must have completed COMP1100 or COMP1130 or COMP1730.", 
+    "completion": "<COMP1100 | COMP1130 | COMP1730>"
+}
+{
+    "prompt": "To enrol in this course you must have successfully completed or be currently studying COMP2100 or COMP2500.", 
+    "completion": "<COMP2100 | ~COMP2100 | COMP2500 | ~COMP2500>"
+}
+{
+    "prompt": "To enrol in this course you must have completed COMP1110 or COMP1140 or COMP1510; and 6 units of 2000-level COMP courses; and 6 units of 2000-level MATH courses or COMP1600 or COMP2600.", 
+    "completion": "<COMP1110 | COMP1140 | COMP1510> & 6 * COMP2_ & 6 * <MATH2_ | COMP1600 | COMP2600>"
+}
+{
+    "prompt": "To enrol in this course you must have completed COMP2500 or COMP2100; and COMP2120 or COMP2130 or COMP2510; and 12 units of 2000 level COMP courses. ", 
+    "completion": "<COMP2500 | COMP2100> & <COMP2120 | COMP2130 | COMP2510> & 12 * COMP2_"
+}
+{
+    "prompt": "To enrol in this course you must have completed COMP1100 or COMP1130 or COMP1730; AND 6 units of 1000-level MATH courses.", 
+    "completion": "<COMP1100 | COMP1130 | COMP1730> & 6 * MATH1_"
+}
+{
+    "prompt": "To enrol in this course you must have completed ENGN1211.", 
+    "completion": "ENGN1211"
+}
+{
+    "prompt": "Note: ENGN3301 must be taken in the semester immediately following ENGN3300. To enrol in this course you must have completed ENGN3300.",
+    "completion": "AFTER ENGN3300"
+}
+{
+    "prompt": "To enrol in this course you must have completed ENGN2301, and take ENGN3301 in your next semester.",
+    "completion": "ENGN2301 & THEN ENGN3300"
+}
+{
+    "prompt": "To enrol in this course you must have completed 12 units of 2000 or 3000 level Philosophy (PHIL) courses, or with permission of the convenor.",
+    "completion": "12 * <PHIL2_ | PHIL3_> | PC"
+}
+{
+    "prompt": "To enrol in this course you must have completed ENGN2222 Engineering Thermodynamics.",
+    "completion": "ENGN2222"
+}
+{
+    "prompt": "To enrol in this course you must have completed MUSI3322 or MUSI2507, or with permission of the convenor.",
+    "completion": "<MUSI3322 | MUSI2507> | PC"
+}
+{
+    "prompt": "To enrol in this course you must have completed 48 units towards a degree. \nStudents should have either completed or be concurrently enrolled in ENVS2023.",
+    "completion", "48 * _ & <ENVS2023 | ~ENVS2023>"
+}
+{
+    "prompt":  "To enrol in this course you must be studying the program 4660 or 4661 and:\n    You must have successfully completed SCNC2101 at least once and 72 units towards a degree OR\n  You must have successfully completed 96 units.",
+    "completion": "(DEG \"4600\" | DEG \"4661\") & ((SCNC2101 & 72 * _) | (96 * _))"
+}
+{
+    "prompt": "To enrol in this course you must be enrolled in the Master of Computing (Advanced).",
+    "completion": "DEG \"Master of Computing (Advanced)\""
+}
+{
+    "prompt": "To enrol in this course you must be studying Master of Engineering or Master of Machine Learning and Computer Vision or Master of Computing (Advanced), and have completed 12 units of COMP or ENGN courses",
+    "completion": "(DEG \"Master of Engineering\" | DEG \"Master of Machine Learning and Computer Vision\" | DEG \"Master of Computing (Advanced)\") & 12 * <COMP_ | ENGN_>"
+}
+{
+    "prompt": "To enrol in this course you must be studying a Bachelor of Philosophy (Honours) (APHAR) or Bachelor of Philosophy (Honours)/Bachelor of Arts (Honours) (APNAR). Alternatively you may gain permission of the Course Convener to enrol in this course.",
+    "completion": "DEG \"Bachelor of Philosophy (Honours) (APHAR)\" | DEG \"Bachelor of Philosophy (Honours)/Bachelor of Arts (Honours) (APNAR)\" | PC"
+}
