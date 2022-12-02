@@ -1,0 +1,8 @@
+{
+    "prompt": "To enrol in this course you must have completed 6 units of MATH courses and COMP1100 or COMP1130.", 
+    "completion": "6 * MATH_ & <COMP1100 | COMP1130>"
+}
+{
+    "prompt": "To enrol in this course you must have completed 6 units of MATH courses and COMP1100 or COMP1130.", 
+    "completion": "6 * MATH_ & <COMP1100 | COMP1130>"
+}
