@@ -48,8 +48,9 @@ static size_t elf_load_program_headers(void* data, size_t relocation_point, bool
                 size_t num_pages = virt_bytes_to_pages(num_zero_bytes);
                 size_t num_zero_pages = virt_bytes_to_pages(num_zero_bytes);
                 for (size_t i = 0; i < num_pages; ++i) {
-                    vas_map(vas_get_current_vas(), phys_allocate(), address + (i * ARCH_PAGE_SIZE), VAS_FLAG_USER | VAS_FLAG_WRITABLE | VAS_FLAG_PRESENT);
+                    vas_map(vas_get_current_vas(), phys_allocate_page(), address + (i * ARCH_PAGE_SIZE), VAS_FLAG_USER | VAS_FLAG_WRITABLE | VAS_FLAG_PRESENT);
                 }
+                vas_flush_tlb();
 
                 memcpy((void*) address, (const void*) addToVoidPointer(data, offset), size);
 
