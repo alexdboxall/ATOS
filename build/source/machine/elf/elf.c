@@ -4,8 +4,6 @@
 #include <string.h>
 #include <kprintf.h>
 #include <panic.h>
-#include <arch.h>
-#include <virtual.h>
 
 bool is_elf_valid(struct Elf32_Ehdr* header) {
     /*
@@ -30,7 +28,7 @@ static size_t elf_load_program_headers(void* data, size_t relocation_point, bool
     struct Elf32_Ehdr* elf_header = (struct Elf32_Ehdr*) data;
 	struct Elf32_Phdr* prog_headers = (struct Elf32_Phdr*) addToVoidPointer(data, elf_header->e_phoff);
 
-    size_t base_point = relocate ? 0xD0000000U : 0x10000000;
+    size_t base_point = 0xD0000000U;
     size_t sbrk_address = base_point;
 
     for (int i = 0; i < elf_header->e_phnum; ++i) {
@@ -39,28 +37,16 @@ static size_t elf_load_program_headers(void* data, size_t relocation_point, bool
         size_t address = prog_header->p_vaddr;
 		size_t offset = prog_header->p_offset;
 		size_t size = prog_header->p_filesz;
-		size_t num_zero_bytes = size - prog_header->p_memsz;
+		size_t zerosize = prog_header->p_memsz;
 		size_t type = prog_header->p_type;
 
 		if (type == PHT_LOAD) {
 			if (!relocate) {
-                size_t num_pages = virt_bytes_to_pages(size);
-                size_t num_zero_pages = virt_bytes_to_pages(num_zero_bytes);
+				panic("loading normal programs not supported yet");
 
-                memcpy((void*) (address + relocation_point), (const void*) addToVoidPointer(data, offset), size);
-
-                for (size_t i = 0; i < num_zero_pages; ++i) {
-                    kprintf("TODO: assert that we are in the right VAS() -> program loading should be done in the already-in-usermode-allocate-a-stack startup function");
-                    vas_reflag(vas_get_current_vas(), (void*) (address + relocation_point + size + (i * ARCH_PAGE_SIZE)), VAS_FLAG_USER | VAS_FLAG_WRITABLE | VAS_FLAG_ALLOCATE_ON_ACCESS);
-                }
-
-                if (address + size > sbrk_address) {
-                    sbrk_address = address + size;
-                }
-                
 			} else {
 				memcpy((void*) (address + relocation_point - base_point), (const void*) addToVoidPointer(data, offset), size);
-				memset((void*) (address + relocation_point - base_point + size), 0, num_zero_bytes);
+				memset((void*) (address + relocation_point - base_point + size), 0, zerosize - size);
 			}
 		}
     }
