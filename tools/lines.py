@@ -22,6 +22,8 @@ for path, subdirs, files in os.walk(os.getcwd()):
     for name in files:
         if name.split('.')[-1] in ext:
             n = os.path.join(path, name)
+            if 'acpica' in n:
+                continue
             lns = open(n, 'r').read().split('\n')
             j = len(lns)
             for l in lns:
@@ -37,3 +39,4 @@ for path, subdirs, files in os.walk(os.getcwd()):
         
 print('{} lines (of those, {}, or {}% are platform specific)'.format(lines, platlines, round(platlines * 100 / lines, 1)))
 print('{}% asserts, '.format(round(asserts * 100 / lines, 1)), '{}% comments, '.format(round(comments * 100 / lines, 1)), '{}% tests'.format(round(testing * 100 / lines, 1)))
+print('(does not include ACPICA)')

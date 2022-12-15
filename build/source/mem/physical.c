@@ -105,6 +105,7 @@ void phys_init(void)
 			size_t last_page = (range->start + range->length) / ARCH_PAGE_SIZE;
 
 			while (first_page < last_page && first_page < MAX_PAGES) {
+                kprintf("can use 0x%X\n", first_page * ARCH_PAGE_SIZE);
 				phys_mark_as_free(first_page++);
 				++num_pages_total;
 			}

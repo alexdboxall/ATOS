@@ -1,14 +1,5 @@
 
 kernel_main
-can use 0x11E000
-can use 0x11F000
-can use 0x120000
-can use 0x121000
-can use 0x122000
-can use 0x123000
-can use 0x124000
-can use 0x125000
-can use 0x126000
 can use 0x127000
 can use 0x128000
 can use 0x129000
@@ -482,6 +473,346 @@ can use 0x2FC000
 can use 0x2FD000
 can use 0x2FE000
 can use 0x2FF000
-max_kernel_addr = 0xC011E000
-PF (cr2 = 0xC8001000, eip = 0xC0101F2E, err = 0x2)
-PF (cr2 = 0xD8000FF0, eip = 0xC0101F3E, err = 0x2)
+max_kernel_addr = 0xC0127000
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+caller: 0xC0108024
+PF (cr2 = 0xC8001000, eip = 0xC0101FA0, err = 0x2)
+PF (cr2 = 0xD8000FF0, eip = 0xC0101FB0, err = 0x2)
+PF (cr2 = 0xC8002764, eip = 0xC0101EEB, err = 0x2)
+PF (cr2 = 0xC80052A4, eip = 0xC0101EEB, err = 0x2)
+PF (cr2 = 0xC8003000, eip = 0xC0101268, err = 0x2)
+PF (cr2 = 0xC8004000, eip = 0xC0101268, err = 0x2)
+PF (cr2 = 0xC8008550, eip = 0xC0101EEB, err = 0x2)
+PF (cr2 = 0xC8006097, eip = 0xC0101252, err = 0x2)
+PF (cr2 = 0xC8007097, eip = 0xC0101252, err = 0x2)
+PF (cr2 = 0xC800AAE8, eip = 0xC0101EEB, err = 0x2)
+PF (cr2 = 0xC800909F, eip = 0xC0101252, err = 0x2)
+PF (cr2 = 0xC800B000, eip = 0xC010212E, err = 0x2)
+PF (cr2 = 0xC800C000, eip = 0xC010212E, err = 0x2)
+PF (cr2 = 0xC800D000, eip = 0xC010212B, err = 0x2)
+PF (cr2 = 0xC800E000, eip = 0xC010212E, err = 0x2)
+PF (cr2 = 0xC800F000, eip = 0xC0101EE6, err = 0x2)
+PF (cr2 = 0xC8010004, eip = 0xC0101EEB, err = 0x2)
+PF (cr2 = 0xC8011000, eip = 0xC010212B, err = 0x2)
+PF (cr2 = 0xC8012004, eip = 0xC0101EEB, err = 0x2)
+PF (cr2 = 0xC8013000, eip = 0xC010212B, err = 0x2)
+PF (cr2 = 0xC8014004, eip = 0xC0101EEB, err = 0x2)
+Testing basic insert_back and iter                                  ... passed
+Testing basic insert_front and iter                                 ... passed
+Testing basic get_head and tail                                     ... passed
+Testing circulate                                                   ... passed
+Testing insert alternating                                          ... passed
+Testing insert back updates tail correctly                          ... passed
+Testing insert front updates head correctly                         ... passed
+Testing remove back updates tail correctly                          ... passed
+Testing remove front updates head correctly                         ... passed
+Testing remove both ends                                            ... passed
+Testing remove final via back                                       ... passed
+Testing remove final via front                                      ... passed
+Testing add first via front                                         ... passed
+Testing add first via back                                          ... passed
+Testing reset                                                       ... passed
+Testing list remove element middle                                  ... passed
+Testing list remove element first                                   ... passed
+Testing list remove element last                                    ... passed
+Testing list remove element only                                    ... passed
+Testing list remove element non existent                            ... passed
+Testing finding the root drive of a path                            ... passed
+Testing splitting file paths                                        ... passed
+Testing splitting file paths with multiple slashes                  ... passed
+Testing colons in filenames                                         ... passed
+Testing backslashes in filenames                                    ... passed
+Testing long filenames (1)                                          ... passed
+Testing long filenames (2)                                          ... passed
+Testing long filenames (3)                                          ... passed
+Testing long filenames (4)                                          ... passed
+Testing finding the last file in a path with a trailing slash       ... passed
+Testing finding the last file in a path                             ... passed
+Testing finding the root drive with a slash after the colon         ... passed
+Testing finding each segment of a filepath                          ... passed
+Testing opening a file                                              ... passed
+Testing reading a file                                              ... passed
+Testing reading a file from an offset                               ... passed
+Testing reading a file past the end                                 ... passed
+Testing reading a directory with the file read function             ... passed
+Testing reading a file twice                                        ... passed
+Testing opening a file with a dot slash in the path (1)             ... passed
+Testing opening a file with a dot slash in the path (2)             ... passed
+Testing opening a file with a dot slash after the path              ... passed
+Testing opening a file in a subdirectory                            ... passed
+Testing opening a directory                                         ... passed
+Testing opening a file for writing                                  ... passed
+Testing opening a directory for writing                             ... passed
+Testing opening a file with a non-existent device                   ... passed
+Testing opening a file that doesn't exist                           ... passed
+Testing opening a file in the middle of a path                      ... passed
+Testing opening the filesystem root                                 ... passed
+Testing backtracking through a filepath twice (1)                   ... passed
+Testing backtracking through a filepath once (2)                    ... passed
+Testing backtracking through a filepath twice (1)                   ... passed
+Testing backtracking through a filepath twice (2)                   ... passed
+Testing backtracking past the root                                  ... passed
+Testing backtracking through invalid filepath components            ... passed
+Testing backtracking after a file has been reached                  ... passed
+
+ ATOS Kernel
+     Copyright Alex Boxall 2022
+
+>Missing test name (e.g. 'test sleep')
+
+>10... 9... 8... 7... 6... 5... 4... 3... 2... 1... 
+Liftoff!
+
+>

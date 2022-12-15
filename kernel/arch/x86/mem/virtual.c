@@ -143,7 +143,9 @@ size_t lowmem_physical_to_virtual(size_t physical)
 * creating one.
 */
 static void allocate_page_table(struct virtual_address_space* vas, size_t* page_dir, int entry_num) {
-	assert(entry_num >= 0 || entry_num < 1024);
+    kprintf("caller: 0x%X\n", __builtin_return_address(0));
+
+    assert(entry_num >= 0 || entry_num < 1024);
     assert(spinlock_is_held(&vas->lock));
 
 	size_t p_addr = phys_allocate_page();
@@ -264,7 +266,9 @@ void x86_per_cpu_virt_initialise(void)
 	*/
 	
 	for (int i = 769; i < 1023; ++i) {
+        spinlock_acquire(&kernel_vas[cpu_get_count()].lock);
 		allocate_page_table(&kernel_vas[cpu_get_count()], kernel_page_directory, i);
+        spinlock_release(&kernel_vas[cpu_get_count()].lock);
 	}
 	
 	setup_current_cpu();

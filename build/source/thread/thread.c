@@ -204,9 +204,10 @@ void thread_execute_in_usermode(void* addr) {
     current_cpu->current_thread->stack_pointer = new_stack;
     spinlock_release(&scheduler_lock);
 
+    // TODO: here's where we should do the program loading
     vas_reflag(vas_get_current_vas(), 0xc0109000, VAS_FLAG_PRESENT | VAS_FLAG_USER | VAS_FLAG_LOCKED | VAS_FLAG_WRITABLE);
+   
     arch_flush_tlb();
-    
     arch_switch_to_usermode((size_t) addr, new_stack);
 
     panic("thread_execute_in_usermode: usermode returned!");
