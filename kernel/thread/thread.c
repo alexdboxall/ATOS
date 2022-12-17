@@ -9,6 +9,7 @@
 #include <physical.h>
 #include <spinlock.h>
 #include <kprintf.h>
+#include <loader.h>
 #include <errno.h>
 #include <machine/config.h>
 
@@ -192,6 +193,16 @@ static size_t thread_create_user_stack(int size) {
 }
 
 
+/* TODO: move to loader.c */
+int thread_execve(const char* filename, char* const argv[], char* const envp[]) {
+    /* TODO: argv and envp stuff */
+    
+    (void) argv;
+    (void) envp;
+    
+    return load_program(filename);
+}
+
 void thread_execute_in_usermode(void* addr) {
     /*
     * We also need a usermode stack. We can use the current stack as the kernel
@@ -204,8 +215,13 @@ void thread_execute_in_usermode(void* addr) {
     current_cpu->current_thread->stack_pointer = new_stack;
     spinlock_release(&scheduler_lock);
 
-    // TODO: here's where we should do the program loading
-    vas_reflag(vas_get_current_vas(), 0xc0109000, VAS_FLAG_PRESENT | VAS_FLAG_USER | VAS_FLAG_LOCKED | VAS_FLAG_WRITABLE);
+    char* const argv[] = {"hd0:/userprog.exe", NULL};
+    char* const envp[] = {NULL};
+    int result = thread_execve(argv[0], argv, envp);
+    if (result != 0) {
+        kprintf("program load failed: %d\n", result);
+        thread_terminate();
+    }
    
     arch_flush_tlb();
     arch_switch_to_usermode((size_t) addr, new_stack);

@@ -47,6 +47,7 @@ static size_t elf_load_program_headers(void* data, size_t relocation_point, bool
 			if (!relocate) {
                 size_t num_pages = virt_bytes_to_pages(num_zero_bytes);
                 size_t num_zero_pages = virt_bytes_to_pages(num_zero_bytes);
+                
                 for (size_t i = 0; i < num_pages; ++i) {
                     vas_map(vas_get_current_vas(), phys_allocate_page(), address + (i * ARCH_PAGE_SIZE), VAS_FLAG_USER | VAS_FLAG_WRITABLE | VAS_FLAG_PRESENT);
                 }
@@ -249,9 +250,7 @@ size_t arch_load_driver(void* data, size_t data_size, size_t relocation_point) {
     (void) data_size;
 
     /* Zero is returned on error. */
-    size_t result = elf_load(data, relocation_point, true);
-
-    return result;
+    return elf_load(data, relocation_point, true);
 }
 
 int arch_start_driver(size_t driver, void* argument) {
@@ -265,6 +264,17 @@ int arch_start_driver(size_t driver, void* argument) {
 #pragma GCC diagnostic pop
 
     execution_address(argument);
+
+    return 0;
+}
+
+int arch_exec(void* data, size_t data_size) {
+    (void) data_size;
+
+    int result = elf_load(data, 0, false);
+    if (result == 0) {
+        return EINVAL;
+    }
 
     return 0;
 }

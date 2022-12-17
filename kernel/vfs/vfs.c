@@ -678,6 +678,9 @@ int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out) {
 		}
 	}
 
+    node->initial_mode = mode;
+    node->initial_flags = flags;
+
 	*out = node;
 	return 0;
 }

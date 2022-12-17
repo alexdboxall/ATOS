@@ -26,8 +26,8 @@ typedef uint32_t useconds_t;
 
 #if (SIZE_MAX == 0xFFFFFFFF)
 typedef int32_t ssize_t;
-#elif (SIZE_MAX == 0xFFFFFFFFFFFFFFFF
-typedef int64_t ssize_t;v
+#elif (SIZE_MAX == 0xFFFFFFFFFFFFFFFF)
+typedef int64_t ssize_t;
 #else
 #error "Strange SIZE_MAX, please define ssize_t yourself"
 #endif

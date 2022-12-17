@@ -9,6 +9,38 @@
 #include <sys/stat.h>
 #include <kprintf.h>
 
+int load_program(const char* filename) {
+    struct vnode* file;
+    int ret = vfs_open(filename, O_RDONLY, 0, &file);
+    if (ret != 0) {
+        return ret;
+    }
+
+    struct stat st;
+    ret = vnode_op_stat(file, &st);
+    if (ret != 0) {
+        vfs_close(file);
+        return ret;
+    }
+    
+    uint8_t* buffer = malloc(st.st_size);
+    memset(buffer, 0, st.st_size);
+
+    struct uio uio = uio_construct_read(buffer, st.st_size, 0);
+    ret = vfs_read(file, &uio);
+    if (ret != 0) {
+        free(buffer);
+        vfs_close(file);
+        return ret;
+    }
+
+    int result = arch_exec(buffer, st.st_size);
+
+    free(buffer);
+    vfs_close(file);
+    return result;
+}
+
 int load_driver(const char* filename, bool lock_in_memory) {
     struct vnode* file;
     int ret = vfs_open(filename, O_RDONLY, 0, &file);

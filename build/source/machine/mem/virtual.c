@@ -143,8 +143,6 @@ size_t lowmem_physical_to_virtual(size_t physical)
 * creating one.
 */
 static void allocate_page_table(struct virtual_address_space* vas, size_t* page_dir, int entry_num) {
-    kprintf("caller: 0x%X\n", __builtin_return_address(0));
-
     assert(entry_num >= 0 || entry_num < 1024);
     assert(spinlock_is_held(&vas->lock));
 
