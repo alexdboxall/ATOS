@@ -1,0 +1,91 @@
+
+Discarded input sections
+
+ .comment       0x0000000000000000       0x12 main.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD main.o
+LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a
+                0x0000000010000000                . = 0x10000000
+
+.text           0x0000000010000000        0x2
+ *(.text)
+ .text          0x0000000010000000        0x2 main.o
+                0x0000000010000000                _start
+ *(.rodata)
+ *(.symtab)
+ *(.strtab)
+
+.plt            0x0000000010000010        0x0
+ .plt           0x0000000010000010        0x0 main.o
+
+.plt.got        0x0000000010000008        0x0
+ .plt.got       0x0000000010000008        0x0 main.o
+
+.eh_frame       0x0000000010000004       0x2c
+ .eh_frame      0x0000000010000004       0x2c main.o
+
+.gnu.version_d  0x0000000010000030        0x0
+ .gnu.version_d
+                0x0000000010000030        0x0 main.o
+
+.gnu.version    0x0000000010000030        0x0
+ .gnu.version   0x0000000010000030        0x0 main.o
+
+.gnu.version_r  0x0000000010000030        0x0
+ .gnu.version_r
+                0x0000000010000030        0x0 main.o
+
+.dynsym         0x0000000010000030       0x20
+ .dynsym        0x0000000010000030       0x20 main.o
+
+.dynstr         0x0000000010000050        0x8
+ .dynstr        0x0000000010000050        0x8 main.o
+
+.hash           0x0000000010000058       0x14
+ .hash          0x0000000010000058       0x14 main.o
+
+.eh_frame       0x000000001000006c        0x0
+ .eh_frame      0x000000001000006c        0x0 main.o
+ .eh_frame      0x000000001000006c        0x0 main.o
+
+.rel.dyn        0x000000001000006c        0x0
+ .rel.plt       0x000000001000006c        0x0 main.o
+ .rel.got       0x000000001000006c        0x0 main.o
+ .rel.ifunc     0x000000001000006c        0x0 main.o
+
+.data           0x0000000010001000        0x0
+ *(.data)
+ .data          0x0000000010001000        0x0 main.o
+
+.dynamic        0x0000000010001000       0x58
+ .dynamic       0x0000000010001000       0x58 main.o
+                0x0000000010001000                _DYNAMIC
+
+.got            0x0000000010001058        0x0
+ .got           0x0000000010001058        0x0 main.o
+
+.got.plt        0x0000000010001058        0x0
+ .got.plt       0x0000000010001058        0x0 main.o
+
+.data.rel.ro    0x0000000010001058        0x0
+ .data.rel.ro   0x0000000010001058        0x0 main.o
+
+.bss            0x0000000010002000        0x0
+ *(COMMON)
+ *(.bss)
+ .bss           0x0000000010002000        0x0 main.o
+ *(.bootstrap_stack)
+
+.dynbss         0x0000000010002000        0x0
+ .dynbss        0x0000000010002000        0x0 main.o
+
+/DISCARD/
+ *(.comment)
+OUTPUT(USERTEST.EXE elf32-i386)

@@ -215,7 +215,7 @@ void thread_execute_in_usermode(void* addr) {
     current_cpu->current_thread->stack_pointer = new_stack;
     spinlock_release(&scheduler_lock);
 
-    char* const argv[] = {"hd0:/userprog.exe", NULL};
+    char* const argv[] = {"hd0:/usertest.exe", NULL};
     char* const envp[] = {NULL};
     int result = thread_execve(argv[0], argv, envp);
     if (result != 0) {
