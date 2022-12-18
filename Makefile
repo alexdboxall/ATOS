@@ -4,11 +4,14 @@ TARGET=x86
 
 ROOT_BUILD_DIR = ./build
 BUILD_DRIVER_SOURCE_DIR = $(ROOT_BUILD_DIR)/drvsrc
+BUILD_APP_SOURCE_DIR = $(ROOT_BUILD_DIR)/appsrc
 BUILD_SOURCE_DIR = $(ROOT_BUILD_DIR)/source
 BUILD_OUTPUT_DIR = $(ROOT_BUILD_DIR)/output
 KERNEL_DIR = ./kernel
 DRIVER_DIR = ./drivers/$(TARGET)
+APP_DIR = ./applications
 FREESTANDING_LIBC_DIR = ./libc/common
+LIBC_MAKEFILE_DIR = ./libc/$(TARGET)
 SYSROOT = ./sysroot
 
 SUBDIRS := 
@@ -43,12 +46,25 @@ common_footer:
 	objdump -drwC -Mintel $(BUILD_OUTPUT_DIR)/kernel.exe >> $(BUILD_OUTPUT_DIR)/disassembly.txt
 	nasm bootloader.s -o bootloader.bin
 	rm $(BUILD_OUTPUT_DIR)/drivers/TEMPLATE.SYS
+	rm $(BUILD_OUTPUT_DIR)/applications/TEMPLATE.EXE
 	cp -r $(BUILD_OUTPUT_DIR)/drivers/* $(SYSROOT)/System
+	cp -r $(BUILD_OUTPUT_DIR)/applications/* $(SYSROOT)/System
 	cp $(BUILD_OUTPUT_DIR)/kernel.exe $(SYSROOT)/System
 	./tools/mkdemofs.exe 64 $(BUILD_OUTPUT_DIR)/kernel.exe $(SYSROOT) $(BUILD_OUTPUT_DIR)/disk.bin bootloader.bin
 	head -c 1474560 $(BUILD_OUTPUT_DIR)/disk.bin >> $(BUILD_OUTPUT_DIR)/floppy.img
 
 
+app_header:
+	mkdir $(BUILD_APP_SOURCE_DIR)
+	mkdir $(BUILD_OUTPUT_DIR)/applications
+	cp -r $(APP_DIR)/* $(BUILD_APP_SOURCE_DIR)
+
+app_all:
+	for dir in $(wildcard ./$(BUILD_APP_SOURCE_DIR)/*/.); do \
+        $(MAKE) -C $$dir build; \
+    done
+	
+	
 driver_header:
 	mkdir $(BUILD_DRIVER_SOURCE_DIR)
 	mkdir $(BUILD_DRIVER_SOURCE_DIR)/drivers
@@ -60,7 +76,10 @@ driver_all:
         $(MAKE) -C $$dir build; \
     done
 	
-	
+cstdlib:
+	$(MAKE) -C $(LIBC_MAKEFILE_DIR)
+
+applications: app_header app_all
 drivers: driver_header driver_all
-osrelease: common_header release_compile drivers common_footer
-osdebug: common_header debug_compile drivers common_footer
+osrelease: common_header release_compile cstdlib drivers applications common_footer
+osdebug: common_header debug_compile cstdlib drivers applications common_footer

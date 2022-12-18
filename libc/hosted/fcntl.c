@@ -3,6 +3,7 @@
 
 int open(const char* filename, int flags, mode_t mode) {
     (void) filename;
+    (void) flags;
     (void) mode;
 
     errno = ENOSYS;

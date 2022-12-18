@@ -88,6 +88,9 @@ struct vnode {
 
     int reference_count;
     struct spinlock reference_count_lock;
+
+    mode_t initial_mode;
+    int initial_flags;
 };
 
 

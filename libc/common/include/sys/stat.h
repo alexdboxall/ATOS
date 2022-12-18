@@ -25,6 +25,14 @@
 #define S_IRUSR	00400
 #define S_IRWXU (S_IXUSR | S_IWUSR | S_IRUSR)
 
+#define S_ISUID 04000
+#define S_ISGID 02000
+#define S_ISVTX 01000
+
+#define S_IREAD  S_IRUSR
+#define S_IWRITE S_IWUSR
+#define S_IEXEC  S_IXUSR
+
 #define S_ISBLK(m) (((m) & _TYPE_MASK) == S_IFBLK)
 #define S_ISCHR(m) (((m) & _TYPE_MASK) == S_IFCHR)
 #define S_ISDIR(m) (((m) & _TYPE_MASK) == S_IFDIR)

@@ -12,4 +12,11 @@ _Noreturn void assertion_fail(const char* file, const char* line, const char* co
 	panic("Assertion fail");
 }
 
+#else
+
+void __empty_translation_unit_otherwise_assert_h() {
+
+}
+
+
 #endif

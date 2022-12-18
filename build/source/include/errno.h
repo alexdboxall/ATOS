@@ -33,3 +33,12 @@
 #define EWOULDBLOCK		EGAIN		// Operation would block, but for historical reasons
 									//			is often the same thing as EWOULDBLOCK
 #define EFAULT          19          // Hardware interrupt / fault, etc.
+
+
+
+
+#ifndef COMPILE_KERNEL
+
+int errno;
+
+#endif
