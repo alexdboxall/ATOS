@@ -489,11 +489,4 @@ max_kernel_addr = 0xC011C000
  ATOS Kernel
      Copyright Alex Boxall 2022
 
->>>TODO: vas_copy allocates a lot of memory, but it also needs to lock the VAS! (which the pf handler also needs to do!)
-A
-PROCESS = 0xC8002EC4
-FDTABLE = 0xC8002F44
-0
-4
-0
-4
+>>

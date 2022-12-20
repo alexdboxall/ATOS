@@ -1,14 +1,17 @@
 #include <fcntl.h>
 #include <errno.h>
+#include <syscallnum.h>
 
 int open(const char* filename, int flags, mode_t mode) {
-    (void) filename;
-    (void) flags;
-    (void) mode;
+    int fd;
+    int result = _system_call(SYSCALL_OPEN, (size_t) filename, flags, mode, (size_t) &fd);
 
-    errno = ENOSYS;
+    if (result != 0) {
+        errno = result;
+        return -1;
+    }
 
-    return -1;
+    return fd;
 }
 
 int creat(const char* filename, mode_t mode) {

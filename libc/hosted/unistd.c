@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include <errno.h>
+#include <syscallnum.h>
 
 int close(int fd) {
     (void) fd;
@@ -10,23 +11,27 @@ int close(int fd) {
 }
 
 ssize_t read(int fd, void* buffer, size_t size) {
-    (void) fd;
-    (void) buffer;
-    (void) size;
+    int br;
+    int result = _system_call(SYSCALL_READ, (size_t) buffer, size, fd, (size_t) &br);
 
-    errno = ENOSYS;
+    if (result != 0) {
+        errno = result;
+        return -1;
+    }
 
-    return -1;
+    return br;
 }
 
-ssize_t write(int fd, void* buffer, size_t size) {
-    (void) fd;
-    (void) buffer;
-    (void) size;
+ssize_t write(int fd, const void* buffer, size_t size) {
+    int br;
+    int result = _system_call(SYSCALL_WRITE, (size_t) buffer, size, fd, (size_t) &br);
 
-    errno = ENOSYS;
+    if (result != 0) {
+        errno = result;
+        return -1;
+    }
 
-    return -1;
+    return br;
 }
 
 off_t lseek(int fd, off_t offset, int whence) {
