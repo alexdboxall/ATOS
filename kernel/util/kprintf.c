@@ -5,22 +5,31 @@
 #include <uio.h>
 #include <console.h>
 
-static char* stringifyxWithBase(uint32_t i, char b[], int base)
+static void convert_int_to_string(uint32_t i, char* output, int base)
 {
-	char const digit[] = "0123456789ABCDEF";
+	const char* digits = "0123456789ABCDEF";
 
-	char* p = b;
+    /*
+    * Work out where the end of the string is (this is based on the number).
+    * Using the do...while ensures that we always get at least one digit 
+    * (i.e. ensures a 0 is printed if the input was 0).
+    */
 	uint32_t shifter = i;
-	do { //Move to where representation ends
-		++p;
-		shifter = shifter / base;
+	do {
+		++output;
+		shifter /= base;
 	} while (shifter);
-	*p = '\0';
-	do { //Move back, inserting digits as u go
-		*--p = digit[i % base];
-		i = i / base;
+
+    /* Put in the null terminator. */
+	*output = '\0';
+
+    /*
+    * Now fill in the digits back-to-front.
+    */
+	do {
+		*--output = digits[i % base];
+		i /= base;
 	} while (i);
-	return b;
 }
 
 static void outb(uint16_t port, uint8_t value)
@@ -52,16 +61,11 @@ static void logs(char* a)
 	while (*a) logc(*a++);
 }
 
-static void logWriteInt(uint32_t i)
+static void log_int(uint32_t i, int base)
 {
-	char y[12];
-	logs(stringifyxWithBase(i, y, 10));
-}
-
-static void logWriteIntBase(uint32_t i, int base)
-{
-	char y[12];
-	logs(stringifyxWithBase(i, (char*) y, base));
+	char str[12];
+    convert_int_to_string(i, str, base);
+	logs(str);
 }
 
 void kprintf(const char* format, ...)
@@ -84,15 +88,15 @@ void kprintf(const char* format, ...)
 			case 's': 
 				logs(va_arg(list, char*)); break;
 			case 'd': 
-				logWriteInt(va_arg(list, signed)); break;
+				log_int(va_arg(list, signed), 10); break;
 			case 'x':
 			case 'X': 
-				logWriteIntBase(va_arg(list, unsigned), 16); break;
+				log_int(va_arg(list, unsigned), 16); break;
 			case 'l':
 			case 'L': 
-				logWriteIntBase(va_arg(list, unsigned long long), 16); break;
+				log_int(va_arg(list, unsigned long long), 16); break;
 			case 'u':
-				logWriteInt(va_arg(list, unsigned)); break;
+				log_int(va_arg(list, unsigned), 10); break;
 			default: 
 				logc('%'); 
 				logc(format[i]);

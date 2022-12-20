@@ -1,11 +1,5 @@
 
 kernel_main
-can use 0x11E000
-can use 0x11F000
-can use 0x120000
-can use 0x121000
-can use 0x122000
-can use 0x123000
 can use 0x124000
 can use 0x125000
 can use 0x126000
@@ -482,29 +476,67 @@ can use 0x2FC000
 can use 0x2FD000
 can use 0x2FE000
 can use 0x2FF000
-max_kernel_addr = 0xC011E000
-PF (cr2 = 0xC8001000, eip = 0xC0101F2E, err = 0x2)
-PF (cr2 = 0xD8000FF0, eip = 0xC0101F3E, err = 0x2)
-PF (cr2 = 0xC8002774, eip = 0xC0102060, err = 0x2)
-PF (cr2 = 0xC80052D4, eip = 0xC0102060, err = 0x2)
-PF (cr2 = 0xC8003000, eip = 0xC0101268, err = 0x2)
-PF (cr2 = 0xC8004000, eip = 0xC0101268, err = 0x2)
-PF (cr2 = 0xC8008258, eip = 0xC0102060, err = 0x2)
-PF (cr2 = 0xC80060CF, eip = 0xC0101252, err = 0x2)
-PF (cr2 = 0xC80070CF, eip = 0xC0101252, err = 0x2)
-PF (cr2 = 0xC800A2E8, eip = 0xC0102060, err = 0x2)
-PF (cr2 = 0xC80090D7, eip = 0xC0101252, err = 0x2)
-PF (cr2 = 0xC800B004, eip = 0xC0102060, err = 0x2)
-PF (cr2 = 0xC800C000, eip = 0xC0102060, err = 0x2)
-PF (cr2 = 0xC800D000, eip = 0xC010207A, err = 0x2)
-PF (cr2 = 0xC800E008, eip = 0xC0102060, err = 0x2)
-PF (cr2 = 0xC800F000, eip = 0xC010207A, err = 0x2)
-PF (cr2 = 0xC8010000, eip = 0xC010207A, err = 0x2)
-PF (cr2 = 0xC8011000, eip = 0xC0102069, err = 0x2)
-PF (cr2 = 0xC8012000, eip = 0xC0102074, err = 0x2)
-PF (cr2 = 0xC8013000, eip = 0xC0102060, err = 0x2)
+max_kernel_addr = 0xC0124000
+Testing basic insert_back and iter                                  ... passed
+Testing basic insert_front and iter                                 ... passed
+Testing basic get_head and tail                                     ... passed
+Testing circulate                                                   ... passed
+Testing insert alternating                                          ... passed
+Testing insert back updates tail correctly                          ... passed
+Testing insert front updates head correctly                         ... passed
+Testing remove back updates tail correctly                          ... passed
+Testing remove front updates head correctly                         ... passed
+Testing remove both ends                                            ... passed
+Testing remove final via back                                       ... passed
+Testing remove final via front                                      ... passed
+Testing add first via front                                         ... passed
+Testing add first via back                                          ... passed
+Testing reset                                                       ... passed
+Testing list remove element middle                                  ... passed
+Testing list remove element first                                   ... passed
+Testing list remove element last                                    ... passed
+Testing list remove element only                                    ... passed
+Testing list remove element non existent                            ... passed
+Testing finding the root drive of a path                            ... passed
+Testing splitting file paths                                        ... passed
+Testing splitting file paths with multiple slashes                  ... passed
+Testing colons in filenames                                         ... passed
+Testing backslashes in filenames                                    ... passed
+Testing long filenames (1)                                          ... passed
+Testing long filenames (2)                                          ... passed
+Testing long filenames (3)                                          ... passed
+Testing long filenames (4)                                          ... passed
+Testing finding the last file in a path with a trailing slash       ... passed
+Testing finding the last file in a path                             ... passed
+Testing finding the root drive with a slash after the colon         ... passed
+Testing finding each segment of a filepath                          ... passed
+Testing opening a file                                              ... passed
+Testing reading a file                                              ... passed
+Testing reading a file from an offset                               ... passed
+Testing reading a file past the end                                 ... passed
+Testing reading a directory with the file read function             ... passed
+Testing reading a file twice                                        ... passed
+Testing opening a file with a dot slash in the path (1)             ... passed
+Testing opening a file with a dot slash in the path (2)             ... passed
+Testing opening a file with a dot slash after the path              ... passed
+Testing opening a file in a subdirectory                            ... passed
+Testing opening a directory                                         ... passed
+Testing opening a file for writing                                  ... passed
+Testing opening a directory for writing                             ... passed
+Testing opening a file with a non-existent device                   ... passed
+Testing opening a file that doesn't exist                           ... passed
+Testing opening a file in the middle of a path                      ... passed
+Testing opening the filesystem root                                 ... passed
+Testing backtracking through a filepath twice (1)                   ... passed
+Testing backtracking through a filepath once (2)                    ... passed
+Testing backtracking through a filepath twice (1)                   ... passed
+Testing backtracking through a filepath twice (2)                   ... passed
+Testing backtracking past the root                                  ... passed
+Testing backtracking through invalid filepath components            ... passed
+Testing backtracking after a file has been reached                  ... passed
 
  ATOS Kernel
      Copyright Alex Boxall 2022
 
->>program load failed: 9
+>>EINVAL
+>EINVAL

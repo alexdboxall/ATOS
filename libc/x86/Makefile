@@ -14,9 +14,11 @@ COBJECTS = $(patsubst %.c, %.o, $(wildcard ../*.c) $(wildcard ../*/*.c) $(wildca
 ASMOBJECTS = $(patsubst %.s, %.oo, $(wildcard *.s) $(wildcard */*.s) $(wildcard */*/*.s) $(wildcard */*/*/*.s) $(wildcard **/*.s))
 
 hostedlibc: $(COBJECTS) $(ASMOBJECTS)
-	$(AR) rcs libc.a $^
+	$(AS) -felf32 _systemcall.s -o _systemcall.o
+	$(AR) rcs libc.a $^ _systemcall.o
 	rm ../common/*.o
 	rm ../hosted/*.o
+	rm _systemcall.o
 	
 %.o: %.c
 	$(CC) $(CPPDEFINES) $(COMPILE_FLAGS) $^ -o $@ 

@@ -71,7 +71,7 @@ void random_init(void) {
 uint32_t rand32(void) {
     uint32_t result;
 
-    struct uio io = uio_construct_read(&result, sizeof(result), 0);
+    struct uio io = uio_construct_kernel_read(&result, sizeof(result), 0);
     struct vnode* rand;
     
     vfs_open("rand:", O_RDONLY, 0, &rand);

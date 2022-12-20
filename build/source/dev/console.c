@@ -293,13 +293,13 @@ void console_panic(const char* message) {
 * Therefore we can just pass in NULL.
 */
 void console_putc(char c) {
-    struct uio io = uio_construct_write(&c, 1, 0);
+    struct uio io = uio_construct_kernel_write(&c, 1, 0);
     console_io(NULL, &io);
 }
 
 char console_getc(void) {
     char c;
-    struct uio io = uio_construct_read(&c, 1, 0);
+    struct uio io = uio_construct_kernel_read(&c, 1, 0);
 
     console_io(NULL, &io);
     return c;

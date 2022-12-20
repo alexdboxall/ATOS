@@ -9,7 +9,7 @@
 #include <sys/stat.h>
 #include <kprintf.h>
 
-int load_program(const char* filename) {
+int load_program(const char* filename, size_t* entry_point, size_t* sbrk_point) {
     struct vnode* file;
     int ret = vfs_open(filename, O_RDONLY, 0, &file);
     if (ret != 0) {
@@ -26,7 +26,7 @@ int load_program(const char* filename) {
     uint8_t* buffer = malloc(st.st_size);
     memset(buffer, 0, st.st_size);
 
-    struct uio uio = uio_construct_read(buffer, st.st_size, 0);
+    struct uio uio = uio_construct_kernel_read(buffer, st.st_size, 0);
     ret = vfs_read(file, &uio);
     if (ret != 0) {
         free(buffer);
@@ -34,7 +34,7 @@ int load_program(const char* filename) {
         return ret;
     }
 
-    int result = arch_exec(buffer, st.st_size);
+    int result = arch_exec(buffer, st.st_size, entry_point, sbrk_point);
 
     free(buffer);
     vfs_close(file);
@@ -58,7 +58,7 @@ int load_driver(const char* filename, bool lock_in_memory) {
     uint8_t* buffer = malloc(st.st_size);
     memset(buffer, 0, st.st_size);
 
-    struct uio uio = uio_construct_read(buffer, st.st_size, 0);
+    struct uio uio = uio_construct_kernel_read(buffer, st.st_size, 0);
     ret = vfs_read(file, &uio);
     if (ret != 0) {
         free(buffer);

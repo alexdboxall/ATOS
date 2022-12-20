@@ -101,7 +101,7 @@ void arch_vas_load(void* vas);
 void arch_vas_set_entry(struct virtual_address_space* vas_, size_t virt_addr, size_t phys_addr, int flags);
 void arch_vas_get_entry(struct virtual_address_space* vas_, size_t virt_addr, size_t* phys_addr_out, int* flags_out);
 
-int arch_exec(void* data, size_t data_size);
+int arch_exec(void* data, size_t data_size, size_t* entry_point, size_t* sbrk_point);
 
 void arch_set_forked_kernel_stack(struct thread* original, struct thread* forked);
 

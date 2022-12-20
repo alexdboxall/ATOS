@@ -21,8 +21,6 @@
 #include <thread.h>
 #include <fs/demofs/demofs.h>
 
-extern size_t usermode_stub;
-
 void fault_tester(void* arg) {
     (void) arg;
 
@@ -95,7 +93,7 @@ void fake_shell(void* arg) {
 						uint8_t* buffer = malloc(st.st_size + 1);
 						memset(buffer, 0, st.st_size + 1);
 
-						struct uio uio = uio_construct_read(buffer, st.st_size, 0);
+						struct uio uio = uio_construct_kernel_read(buffer, st.st_size, 0);
 						int ret = vfs_read(node, &uio);
 						if (ret != 0) {
 							kprintf("Cannot read: %s\n", strerror(ret));
@@ -152,7 +150,7 @@ void fake_shell(void* arg) {
 
         } else if (!strcmp(buffer, "user")) {
             struct process* p = process_create();
-            thread_create(thread_execute_in_usermode, &usermode_stub, p->vas);
+            process_create_thread(p, thread_execute_in_usermode, NULL);
             continue;
             
         } else if (!strcmp(buffer, "terminate")) {
@@ -205,7 +203,7 @@ void kernel_main()
 	test_kernel();
 #endif
 
-	thread_create(fake_shell, NULL, current_cpu->current_vas);
+    process_create_thread(process_create(), fake_shell, NULL);
 
 	/*
 	* We ought not run anything else in this bootstrap thread,

@@ -57,7 +57,7 @@ size_t swapfile_write(uint8_t* data) {
         panic("swapfile: out of space");
     }
 
-    struct uio io = uio_construct_write(data, ARCH_PAGE_SIZE, (swapfile_initial_sector + id * swapfile_sectors_per_page) * swapfile_sector_size);
+    struct uio io = uio_construct_kernel_write(data, ARCH_PAGE_SIZE, (swapfile_initial_sector + id * swapfile_sectors_per_page) * swapfile_sector_size);
 
     int status = vfs_write(swapfile_drive, &io);
     if (status != 0) {
@@ -80,7 +80,7 @@ void swapfile_read(uint8_t* data, size_t id) {
         panic("page fault in non-paged area");
     }
 
-    struct uio io = uio_construct_read(data, ARCH_PAGE_SIZE, (swapfile_initial_sector + id * swapfile_sectors_per_page) * swapfile_sector_size);
+    struct uio io = uio_construct_kernel_read(data, ARCH_PAGE_SIZE, (swapfile_initial_sector + id * swapfile_sectors_per_page) * swapfile_sector_size);
 
     int status = vfs_read(swapfile_drive, &io);
     if (status != 0) {

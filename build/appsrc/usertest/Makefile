@@ -1,16 +1,18 @@
 
-APPLICATION_NAME = USERTEST.EXE
+APPLICATION_NAME = usertest.exe
+
+TARGET = x86
 
 CC = i386-banana-gcc
-FAKE_CROSS_COMPILER = -m32 -I"." -I"../../source/include" -I"../../source"
-COMPILE_FLAGS = -c -Os -fno-strict-aliasing -DCOMPILE_KERNEL -Wall -Wextra -Wpedantic -Werror -Wcast-align=strict -Wpointer-arith -fmax-errors=5 -std=gnu11 -ffreestanding $(FAKE_CROSS_COMPILER)
-LINK_FLAGS = -Wl,-Map=driver.map -Wl,-q -Wl,-shared -s -g -shared -nostartfiles -nostdlib -lgcc 
+FAKE_CROSS_COMPILER = -m32 -I"." -I"../../../libc/common/include" -I"../../../libc/hosted/include"
+COMPILE_FLAGS = -c -Os -fno-strict-aliasing -Wall -Wextra -Wpedantic -Werror -Wcast-align=strict -Wpointer-arith -fmax-errors=5 -std=gnu11 -ffreestanding $(FAKE_CROSS_COMPILER)
+LINK_FLAGS = -Wl,-Map=app.map -L "../../../libc/$(TARGET)" -nostartfiles -nostdlib -lgcc -lc
 
 
 COBJECTS = $(patsubst %.c, %.o, $(wildcard *.c) $(wildcard */*.c) $(wildcard */*/*.c) $(wildcard */*/*/*.c) $(wildcard **/*.c))
 
 build: $(COBJECTS)
-	$(CC) -T ..\..\source\machine\application.ld -o $(APPLICATION_NAME) $^ $(LINK_FLAGS) $(LINKER_STRIP)
+	$(CC) -T "../../source/machine/application.ld" -o $(APPLICATION_NAME) $^ $(LINK_FLAGS) $(LINKER_STRIP)
 	cp $(APPLICATION_NAME) ..\..\output\applications
 	
 %.o: %.c

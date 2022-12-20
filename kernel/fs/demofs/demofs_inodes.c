@@ -36,7 +36,7 @@ int demofs_read_inode(struct demofs* fs, ino_t inode, uint8_t* buffer) {
         panic("demofs: sector_size != 512 not supported");
     }
 
-    struct uio io = uio_construct_read(buffer, SECTOR_SIZE, SECTOR_SIZE * INODE_TO_SECTOR(inode));
+    struct uio io = uio_construct_kernel_read(buffer, SECTOR_SIZE, SECTOR_SIZE * INODE_TO_SECTOR(inode));
     return vfs_read(fs->disk, &io);
 }
 
@@ -92,11 +92,7 @@ int demofs_read_file(struct demofs* fs, ino_t file, uint32_t file_size_left, str
             uint8_t sector_buffer[SECTOR_SIZE];
 
             /* Read the sector */
-            struct uio temp_io;
-            temp_io.direction = UIO_READ;
-            temp_io.address = sector_buffer;
-            temp_io.length_remaining = SECTOR_SIZE;
-            temp_io.offset = sector * SECTOR_SIZE;
+            struct uio temp_io = uio_construct_kernel_read(sector_buffer, SECTOR_SIZE, sector * SECTOR_SIZE);
 
             int status = vfs_read(fs->disk, &temp_io);
             if (status != 0) {

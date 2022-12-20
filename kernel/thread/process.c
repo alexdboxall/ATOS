@@ -5,14 +5,18 @@
 #include <spinlock.h>
 #include <kprintf.h>
 #include <heap.h>
+#include <filedes.h>
+#include <thread.h>
+#include <adt.h>
 
 static struct spinlock pid_spinlock;
 static int next_pid = 1;
 
-struct process* process_create_with_vas(struct virtual_address_space* vas) {
+struct process* process_create_child(struct virtual_address_space* vas, struct filedes_table* fdtable) {
     struct process* process = malloc(sizeof(struct process));
     process->threads = adt_list_create();
     process->vas = vas;
+    process->fdtable = filedes_table_copy(fdtable);
 
     spinlock_acquire(&pid_spinlock);
     process->pid = next_pid++;
@@ -24,7 +28,7 @@ struct process* process_create_with_vas(struct virtual_address_space* vas) {
 }
 
 struct process* process_create(void) {
-    return process_create_with_vas(vas_create());
+    return process_create_child(vas_create(), filedes_table_create());
 }
 
 
@@ -54,8 +58,10 @@ void process_add_thread(struct process* process, struct thread* thread) {
 }
 
 struct thread* process_create_thread(struct process* process, void(*initial_address)(void*), void* initial_argument) {
+    thread_postpone_switches();
     struct thread* thr = thread_create(initial_address, initial_argument, process->vas);
     process_add_thread(process, thr);
+    thread_end_postpone_switches();
     return thr;
 }
 

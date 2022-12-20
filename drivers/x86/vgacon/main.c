@@ -193,6 +193,11 @@ static void vga_putchar(struct console_device_interface* dev, char c) {
 static void vga_panic(const char* message) {
     arch_disable_interrupts();
 
+    (void) message;
+
+    return;
+    #if 0
+
     /*
     * Make the entire screen blue.
     */
@@ -230,6 +235,7 @@ static void vga_panic(const char* message) {
     data.cursor_x = 0;
     data.cursor_y = 0;
     vga_update_cursor(&dev);
+    #endif
 }
 
 /*

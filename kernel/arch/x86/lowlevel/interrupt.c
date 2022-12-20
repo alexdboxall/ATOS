@@ -110,7 +110,7 @@ void x86_interrupt_handler(struct x86_regs* r) {
         status = x86_irq_handlers[num](r);
     }
 
-    if (status != 0) {
+    if (status != 0 && num != SYSCALL_VECTOR) {
         kprintf("unhandled exception - %s (%d)\n", get_fault_name(num), num);
         thread_terminate();
     }

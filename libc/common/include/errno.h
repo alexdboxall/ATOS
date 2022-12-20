@@ -35,8 +35,6 @@
 #define EFAULT          19          // Hardware interrupt / fault, etc.
 
 
-
-
 #ifndef COMPILE_KERNEL
 
 int errno;

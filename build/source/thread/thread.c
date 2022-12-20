@@ -192,18 +192,18 @@ static size_t thread_create_user_stack(int size) {
 #endif
 }
 
-
-/* TODO: move to loader.c */
-int thread_execve(const char* filename, char* const argv[], char* const envp[]) {
+int thread_execve(const char* filename, char* const argv[], char* const envp[], size_t* entry_point) {
     /* TODO: argv and envp stuff */
     
     (void) argv;
     (void) envp;
-    
-    return load_program(filename);
+
+    return load_program(filename, entry_point, &current_cpu->current_thread->process->sbrk);
 }
 
-void thread_execute_in_usermode(void* addr) {
+void thread_execute_in_usermode(void* ignored_arg) {
+    (void) ignored_arg;
+
     /*
     * We also need a usermode stack. We can use the current stack as the kernel
     * stack when it switches to kernel mode for interrupt handling, as we will
@@ -215,18 +215,19 @@ void thread_execute_in_usermode(void* addr) {
     current_cpu->current_thread->stack_pointer = new_stack;
     spinlock_release(&scheduler_lock);
 
-    char* const argv[] = {"hd0:/usertest.exe", NULL};
+    char* const argv[] = {"hd0:/System/usertest.exe", NULL};
     char* const envp[] = {NULL};
-    int result = thread_execve(argv[0], argv, envp);
+    size_t entry_point;
+    int result = thread_execve(argv[0], argv, envp, &entry_point);
     if (result != 0) {
         kprintf("program load failed: %d\n", result);
         thread_terminate();
     }
    
     arch_flush_tlb();
-    arch_switch_to_usermode((size_t) addr, new_stack);
+    arch_switch_to_usermode(entry_point, new_stack);
 
-    panic("thread_execute_in_usermode: usermode returned!");
+    thread_terminate();
 }
 
 /*
@@ -245,8 +246,8 @@ void thread_startup_handler(void) {
     /* Go to the address the thread actually wanted. */
     current_cpu->current_thread->initial_address(current_cpu->current_thread->argument);   
 
-    /* The thread has returned, so just panic for now instead of terminating it. */
-    panic("not implemented: thread returned!");
+    /* The thread has returned, so just terminate it. */
+    thread_terminate();
 }
 
 
@@ -377,7 +378,13 @@ int thread_fork(void) {
     kprintf("TODO: vas_copy allocates a lot of memory, but it also needs to lock the VAS! (which the pf handler also needs to do!)\n");
     thr->vas = vas_copy(thr->vas);
 
-    struct process* process = process_create_with_vas(thr->vas);
+    assert(thr->process != NULL);
+
+    kprintf("A\n");
+    kprintf("PROCESS = 0x%X\n", thr->process);
+    kprintf("FDTABLE = 0x%X\n", thr->process->fdtable);
+
+    struct process* process = process_create_child(thr->vas, thr->process->fdtable);
 
     thr->kernel_stack_top = thread_create_kernel_stack(KERNEL_STACK_SIZE, &thr->canary_position);
     thr->kernel_stack_size = KERNEL_STACK_SIZE + NUM_CANARY_PAGES * ARCH_PAGE_SIZE;

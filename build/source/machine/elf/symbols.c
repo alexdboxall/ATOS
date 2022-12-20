@@ -31,7 +31,7 @@ static void ksymbol_init(void) {
     */
     struct Elf32_Ehdr* elf_header = malloc(sizeof(struct Elf32_Ehdr));
 
-    struct uio uio = uio_construct_read(elf_header, sizeof(struct Elf32_Ehdr), 0);
+    struct uio uio = uio_construct_kernel_read(elf_header, sizeof(struct Elf32_Ehdr), 0);
     ret = vfs_read(file, &uio);
     if (ret != 0) {
         goto fail;
@@ -97,7 +97,7 @@ static void ksymbol_init(void) {
     * Load the symbol table.
     */
     struct Elf32_Sym* symbol_table = malloc(symbol_table_length);
-    uio = uio_construct_read(symbol_table, symbol_table_length, symbol_table_offset);
+    uio = uio_construct_kernel_read(symbol_table, symbol_table_length, symbol_table_offset);
     ret = vfs_read(file, &uio);
     if (ret != 0) {
         goto fail;
@@ -107,7 +107,7 @@ static void ksymbol_init(void) {
     * Load the string table.
     */
     const char* string_table = malloc(string_table_length);
-    uio = uio_construct_read((void*) string_table, string_table_length, string_table_offset);
+    uio = uio_construct_kernel_read((void*) string_table, string_table_length, string_table_offset);
     ret = vfs_read(file, &uio); 
     if (ret != 0) {
         goto fail;

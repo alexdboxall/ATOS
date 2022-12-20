@@ -1,12 +1,16 @@
 
 #include <stddef.h>
 #include <thread.h>
+#include <kprintf.h>
 
 /*
 * Gives up the current thread's timeslice and causes a task switch to occur if possible.
 *
 * Inputs: 
-*         none
+*         A                 not used
+*         B                 not used
+*         C                 not used
+*         D                 not used
 * Output:
 *         0                 always returned
 */
