@@ -3,6 +3,7 @@
 #include <vnode.h>
 #include <string.h>
 #include <spinlock.h>
+#include <errno.h>
 
 struct filedes_table {
     int next_fd;
@@ -47,12 +48,12 @@ struct filedes_table* filedes_table_copy(struct filedes_table* original) {
 int filedesc_seek(struct filedes_table* table, int fd, size_t offset) {
     spinlock_acquire(&table->lock);
     if (fd >= table->next_fd) {
-        return NULL;
+        return EINVAL;
     }
     table->offsets[fd] = offset;
     spinlock_release(&table->lock);
 
-    return result;
+    return 0;
 }
 
 struct vnode* fildesc_convert_to_vnode(struct filedes_table* table, int fd, size_t* offset_out) {

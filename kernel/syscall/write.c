@@ -16,7 +16,7 @@
 *         A                 the binary data to write
 *         B                 the length of the data to write
 *         C                 the file descriptor to write to
-*         D                 a pointer to an integer, which the number of bytes written will be put
+*         D                 a pointer to an size_t, which the number of bytes written will be put
 * Output:
 *         0                 on success
 *         EINVAL            invalid file descriptor, (et. al.)
@@ -35,7 +35,7 @@ int sys_write(size_t args[4]) {
         return result;
     }
 
-    io = uio_construct_write_to_usermode((int*) args[3], sizeof(int), 0);
+    io = uio_construct_write_to_usermode((size_t*) args[3], sizeof(size_t), 0);
     size_t br = args[1] - io.length_remaining;
 
     return uio_move(&br, &io, sizeof(size_t));

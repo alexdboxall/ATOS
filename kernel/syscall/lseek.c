@@ -58,5 +58,12 @@ int sys_lseek(size_t args[4]) {
         return EINVAL;
     }
 
-    return filedesc_seek(current_cpu->current_thread->process->fdtable, args[0], offset);
+    int result = filedesc_seek(current_cpu->current_thread->process->fdtable, args[0], offset);
+    if (result != 0) {
+        return result;
+    }
+
+    io = uio_construct_write_to_usermode((void*) args[1], sizeof(off_t), 0);
+    return uio_move(&offset, &io, sizeof(off_t));
+
 }

@@ -23,7 +23,7 @@ ssize_t read(int fd, void* buffer, size_t size) {
 }
 
 ssize_t write(int fd, const void* buffer, size_t size) {
-    int br;
+    size_t br;
     int result = _system_call(SYSCALL_WRITE, (size_t) buffer, size, fd, (size_t) &br);
 
     if (result != 0) {
@@ -35,11 +35,17 @@ ssize_t write(int fd, const void* buffer, size_t size) {
 }
 
 off_t lseek(int fd, off_t offset, int whence) {
-    (void) fd;
-    (void) offset;
-    (void) whence;
+    /*
+    * Inputs: 
+*         A                 the file descriptor
+*         B                 a pointer to an off_t (the offset), the resulting offset is written back here
+*         C                 either SEEK_SET, SEEK_CUR or SEEK_END
+*         D                 not used
+* Output:
+*         0                 on success
+*         error code        on failure*/
 
-    errno = ENOSYS;
+    off_t in_out_offset = offset;
 
     return -1;
 }
