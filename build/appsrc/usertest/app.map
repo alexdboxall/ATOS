@@ -1,0 +1,99 @@
+Archive member included to satisfy reference by file (symbol)
+
+../../../libc/x86/libc.a(fcntl.o)
+                              main.o (open)
+../../../libc/x86/libc.a(unistd.o)
+                              main.o (write)
+../../../libc/x86/libc.a(_systemcall.oo)
+                              main.o (_system_call)
+
+Allocating common symbols
+Common symbol       size              file
+
+errno               0x4               ../../../libc/x86/libc.a(fcntl.o)
+
+Discarded input sections
+
+ .comment       0x0000000000000000       0x12 main.o
+ .comment       0x0000000000000000       0x12 ../../../libc/x86/libc.a(fcntl.o)
+ .comment       0x0000000000000000       0x12 ../../../libc/x86/libc.a(unistd.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD main.o
+LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a
+LOAD ../../../libc/x86/libc.a
+                0x0000000010000000                . = 0x10000000
+
+.text           0x0000000010000000      0x12d
+ *(.text)
+ .text          0x0000000010000000       0x3e main.o
+                0x0000000010000000                _start
+ .text          0x000000001000003e       0x53 ../../../libc/x86/libc.a(fcntl.o)
+                0x000000001000003e                open
+                0x000000001000006e                creat
+                0x0000000010000083                fcntl
+ .text          0x0000000010000091       0x7c ../../../libc/x86/libc.a(unistd.o)
+                0x0000000010000091                close
+                0x000000001000009f                read
+                0x00000000100000cf                write
+                0x00000000100000ff                lseek
+ *fill*         0x000000001000010d        0x3 
+ .text          0x0000000010000110       0x1d ../../../libc/x86/libc.a(_systemcall.oo)
+                0x0000000010000110                _system_call
+ *(.rodata)
+ *(.symtab)
+ *(.strtab)
+
+.iplt           0x0000000010000130        0x0
+ .iplt          0x0000000010000130        0x0 main.o
+
+.rodata.str1.1  0x000000001000012d       0x20
+ .rodata.str1.1
+                0x000000001000012d       0x20 main.o
+
+.eh_frame       0x0000000010000150       0xf0
+ .eh_frame      0x0000000010000150       0x34 main.o
+ .eh_frame      0x0000000010000184       0x54 ../../../libc/x86/libc.a(fcntl.o)
+                                         0x6c (size before relaxing)
+ .eh_frame      0x00000000100001d8       0x68 ../../../libc/x86/libc.a(unistd.o)
+                                         0x80 (size before relaxing)
+
+.rel.dyn        0x0000000010000240        0x0
+ .rel.got       0x0000000010000240        0x0 main.o
+ .rel.iplt      0x0000000010000240        0x0 main.o
+ .rel.text      0x0000000010000240        0x0 main.o
+
+.data           0x0000000010001000        0x0
+ *(.data)
+ .data          0x0000000010001000        0x0 main.o
+ .data          0x0000000010001000        0x0 ../../../libc/x86/libc.a(fcntl.o)
+ .data          0x0000000010001000        0x0 ../../../libc/x86/libc.a(unistd.o)
+
+.got            0x0000000010000240        0x0 load address 0x0000000010001000
+ .got           0x0000000010000240        0x0 main.o
+
+.got.plt        0x0000000010000240        0x0 load address 0x0000000010001dc0
+ .got.plt       0x0000000010000240        0x0 main.o
+
+.igot.plt       0x0000000010000240        0x0 load address 0x0000000010002b80
+ .igot.plt      0x0000000010000240        0x0 main.o
+
+.bss            0x0000000010001000        0x4
+ *(COMMON)
+ COMMON         0x0000000010001000        0x4 ../../../libc/x86/libc.a(fcntl.o)
+                0x0000000010001000                errno
+ *(.bss)
+ .bss           0x0000000010001004        0x0 main.o
+ .bss           0x0000000010001004        0x0 ../../../libc/x86/libc.a(fcntl.o)
+ .bss           0x0000000010001004        0x0 ../../../libc/x86/libc.a(unistd.o)
+ *(.bootstrap_stack)
+
+/DISCARD/
+ *(.comment)
+OUTPUT(usertest.exe elf32-i386)

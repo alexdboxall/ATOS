@@ -23,7 +23,6 @@ enum uio_direction {
 * between the kernel and the user.
 *
 * TODO: userspace handling
-*
 */
 struct uio {
     void* address;

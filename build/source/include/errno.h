@@ -33,6 +33,7 @@
 #define EWOULDBLOCK		EGAIN		// Operation would block, but for historical reasons
 									//			is often the same thing as EWOULDBLOCK
 #define EFAULT          19          // Hardware interrupt / fault, etc.
+#define EBADF           20          // Bad file descriptor
 
 
 #ifndef COMPILE_KERNEL

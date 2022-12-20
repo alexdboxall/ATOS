@@ -24,18 +24,19 @@
 */
 int sys_write(size_t args[4]) {
     // TODO: are seek positions stored in vnodes? or do we need to add a field to the filedes table for it?
-    struct vnode* node = fildesc_convert_to_vnode(current_cpu->current_thread->process->fdtable, args[2]);
+    size_t offset;
+    struct vnode* node = fildesc_convert_to_vnode(current_cpu->current_thread->process->fdtable, args[2], &offset);
     if (node == NULL) {
-        return EINVAL;
+        return EBADF;
     }
 
-    struct uio io = uio_construct_read_from_usermode((void*) args[0], args[1], 0);
+    struct uio io = uio_construct_read_from_usermode((void*) args[0], args[1], offset);
     int result = vfs_write(node, &io);
     if (result != 0) {
         return result;
     }
 
     *((int*) args[3]) = args[1] - io.length_remaining;
-    
+
     return 0;
 }

@@ -1,0 +1,99 @@
+
+Discarded input sections
+
+ .comment       0x0000000000000000       0x12 ps2keyboard.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD ps2keyboard.o
+LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a
+                0x00000000d0000000                . = 0xd0000000
+
+.text           0x00000000d0000000      0x441
+ *(.text)
+ .text          0x00000000d0000000      0x1cb ps2keyboard.o
+                0x00000000d00001b4                _driver_entry_point
+ *(.rodata)
+ *fill*         0x00000000d00001cb       0x15 
+ .rodata        0x00000000d00001e0      0x261 ps2keyboard.o
+ *(.symtab)
+ *(.strtab)
+
+.plt            0x00000000d0000450        0x0
+ .plt           0x00000000d0000450        0x0 ps2keyboard.o
+
+.plt.got        0x00000000d0000448        0x0
+ .plt.got       0x00000000d0000448        0x0 ps2keyboard.o
+
+.eh_frame       0x00000000d0000444       0x70
+ .eh_frame      0x00000000d0000444       0x70 ps2keyboard.o
+
+.gnu.version_d  0x00000000d00004b4        0x0
+ .gnu.version_d
+                0x00000000d00004b4        0x0 ps2keyboard.o
+
+.gnu.version    0x00000000d00004b4        0x0
+ .gnu.version   0x00000000d00004b4        0x0 ps2keyboard.o
+
+.gnu.version_r  0x00000000d00004b4        0x0
+ .gnu.version_r
+                0x00000000d00004b4        0x0 ps2keyboard.o
+
+.dynsym         0x00000000d00004b4       0xa0
+ .dynsym        0x00000000d00004b4       0xa0 ps2keyboard.o
+
+.dynstr         0x00000000d0000554       0x95
+ .dynstr        0x00000000d0000554       0x95 ps2keyboard.o
+
+.hash           0x00000000d00005ec       0x3c
+ .hash          0x00000000d00005ec       0x3c ps2keyboard.o
+
+.eh_frame       0x00000000d0000628        0x0
+ .eh_frame      0x00000000d0000628        0x0 ps2keyboard.o
+ .eh_frame      0x00000000d0000628        0x0 ps2keyboard.o
+
+.rel.dyn        0x00000000d0000628       0xc8
+ .rel.plt       0x00000000d0000628        0x0 ps2keyboard.o
+ .rel.got       0x00000000d0000628        0x0 ps2keyboard.o
+ .rel.ifunc     0x00000000d0000628        0x0 ps2keyboard.o
+ .rel.text      0x00000000d0000628       0xc8 ps2keyboard.o
+
+.data           0x00000000d0001000        0x0
+ *(.data)
+ .data          0x00000000d0001000        0x0 ps2keyboard.o
+
+.dynamic        0x00000000d0001000       0x78
+ .dynamic       0x00000000d0001000       0x78 ps2keyboard.o
+                0x00000000d0001000                _DYNAMIC
+
+.got            0x00000000d0001078        0x0
+ .got           0x00000000d0001078        0x0 ps2keyboard.o
+
+.got.plt        0x00000000d0001078        0x0
+ .got.plt       0x00000000d0001078        0x0 ps2keyboard.o
+
+.data.rel.ro    0x00000000d0001078        0x0
+ .data.rel.ro   0x00000000d0001078        0x0 ps2keyboard.o
+
+.bss            0x00000000d0002000        0x5
+ *(COMMON)
+ *(.bss)
+ .bss           0x00000000d0002000        0x5 ps2keyboard.o
+                0x00000000d0002000                caps_lock_on
+                0x00000000d0002001                shift_r_held
+                0x00000000d0002002                shift_held
+                0x00000000d0002003                control_held
+                0x00000000d0002004                release_mode
+ *(.bootstrap_stack)
+
+.dynbss         0x00000000d0002005        0x0
+ .dynbss        0x00000000d0002005        0x0 ps2keyboard.o
+
+/DISCARD/
+ *(.comment)
+OUTPUT(PS2.SYS elf32-i386)

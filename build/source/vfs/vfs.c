@@ -689,9 +689,12 @@ int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out) {
 * Write data to a file.
 */
 int vfs_write(struct vnode* node, struct uio* io) {
-	if (io == NULL || io->address == NULL || !node->can_write) {
+	if (io == NULL || io->address == NULL) {
 		return EINVAL;
 	}
+    if (!node->can_write) {
+        return EBADF;
+    }
 	return vnode_op_write(node, io);
 }
 
@@ -699,9 +702,12 @@ int vfs_write(struct vnode* node, struct uio* io) {
 * Read data from the file.
 */
 int vfs_read(struct vnode* node, struct uio* io) {
-	if (io == NULL || io->address == NULL || !node->can_read) {
+	if (io == NULL || io->address == NULL) {
 		return EINVAL;
 	}
+    if (!node->can_read) {
+        return EBADF;
+    }
 
 	if (vnode_op_dirent_type(node) == DT_DIR) {
 		return EISDIR;
