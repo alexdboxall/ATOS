@@ -380,10 +380,6 @@ int thread_fork(void) {
 
     assert(thr->process != NULL);
 
-    kprintf("A\n");
-    kprintf("PROCESS = 0x%X\n", thr->process);
-    kprintf("FDTABLE = 0x%X\n", thr->process->fdtable);
-
     struct process* process = process_create_child(thr->vas, thr->process->fdtable);
 
     thr->kernel_stack_top = thread_create_kernel_stack(KERNEL_STACK_SIZE, &thr->canary_position);

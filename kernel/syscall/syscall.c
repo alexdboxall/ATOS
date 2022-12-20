@@ -12,6 +12,7 @@ int sys_open(size_t args[4]);
 int sys_read(size_t args[4]);
 int sys_write(size_t args[4]);
 int sys_close(size_t args[4]);
+int sys_lseek(size_t args[4]);
 
 void syscall_init(void) {
     memset(syscall_table, 0, sizeof(syscall_table));
@@ -22,6 +23,7 @@ void syscall_init(void) {
     syscall_table[SYSCALL_READ] = sys_read;
     syscall_table[SYSCALL_WRITE] = sys_write;
     syscall_table[SYSCALL_CLOSE] = sys_close;
+    syscall_table[SYSCALL_LSEEK] = sys_lseek;
 }
 
 /*

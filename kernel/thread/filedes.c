@@ -18,7 +18,7 @@ struct filedes_table* filedes_table_create(void) {
     spinlock_init(&table->lock, "filedes table lock");
 
     table->next_fd = 0;
-    table->entries_allocated = 64;
+    table->entries_allocated = 16;
 
     table->entries = malloc(sizeof(struct vnode*) * table->entries_allocated);
     table->offsets = malloc(sizeof(size_t) * table->entries_allocated);
@@ -42,6 +42,17 @@ struct filedes_table* filedes_table_copy(struct filedes_table* original) {
     spinlock_release(&original->lock);
     
     return new_table;
+}
+
+int filedesc_seek(struct filedes_table* table, int fd, size_t offset) {
+    spinlock_acquire(&table->lock);
+    if (fd >= table->next_fd) {
+        return NULL;
+    }
+    table->offsets[fd] = offset;
+    spinlock_release(&table->lock);
+
+    return result;
 }
 
 struct vnode* fildesc_convert_to_vnode(struct filedes_table* table, int fd, size_t* offset_out) {
@@ -70,7 +81,7 @@ int filedesc_table_register_vnode(struct filedes_table* table, struct vnode* nod
 
     if (table->next_fd >= table->entries_allocated) {
         struct vnode** new_e_table = malloc(sizeof(struct vnode*) * table->entries_allocated * 2);
-        struct vnode** new_o_table = malloc(sizeof(size_t) * table->entries_allocated * 2);
+        size_t* new_o_table = malloc(sizeof(size_t) * table->entries_allocated * 2);
 
         memcpy(new_e_table, table->entries, sizeof(struct vnode*) * table->entries_allocated);
         memcpy(new_o_table, table->offsets, sizeof(size_t) * table->entries_allocated);

@@ -7,6 +7,7 @@ enum SyscallNumber {
     SYSCALL_READ,
     SYSCALL_WRITE,
     SYSCALL_CLOSE,
+    SYSCALL_LSEEK,
 };
 
 #ifndef COMPILE_KERNEL

@@ -23,20 +23,20 @@
 *         error code        on failure
 */
 int sys_write(size_t args[4]) {
-    // TODO: are seek positions stored in vnodes? or do we need to add a field to the filedes table for it?
     size_t offset;
     struct vnode* node = fildesc_convert_to_vnode(current_cpu->current_thread->process->fdtable, args[2], &offset);
     if (node == NULL) {
         return EBADF;
     }
 
-    struct uio io = uio_construct_read_from_usermode((void*) args[0], args[1], offset);
+    struct uio io = uio_construct_read_from_usermode((void*) args[0], args[1], 0);
     int result = vfs_write(node, &io);
     if (result != 0) {
         return result;
     }
 
-    *((int*) args[3]) = args[1] - io.length_remaining;
+    struct uio io = uio_construct_write_to_usermode((int*) args[3], sizeof(int), 0);
+    size_t br = args[1] - io.length_remaining;
 
-    return 0;
+    return uio_move(&br, &io, sizeof(size_t));
 }
