@@ -45,7 +45,13 @@ off_t lseek(int fd, off_t offset, int whence) {
 *         0                 on success
 *         error code        on failure*/
 
-    off_t in_out_offset = offset;
+    off_t working_var = offset;
+    int result = _system_call(SYSCALL_LSEEK, fd, (size_t) &working_var, whence, 0);
 
-    return -1;
+    if (result != 0) {
+        errno = result;
+        return -1;
+    }
+
+    return working_var;
 }

@@ -58,7 +58,7 @@ int sys_lseek(size_t args[4]) {
         return EINVAL;
     }
 
-    int result = filedesc_seek(current_cpu->current_thread->process->fdtable, args[0], offset);
+    result = filedesc_seek(current_cpu->current_thread->process->fdtable, args[0], offset);
     if (result != 0) {
         return result;
     }

@@ -6,7 +6,7 @@ TARGET = x86
 CC = i386-banana-gcc
 FAKE_CROSS_COMPILER = -m32 -I"." -I"../../../libc/common/include" -I"../../../libc/hosted/include"
 COMPILE_FLAGS = -c -Os -fno-strict-aliasing -Wall -Wextra -Wpedantic -Werror -Wcast-align=strict -Wpointer-arith -fmax-errors=5 -std=gnu11 -ffreestanding $(FAKE_CROSS_COMPILER)
-LINK_FLAGS = -Wl,-Map=app.map -L "../../../libc/$(TARGET)" -nostartfiles -nostdlib -lgcc -lc
+LINK_FLAGS = -Wl,-Map=app.map -s -L "../../../libc/$(TARGET)" -nostartfiles -nostdlib -lgcc -lc
 
 
 COBJECTS = $(patsubst %.c, %.o, $(wildcard *.c) $(wildcard */*.c) $(wildcard */*/*.c) $(wildcard */*/*/*.c) $(wildcard **/*.c))
