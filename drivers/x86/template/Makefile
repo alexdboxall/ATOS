@@ -13,6 +13,7 @@ ASMOBJECTS = $(patsubst %.s, %.oo, $(wildcard *.s) $(wildcard */*.s) $(wildcard 
 
 build: $(COBJECTS) $(ASMOBJECTS)
 	$(CC) -T ..\..\..\source\machine\driver.ld -o $(DRIVER_NAME) $^ $(LINK_FLAGS) $(LINKER_STRIP)
+	objdump -drwC -Mintel $(DRIVER_NAME) >> disassembly.txt
 	cp $(DRIVER_NAME) ..\..\..\output\drivers
 	
 	

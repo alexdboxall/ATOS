@@ -167,6 +167,20 @@ next_sector:
 
 	call generate_memory_map
 
+
+    ; Get video mode information
+    mov ax, 0x2000
+    mov es, ax
+    mov ax, 0x4F01
+    mov cx, 0x4118
+    xor di, di
+    int 0x10
+
+    ; Set video mode
+    mov ax, 0x4F02
+    mov bx, 0x4118
+    int 0x10
+
 	; Jump to 32 bit mode.
 	lgdt [gdtr]
 	mov eax, cr0
@@ -187,12 +201,12 @@ generate_memory_map:
 	mov [es:di + 20], dword 1	; force a valid ACPI 3.X entry
 	mov ecx, 24		; ask for 24 bytes
 	int 0x15
-	jc short .failed	; carry set on first call means "unsupported function"
-	mov edx, 0x0534D4150	; Some BIOSes apparently trash this register?
-	cmp eax, edx		; on success, eax must have been reset to "SMAP"
-	jne short .failed
-	test ebx, ebx		; ebx = 0 implies list is only 1 entry long (worthless)
-	je short .failed
+	;jc short .failed	; carry set on first call means "unsupported function"
+	;mov edx, 0x0534D4150	; Some BIOSes apparently trash this register?
+	;cmp eax, edx		; on success, eax must have been reset to "SMAP"
+	;jne short .failed
+	;test ebx, ebx		; ebx = 0 implies list is only 1 entry long (worthless)
+	;je short .failed
 	jmp short .jmpin
 .e820lp:
 	mov eax, 0xe820		; eax, ecx get trashed on every int 0x15 call
@@ -218,12 +232,8 @@ generate_memory_map:
 	jne short .e820lp
 .e820f:
 	mov [0x500], bp	; store the entry count
-	clc			; there is "jc" on end of list to this point, so the carry must be cleared
-	ret
 .failed:
-	stc			; "function unsupported" error exit
 	ret
-	
 	
 
 read_sector:
@@ -302,6 +312,7 @@ skip_floppy_read:
 	popad
 
 	ret
+
 
 
 ; The GDT. We are required to have this setup before we go into 32 bit mode, as
