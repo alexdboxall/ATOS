@@ -17,8 +17,8 @@
 
 #define S_IXGRP	00010
 #define S_IWGRP	00020
-#define S_IRGPR	00040
-#define S_IRWXG (S_IXGRP | S_IWGRP | S_IRGPR)
+#define S_IRGRP	00040
+#define S_IRWXG (S_IXGRP | S_IWGRP | S_IRGRP)
 
 #define S_IXUSR	00100
 #define S_IWUSR	00200
@@ -33,12 +33,12 @@
 #define S_IWRITE S_IWUSR
 #define S_IEXEC  S_IXUSR
 
-#define S_ISBLK(m) (((m) & _TYPE_MASK) == S_IFBLK)
-#define S_ISCHR(m) (((m) & _TYPE_MASK) == S_IFCHR)
-#define S_ISDIR(m) (((m) & _TYPE_MASK) == S_IFDIR)
+#define S_ISBLK(m)  (((m) & _TYPE_MASK) == S_IFBLK)
+#define S_ISCHR(m)  (((m) & _TYPE_MASK) == S_IFCHR)
+#define S_ISDIR(m)  (((m) & _TYPE_MASK) == S_IFDIR)
 #define S_ISFIFO(m) (((m) & _TYPE_MASK) == S_IFIFO)
-#define S_ISLNK(m) (((m) & _TYPE_MASK) == S_IFLNK)
-#define S_ISREG(m) (((m) & _TYPE_MASK) == S_IFREG)
+#define S_ISLNK(m)  (((m) & _TYPE_MASK) == S_IFLNK)
+#define S_ISREG(m)  (((m) & _TYPE_MASK) == S_IFREG)
 
 #include <sys/types.h>
 

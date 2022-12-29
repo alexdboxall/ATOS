@@ -191,8 +191,8 @@ static int demofs_vnode_stat(struct vnode* node, struct stat* stat) {
     return 0;
 }
 
-static const struct vnode_operations demofs_vnode_file_ops = {
-    .check_open      = demofs_vnode_check_open,
+const struct vnode_operations demofs_vnode_file_ops = {
+    .check_open     = demofs_vnode_check_open,
     .ioctl          = demofs_vnode_ioctl,
     .is_seekable    = demofs_vnode_isseekable,
     .read           = demofs_vnode_read_file,
@@ -206,8 +206,8 @@ static const struct vnode_operations demofs_vnode_file_ops = {
     .stat           = demofs_vnode_stat,
 };
 
-static const struct vnode_operations demofs_vnode_dir_ops = {
-    .check_open      = demofs_vnode_check_open,
+const struct vnode_operations demofs_vnode_dir_ops = {
+    .check_open     = demofs_vnode_check_open,
     .ioctl          = demofs_vnode_ioctl,
     .is_seekable    = demofs_vnode_isseekable,
     .read           = demofs_vnode_read_dir,
@@ -220,6 +220,7 @@ static const struct vnode_operations demofs_vnode_dir_ops = {
     .readdir        = demofs_vnode_readdir_dir,
     .stat           = demofs_vnode_stat,
 };
+
 
 int demofs_root_creator(struct vnode* raw_device, struct vnode** out) {
     (void) raw_device;

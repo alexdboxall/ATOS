@@ -169,7 +169,7 @@ next_sector:
 
 
     ; Get video mode information
-    mov ax, 0x2000
+    mov ax, 0x7000 
     mov es, ax
     mov ax, 0x4F01
     mov cx, 0x4118
@@ -447,8 +447,7 @@ start_protected_mode:
 	call enable_a20
 	call create_multiboot_tables
 	call load_elf
-	
-	
+		
 	; Point the kernel to the multiboot table
 	mov ebx, 0x7E000
 
@@ -544,15 +543,27 @@ load_elf:
 	mov ecx, edi
 	mov edi, eax
 	and edi, 0x0FFFFFFF
+
+    mov eax, edi
+    call write_hex
+
+    mov eax, esi
+    call write_hex
+
+    mov eax, ecx
+    call write_hex
+
+    mov eax, edx
+    call write_hex
+
 	rep movsb
 	popad
 
 	pushad
 	mov ecx, edx
-	mov al, 0
-	mov ecx, edi
-	add edi, eax
+	add edi, eax        ;add addr and size together to get where the zeros should start
 	and edi, 0x0FFFFFFF
+    mov al, 0
 	rep stosb
 	popad
 
@@ -625,5 +636,35 @@ create_multiboot_tables:
 
 	ret
 
+
+write_hex:
+    pushad
+
+    mov esi, eax
+    mov ebx, hex_chars
+
+    mov edi, [cur_y]
+    add edi, 0xB8000
+
+    mov ecx, 8
+.restart:
+    rol esi, 4
+    mov eax, esi
+    and al, 0xF
+    xlat
+
+    mov [edi], al
+    inc edi
+    mov [edi], byte 0x07
+    inc edi
+    
+    loop .restart
+
+    add [cur_y], dword 40
+    popad
+    ret
+
+cur_y dd 0
+hex_chars db "0123456789ABCDEF"
 
 times (512 * 8) - ($-$$) db 0

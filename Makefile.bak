@@ -25,6 +25,7 @@ release_compile:
 	# we can't set LINKER_STRIP=-s, as it removes .symtab and .strtab, which we need
 	
 common_header:
+	/usr/bin/find $(KERNEL_DIR) -type f -name '*.o' -delete
 	rm -r $(ROOT_BUILD_DIR) || true
 	rm -r $(SYSROOT)/System || true
 	mkdir $(SYSROOT)/System
@@ -57,7 +58,7 @@ common_footer:
 app_header:
 	mkdir $(BUILD_APP_SOURCE_DIR)
 	mkdir $(BUILD_OUTPUT_DIR)/applications
-	cp -r $(DRIVER_DIR)/* $(BUILD_APP_SOURCE_DIR)
+	cp -r $(APP_DIR)/* $(BUILD_APP_SOURCE_DIR)
 
 app_all:
 	for dir in $(wildcard ./$(BUILD_APP_SOURCE_DIR)/*/.); do \

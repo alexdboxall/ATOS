@@ -1,0 +1,100 @@
+
+Discarded input sections
+
+ .comment       0x0000000000000000       0x12 main.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD main.o
+LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a
+                0x00000000d0000000                . = 0xd0000000
+
+.text           0x00000000d0000000      0x294
+ *(.text)
+ .text          0x00000000d0000000      0x294 main.o
+                0x00000000d000016c                _driver_entry_point
+ *(.rodata)
+ *(.symtab)
+ *(.strtab)
+
+.plt            0x00000000d00002a0        0x0
+ .plt           0x00000000d00002a0        0x0 main.o
+
+.plt.got        0x00000000d0000298        0x0
+ .plt.got       0x00000000d0000298        0x0 main.o
+
+.rodata.str1.1  0x00000000d0000294       0x29
+ .rodata.str1.1
+                0x00000000d0000294       0x29 main.o
+                                         0x2a (size before relaxing)
+
+.eh_frame       0x00000000d00002c0       0xbc
+ .eh_frame      0x00000000d00002c0       0xbc main.o
+
+.gnu.version_d  0x00000000d000037c        0x0
+ .gnu.version_d
+                0x00000000d000037c        0x0 main.o
+
+.gnu.version    0x00000000d000037c        0x0
+ .gnu.version   0x00000000d000037c        0x0 main.o
+
+.gnu.version_r  0x00000000d000037c        0x0
+ .gnu.version_r
+                0x00000000d000037c        0x0 main.o
+
+.dynsym         0x00000000d000037c      0x140
+ .dynsym        0x00000000d000037c      0x140 main.o
+
+.dynstr         0x00000000d00004bc      0x124
+ .dynstr        0x00000000d00004bc      0x124 main.o
+
+.hash           0x00000000d00005e0       0x9c
+ .hash          0x00000000d00005e0       0x9c main.o
+
+.eh_frame       0x00000000d000067c        0x0
+ .eh_frame      0x00000000d000067c        0x0 main.o
+ .eh_frame      0x00000000d000067c        0x0 main.o
+
+.rel.dyn        0x00000000d000067c      0x118
+ .rel.plt       0x00000000d000067c        0x0 main.o
+ .rel.got       0x00000000d000067c        0x0 main.o
+ .rel.ifunc     0x00000000d000067c        0x0 main.o
+ .rel.text      0x00000000d000067c      0x118 main.o
+
+.data           0x00000000d0001000     0x1008
+ *(.data)
+ .data          0x00000000d0001000     0x1008 main.o
+                0x00000000d0001000                terminal_font
+                0x00000000d0002000                SCREEN_HEIGHT
+                0x00000000d0002004                SCREEN_WIDTH
+
+.dynamic        0x00000000d0002008       0x78
+ .dynamic       0x00000000d0002008       0x78 main.o
+                0x00000000d0002008                _DYNAMIC
+
+.got            0x00000000d0002080        0x0
+ .got           0x00000000d0002080        0x0 main.o
+
+.got.plt        0x00000000d0002080        0x0
+ .got.plt       0x00000000d0002080        0x0 main.o
+
+.data.rel.ro    0x00000000d0002080        0x0
+ .data.rel.ro   0x00000000d0002080        0x0 main.o
+
+.bss            0x00000000d0003000        0xc
+ *(COMMON)
+ *(.bss)
+ .bss           0x00000000d0003000        0xc main.o
+ *(.bootstrap_stack)
+
+.dynbss         0x00000000d000300c        0x0
+ .dynbss        0x00000000d000300c        0x0 main.o
+
+/DISCARD/
+ *(.comment)
+OUTPUT(VESACON.SYS elf32-i386)

@@ -50,7 +50,6 @@ align 4096
 boot_page_directory: resb 4096
 boot_page_table1: resb 4096
 
-
 ; The start of the kernel itself - this will be called by the bootloader
 ; We must place it in a special section so it appears at the start of the binary
 ;
@@ -123,12 +122,24 @@ _start:
 
 section .text
 
+global vesa_pitch
+global vesa_width
+global vesa_height
+global vesa_depth
+global vesa_framebuffer
+
+vesa_depth db 0
+vesa_framebuffer dd 0
+vesa_width dw 0
+vesa_height dw 0
+vesa_pitch dw 0
+
 global x86_grub_table
 x86_grub_table dd 0
 
 ; The proper entry point of the kernel. Assumes the kernel is mapped into memory
 ; at 0xC0100000.
-kernel_entry_point:
+kernel_entry_point:    
     ; GRUB puts the address of a table in EBX, which we must use to find the
 	; memory table. Note that we haven't trashed EBX up until this point.
 
@@ -136,6 +147,21 @@ kernel_entry_point:
     ; (which atm is only the case when it is below 1MB).
 	mov [x86_grub_table], ebx
 
+    ; Grab the video data the bootloader put into memory.
+    mov ax, [0x70000 + 16]
+    mov [vesa_pitch], ax
+
+    mov ax, [0x70000 + 18]
+    mov [vesa_width], ax
+
+    mov ax, [0x70000 + 20]
+    mov [vesa_height], ax
+
+    mov al, [0x70000 + 25]
+    mov [vesa_depth], al
+
+    mov eax, [0x70000 + 40]
+    mov [vesa_framebuffer], eax
 
     ; TODO: map grub table into low memory
 

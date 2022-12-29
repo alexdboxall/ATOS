@@ -5,3 +5,4 @@
 */
 
 void kprintf(const char* format, ...);
+void kprintfnv(const char* format, ...);

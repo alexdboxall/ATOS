@@ -21,29 +21,13 @@
 #include <thread.h>
 #include <fs/demofs/demofs.h>
 
-void fault_tester(void* arg) {
-    (void) arg;
-
-    kprintf("result is %d\n", 1 / ((size_t) arg));
-
-    while (true) {
-        kprintf("... ");
-    }
-}
-
-void terminate_test(void* arg) {
-    (void) arg;
-
-    thread_terminate();
-}
-
-void fake_shell(void* arg) {
+void basic_shell(void* arg) {
 	(void) arg;
 
 	kprintf("\n ATOS Kernel\n     Copyright Alex Boxall 2022\n\n");
 
 	/*
-	* Just pretend to launch into a command line shell.
+	* Just launch into a very basic command line shell.
 	*/
 	while (1) {
         kprintf(">");
@@ -123,38 +107,9 @@ void fake_shell(void* arg) {
                 thread_sleep(1);
             }
 
-        } else if (!strcmp(buffer, "fault")) {
-            thread_create(fault_tester, NULL, vas_get_current_vas());
-			continue;
-
-        } else if (!strcmp(buffer, "eat")) {
-            size_t p = phys_allocate_page();
-            (void) p;
-			continue;
-
-        } else if (!strcmp(buffer, "eat mid")) {
-            for (int i = 0; i < 16; ++i) {
-                size_t p = phys_allocate_page();
-                (void) p;
-            }
-            
-			continue;
-
-        } else if (!strcmp(buffer, "eat lots")) {
-            for (int i = 0; i < 64; ++i) {
-                size_t p = phys_allocate_page();
-                (void) p;
-            }
-            
-			continue;
-
         } else if (!strcmp(buffer, "user")) {
             struct process* p = process_create();
             process_create_thread(p, thread_execute_in_usermode, NULL);
-            continue;
-            
-        } else if (!strcmp(buffer, "terminate")) {
-            thread_create(terminate_test, NULL, vas_get_current_vas());
             continue;
 
 		} else if (!strcmp(buffer, "restart")) {
@@ -174,7 +129,7 @@ void fake_shell(void* arg) {
 void kernel_main()
 {
 	/*
-	* The order in which subsystems are initialised in is critical. Systems should
+	* The order in which subsystems are initialised in is crucial. Systems should
 	* be initialised in order of least dependent on other systems to most dependent.
 	*/
 
@@ -203,7 +158,7 @@ void kernel_main()
 	test_kernel();
 #endif
 
-    process_create_thread(process_create(), fake_shell, NULL);
+    process_create_thread(process_create(), basic_shell, NULL);
 
 	/*
 	* We ought not run anything else in this bootstrap thread,

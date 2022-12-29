@@ -110,3 +110,74 @@ void kprintf(const char* format, ...)
 
 	va_end(list);
 }
+
+
+
+
+
+
+
+
+
+static void logcnv(char c)
+{	
+	while ((inb(0x3F8 + 5) & 0x20) == 0) {
+		;
+	}
+	outb(0x3F8, c);
+}
+
+static void logsnv(char* a)
+{
+	while (*a) logcnv(*a++);
+}
+
+static void log_intnv(uint32_t i, int base)
+{
+	char str[12];
+    convert_int_to_string(i, str, base);
+	logsnv(str);
+}
+
+void kprintfnv(const char* format, ...)
+{
+	if (format == NULL) {
+		kprintfnv("<< kprintf called with format == NULL >>\n");
+	}
+
+	va_list list;
+	va_start(list, format);
+	int i = 0;
+
+	while (format[i]) {
+		if (format[i] == '%') {
+			switch (format[++i]) {
+			case '%': 
+				logcnv('%'); break;
+			case 'c':
+				logcnv(va_arg(list, int)); break;
+			case 's': 
+				logsnv(va_arg(list, char*)); break;
+			case 'd': 
+				log_intnv(va_arg(list, signed), 10); break;
+			case 'x':
+			case 'X': 
+				log_intnv(va_arg(list, unsigned), 16); break;
+			case 'l':
+			case 'L': 
+				log_intnv(va_arg(list, unsigned long long), 16); break;
+			case 'u':
+				log_intnv(va_arg(list, unsigned), 10); break;
+			default: 
+				logcnv('%'); 
+				logcnv(format[i]);
+				break;
+			}
+		} else {
+			logcnv(format[i]);
+		}
+		i++;
+	}
+
+	va_end(list);
+}

@@ -25,6 +25,8 @@ release_compile:
 	# we can't set LINKER_STRIP=-s, as it removes .symtab and .strtab, which we need
 	
 common_header:
+	/usr/bin/find $(KERNEL_DIR) -type f -name '*.o' -delete
+	/usr/bin/find ./libc -type f -name '*.o' -delete
 	rm -r $(ROOT_BUILD_DIR) || true
 	rm -r $(SYSROOT)/System || true
 	mkdir $(SYSROOT)/System
