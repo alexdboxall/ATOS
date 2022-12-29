@@ -7,6 +7,7 @@
 #include <arch.h>
 #include <virtual.h>
 #include <physical.h>
+#include <assert.h>
 
 bool is_elf_valid(struct Elf32_Ehdr* header) {
     /*
@@ -45,23 +46,19 @@ static size_t elf_load_program_headers(void* data, size_t relocation_point, bool
 
 		if (type == PHT_LOAD) {
 			if (!relocate) {
-                size_t num_pages = virt_bytes_to_pages(size);
-                size_t num_zero_pages = virt_bytes_to_pages(num_zero_bytes);
-                
-                for (size_t i = 0; i < num_pages; ++i) {
-                    size_t phys_addr = phys_allocate_page();
-                    vas_map(vas_get_current_vas(), phys_addr, address + (i * ARCH_PAGE_SIZE), VAS_FLAG_USER | VAS_FLAG_WRITABLE | VAS_FLAG_PRESENT);
+                assert(address % ARCH_PAGE_SIZE == 0);
+
+                size_t total_pages = virt_bytes_to_pages(size + num_zero_bytes);
+
+                for (size_t i = 0; i < total_pages; ++i) {
+                    vas_reflag(vas_get_current_vas(), address + (i * ARCH_PAGE_SIZE), VAS_FLAG_USER | VAS_FLAG_WRITABLE | VAS_FLAG_ALLOCATE_ON_ACCESS);
                 }
                 vas_flush_tlb();
 
                 memcpy((void*) address, (const void*) addToVoidPointer(data, offset), size);
 
-                for (size_t i = 0; i < num_zero_pages; ++i) {
-                    vas_reflag(vas_get_current_vas(), address + size + (i * ARCH_PAGE_SIZE), VAS_FLAG_USER | VAS_FLAG_WRITABLE | VAS_FLAG_ALLOCATE_ON_ACCESS);
-                }
-
-                if (address + size > sbrk_address) {
-                    sbrk_address = address + size;
+                if (address + total_pages * ARCH_PAGE_SIZE > sbrk_address) {
+                    sbrk_address = address + total_pages * ARCH_PAGE_SIZE;
                 }
             
 			} else {

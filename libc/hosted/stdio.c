@@ -28,6 +28,13 @@ struct FILE {
     volatile int lock_owner;
 };
 
+/*
+* These will be initialised in _start
+*/
+FILE* stdin;
+FILE* stdout;
+FILE* stderr;
+
 static FILE* fopen_existing_stream(const char* filename, const char* mode, FILE* stream) {
     /*
     * This function requires that the lock is already set, and that the caller
@@ -361,16 +368,8 @@ int getc(FILE* stream) {
 }
 
 int getchar(void) {
-    // TODO:
-    return 0; //return fgetc(stdin);
+    return fgetc(stdin);
 }
-
-
-
-/*
-size_t lock_count;
-    int lock_owner;*/
-
 
 
 int ftrylockfile(FILE* stream) {

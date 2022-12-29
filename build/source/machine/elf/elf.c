@@ -7,6 +7,7 @@
 #include <arch.h>
 #include <virtual.h>
 #include <physical.h>
+#include <assert.h>
 
 bool is_elf_valid(struct Elf32_Ehdr* header) {
     /*
@@ -45,8 +46,40 @@ static size_t elf_load_program_headers(void* data, size_t relocation_point, bool
 
 		if (type == PHT_LOAD) {
 			if (!relocate) {
-                size_t num_pages = virt_bytes_to_pages(size);
-                size_t num_zero_pages = virt_bytes_to_pages(num_zero_bytes);
+                /*
+                * Cases can arise where part of a page is set as code/data, and part of it is set
+                * as being null. To deal with this, we will just zero out the rest of the final page,
+                * and round the address up to the next page.
+                */
+
+                assert(address % ARCH_PAGE_SIZE == 0);
+
+                /*
+                * TODO: maybe rewrite this section such that you:
+                *       -> set everything (including code/data) allocate on write
+                *       -> then just load the code/data (which will then cause allocation)
+                *       -> this resolves the partial page problem more cleanly too, as
+                *          the code/data page would have been allocated via allocate on write,
+                *          and thus would have zeros in the latter part
+                */
+
+                size_t total_pages = virt_bytes_to_pages(size + num_zero_bytes);
+
+                for (size_t i = 0; i < total_pages; ++i) {
+                    vas_reflag(vas_get_current_vas(), address + (i * ARCH_PAGE_SIZE), VAS_FLAG_USER | VAS_FLAG_WRITABLE | VAS_FLAG_ALLOCATE_ON_ACCESS);
+                }
+                vas_flush_tlb();
+
+                memcpy((void*) address, (const void*) addToVoidPointer(data, offset), size);
+
+                if (address + total_pages * ARCH_PAGE_SIZE > sbrk_address) {
+                    sbrk_address = address + total_pages * ARCH_PAGE_SIZE;
+                }
+
+                /*size_t num_pages = virt_bytes_to_pages(size);
+                size_t zero_bytes_in_final_page = (ARCH_PAGE_SIZE - (size % ARCH_PAGE_SIZE)) % ARCH_PAGE_SIZE;
+                size_t effective_zero_bytes = num_zero_bytes - zero_bytes_in_final_page;
+                size_t num_zero_pages = effective_zero_bytes <= 0 ? 0 : virt_bytes_to_pages(effective_zero_bytes);
                 
                 for (size_t i = 0; i < num_pages; ++i) {
                     size_t phys_addr = phys_allocate_page();
@@ -55,14 +88,21 @@ static size_t elf_load_program_headers(void* data, size_t relocation_point, bool
                 vas_flush_tlb();
 
                 memcpy((void*) address, (const void*) addToVoidPointer(data, offset), size);
+                
+                if (zero_bytes_in_final_page != 0) {
+                    assert((address + size - zero_bytes_in_final_page) % ARCH_PAGE_SIZE == 0);
+                    memset((void*) (address + size - zero_bytes_in_final_page), 0, ARCH_PAGE_SIZE);
+                }
 
+                size_t zero_page_start_address = address + num_pages * ARCH_PAGE_SIZE;
+                 
                 for (size_t i = 0; i < num_zero_pages; ++i) {
-                    vas_reflag(vas_get_current_vas(), address + size + (i * ARCH_PAGE_SIZE), VAS_FLAG_USER | VAS_FLAG_WRITABLE | VAS_FLAG_ALLOCATE_ON_ACCESS);
+                    vas_reflag(vas_get_current_vas(), zero_page_start_address + (i * ARCH_PAGE_SIZE), VAS_FLAG_USER | VAS_FLAG_WRITABLE | VAS_FLAG_ALLOCATE_ON_ACCESS);
                 }
 
-                if (address + size > sbrk_address) {
-                    sbrk_address = address + size;
-                }
+                if (zero_page_start_address + num_zero_pages * ARCH_PAGE_SIZE > sbrk_address) {
+                    sbrk_address = zero_page_start_address + num_zero_pages * ARCH_PAGE_SIZE;
+                }*/
             
 			} else {
 				memcpy((void*) (address + relocation_point - base_point), (const void*) addToVoidPointer(data, offset), size);

@@ -570,6 +570,8 @@ int x86_handle_page_fault(struct x86_regs* regs) {
 
     spinlock_acquire(&current_cpu->current_vas->lock);
 
+    kprintf("PF (cr2 = 0x%X, eip = 0x%X, err = 0x%X)\n", virt_addr, regs->eip, regs->err_code);
+
 	size_t* entry = x86_get_entry(current_cpu->current_vas, virt_addr, false);
 
 	/*
@@ -597,8 +599,6 @@ int x86_handle_page_fault(struct x86_regs* regs) {
         spinlock_release(&current_cpu->current_vas->lock);
         return 0;
 	} 
-
-    kprintf("PF (cr2 = 0x%X, eip = 0x%X, err = 0x%X)\n", virt_addr, regs->eip, regs->err_code);
 
     if (*entry & x86_PAGE_LOCKED) {
 		kprintf("x86_PAGE_LOCKED (cr2 = 0x%X, eip = 0x%X, err = 0x%X)\n", virt_addr, regs->eip, regs->err_code);

@@ -5,6 +5,9 @@
 #include <stdio.h>
 
 void _start() {
+    int fd = open("con:", O_WRONLY, 0);
+    write(fd, "Hello world from usermode!", 27);
+
     FILE* f = fopen("con:", "w");
     for (int i = 0; "Hello world from usermode!"[i]; ++i) {
         fputc("Hello world from usermode!"[i], f);

@@ -3,6 +3,7 @@
 #include <errno.h>
 #include <syscall.h>
 #include <syscallnum.h>
+#include <kprintf.h>
 
 int (*syscall_table[SYSCALL_TABLE_SIZE])(size_t args[4]);
 
@@ -37,6 +38,9 @@ int syscall_perform(int call_number, size_t args[4]) {
     if (syscall_table[call_number] == NULL) {
         return ENOSYS;
     }
+
+    kprintf("SYSCALL %d: 0x%X, 0x%X, 0x%X 0x%X\n", call_number,
+        args[0], args[1], args[2], args[3]);
     
     return syscall_table[call_number](args);
 }

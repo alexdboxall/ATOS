@@ -13,6 +13,10 @@
 struct FILE;
 typedef struct FILE FILE;
 
+extern FILE* stdin;
+extern FILE* stdout;
+extern FILE* stderr;
+
 FILE* fopen(const char* filename, const char* mode);
 FILE* freopen(const char* filename, const char* mode, FILE* stream);
 int fclose(FILE* stream);
