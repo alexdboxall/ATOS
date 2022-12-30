@@ -3,6 +3,8 @@
 #include <syscallnum.h>
 #include <errno.h>
 #include <stdint.h>
+#include <stdbool.h>
+#include <stdio.h>
 
 uint64_t rand_seed = 1;
 
@@ -13,6 +15,21 @@ int rand(void) {
 
 void srand(unsigned int seed) {
     rand_seed = seed;
+}
+
+_Noreturn void exit(int status) {
+    fflush(NULL);
+
+    // TODO: close all files
+
+    // TODO: atexit handlers
+
+    // TODO: tell the system to terminate the process with status 'status'
+    (void) status;
+
+    while (true) {
+        _system_call(SYSCALL_YIELD, 0, 0, 0, 0);  
+    }
 }
 
 void* malloc(size_t size) {

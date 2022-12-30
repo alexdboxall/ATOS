@@ -64,6 +64,7 @@ void random_init(void) {
     dev.io = random_io;
     dev.check_open = interface_check_open_not_needed;
     dev.ioctl = interface_ioctl_not_needed;
+    dev.is_tty = 0;
 
     vfs_add_device(&dev, "rand");
 }

@@ -53,6 +53,8 @@ struct std_device_interface
 	int (*ioctl)(struct std_device_interface* dev, int request, void* arg);
 	int (*io)(struct std_device_interface* dev, struct uio* trans);
 
+    int is_tty;
+    
 	blkcnt_t num_blocks;
 	blksize_t block_size;
 

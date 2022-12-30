@@ -29,6 +29,12 @@ static int demofs_vnode_ioctl(struct vnode* node, int command, void* buffer) {
     return ENOSYS;
 }
 
+static int demofs_vnode_istty(struct vnode* node) {
+    (void) node;
+    
+    return 0;
+}
+
 static bool demofs_vnode_isseekable(struct vnode* node) {
     (void) node;
     
@@ -195,6 +201,7 @@ const struct vnode_operations demofs_vnode_file_ops = {
     .check_open     = demofs_vnode_check_open,
     .ioctl          = demofs_vnode_ioctl,
     .is_seekable    = demofs_vnode_isseekable,
+    .is_tty         = demofs_vnode_istty,
     .read           = demofs_vnode_read_file,
     .write          = demofs_vnode_write,
     .close          = demofs_vnode_close,
@@ -210,6 +217,7 @@ const struct vnode_operations demofs_vnode_dir_ops = {
     .check_open     = demofs_vnode_check_open,
     .ioctl          = demofs_vnode_ioctl,
     .is_seekable    = demofs_vnode_isseekable,
+    .is_tty         = demofs_vnode_istty,
     .read           = demofs_vnode_read_dir,
     .write          = demofs_vnode_write,
     .close          = demofs_vnode_close,

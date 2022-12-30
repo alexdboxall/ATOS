@@ -274,6 +274,7 @@ void console_init(void) {
     dev.io = console_io;
     dev.check_open = interface_check_open_not_needed;
     dev.ioctl = interface_ioctl_not_needed;
+    dev.is_tty = 1;
 
     input_buffer = adt_blocking_byte_buffer_create(INPUT_BUFFER_SIZE);
 

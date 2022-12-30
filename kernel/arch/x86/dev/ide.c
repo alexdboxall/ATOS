@@ -311,6 +311,7 @@ void ide_initialise(void) {
     data->transfer_buffer = malloc(4096);
     dev.data = data;
 
+    dev.is_tty = 0;
     dev.block_size = 512;
     dev.num_blocks = ide_get_num_sectors(data->disk_num);
     dev.io = ide_io;

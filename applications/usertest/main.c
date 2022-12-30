@@ -1,14 +1,14 @@
 
-#include <syscallnum.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
-void _start() {
-    stdout = fopen("con:", "w");
-    setvbuf(stdout, NULL, _IOLBF, 64);
+int main(int argc, char** argv) {
+    (void) argc;
+    (void) argv;
 
     FILE* f = fopen("con:", "w");
     fputs("Hello world from usermode!\n", f);
@@ -138,13 +138,11 @@ EXPECTED
     while ((ch = fgetc(stream)) != EOF) {
         printf("Got %c\n", ch);
     }
-    fclose(stream);
+    fclose(stream); 
 
     char test_buffer[50];
     sprintf(test_buffer, "\nHello from sprintf!\n");
     fputs(test_buffer, stdout);
 
-    while (1) {
-        _system_call(SYSCALL_YIELD, 0, 0, 0, 0);
-    }
+    return 0;
 }

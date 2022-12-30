@@ -47,6 +47,12 @@ static bool dev_isseekable(struct vnode* node) {
     return node->dev->block_size != 0;
 }
 
+static int dev_istty(struct vnode* node) {
+    assert(node != NULL && node->dev != NULL);
+
+    return node->dev->is_tty;
+}
+
 static int dev_read(struct vnode* node, struct uio* io) {
     assert(node != NULL && node->dev != NULL && node->dev->io != NULL);  
     assert(io->direction == UIO_READ);
@@ -141,9 +147,10 @@ static int dev_readdir(struct vnode* node, struct uio* io) {
 }
 
 static const struct vnode_operations dev_ops = {
-    .check_open      = dev_check_open,
+    .check_open     = dev_check_open,
     .ioctl          = dev_ioctl,
     .is_seekable    = dev_isseekable,
+    .is_tty         = dev_istty,
     .read           = dev_read,
     .write          = dev_write,
     .close          = dev_close,

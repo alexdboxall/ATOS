@@ -71,7 +71,7 @@ struct vnode_operations {
     int (*create)(struct vnode* node, struct vnode** out, const char* name, int flags, mode_t mode);
     int (*follow)(struct vnode* node, struct vnode** out, const char* name);
     int (*stat)(struct vnode* node, struct stat* st);
-
+    int (*is_tty)(struct vnode* node);
 
     bool (*is_seekable)(struct vnode* node);
     uint8_t (*dirent_type)(struct vnode* node);
@@ -111,6 +111,7 @@ int vnode_op_readdir(struct vnode* node, struct uio* io);
 int vnode_op_write(struct vnode* node, struct uio* io);
 int vnode_op_ioctl(struct vnode* node, int command, void* buffer);
 bool vnode_op_is_seekable(struct vnode* node);
+int vnode_op_is_tty(struct vnode* node);
 int vnode_op_close(struct vnode* node);
 int vnode_op_truncate(struct vnode* node, off_t offset);
 uint8_t vnode_op_dirent_type(struct vnode* node);

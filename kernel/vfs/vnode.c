@@ -57,6 +57,7 @@ void vnode_check(struct vnode* node) {
     assert(node->ops.write != NULL);
     assert(node->ops.ioctl != NULL);
     assert(node->ops.is_seekable != NULL);
+    assert(node->ops.is_tty != NULL);
     assert(node->ops.close != NULL);
     assert(node->ops.create != NULL);
     assert(node->ops.stat != NULL);
@@ -145,6 +146,11 @@ int vnode_op_ioctl(struct vnode* node, int command, void* buffer) {
 bool vnode_op_is_seekable(struct vnode* node) {
     vnode_check(node);
     return node->ops.is_seekable(node);
+}
+
+int vnode_op_is_tty(struct vnode* node) {
+    vnode_check(node);
+    return node->ops.is_tty(node);
 }
 
 int vnode_op_close(struct vnode* node) {

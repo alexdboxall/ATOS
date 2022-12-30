@@ -2,6 +2,16 @@
 #include <errno.h>
 #include <syscallnum.h>
 
+int isatty(int fd) {
+    int result = _system_call(SYSCALL_ISATTY, fd, 0, 0, 0);
+    if (result == 0) {
+        return 1;
+    }
+
+    errno = result;
+    return 0;
+}
+
 int close(int fd) {
     int result = _system_call(SYSCALL_CLOSE, fd, 0, 0, 0);
 

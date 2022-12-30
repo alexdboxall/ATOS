@@ -8,6 +8,7 @@
 
 #include <sys/types.h>
 
+int isatty(int fd);
 int close(int fd);
 
 ssize_t read(int fd, void* buffer, size_t size);

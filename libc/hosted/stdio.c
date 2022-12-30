@@ -129,8 +129,11 @@ static FILE* fopen_existing_stream(const char* filename, const char* mode, FILE*
         return NULL;
     }
 
-    /* TODO: if we are outputting (i.e. write mode) call istty, and if so, set to _IOLBF */
-    stream->buffer_mode = _IOFBF;
+    if ((flags & O_WRONLY) && isatty(fd)) {
+        stream->buffer_mode = _IOLBF;
+    } else {
+        stream->buffer_mode = _IOFBF;
+    }
 
     stream->fd = fd;
     return stream;
@@ -336,14 +339,13 @@ int setvbuf(FILE* stream, char* buf, int mode, size_t size) {
 }
 
 int fflush(FILE* stream) {
-    flockfile(stream);
-
     if (stream == NULL) {
         // TODO: flush all open buffers
         errno = ENOSYS;
-        funlockfile(stream);
         return EOF;
     }
+
+    flockfile(stream);
 
     if (stream->buffer_direction == BUFFER_DIR_UNSET) {
         funlockfile(stream);

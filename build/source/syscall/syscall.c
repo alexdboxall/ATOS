@@ -15,6 +15,7 @@ int sys_write(size_t args[4]);
 int sys_close(size_t args[4]);
 int sys_lseek(size_t args[4]);
 int sys_sbrk(size_t args[4]);
+int sys_isatty(size_t args[4]);
 
 void syscall_init(void) {
     memset(syscall_table, 0, sizeof(syscall_table));
@@ -27,6 +28,7 @@ void syscall_init(void) {
     syscall_table[SYSCALL_CLOSE] = sys_close;
     syscall_table[SYSCALL_LSEEK] = sys_lseek;
     syscall_table[SYSCALL_SBRK] = sys_sbrk;
+    syscall_table[SYSCALL_ISATTY] = sys_isatty;
 }
 
 /*

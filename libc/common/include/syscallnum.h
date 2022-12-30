@@ -9,6 +9,7 @@ enum SyscallNumber {
     SYSCALL_CLOSE,
     SYSCALL_LSEEK,
     SYSCALL_SBRK,
+    SYSCALL_ISATTY,
 };
 
 #ifndef COMPILE_KERNEL

@@ -34,7 +34,9 @@
 									//			is often the same thing as EWOULDBLOCK
 #define EFAULT          19          // Hardware interrupt / fault, etc.
 #define EBADF           20          // Bad file descriptor
-
+#define ENOTTY          21          // Not a terminal
+#define ERANGE          22          // Result of out range
+#define EILSEQ          23          // Illegal byte sequence
 
 #ifndef COMPILE_KERNEL
 
