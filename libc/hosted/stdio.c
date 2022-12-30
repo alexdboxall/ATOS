@@ -323,6 +323,14 @@ int setvbuf(FILE* stream, char* buf, int mode, size_t size) {
 
     stream->buffer_needs_freeing = buf == NULL;
 
+    /*
+    * We are allowed to increase the buffer size (and we must if someone
+    * passes 0, expecting this increase, such as setlinebuf).
+    */
+    if (size < 32) {
+        size = 32;
+    }
+
     if (buf == NULL) {
         stream->buffer = malloc(size + 1);
     } else {
@@ -338,9 +346,22 @@ int setvbuf(FILE* stream, char* buf, int mode, size_t size) {
     return 0;
 }
 
+
+void setbuffer(FILE* stream, char* buf, size_t size) {
+    setvbuf(stream, buf, buf ? _IOFBF : _IONBF, BUFSIZ);
+}
+
+void setbuf(FILE* stream, char* buf) {
+    setbuffer(stream, buf, BUFSIZ);
+}
+
+void setlinebuf(FILE* stream) {
+    setvbuf(stream, NULL, _IOLBF, 0);
+}
+
 int fflush(FILE* stream) {
     if (stream == NULL) {
-        // TODO: flush all open buffers
+        // TODO: flush all open streams
         errno = ENOSYS;
         return EOF;
     }
@@ -525,6 +546,22 @@ int fputs(const char* s, FILE* stream) {
     }
     funlockfile(stream);
     return 0;
+}
+
+int puts(const char* s) {
+    int status = fputs(s, stdout);
+    if (status < 0) {
+        return EOF;
+    }
+    return fputc('\n', stdout);
+}
+
+int putc(int c, FILE* stream) {
+    return fputc(c, stream);
+}
+
+int putchar(int c) {
+    return putc(c, stdout);
 }
 
 int fileno(FILE* stream) {

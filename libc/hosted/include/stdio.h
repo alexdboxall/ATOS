@@ -44,11 +44,18 @@ int getchar(void);
 int ungetc(int c, FILE* stream);
 
 int fputs(const char* s, FILE* stream);
+int puts(const char* s);
+int putc(int c, FILE* stream);
+int putchar(int c);
+
 int fflush(FILE* stream);
 
 int fileno(FILE* stream);
 
 int setvbuf(FILE* stream, char* buf, int mode, size_t size);
+void setbuf(FILE* stream, char* buf);
+void setbuffer(FILE* stream, char* buf, size_t size);
+void setlinebuf(FILE* stream);
 
 int vfprintf(FILE* stream, const char* format, va_list ap);
 int vsnprintf(char* str, size_t size, const char* format, va_list ap);

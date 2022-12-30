@@ -221,164 +221,164 @@ LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/li
  .text.setvbuf  0x0000000010000a52       0x91 ../../../libc/x86/libc.a(stdio.o)
                 0x0000000010000a52                setvbuf
 
-.text.fflush    0x0000000010000ae3       0xa3
- .text.fflush   0x0000000010000ae3       0xa3 ../../../libc/x86/libc.a(stdio.o)
+.text.fflush    0x0000000010000ae3       0xa7
+ .text.fflush   0x0000000010000ae3       0xa7 ../../../libc/x86/libc.a(stdio.o)
                 0x0000000010000ae3                fflush
 
-.text.fclose    0x0000000010000b86       0x74
- .text.fclose   0x0000000010000b86       0x74 ../../../libc/x86/libc.a(stdio.o)
-                0x0000000010000b86                fclose
+.text.fclose    0x0000000010000b8a       0x74
+ .text.fclose   0x0000000010000b8a       0x74 ../../../libc/x86/libc.a(stdio.o)
+                0x0000000010000b8a                fclose
 
-.text.fputc     0x0000000010000bfa      0x10c
- .text.fputc    0x0000000010000bfa      0x10c ../../../libc/x86/libc.a(stdio.o)
-                0x0000000010000bfa                fputc
+.text.fputc     0x0000000010000bfe      0x10c
+ .text.fputc    0x0000000010000bfe      0x10c ../../../libc/x86/libc.a(stdio.o)
+                0x0000000010000bfe                fputc
 
-.text.fgetc     0x0000000010000d06       0x95
- .text.fgetc    0x0000000010000d06       0x95 ../../../libc/x86/libc.a(stdio.o)
-                0x0000000010000d06                fgetc
+.text.fgetc     0x0000000010000d0a       0x95
+ .text.fgetc    0x0000000010000d0a       0x95 ../../../libc/x86/libc.a(stdio.o)
+                0x0000000010000d0a                fgetc
 
-.text.fputs     0x0000000010000d9b       0x49
- .text.fputs    0x0000000010000d9b       0x49 ../../../libc/x86/libc.a(stdio.o)
-                0x0000000010000d9b                fputs
+.text.fputs     0x0000000010000d9f       0x49
+ .text.fputs    0x0000000010000d9f       0x49 ../../../libc/x86/libc.a(stdio.o)
+                0x0000000010000d9f                fputs
 
-.text.vfprintf  0x0000000010000de4      0x885
+.text.vfprintf  0x0000000010000de8      0x885
  .text.vfprintf
-                0x0000000010000de4      0x885 ../../../libc/x86/libc.a(stdio.o)
-                0x0000000010000de4                vfprintf
+                0x0000000010000de8      0x885 ../../../libc/x86/libc.a(stdio.o)
+                0x0000000010000de8                vfprintf
 
 .text.vsnprintf
-                0x0000000010001669       0x6c
+                0x000000001000166d       0x6c
  .text.vsnprintf
-                0x0000000010001669       0x6c ../../../libc/x86/libc.a(stdio.o)
-                0x0000000010001669                vsnprintf
+                0x000000001000166d       0x6c ../../../libc/x86/libc.a(stdio.o)
+                0x000000001000166d                vsnprintf
 
-.text.vsprintf  0x00000000100016d5       0x1b
+.text.vsprintf  0x00000000100016d9       0x1b
  .text.vsprintf
-                0x00000000100016d5       0x1b ../../../libc/x86/libc.a(stdio.o)
-                0x00000000100016d5                vsprintf
+                0x00000000100016d9       0x1b ../../../libc/x86/libc.a(stdio.o)
+                0x00000000100016d9                vsprintf
 
-.text.vprintf   0x00000000100016f0       0x19
- .text.vprintf  0x00000000100016f0       0x19 ../../../libc/x86/libc.a(stdio.o)
-                0x00000000100016f0                vprintf
+.text.vprintf   0x00000000100016f4       0x19
+ .text.vprintf  0x00000000100016f4       0x19 ../../../libc/x86/libc.a(stdio.o)
+                0x00000000100016f4                vprintf
 
-.text.fprintf   0x0000000010001709       0x17
- .text.fprintf  0x0000000010001709       0x17 ../../../libc/x86/libc.a(stdio.o)
-                0x0000000010001709                fprintf
+.text.fprintf   0x000000001000170d       0x17
+ .text.fprintf  0x000000001000170d       0x17 ../../../libc/x86/libc.a(stdio.o)
+                0x000000001000170d                fprintf
 
-.text.printf    0x0000000010001720       0x14
- .text.printf   0x0000000010001720       0x14 ../../../libc/x86/libc.a(stdio.o)
-                0x0000000010001720                printf
+.text.printf    0x0000000010001724       0x14
+ .text.printf   0x0000000010001724       0x14 ../../../libc/x86/libc.a(stdio.o)
+                0x0000000010001724                printf
 
-.text.sprintf   0x0000000010001734       0x17
- .text.sprintf  0x0000000010001734       0x17 ../../../libc/x86/libc.a(stdio.o)
-                0x0000000010001734                sprintf
+.text.sprintf   0x0000000010001738       0x17
+ .text.sprintf  0x0000000010001738       0x17 ../../../libc/x86/libc.a(stdio.o)
+                0x0000000010001738                sprintf
 
-.text.exit      0x000000001000174b       0x1d
- .text.exit     0x000000001000174b       0x1d ../../../libc/x86/libc.a(stdlib.o)
-                0x000000001000174b                exit
+.text.exit      0x000000001000174f       0x27
+ .text.exit     0x000000001000174f       0x27 ../../../libc/x86/libc.a(stdlib.o)
+                0x000000001000174f                exit
 
-.text.malloc    0x0000000010001768       0x80
- .text.malloc   0x0000000010001768       0x80 ../../../libc/x86/libc.a(stdlib.o)
-                0x0000000010001768                malloc
+.text.malloc    0x0000000010001776       0x80
+ .text.malloc   0x0000000010001776       0x80 ../../../libc/x86/libc.a(stdlib.o)
+                0x0000000010001776                malloc
 
-.text.free      0x00000000100017e8        0x1
- .text.free     0x00000000100017e8        0x1 ../../../libc/x86/libc.a(stdlib.o)
-                0x00000000100017e8                free
+.text.free      0x00000000100017f6        0x1
+ .text.free     0x00000000100017f6        0x1 ../../../libc/x86/libc.a(stdlib.o)
+                0x00000000100017f6                free
 
-.text.open      0x00000000100017e9       0x30
- .text.open     0x00000000100017e9       0x30 ../../../libc/x86/libc.a(fcntl.o)
-                0x00000000100017e9                open
+.text.open      0x00000000100017f7       0x30
+ .text.open     0x00000000100017f7       0x30 ../../../libc/x86/libc.a(fcntl.o)
+                0x00000000100017f7                open
 
-.text.isatty    0x0000000010001819       0x2d
- .text.isatty   0x0000000010001819       0x2d ../../../libc/x86/libc.a(unistd.o)
-                0x0000000010001819                isatty
+.text.isatty    0x0000000010001827       0x2d
+ .text.isatty   0x0000000010001827       0x2d ../../../libc/x86/libc.a(unistd.o)
+                0x0000000010001827                isatty
 
-.text.close     0x0000000010001846       0x27
- .text.close    0x0000000010001846       0x27 ../../../libc/x86/libc.a(unistd.o)
-                0x0000000010001846                close
+.text.close     0x0000000010001854       0x27
+ .text.close    0x0000000010001854       0x27 ../../../libc/x86/libc.a(unistd.o)
+                0x0000000010001854                close
 
-.text.read      0x000000001000186d       0x30
- .text.read     0x000000001000186d       0x30 ../../../libc/x86/libc.a(unistd.o)
-                0x000000001000186d                read
+.text.read      0x000000001000187b       0x30
+ .text.read     0x000000001000187b       0x30 ../../../libc/x86/libc.a(unistd.o)
+                0x000000001000187b                read
 
-.text.write     0x000000001000189d       0x30
- .text.write    0x000000001000189d       0x30 ../../../libc/x86/libc.a(unistd.o)
-                0x000000001000189d                write
+.text.write     0x00000000100018ab       0x30
+ .text.write    0x00000000100018ab       0x30 ../../../libc/x86/libc.a(unistd.o)
+                0x00000000100018ab                write
 
 .rodata._start.str1.1
-                0x00000000100018cd        0x9
+                0x00000000100018db        0x9
  .rodata._start.str1.1
-                0x00000000100018cd        0x9 crt0.o
+                0x00000000100018db        0x9 crt0.o
 
 .rodata.main.str1.1
-                0x00000000100018d6      0x204
+                0x00000000100018e4      0x204
  .rodata.main.str1.1
-                0x00000000100018d6      0x204 main.o
+                0x00000000100018e4      0x204 main.o
                                         0x206 (size before relaxing)
 
 .rodata.fmemopen.str1.1
-                0x0000000010001ada        0x3
+                0x0000000010001ae8        0x3
  .rodata.fmemopen.str1.1
-                0x0000000010001ada        0x3 ../../../libc/x86/libc.a(stdio.o)
+                0x0000000010001ae8        0x3 ../../../libc/x86/libc.a(stdio.o)
                                           0x4 (size before relaxing)
 
 .rodata.vfprintf.str1.1
-                0x0000000010001add       0x3d
+                0x0000000010001aeb       0x3d
  .rodata.vfprintf.str1.1
-                0x0000000010001add       0x3d ../../../libc/x86/libc.a(stdio.o)
+                0x0000000010001aeb       0x3d ../../../libc/x86/libc.a(stdio.o)
 
 .rodata.vsnprintf.str1.1
-                0x0000000010001b1a        0x2
+                0x0000000010001b28        0x2
  .rodata.vsnprintf.str1.1
-                0x0000000010001b1a        0x2 ../../../libc/x86/libc.a(stdio.o)
+                0x0000000010001b28        0x2 ../../../libc/x86/libc.a(stdio.o)
 
-.rel.dyn        0x0000000010001b1c        0x0
- .rel.got       0x0000000010001b1c        0x0 crt0.o
- .rel.iplt      0x0000000010001b1c        0x0 crt0.o
+.rel.dyn        0x0000000010001b2c        0x0
+ .rel.got       0x0000000010001b2c        0x0 crt0.o
+ .rel.iplt      0x0000000010001b2c        0x0 crt0.o
  .rel.text._start
-                0x0000000010001b1c        0x0 crt0.o
+                0x0000000010001b2c        0x0 crt0.o
  .rel.text.startup.main
-                0x0000000010001b1c        0x0 crt0.o
+                0x0000000010001b2c        0x0 crt0.o
  .rel.text._mem_read
-                0x0000000010001b1c        0x0 crt0.o
+                0x0000000010001b2c        0x0 crt0.o
  .rel.text._mem_write
-                0x0000000010001b1c        0x0 crt0.o
+                0x0000000010001b2c        0x0 crt0.o
  .rel.text.fopen_existing_stream
-                0x0000000010001b1c        0x0 crt0.o
+                0x0000000010001b2c        0x0 crt0.o
  .rel.text.fmemopen
-                0x0000000010001b1c        0x0 crt0.o
+                0x0000000010001b2c        0x0 crt0.o
  .rel.text.setvbuf
-                0x0000000010001b1c        0x0 crt0.o
+                0x0000000010001b2c        0x0 crt0.o
  .rel.text.fflush
-                0x0000000010001b1c        0x0 crt0.o
+                0x0000000010001b2c        0x0 crt0.o
  .rel.text.vsnprintf
-                0x0000000010001b1c        0x0 crt0.o
+                0x0000000010001b2c        0x0 crt0.o
  .rel.text.vprintf
-                0x0000000010001b1c        0x0 crt0.o
+                0x0000000010001b2c        0x0 crt0.o
  .rel.text.malloc
-                0x0000000010001b1c        0x0 crt0.o
+                0x0000000010001b2c        0x0 crt0.o
  .rel.text.open
-                0x0000000010001b1c        0x0 crt0.o
+                0x0000000010001b2c        0x0 crt0.o
  .rel.text.isatty
-                0x0000000010001b1c        0x0 crt0.o
+                0x0000000010001b2c        0x0 crt0.o
  .rel.text.close
-                0x0000000010001b1c        0x0 crt0.o
+                0x0000000010001b2c        0x0 crt0.o
  .rel.text.read
-                0x0000000010001b1c        0x0 crt0.o
+                0x0000000010001b2c        0x0 crt0.o
  .rel.text.write
-                0x0000000010001b1c        0x0 crt0.o
+                0x0000000010001b2c        0x0 crt0.o
 
 .data
  *(.data)
 
-.got            0x0000000010001b1c        0x0 load address 0x0000000010002000
- .got           0x0000000010001b1c        0x0 crt0.o
+.got            0x0000000010001b2c        0x0 load address 0x0000000010002000
+ .got           0x0000000010001b2c        0x0 crt0.o
 
-.got.plt        0x0000000010001b1c        0x0 load address 0x00000000100024e4
- .got.plt       0x0000000010001b1c        0x0 crt0.o
+.got.plt        0x0000000010001b2c        0x0 load address 0x00000000100024d4
+ .got.plt       0x0000000010001b2c        0x0 crt0.o
 
-.igot.plt       0x0000000010001b1c        0x0 load address 0x00000000100029c8
- .igot.plt      0x0000000010001b1c        0x0 crt0.o
+.igot.plt       0x0000000010001b2c        0x0 load address 0x00000000100029a8
+ .igot.plt      0x0000000010001b2c        0x0 crt0.o
 
 .bss            0x0000000010002000       0x10
  *(COMMON)
