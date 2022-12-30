@@ -37,7 +37,6 @@ int sys_open(size_t args[4]) {
     }
 
     int filedes = filedesc_table_register_vnode(current_cpu->current_thread->process->fdtable, node);
-    
     struct uio uio = uio_construct_write_to_usermode((void*) args[3], sizeof(int), 0);
     return uio_move(&filedes, &uio, sizeof(int));
 }

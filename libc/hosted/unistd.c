@@ -3,15 +3,18 @@
 #include <syscallnum.h>
 
 int close(int fd) {
-    (void) fd;
+    int result = _system_call(SYSCALL_CLOSE, fd, 0, 0, 0);
 
-    errno = ENOSYS;
+    if (result != 0) {
+        errno = result;
+        return -1;
+    }
 
-    return -1;
+    return 0;
 }
 
 ssize_t read(int fd, void* buffer, size_t size) {
-    int br;
+    size_t br;
     int result = _system_call(SYSCALL_READ, (size_t) buffer, size, fd, (size_t) &br);
 
     if (result != 0) {

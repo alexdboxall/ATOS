@@ -616,8 +616,13 @@ int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out) {
 	* Grab the vnode from the path.
 	*/
 	struct vnode* node;
-	if (flags & O_CREAT) {
-		/*
+
+    /*
+    * Lookup a (hopefully) existing file.
+    */
+    status = vfs_get_vnode_from_path(path, &node, false);
+    if (status == ENOENT && (flags & O_CREAT)) {
+        /*
 		* Process O_CREAT and O_EXCL, set node
 		* TODO: call vnode_create(parent, ..., is_excl, mode)
 		*/
@@ -639,16 +644,10 @@ int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out) {
 			return status;
 		}*/
 
-	} else {
-		/*
-		* Lookup a (hopefully) existing file.
-		*/
-		status = vfs_get_vnode_from_path(path, &node, false);
-		if (status) {
-			return status;
-		}
-	}
-	
+    } else if (status != 0) {
+        return status;
+    }
+
 	status = vnode_op_check_open(node, name, flags & O_ACCMODE);
 	if (status) {
 		vnode_dereference(node);

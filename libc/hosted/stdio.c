@@ -3,9 +3,13 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdint.h>
+#include <stddef.h>
 #include <errno.h>
 #include <stdbool.h>
+#include <sys/types.h>
 #include <sys/stat.h>
+#include <stdarg.h>
 
 #define BUFFER_DIR_UNSET 0
 #define BUFFER_DIR_READ  1
@@ -221,7 +225,7 @@ int fflush(FILE* stream) {
         /*
         * Perform the write.
         */
-        // TODO: fwrite(...);
+        write(stream->fd, stream->buffer, stream->buffer_used);
         stream->buffer_used = 0;
         stream->buffer_direction = BUFFER_DIR_UNSET;
         funlockfile(stream);
@@ -371,6 +375,25 @@ int getchar(void) {
     return fgetc(stdin);
 }
 
+int fputs(const char* s, FILE* stream) {
+    flockfile(stream);
+    for (int i = 0; s[i]; ++i) {
+        int status = fputc(s[i], stream);
+        if (status == EOF) {
+            funlockfile(stream);
+            return EOF;
+        }
+    }
+    funlockfile(stream);
+    return 0;
+}
+
+int fileno(FILE* stream) {
+    flockfile(stream);
+    int fd = stream->fd;
+    funlockfile(stream);
+    return fd;
+}
 
 int ftrylockfile(FILE* stream) {
     /*
@@ -405,4 +428,410 @@ void flockfile(FILE* stream) {
     while (ftrylockfile(stream) != 0) {
         ;
     }    
+}
+
+int vfprintf(FILE* stream, const char* format, va_list ap) {
+    /*
+    * We will not support the '$' syntax.
+    */
+
+    int chars_written = 0;
+    for (int i = 0; format[i]; ++i) {
+        if (format[i] != '%') {
+            fputc(format[i], stream);
+            ++chars_written;
+
+        } else {
+            ++i;
+
+            /*
+            * Look for flag characters.
+            */
+            bool alternative_form = false;      /* # */
+            bool pad_with_zeroes = false;       /* 0 */
+            bool left_align = false;            /* - */
+            bool space = false;                 /*   */
+            bool display_sign = false;          /* + */
+
+            while (format[i] == '#' || format[i] == '0' || format[i] == '-' ||
+                   format[i] == ' ' || format[i] == '+') {
+                
+                /*
+                * Assign the flags, but don't allow duplicates.
+                */
+
+                if (format[i] == '#') {
+                    if (alternative_form) return -1;
+                    else alternative_form = true;
+                }
+                if (format[i] == '0') {
+                    if (pad_with_zeroes) return -1;
+                    else pad_with_zeroes = true;
+                }
+                if (format[i] == '-') {
+                    if (left_align) return -1;
+                    else left_align = true;
+                }
+                if (format[i] == ' ') {
+                    if (space) return -1;
+                    else space = true;
+                }
+                if (format[i] == '+') {
+                    if (display_sign) return -1;
+                    else display_sign = true;
+                }
+
+                ++i;
+            }
+
+            /*
+            * Now grab the field width. It may also be *, which reads it in from
+            * an argument. We will use -1 for a non-specified field width (although
+            * as conversions never truncate the argument, we could kust set it to 0).
+            */
+            int field_width = -1;
+            if (format[i] == '*') {
+                field_width = va_arg(ap, int);
+
+                if (field_width < 0) {
+                    field_width = -field_width;
+                    left_align = true;
+                }
+
+                ++i;
+
+            } else {
+                if (format[i] >= '1' && format[i] <= 9) {
+                    field_width = format[i] - '0';
+                    ++i;
+
+                    while (format[i] >= '0' && format[i] <= 9) {
+                        field_width *= 10;
+                        field_width += format[i] - '0';
+                        ++i;
+                    }
+                }
+            }
+
+            /*
+            * Check for the precision. -1 means no precision specified.
+            */
+            int precision = -1;
+            if (format[i] == '.') {
+                precision = 0;
+                ++i;
+
+                if (format[i] == '*') {
+                    precision = va_arg(ap, int);
+                    ++i;
+
+                } else {
+                    while (format[i] >= '0' && format[i] <= 9) {
+                        precision *= 10;
+                        precision += format[i] - '0';
+                        ++i;
+                    }
+                }
+
+                if (precision < -1) {
+                    precision = -1;
+                }
+            }
+
+            /*
+            * Now clean up the conflicting flags as per the spec.
+            */
+            if (pad_with_zeroes && left_align) {
+                pad_with_zeroes = false;
+            }
+            if (display_sign && space) {
+                space = false;
+            }
+            if (precision != -1) {
+                pad_with_zeroes = false;
+            }
+
+            /*
+            * Check for the length modifier.
+            * We will store no modifier as 0, hh as H, and ll as q.
+            */
+            char modifier = 0;
+            if (format[i] == 'h') {
+                modifier = 'h';
+                ++i;
+
+                if (format[i] == 'h') {
+                    modifier = 'H';
+                    ++i;
+                }
+
+            } else if (format[i] == 'l') {
+                modifier = 'l';
+                ++i;
+
+                if (format[i] == 'l') {
+                    modifier = 'q';
+                    ++i;
+                }
+
+            } else if (format[i] == 'q') {
+                modifier = 'q';
+                ++i;
+
+            } else if (format[i] == 'L') {
+                modifier = 'L';
+                ++i;
+                
+            } else if (format[i] == 'j') {
+                modifier = 'j';
+                ++i;
+                
+            } else if (format[i] == 'z' || format[i] == 'Z') {
+                modifier = 'z';
+                ++i;
+                
+            } else if (format[i] == 't') {
+                modifier = 't';
+                ++i;
+            }
+
+            /*
+            * Now the conversion specifier.
+            */
+            if (format[i] == '%') {
+                fputc('%', stream);
+                ++chars_written;
+
+            } else if (format[i] == 'n') {
+                if (modifier == 'H') *va_arg(ap, signed char*) = chars_written;
+                else if (modifier == 'h') *va_arg(ap, short*) = chars_written;
+                else if (modifier == 'l') *va_arg(ap, long*) = chars_written;
+                else if (modifier == 'q') *va_arg(ap, long long*) = chars_written;
+                else if (modifier == 'j') *va_arg(ap, intmax_t*) = chars_written;
+                else if (modifier == 'z') *va_arg(ap, size_t*) = chars_written;
+                else if (modifier == 't') *va_arg(ap, ptrdiff_t*) = chars_written;
+                else {
+                    *va_arg(ap, int*) = chars_written;
+                }
+ 
+            } else {
+                bool numeric = false;
+                bool integral = false;
+                char base = 0;      // or 'x' or 'X'
+                bool signed_arg = false;
+                char sign_to_display = 0;       // either '', '+', '-', or ' '
+                
+                char* buffer;
+
+                char num_buf[32];
+
+                // TODO: ^^ that needs to contain everything *except* for padding
+                //       (i.e. including the sign/space/null, 0x if # is set)
+
+
+                if (format[i] == 'd' || format[i] == 'i') {
+                    numeric = true;
+                    integral = true;
+                    signed_arg = true;
+
+                } else if (format[i] == 'o' || format[i] == 'u') {
+                    numeric = true;
+                    integral = true;
+                    signed_arg = false;
+                
+                } else if (format[i] == 'x' || format[i] == 'X') {
+                    numeric = true;
+                    integral = true;
+                    signed_arg = false;
+                    base = format[i];
+                
+                } else if (format[i] == 'c') {
+                    num_buf[0] = (char) va_arg(ap, int);
+                    num_buf[1] = 0;
+                    buffer = num_buf;
+
+                } else if (format[i] == 's') {
+                    buffer = va_arg(ap, char*);
+
+                } else {
+                    // scary floating point stuff...
+                    buffer = "floating point!";
+                }
+
+                if (integral) {
+                    if (precision == -1) {
+                        precision = 1;
+                    } else {
+                        pad_with_zeroes = false;
+                    }
+
+                    uint64_t real_value;
+                    if (signed_arg) {
+                        int64_t value;
+
+                        if (modifier == 'H') value = (signed char) va_arg(ap, int);
+                        else if (modifier == 'h') value = (short)  va_arg(ap, int);
+                        else if (modifier == 'l') value = va_arg(ap, long);
+                        else if (modifier == 'q') value = va_arg(ap, long long);
+                        else if (modifier == 'j') value = va_arg(ap, intmax_t);
+                        else if (modifier == 'z') value = va_arg(ap, ssize_t);
+                        else if (modifier == 't') value = va_arg(ap, ptrdiff_t);
+                        else {
+                            value = va_arg(ap, unsigned int);
+                        }
+
+                        bool negative = value < 0;
+                        if (negative) {
+                            value = -value;
+                        }
+
+                        real_value = value;
+                        
+                        if (negative) {
+                            sign_to_display = '-';
+
+                        } else if (display_sign) {
+                            sign_to_display = '+';
+
+                        } else if (space) {
+                            sign_to_display = ' ';
+
+                        } 
+
+                    } else {
+                        uint64_t value;
+
+                        if (modifier == 'H') value = (unsigned char) va_arg(ap, unsigned int);
+                        else if (modifier == 'h') value = (unsigned short) va_arg(ap, unsigned int);
+                        else if (modifier == 'l') value = va_arg(ap, unsigned long);
+                        else if (modifier == 'q') value = va_arg(ap, unsigned long long);
+                        else if (modifier == 'j') value = va_arg(ap, uintmax_t);
+                        else if (modifier == 'z') value = va_arg(ap, size_t);
+                        else if (modifier == 't') value = va_arg(ap, ptrdiff_t);
+                        else {
+                            value = va_arg(ap, unsigned int);
+                        }
+
+                        real_value = value;
+
+                        if (display_sign) {
+                            sign_to_display = '+';
+
+                        } else if (space) {
+                            sign_to_display = ' ';
+                        }
+                    }
+                    
+                    memset(num_buf, 0, 32);
+
+                    int j = 31;     // need to make room for null
+
+                    char base_lookup[] = "0123456789ABCDEF0123456789abcdef";
+
+                    while (real_value > 0 || precision > 0) {
+                        --precision;
+                        num_buf[--j] = base_lookup[(real_value % (base == 0 ? 10 : 16)) + (base == 'x' ? 16 : 0)];
+                        real_value /= (base == 0 ? 10 : 16);
+                    }
+
+                    buffer = num_buf + j;
+                }
+
+                int padding_required = field_width - strlen(buffer) - (sign_to_display == 0 ? 0 : 1) - (alternative_form && base != 0 ? 2 : 0);
+                pad_with_zeroes = !left_align && pad_with_zeroes && numeric;
+
+                char* order;
+                if (pad_with_zeroes) {
+                    order = "s0d";
+                } else if (left_align) {
+                    order = "sd ";
+                } else {
+                    order = " sd";
+                }
+
+                fputs(buffer, stream);
+
+                (void) order;
+                (void) padding_required;
+                /*
+                for (int j = 0; order[j]; ++j) {
+                    if (order[j] == 's') {
+                        if (sign_to_display != 0) {
+                            fputc(sign_to_display, stream);
+                            ++chars_written;
+                        }
+                        if (alternative_form && base != 0) {
+                            fputc('0', stream);
+                            fputc(base, stream);
+                            chars_written += 2;
+                        }
+                    } else if (order[j] == 'd') {
+                        for (int k = 0; buffer[k]; ++k) {
+                            fputc(buffer[k], stream);
+                            ++chars_written;
+                        }
+                    
+                    } else {
+                        while (padding_required--) {
+                            fputc(order[j], stream);
+                            ++chars_written;
+                        }
+                    }
+                }*/
+            }
+
+            ++i;
+        }
+    }   
+
+    return chars_written;
+}
+
+int vsnprintf(char* str, size_t size, const char* format, va_list ap) {
+    // TODO: use fmemopen, and then call vfprintf
+    (void) str;
+    (void) size;
+    (void) format;
+    (void) ap;
+    return 0;
+}
+
+int vsprintf(char* str, const char* format, va_list ap) {
+    return vsnprintf(str, 0xFFFFFFFFU, format, ap);
+}
+
+int vprintf(const char* format, va_list ap) {
+    return vfprintf(stdout, format, ap);
+}
+
+int fprintf(FILE* stream, const char* format, ...) {
+    va_list ap;
+    va_start(ap, format);
+    int result = vfprintf(stream, format, ap);
+    va_end(ap);
+    return result;
+}
+
+int printf(const char* format, ...) {
+    va_list ap;
+    va_start(ap, format);
+    int result = vprintf(format, ap);
+    va_end(ap);
+    return result;
+}
+
+int sprintf(char* str, const char* format, ...) {
+    va_list ap;
+    va_start(ap, format);
+    int result = vsprintf(str, format, ap);
+    va_end(ap);
+    return result;
+}
+
+int snprintf(char* str, size_t size, const char* format, ...) {
+    va_list ap;
+    va_start(ap, format);
+    int result = vsnprintf(str, size, format, ap);
+    va_end(ap);
+    return result;
 }

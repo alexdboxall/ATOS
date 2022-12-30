@@ -2,21 +2,18 @@
 #include <syscallnum.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <errno.h>
 #include <stdio.h>
 
 void _start() {
-    int fd = open("con:", O_WRONLY, 0);
-    write(fd, "Hello world from usermode!", 27);
-
     FILE* f = fopen("con:", "w");
-    for (int i = 0; "Hello world from usermode!"[i]; ++i) {
-        fputc("Hello world from usermode!"[i], f);
-    }
+    fputs("Hello world from usermode!\n", f);
+
+    fprintf(f, "Testing simple printf...\n");
+    fprintf(f, "Testing %d printf...\n", 123);
+    //fprintf(f, "Testing %s printf...\n", "simple");
+    fflush(f);
     fclose(f);
-
-
-    //int fd = open("con:", O_WRONLY, 0);
-    //write(fd, "Hello world from usermode!", 27);
 
     while (1) {
         _system_call(SYSCALL_YIELD, 0, 0, 0, 0);

@@ -36,8 +36,9 @@ void basic_shell(void* arg) {
         console_gets(buffer, sizeof(buffer));
 
 		/*
-		* Must check for an empty string to guard the following strlen()
-		* in case some clown decides to type the ^@ escape code.
+		* Must check for an empty string to guard the following 'strlen() - 1'
+		* in case some clown decides to type the ^@ escape code (a null char
+        * without a newline).
 		*/
 		if (buffer[0] == '\n' || buffer[0] == 0) {
 			continue;

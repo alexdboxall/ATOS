@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stddef.h>
+#include <stdarg.h>
 
 #define FOPEN_MAX 4096
 #define EOF (-1)
@@ -41,6 +42,19 @@ int getc(FILE* stream);
 int getchar(void);
 int ungetc(int c, FILE* stream);
 
+int fputs(const char* s, FILE* stream);
 int fflush(FILE* stream);
 
+int fileno(FILE* stream);
+
 int setvbuf(FILE* stream, char* buf, int mode, size_t size);
+
+
+int vfprintf(FILE* stream, const char* format, va_list ap);
+int vsnprintf(char* str, size_t size, const char* format, va_list ap);
+int vsprintf(char* str, const char* format, va_list ap);
+int vprintf(const char* format, va_list ap);
+int fprintf(FILE* stream, const char* format, ...);
+int printf(const char* format, ...);
+int sprintf(char* str, const char* format, ...);
+int snprintf(char* str, size_t size, const char* format, ...);

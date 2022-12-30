@@ -1,18 +1,48 @@
 #include <stdlib.h>
 #include <string.h>
+#include <syscallnum.h>
+#include <errno.h>
+#include <stdint.h>
+
+uint64_t rand_seed = 1;
+
+int rand(void) {
+    rand_seed = rand_seed * 164603309694725029ULL + 14738995463583502973ULL;
+    return (rand_seed >> 33) & 0x7FFFFFFF;    
+}
+
+void srand(unsigned int seed) {
+    rand_seed = seed;
+}
 
 void* malloc(size_t size) {
-    // TODO: use sbrk
     // TODO: use an actual allocator
 
     if (size == 0) {
+        errno = ENOMEM;
         return NULL;
     }
 
-    static size_t position = 0x20000000;
-    size_t result = position;
-    size = (size + 15) & 0xF;
-    position += size;
+    static size_t recent_sbrk = 0;
+    static size_t allocation_position = 0;
+
+    size = size + (16 - (size % 16)) % 16;
+
+    if (allocation_position == 0 || allocation_position + size >= recent_sbrk) {
+        size_t prev_sbrk, current_sbrk;
+        int result = _system_call(SYSCALL_SBRK, (size_t) size * 2, 0, (size_t) &prev_sbrk, (size_t) &current_sbrk);
+        if (result != 0) {
+            errno = result;
+            return NULL;
+        }
+
+        allocation_position = prev_sbrk;
+        recent_sbrk = current_sbrk;
+    }
+    
+    size_t result = allocation_position;
+    allocation_position += size;
+
     return (void*) result;
 }
 
@@ -29,6 +59,7 @@ void* calloc(size_t nmemb, size_t size) {
         /*
         * The multiplication of nmemb and size caused an integer overflow.
         */
+        errno = EINVAL;
         return NULL;
     }
 

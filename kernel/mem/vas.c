@@ -127,8 +127,6 @@ void vas_map(struct virtual_address_space* vas, size_t phys_addr, size_t virt_ad
 void vas_reflag(struct virtual_address_space* vas, size_t virt_addr, int flags)
 {
 	assert(vas);
-
-    kprintf("reflagging vas. virt = 0x%X, flags = 0x%X, caller = 0x%X\n", virt_addr, flags, __builtin_return_address(0));
 		
 	assert(virt_addr % ARCH_PAGE_SIZE == 0);
 	assert((flags & ~(VAS_FLAG_WRITABLE | VAS_FLAG_EXECUTABLE | VAS_FLAG_USER | VAS_FLAG_COPY_ON_WRITE | VAS_FLAG_PRESENT | VAS_FLAG_LOCKED | VAS_FLAG_ALLOCATE_ON_ACCESS)) == 0);

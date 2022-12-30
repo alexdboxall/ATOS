@@ -14,6 +14,7 @@ int sys_read(size_t args[4]);
 int sys_write(size_t args[4]);
 int sys_close(size_t args[4]);
 int sys_lseek(size_t args[4]);
+int sys_sbrk(size_t args[4]);
 
 void syscall_init(void) {
     memset(syscall_table, 0, sizeof(syscall_table));
@@ -25,6 +26,7 @@ void syscall_init(void) {
     syscall_table[SYSCALL_WRITE] = sys_write;
     syscall_table[SYSCALL_CLOSE] = sys_close;
     syscall_table[SYSCALL_LSEEK] = sys_lseek;
+    syscall_table[SYSCALL_SBRK] = sys_sbrk;
 }
 
 /*
@@ -39,8 +41,7 @@ int syscall_perform(int call_number, size_t args[4]) {
         return ENOSYS;
     }
 
-    kprintf("SYSCALL %d: 0x%X, 0x%X, 0x%X 0x%X\n", call_number,
-        args[0], args[1], args[2], args[3]);
+    //kprintf("SYSCALL %d: 0x%X, 0x%X, 0x%X 0x%X\n", call_number, args[0], args[1], args[2], args[3]);
     
     return syscall_table[call_number](args);
 }

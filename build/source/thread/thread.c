@@ -223,7 +223,7 @@ void thread_execute_in_usermode(void* ignored_arg) {
         kprintf("program load failed: %d\n", result);
         thread_terminate();
     }
-   
+
     arch_flush_tlb();
     arch_switch_to_usermode(entry_point, new_stack);
 

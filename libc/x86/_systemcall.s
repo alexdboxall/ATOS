@@ -20,6 +20,10 @@ _system_call:
 
     int 96
 
-    add esp, 16
-    leave
+    pop edi
+    pop esi
+    pop ecx
+    pop ebx
+
+    pop ebp
     ret
