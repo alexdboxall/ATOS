@@ -435,6 +435,8 @@ int vfprintf(FILE* stream, const char* format, va_list ap) {
     * We will not support the '$' syntax.
     */
 
+    flockfile(stream);
+
     int chars_written = 0;
     for (int i = 0; format[i]; ++i) {
         if (format[i] != '%') {
@@ -457,28 +459,24 @@ int vfprintf(FILE* stream, const char* format, va_list ap) {
                    format[i] == ' ' || format[i] == '+') {
                 
                 /*
-                * Assign the flags, but don't allow duplicates.
+                * Assign the flags. We will 'allow' duplicates, but no one should do that anyway.
+                * (I don't want to do a lot of if (...) { funlockfile(stream); return -1;} )
                 */
 
                 if (format[i] == '#') {
-                    if (alternative_form) return -1;
-                    else alternative_form = true;
+                    alternative_form = true;
                 }
                 if (format[i] == '0') {
-                    if (pad_with_zeroes) return -1;
-                    else pad_with_zeroes = true;
+                    pad_with_zeroes = true;
                 }
                 if (format[i] == '-') {
-                    if (left_align) return -1;
-                    else left_align = true;
+                    left_align = true;
                 }
                 if (format[i] == ' ') {
-                    if (space) return -1;
-                    else space = true;
+                    space = true;
                 }
                 if (format[i] == '+') {
-                    if (display_sign) return -1;
-                    else display_sign = true;
+                    display_sign = true;
                 }
 
                 ++i;
@@ -501,11 +499,11 @@ int vfprintf(FILE* stream, const char* format, va_list ap) {
                 ++i;
 
             } else {
-                if (format[i] >= '1' && format[i] <= 9) {
+                if (format[i] >= '1' && format[i] <= '9') {
                     field_width = format[i] - '0';
                     ++i;
 
-                    while (format[i] >= '0' && format[i] <= 9) {
+                    while (format[i] >= '0' && format[i] <= '9') {
                         field_width *= 10;
                         field_width += format[i] - '0';
                         ++i;
@@ -526,7 +524,7 @@ int vfprintf(FILE* stream, const char* format, va_list ap) {
                     ++i;
 
                 } else {
-                    while (format[i] >= '0' && format[i] <= 9) {
+                    while (format[i] >= '0' && format[i] <= '9') {
                         precision *= 10;
                         precision += format[i] - '0';
                         ++i;
@@ -596,7 +594,7 @@ int vfprintf(FILE* stream, const char* format, va_list ap) {
             }
 
             /*
-            * Now the conversion specifier.
+            * Now the conversion specifier. The for loop handles the increment of i.
             */
             if (format[i] == '%') {
                 fputc('%', stream);
@@ -617,11 +615,12 @@ int vfprintf(FILE* stream, const char* format, va_list ap) {
             } else {
                 bool numeric = false;
                 bool integral = false;
-                char base = 0;      // or 'x' or 'X'
+                char base = 0;      // or 'x' or 'X' or 'o'
                 bool signed_arg = false;
                 char sign_to_display = 0;       // either '', '+', '-', or ' '
                 
                 char* buffer;
+                int buffer_manual_len = -1;
 
                 char num_buf[32];
 
@@ -634,12 +633,19 @@ int vfprintf(FILE* stream, const char* format, va_list ap) {
                     integral = true;
                     signed_arg = true;
 
-                } else if (format[i] == 'o' || format[i] == 'u') {
+                } else if (format[i] == 'u') {
                     numeric = true;
                     integral = true;
                     signed_arg = false;
+
+                } else if (format[i] == 'p') {
+                    numeric = true;
+                    integral = true;
+                    signed_arg = false;
+                    base = 'x';
+                    alternative_form = true;
                 
-                } else if (format[i] == 'x' || format[i] == 'X') {
+                } else if (format[i] == 'o' || format[i] == 'x' || format[i] == 'X') {
                     numeric = true;
                     integral = true;
                     signed_arg = false;
@@ -652,6 +658,7 @@ int vfprintf(FILE* stream, const char* format, va_list ap) {
 
                 } else if (format[i] == 's') {
                     buffer = va_arg(ap, char*);
+                    buffer_manual_len = precision;
 
                 } else {
                     // scary floating point stuff...
@@ -670,14 +677,14 @@ int vfprintf(FILE* stream, const char* format, va_list ap) {
                         int64_t value;
 
                         if (modifier == 'H') value = (signed char) va_arg(ap, int);
-                        else if (modifier == 'h') value = (short)  va_arg(ap, int);
+                        else if (modifier == 'h') value = (short) va_arg(ap, int);
                         else if (modifier == 'l') value = va_arg(ap, long);
                         else if (modifier == 'q') value = va_arg(ap, long long);
                         else if (modifier == 'j') value = va_arg(ap, intmax_t);
                         else if (modifier == 'z') value = va_arg(ap, ssize_t);
                         else if (modifier == 't') value = va_arg(ap, ptrdiff_t);
                         else {
-                            value = va_arg(ap, unsigned int);
+                            value = va_arg(ap, int);
                         }
 
                         bool negative = value < 0;
@@ -728,16 +735,18 @@ int vfprintf(FILE* stream, const char* format, va_list ap) {
 
                     char base_lookup[] = "0123456789ABCDEF0123456789abcdef";
 
+                    int base_as_int = base == 0 ? 10 : (base == 'o' ? 8 : 16);
                     while (real_value > 0 || precision > 0) {
                         --precision;
-                        num_buf[--j] = base_lookup[(real_value % (base == 0 ? 10 : 16)) + (base == 'x' ? 16 : 0)];
-                        real_value /= (base == 0 ? 10 : 16);
+                        num_buf[--j] = base_lookup[(real_value % base_as_int) + (base == 'x' ? 16 : 0)];
+                        real_value /= base_as_int;
                     }
 
                     buffer = num_buf + j;
                 }
 
-                int padding_required = field_width - strlen(buffer) - (sign_to_display == 0 ? 0 : 1) - (alternative_form && base != 0 ? 2 : 0);
+            
+                int padding_required = field_width - (buffer_manual_len == -1 ? (int) strlen(buffer) : buffer_manual_len) - (sign_to_display == 0 ? 0 : 1) - (alternative_form && base != 0 ? (base == 'o' ? 1 : 2) : 0);
                 pad_with_zeroes = !left_align && pad_with_zeroes && numeric;
 
                 char* order;
@@ -749,11 +758,6 @@ int vfprintf(FILE* stream, const char* format, va_list ap) {
                     order = " sd";
                 }
 
-                fputs(buffer, stream);
-
-                (void) order;
-                (void) padding_required;
-                /*
                 for (int j = 0; order[j]; ++j) {
                     if (order[j] == 's') {
                         if (sign_to_display != 0) {
@@ -761,28 +765,32 @@ int vfprintf(FILE* stream, const char* format, va_list ap) {
                             ++chars_written;
                         }
                         if (alternative_form && base != 0) {
-                            fputc('0', stream);
+                            if (base != 'o') {
+                                fputc('0', stream);
+                                ++chars_written;
+                            }
+                                
                             fputc(base, stream);
-                            chars_written += 2;
+                            ++chars_written; 
                         }
                     } else if (order[j] == 'd') {
-                        for (int k = 0; buffer[k]; ++k) {
+                        for (int k = 0; buffer[k] && (buffer_manual_len == -1 || k < buffer_manual_len); ++k) {
                             fputc(buffer[k], stream);
                             ++chars_written;
                         }
                     
                     } else {
-                        while (padding_required--) {
+                        while (padding_required-- > 0) {
                             fputc(order[j], stream);
                             ++chars_written;
                         }
                     }
-                }*/
+                }
             }
-
-            ++i;
         }
     }   
+
+    funlockfile(stream);
 
     return chars_written;
 }

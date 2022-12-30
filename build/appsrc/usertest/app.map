@@ -1,0 +1,199 @@
+Archive member included to satisfy reference by file (symbol)
+
+../../../libc/x86/libc.a(_systemcall.oo)
+                              main.o (_system_call)
+../../../libc/x86/libc.a(stdio.o)
+                              main.o (fopen)
+../../../libc/x86/libc.a(stdlib.o)
+                              ../../../libc/x86/libc.a(stdio.o) (malloc)
+../../../libc/x86/libc.a(string.o)
+                              ../../../libc/x86/libc.a(stdio.o) (memmove)
+../../../libc/x86/libc.a(fcntl.o)
+                              ../../../libc/x86/libc.a(stdio.o) (open)
+../../../libc/x86/libc.a(unistd.o)
+                              ../../../libc/x86/libc.a(stdio.o) (close)
+/cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivmoddi4.o)
+                              ../../../libc/x86/libc.a(stdio.o) (__udivmoddi4)
+
+Allocating common symbols
+Common symbol       size              file
+
+stdout              0x4               ../../../libc/x86/libc.a(stdio.o)
+errno               0x4               main.o
+stdin               0x4               ../../../libc/x86/libc.a(stdio.o)
+stderr              0x4               ../../../libc/x86/libc.a(stdio.o)
+
+Discarded input sections
+
+ .comment       0x0000000000000000       0x12 main.o
+ .comment       0x0000000000000000       0x12 ../../../libc/x86/libc.a(stdio.o)
+ .comment       0x0000000000000000       0x12 ../../../libc/x86/libc.a(stdlib.o)
+ .comment       0x0000000000000000       0x12 ../../../libc/x86/libc.a(string.o)
+ .comment       0x0000000000000000       0x12 ../../../libc/x86/libc.a(fcntl.o)
+ .comment       0x0000000000000000       0x12 ../../../libc/x86/libc.a(unistd.o)
+ .debug_info    0x0000000000000000      0xc6a /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivmoddi4.o)
+ .debug_abbrev  0x0000000000000000      0x1e7 /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivmoddi4.o)
+ .debug_loc     0x0000000000000000      0x609 /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivmoddi4.o)
+ .debug_aranges
+                0x0000000000000000       0x20 /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivmoddi4.o)
+ .debug_ranges  0x0000000000000000       0x20 /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivmoddi4.o)
+ .debug_line    0x0000000000000000      0x335 /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivmoddi4.o)
+ .debug_str     0x0000000000000000      0xc1f /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivmoddi4.o)
+ .comment       0x0000000000000000       0x12 /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivmoddi4.o)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD main.o
+LOAD ../../../libc/x86/libc.a
+LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a
+                0x0000000010000000                . = 0x10000000
+
+.text           0x0000000010000000     0x184c
+ *(.text)
+ .text          0x0000000010000000      0x34c main.o
+                0x0000000010000000                _start
+ *fill*         0x000000001000034c        0x4 
+ .text          0x0000000010000350       0x1e ../../../libc/x86/libc.a(_systemcall.oo)
+                0x0000000010000350                _system_call
+ .text          0x000000001000036e      0xea8 ../../../libc/x86/libc.a(stdio.o)
+                0x0000000010000471                fopen
+                0x00000000100004a8                ftrylockfile
+                0x00000000100004d3                funlockfile
+                0x00000000100004e2                flockfile
+                0x00000000100004fc                feof
+                0x000000001000051c                ferror
+                0x000000001000053c                clearerr
+                0x0000000010000561                setvbuf
+                0x00000000100005f0                fflush
+                0x000000001000068c                fclose
+                0x00000000100006e8                freopen
+                0x0000000010000719                ungetc
+                0x000000001000075e                fputc
+                0x000000001000087e                fgetc
+                0x0000000010000919                getc
+                0x000000001000091e                getchar
+                0x0000000010000931                fputs
+                0x000000001000097a                fileno
+                0x0000000010000998                vfprintf
+                0x00000000100011c6                vsnprintf
+                0x00000000100011c9                vsprintf
+                0x00000000100011cc                vprintf
+                0x00000000100011e5                fprintf
+                0x00000000100011fc                printf
+                0x0000000010001210                sprintf
+                0x0000000010001213                snprintf
+ .text          0x0000000010001216      0x125 ../../../libc/x86/libc.a(stdlib.o)
+                0x0000000010001216                rand
+                0x0000000010001254                srand
+                0x000000001000126b                malloc
+                0x00000000100012eb                free
+                0x00000000100012ec                calloc
+ .text          0x000000001000133b      0x1d2 ../../../libc/x86/libc.a(string.o)
+                0x000000001000133b                memchr
+                0x0000000010001358                memcmp
+                0x000000001000138c                memcpy
+                0x00000000100013a2                memmove
+                0x00000000100013d1                memset
+                0x00000000100013e6                strcat
+                0x000000001000140d                strchr
+                0x0000000010001423                strcmp
+                0x0000000010001443                strcpy
+                0x000000001000145b                strerror
+                0x0000000010001474                strlen
+                0x0000000010001487                strncpy
+                0x00000000100014af                strdup
+                0x00000000100014dd                strncmp
+ .text          0x000000001000150d       0x53 ../../../libc/x86/libc.a(fcntl.o)
+                0x000000001000150d                open
+                0x000000001000153d                creat
+                0x0000000010001552                fcntl
+ .text          0x0000000010001560       0xbc ../../../libc/x86/libc.a(unistd.o)
+                0x0000000010001560                close
+                0x0000000010001587                read
+                0x00000000100015b7                write
+                0x00000000100015e7                lseek
+ .text          0x000000001000161c      0x1d9 /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivmoddi4.o)
+                0x000000001000161c                __udivmoddi4
+ *(.rodata)
+ *fill*         0x00000000100017f5        0xb 
+ .rodata        0x0000000010001800       0x4c ../../../libc/x86/libc.a(string.o)
+ *(.symtab)
+ *(.strtab)
+
+.iplt           0x0000000010001850        0x0
+ .iplt          0x0000000010001850        0x0 main.o
+
+.rodata.str1.1  0x000000001000184c      0x3d4
+ .rodata.str1.1
+                0x000000001000184c      0x1cc main.o
+ .rodata.str1.1
+                0x0000000010001a18       0x3d ../../../libc/x86/libc.a(stdio.o)
+ .rodata.str1.1
+                0x0000000010001a55      0x1cb ../../../libc/x86/libc.a(string.o)
+
+.eh_frame       0x0000000010001c20      0x780
+ .eh_frame      0x0000000010001c20       0x34 main.o
+ .eh_frame      0x0000000010001c54      0x394 ../../../libc/x86/libc.a(stdio.o)
+                                        0x3ac (size before relaxing)
+ .eh_frame      0x0000000010001fe8       0x94 ../../../libc/x86/libc.a(stdlib.o)
+                                         0xac (size before relaxing)
+ .eh_frame      0x000000001000207c      0x1f8 ../../../libc/x86/libc.a(string.o)
+                                        0x210 (size before relaxing)
+ .eh_frame      0x0000000010002274       0x54 ../../../libc/x86/libc.a(fcntl.o)
+                                         0x6c (size before relaxing)
+ .eh_frame      0x00000000100022c8       0x80 ../../../libc/x86/libc.a(unistd.o)
+                                         0x98 (size before relaxing)
+ .eh_frame      0x0000000010002348       0x58 /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivmoddi4.o)
+                                         0x70 (size before relaxing)
+
+.rel.dyn        0x00000000100023a0        0x0
+ .rel.got       0x00000000100023a0        0x0 main.o
+ .rel.iplt      0x00000000100023a0        0x0 main.o
+ .rel.text      0x00000000100023a0        0x0 main.o
+
+.data           0x0000000010003000        0x8
+ *(.data)
+ .data          0x0000000010003000        0x0 main.o
+ .data          0x0000000010003000        0x0 ../../../libc/x86/libc.a(stdio.o)
+ .data          0x0000000010003000        0x8 ../../../libc/x86/libc.a(stdlib.o)
+                0x0000000010003000                rand_seed
+ .data          0x0000000010003008        0x0 ../../../libc/x86/libc.a(string.o)
+ .data          0x0000000010003008        0x0 ../../../libc/x86/libc.a(fcntl.o)
+ .data          0x0000000010003008        0x0 ../../../libc/x86/libc.a(unistd.o)
+ .data          0x0000000010003008        0x0 /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivmoddi4.o)
+
+.got            0x0000000010003008        0x0
+ .got           0x0000000010003008        0x0 main.o
+
+.got.plt        0x0000000010003008        0x0
+ .got.plt       0x0000000010003008        0x0 main.o
+
+.igot.plt       0x0000000010003008        0x0
+ .igot.plt      0x0000000010003008        0x0 main.o
+
+.bss            0x0000000010004000       0x18
+ *(COMMON)
+ COMMON         0x0000000010004000        0x4 main.o
+                0x0000000010004000                errno
+ COMMON         0x0000000010004004        0xc ../../../libc/x86/libc.a(stdio.o)
+                0x0000000010004004                stdout
+                0x0000000010004008                stdin
+                0x000000001000400c                stderr
+ *(.bss)
+ .bss           0x0000000010004010        0x0 main.o
+ .bss           0x0000000010004010        0x0 ../../../libc/x86/libc.a(stdio.o)
+ .bss           0x0000000010004010        0x8 ../../../libc/x86/libc.a(stdlib.o)
+ .bss           0x0000000010004018        0x0 ../../../libc/x86/libc.a(string.o)
+ .bss           0x0000000010004018        0x0 ../../../libc/x86/libc.a(fcntl.o)
+ .bss           0x0000000010004018        0x0 ../../../libc/x86/libc.a(unistd.o)
+ .bss           0x0000000010004018        0x0 /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivmoddi4.o)
+ *(.bootstrap_stack)
+
+/DISCARD/
+ *(.comment)
+OUTPUT(usertest.exe elf32-i386)

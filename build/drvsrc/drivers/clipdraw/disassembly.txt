@@ -1,0 +1,966 @@
+
+CLIPDRAW.SYS:     file format elf32-i386
+
+
+Disassembly of section .text:
+
+d0000000 <sqrt_fp8-0x15>:
+d0000000:	55                   	push   ebp
+d0000001:	89 e5                	mov    ebp,esp
+d0000003:	83 ec 14             	sub    esp,0x14
+d0000006:	68 af 0a 00 d0       	push   0xd0000aaf	d0000007: R_386_32	.rodata.str1.1
+d000000b:	e8 fc ff ff ff       	call   d000000c <sqrt_fp8-0x9>	d000000c: R_386_PC32	kprintf
+d0000010:	83 c4 10             	add    esp,0x10
+d0000013:	c9                   	leave  
+d0000014:	c3                   	ret    
+
+d0000015 <sqrt_fp8>:
+d0000015:	55                   	push   ebp
+d0000016:	89 e5                	mov    ebp,esp
+d0000018:	57                   	push   edi
+d0000019:	56                   	push   esi
+d000001a:	53                   	push   ebx
+d000001b:	83 ec 1c             	sub    esp,0x1c
+d000001e:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+d0000021:	8b 55 0c             	mov    edx,DWORD PTR [ebp+0xc]
+d0000024:	0f a4 c2 08          	shld   edx,eax,0x8
+d0000028:	c1 e0 08             	shl    eax,0x8
+d000002b:	89 45 e0             	mov    DWORD PTR [ebp-0x20],eax
+d000002e:	89 55 e4             	mov    DWORD PTR [ebp-0x1c],edx
+d0000031:	bb 10 00 00 00       	mov    ebx,0x10
+d0000036:	be 00 01 00 00       	mov    esi,0x100
+d000003b:	31 ff                	xor    edi,edi
+d000003d:	57                   	push   edi
+d000003e:	56                   	push   esi
+d000003f:	ff 75 e4             	push   DWORD PTR [ebp-0x1c]
+d0000042:	ff 75 e0             	push   DWORD PTR [ebp-0x20]
+d0000045:	e8 22 09 00 00       	call   d000096c <__udivdi3>	d0000046: R_386_PC32	__udivdi3
+d000004a:	83 c4 10             	add    esp,0x10
+d000004d:	01 f0                	add    eax,esi
+d000004f:	11 fa                	adc    edx,edi
+d0000051:	0f ac d0 01          	shrd   eax,edx,0x1
+d0000055:	d1 ea                	shr    edx,1
+d0000057:	89 d1                	mov    ecx,edx
+d0000059:	89 c2                	mov    edx,eax
+d000005b:	39 cf                	cmp    edi,ecx
+d000005d:	75 04                	jne    d0000063 <sqrt_fp8+0x4e>
+d000005f:	39 c6                	cmp    esi,eax
+d0000061:	74 0d                	je     d0000070 <sqrt_fp8+0x5b>
+d0000063:	4b                   	dec    ebx
+d0000064:	74 0a                	je     d0000070 <sqrt_fp8+0x5b>
+d0000066:	89 d6                	mov    esi,edx
+d0000068:	89 cf                	mov    edi,ecx
+d000006a:	89 c8                	mov    eax,ecx
+d000006c:	09 d0                	or     eax,edx
+d000006e:	75 cd                	jne    d000003d <sqrt_fp8+0x28>
+d0000070:	89 d0                	mov    eax,edx
+d0000072:	89 ca                	mov    edx,ecx
+d0000074:	8d 65 f4             	lea    esp,[ebp-0xc]
+d0000077:	5b                   	pop    ebx
+d0000078:	5e                   	pop    esi
+d0000079:	5f                   	pop    edi
+d000007a:	5d                   	pop    ebp
+d000007b:	c3                   	ret    
+d000007c:	55                   	push   ebp
+d000007d:	89 e5                	mov    ebp,esp
+d000007f:	8b 45 20             	mov    eax,DWORD PTR [ebp+0x20]
+d0000082:	89 45 08             	mov    DWORD PTR [ebp+0x8],eax
+d0000085:	5d                   	pop    ebp
+d0000086:	e9 fc ff ff ff       	jmp    d0000087 <sqrt_fp8+0x72>	d0000087: R_386_PC32	free
+d000008b:	55                   	push   ebp
+d000008c:	89 e5                	mov    ebp,esp
+d000008e:	57                   	push   edi
+d000008f:	56                   	push   esi
+d0000090:	53                   	push   ebx
+d0000091:	83 ec 2c             	sub    esp,0x2c
+d0000094:	8b 75 08             	mov    esi,DWORD PTR [ebp+0x8]
+d0000097:	8b 5d 14             	mov    ebx,DWORD PTR [ebp+0x14]
+d000009a:	85 db                	test   ebx,ebx
+d000009c:	78 06                	js     d00000a4 <sqrt_fp8+0x8f>
+d000009e:	83 7d 18 00          	cmp    DWORD PTR [ebp+0x18],0x0
+d00000a2:	79 19                	jns    d00000bd <sqrt_fp8+0xa8>
+d00000a4:	68 c1 0a 00 d0       	push   0xd0000ac1	d00000a5: R_386_32	.rodata.str1.1
+d00000a9:	68 c2 0a 00 d0       	push   0xd0000ac2	d00000aa: R_386_32	.rodata.str1.1
+d00000ae:	68 d3 0a 00 d0       	push   0xd0000ad3	d00000af: R_386_32	.rodata.str1.1
+d00000b3:	68 d6 0a 00 d0       	push   0xd0000ad6	d00000b4: R_386_32	.rodata.str1.1
+d00000b8:	e8 fc ff ff ff       	call   d00000b9 <sqrt_fp8+0xa4>	d00000b9: R_386_PC32	assertion_fail
+d00000bd:	8b 45 18             	mov    eax,DWORD PTR [ebp+0x18]
+d00000c0:	c1 e0 02             	shl    eax,0x2
+d00000c3:	89 45 e0             	mov    DWORD PTR [ebp-0x20],eax
+d00000c6:	83 ec 0c             	sub    esp,0xc
+d00000c9:	01 c0                	add    eax,eax
+d00000cb:	50                   	push   eax
+d00000cc:	e8 fc ff ff ff       	call   d00000cd <sqrt_fp8+0xb8>	d00000cd: R_386_PC32	malloc
+d00000d1:	89 c7                	mov    edi,eax
+d00000d3:	d1 fb                	sar    ebx,1
+d00000d5:	89 5d e4             	mov    DWORD PTR [ebp-0x1c],ebx
+d00000d8:	8b 45 18             	mov    eax,DWORD PTR [ebp+0x18]
+d00000db:	d1 f8                	sar    eax,1
+d00000dd:	89 45 dc             	mov    DWORD PTR [ebp-0x24],eax
+d00000e0:	8b 45 18             	mov    eax,DWORD PTR [ebp+0x18]
+d00000e3:	0f af c0             	imul   eax,eax
+d00000e6:	c1 f8 02             	sar    eax,0x2
+d00000e9:	89 45 d8             	mov    DWORD PTR [ebp-0x28],eax
+d00000ec:	83 c4 10             	add    esp,0x10
+d00000ef:	31 db                	xor    ebx,ebx
+d00000f1:	8b 45 e4             	mov    eax,DWORD PTR [ebp-0x1c]
+d00000f4:	89 45 d0             	mov    DWORD PTR [ebp-0x30],eax
+d00000f7:	c1 f8 1f             	sar    eax,0x1f
+d00000fa:	89 45 d4             	mov    DWORD PTR [ebp-0x2c],eax
+d00000fd:	8b 45 dc             	mov    eax,DWORD PTR [ebp-0x24]
+d0000100:	89 45 c8             	mov    DWORD PTR [ebp-0x38],eax
+d0000103:	c1 f8 1f             	sar    eax,0x1f
+d0000106:	89 45 cc             	mov    DWORD PTR [ebp-0x34],eax
+d0000109:	3b 5d 18             	cmp    ebx,DWORD PTR [ebp+0x18]
+d000010c:	7d 69                	jge    d0000177 <sqrt_fp8+0x162>
+d000010e:	89 d8                	mov    eax,ebx
+d0000110:	2b 45 dc             	sub    eax,DWORD PTR [ebp-0x24]
+d0000113:	52                   	push   edx
+d0000114:	52                   	push   edx
+d0000115:	0f af c0             	imul   eax,eax
+d0000118:	8b 4d d8             	mov    ecx,DWORD PTR [ebp-0x28]
+d000011b:	29 c1                	sub    ecx,eax
+d000011d:	89 c8                	mov    eax,ecx
+d000011f:	c1 e0 08             	shl    eax,0x8
+d0000122:	99                   	cdq    
+d0000123:	52                   	push   edx
+d0000124:	50                   	push   eax
+d0000125:	e8 fc ff ff ff       	call   d0000126 <sqrt_fp8+0x111>	d0000126: R_386_PC32	sqrt_fp8
+d000012a:	83 c4 10             	add    esp,0x10
+d000012d:	66 c7 04 df 02 00    	mov    WORD PTR [edi+ebx*8],0x2
+d0000133:	66 c7 44 df 02 01 00 	mov    WORD PTR [edi+ebx*8+0x2],0x1
+d000013a:	8b 4d d4             	mov    ecx,DWORD PTR [ebp-0x2c]
+d000013d:	0f af c8             	imul   ecx,eax
+d0000140:	0f af 55 e4          	imul   edx,DWORD PTR [ebp-0x1c]
+d0000144:	01 d1                	add    ecx,edx
+d0000146:	f7 65 e4             	mul    DWORD PTR [ebp-0x1c]
+d0000149:	01 ca                	add    edx,ecx
+d000014b:	ff 75 cc             	push   DWORD PTR [ebp-0x34]
+d000014e:	ff 75 c8             	push   DWORD PTR [ebp-0x38]
+d0000151:	52                   	push   edx
+d0000152:	50                   	push   eax
+d0000153:	e8 14 08 00 00       	call   d000096c <__udivdi3>	d0000154: R_386_PC32	__udivdi3
+d0000158:	83 c4 10             	add    esp,0x10
+d000015b:	0f ac d0 08          	shrd   eax,edx,0x8
+d000015f:	c1 ea 08             	shr    edx,0x8
+d0000162:	8b 55 e4             	mov    edx,DWORD PTR [ebp-0x1c]
+d0000165:	29 c2                	sub    edx,eax
+d0000167:	66 89 54 df 04       	mov    WORD PTR [edi+ebx*8+0x4],dx
+d000016c:	03 45 e4             	add    eax,DWORD PTR [ebp-0x1c]
+d000016f:	66 89 44 df 06       	mov    WORD PTR [edi+ebx*8+0x6],ax
+d0000174:	43                   	inc    ebx
+d0000175:	eb 92                	jmp    d0000109 <sqrt_fp8+0xf4>
+d0000177:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+d000017a:	89 06                	mov    DWORD PTR [esi],eax
+d000017c:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+d000017f:	89 46 04             	mov    DWORD PTR [esi+0x4],eax
+d0000182:	8b 45 18             	mov    eax,DWORD PTR [ebp+0x18]
+d0000185:	89 46 08             	mov    DWORD PTR [esi+0x8],eax
+d0000188:	8b 45 e0             	mov    eax,DWORD PTR [ebp-0x20]
+d000018b:	89 46 0c             	mov    DWORD PTR [esi+0xc],eax
+d000018e:	89 7e 18             	mov    DWORD PTR [esi+0x18],edi
+d0000191:	89 f0                	mov    eax,esi
+d0000193:	8d 65 f4             	lea    esp,[ebp-0xc]
+d0000196:	5b                   	pop    ebx
+d0000197:	5e                   	pop    esi
+d0000198:	5f                   	pop    edi
+d0000199:	5d                   	pop    ebp
+d000019a:	c2 04 00             	ret    0x4
+
+d000019d <region_create_rounded_rectangle>:
+d000019d:	55                   	push   ebp
+d000019e:	89 e5                	mov    ebp,esp
+d00001a0:	57                   	push   edi
+d00001a1:	56                   	push   esi
+d00001a2:	53                   	push   ebx
+d00001a3:	83 ec 2c             	sub    esp,0x2c
+d00001a6:	8b 75 18             	mov    esi,DWORD PTR [ebp+0x18]
+d00001a9:	8b 7d 1c             	mov    edi,DWORD PTR [ebp+0x1c]
+d00001ac:	3b 7d 14             	cmp    edi,DWORD PTR [ebp+0x14]
+d00001af:	0f 9d c2             	setge  dl
+d00001b2:	85 ff                	test   edi,edi
+d00001b4:	0f 9e c0             	setle  al
+d00001b7:	08 c2                	or     dl,al
+d00001b9:	75 04                	jne    d00001bf <region_create_rounded_rectangle+0x22>
+d00001bb:	39 f7                	cmp    edi,esi
+d00001bd:	7c 19                	jl     d00001d8 <region_create_rounded_rectangle+0x3b>
+d00001bf:	68 c1 0a 00 d0       	push   0xd0000ac1	d00001c0: R_386_32	.rodata.str1.1
+d00001c4:	68 df 0a 00 d0       	push   0xd0000adf	d00001c5: R_386_32	.rodata.str1.1
+d00001c9:	68 06 0b 00 d0       	push   0xd0000b06	d00001ca: R_386_32	.rodata.str1.1
+d00001ce:	68 d6 0a 00 d0       	push   0xd0000ad6	d00001cf: R_386_32	.rodata.str1.1
+d00001d3:	e8 fc ff ff ff       	call   d00001d4 <region_create_rounded_rectangle+0x37>	d00001d4: R_386_PC32	assertion_fail
+d00001d8:	8d 04 3f             	lea    eax,[edi+edi*1]
+d00001db:	89 45 d8             	mov    DWORD PTR [ebp-0x28],eax
+d00001de:	40                   	inc    eax
+d00001df:	89 45 dc             	mov    DWORD PTR [ebp-0x24],eax
+d00001e2:	c1 e0 02             	shl    eax,0x2
+d00001e5:	89 45 e0             	mov    DWORD PTR [ebp-0x20],eax
+d00001e8:	83 ec 0c             	sub    esp,0xc
+d00001eb:	01 c0                	add    eax,eax
+d00001ed:	50                   	push   eax
+d00001ee:	e8 fc ff ff ff       	call   d00001ef <region_create_rounded_rectangle+0x52>	d00001ef: R_386_PC32	malloc
+d00001f3:	89 45 e4             	mov    DWORD PTR [ebp-0x1c],eax
+d00001f6:	8d 04 fd 00 00 00 00 	lea    eax,[edi*8+0x0]
+d00001fd:	8b 55 e4             	mov    edx,DWORD PTR [ebp-0x1c]
+d0000200:	8d 0c 02             	lea    ecx,[edx+eax*1]
+d0000203:	66 c7 01 02 00       	mov    WORD PTR [ecx],0x2
+d0000208:	8d 14 3f             	lea    edx,[edi+edi*1]
+d000020b:	89 f3                	mov    ebx,esi
+d000020d:	29 d3                	sub    ebx,edx
+d000020f:	8b 75 e4             	mov    esi,DWORD PTR [ebp-0x1c]
+d0000212:	66 89 5c 06 02       	mov    WORD PTR [esi+eax*1+0x2],bx
+d0000217:	66 c7 44 06 04 00 00 	mov    WORD PTR [esi+eax*1+0x4],0x0
+d000021e:	8b 55 14             	mov    edx,DWORD PTR [ebp+0x14]
+d0000221:	66 89 54 06 06       	mov    WORD PTR [esi+eax*1+0x6],dx
+d0000226:	01 c1                	add    ecx,eax
+d0000228:	83 c4 10             	add    esp,0x10
+d000022b:	31 f6                	xor    esi,esi
+d000022d:	89 4d d4             	mov    DWORD PTR [ebp-0x2c],ecx
+d0000230:	50                   	push   eax
+d0000231:	50                   	push   eax
+d0000232:	8b 45 d8             	mov    eax,DWORD PTR [ebp-0x28]
+d0000235:	29 f0                	sub    eax,esi
+d0000237:	0f af c6             	imul   eax,esi
+d000023a:	c1 e0 08             	shl    eax,0x8
+d000023d:	99                   	cdq    
+d000023e:	52                   	push   edx
+d000023f:	50                   	push   eax
+d0000240:	e8 fc ff ff ff       	call   d0000241 <region_create_rounded_rectangle+0xa4>	d0000241: R_386_PC32	sqrt_fp8
+d0000245:	83 c4 10             	add    esp,0x10
+d0000248:	b9 80 01 00 00       	mov    ecx,0x180
+d000024d:	31 db                	xor    ebx,ebx
+d000024f:	29 c1                	sub    ecx,eax
+d0000251:	19 d3                	sbb    ebx,edx
+d0000253:	89 c8                	mov    eax,ecx
+d0000255:	89 da                	mov    edx,ebx
+d0000257:	0f ac d0 08          	shrd   eax,edx,0x8
+d000025b:	c1 ea 08             	shr    edx,0x8
+d000025e:	01 f8                	add    eax,edi
+d0000260:	8b 5d e4             	mov    ebx,DWORD PTR [ebp-0x1c]
+d0000263:	66 c7 04 f3 02 00    	mov    WORD PTR [ebx+esi*8],0x2
+d0000269:	89 d9                	mov    ecx,ebx
+d000026b:	66 c7 44 f3 02 01 00 	mov    WORD PTR [ebx+esi*8+0x2],0x1
+d0000272:	66 89 44 f3 04       	mov    WORD PTR [ebx+esi*8+0x4],ax
+d0000277:	8d 14 00             	lea    edx,[eax+eax*1]
+d000027a:	8b 5d 14             	mov    ebx,DWORD PTR [ebp+0x14]
+d000027d:	29 d3                	sub    ebx,edx
+d000027f:	89 da                	mov    edx,ebx
+d0000281:	66 89 54 f1 06       	mov    WORD PTR [ecx+esi*8+0x6],dx
+d0000286:	8b 4d d4             	mov    ecx,DWORD PTR [ebp-0x2c]
+d0000289:	66 c7 01 02 00       	mov    WORD PTR [ecx],0x2
+d000028e:	66 c7 41 02 01 00    	mov    WORD PTR [ecx+0x2],0x1
+d0000294:	66 89 41 04          	mov    WORD PTR [ecx+0x4],ax
+d0000298:	66 89 51 06          	mov    WORD PTR [ecx+0x6],dx
+d000029c:	46                   	inc    esi
+d000029d:	83 e9 08             	sub    ecx,0x8
+d00002a0:	39 f7                	cmp    edi,esi
+d00002a2:	7f 89                	jg     d000022d <region_create_rounded_rectangle+0x90>
+d00002a4:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+d00002a7:	8b 7d 08             	mov    edi,DWORD PTR [ebp+0x8]
+d00002aa:	89 07                	mov    DWORD PTR [edi],eax
+d00002ac:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
+d00002af:	89 fb                	mov    ebx,edi
+d00002b1:	89 47 04             	mov    DWORD PTR [edi+0x4],eax
+d00002b4:	89 f8                	mov    eax,edi
+d00002b6:	8b 7d dc             	mov    edi,DWORD PTR [ebp-0x24]
+d00002b9:	89 7b 08             	mov    DWORD PTR [ebx+0x8],edi
+d00002bc:	8b 75 e0             	mov    esi,DWORD PTR [ebp-0x20]
+d00002bf:	89 73 0c             	mov    DWORD PTR [ebx+0xc],esi
+d00002c2:	8b 5d e4             	mov    ebx,DWORD PTR [ebp-0x1c]
+d00002c5:	89 58 18             	mov    DWORD PTR [eax+0x18],ebx
+d00002c8:	8d 65 f4             	lea    esp,[ebp-0xc]
+d00002cb:	5b                   	pop    ebx
+d00002cc:	5e                   	pop    esi
+d00002cd:	5f                   	pop    edi
+d00002ce:	5d                   	pop    ebp
+d00002cf:	c2 04 00             	ret    0x4
+d00002d2:	55                   	push   ebp
+d00002d3:	89 e5                	mov    ebp,esp
+d00002d5:	57                   	push   edi
+d00002d6:	56                   	push   esi
+d00002d7:	53                   	push   ebx
+d00002d8:	83 ec 0c             	sub    esp,0xc
+d00002db:	8b 5d 08             	mov    ebx,DWORD PTR [ebp+0x8]
+d00002de:	8b 75 14             	mov    esi,DWORD PTR [ebp+0x14]
+d00002e1:	8b 7d 18             	mov    edi,DWORD PTR [ebp+0x18]
+d00002e4:	85 ff                	test   edi,edi
+d00002e6:	78 04                	js     d00002ec <region_create_rounded_rectangle+0x14f>
+d00002e8:	85 f6                	test   esi,esi
+d00002ea:	79 19                	jns    d0000305 <region_create_rounded_rectangle+0x168>
+d00002ec:	68 c1 0a 00 d0       	push   0xd0000ac1	d00002ed: R_386_32	.rodata.str1.1
+d00002f1:	68 c2 0a 00 d0       	push   0xd0000ac2	d00002f2: R_386_32	.rodata.str1.1
+d00002f6:	68 0a 0b 00 d0       	push   0xd0000b0a	d00002f7: R_386_32	.rodata.str1.1
+d00002fb:	68 d6 0a 00 d0       	push   0xd0000ad6	d00002fc: R_386_32	.rodata.str1.1
+d0000300:	e8 fc ff ff ff       	call   d0000301 <region_create_rounded_rectangle+0x164>	d0000301: R_386_PC32	assertion_fail
+d0000305:	83 ec 0c             	sub    esp,0xc
+d0000308:	6a 08                	push   0x8
+d000030a:	e8 fc ff ff ff       	call   d000030b <region_create_rounded_rectangle+0x16e>	d000030b: R_386_PC32	malloc
+d000030f:	66 c7 00 02 00       	mov    WORD PTR [eax],0x2
+d0000314:	66 89 78 02          	mov    WORD PTR [eax+0x2],di
+d0000318:	66 c7 40 04 00 00    	mov    WORD PTR [eax+0x4],0x0
+d000031e:	66 89 70 06          	mov    WORD PTR [eax+0x6],si
+d0000322:	8b 55 0c             	mov    edx,DWORD PTR [ebp+0xc]
+d0000325:	89 13                	mov    DWORD PTR [ebx],edx
+d0000327:	8b 55 10             	mov    edx,DWORD PTR [ebp+0x10]
+d000032a:	89 53 04             	mov    DWORD PTR [ebx+0x4],edx
+d000032d:	c7 43 08 01 00 00 00 	mov    DWORD PTR [ebx+0x8],0x1
+d0000334:	c7 43 0c 04 00 00 00 	mov    DWORD PTR [ebx+0xc],0x4
+d000033b:	89 43 18             	mov    DWORD PTR [ebx+0x18],eax
+d000033e:	89 d8                	mov    eax,ebx
+d0000340:	8d 65 f4             	lea    esp,[ebp-0xc]
+d0000343:	5b                   	pop    ebx
+d0000344:	5e                   	pop    esi
+d0000345:	5f                   	pop    edi
+d0000346:	5d                   	pop    ebp
+d0000347:	c2 04 00             	ret    0x4
+
+d000034a <region_add_data_block>:
+d000034a:	55                   	push   ebp
+d000034b:	89 e5                	mov    ebp,esp
+d000034d:	57                   	push   edi
+d000034e:	56                   	push   esi
+d000034f:	53                   	push   ebx
+d0000350:	83 ec 1c             	sub    esp,0x1c
+d0000353:	8b 5d 08             	mov    ebx,DWORD PTR [ebp+0x8]
+d0000356:	8b 7d 0c             	mov    edi,DWORD PTR [ebp+0xc]
+d0000359:	0f bf 07             	movsx  eax,WORD PTR [edi]
+d000035c:	89 45 e4             	mov    DWORD PTR [ebp-0x1c],eax
+d000035f:	8d 70 02             	lea    esi,[eax+0x2]
+d0000362:	8b 4b 14             	mov    ecx,DWORD PTR [ebx+0x14]
+d0000365:	83 f9 ff             	cmp    ecx,0xffffffff
+d0000368:	74 3c                	je     d00003a6 <region_add_data_block+0x5c>
+d000036a:	8b 53 18             	mov    edx,DWORD PTR [ebx+0x18]
+d000036d:	01 c9                	add    ecx,ecx
+d000036f:	0f bf 04 0a          	movsx  eax,WORD PTR [edx+ecx*1]
+d0000373:	39 45 e4             	cmp    DWORD PTR [ebp-0x1c],eax
+d0000376:	75 2e                	jne    d00003a6 <region_add_data_block+0x5c>
+d0000378:	50                   	push   eax
+d0000379:	8b 45 e4             	mov    eax,DWORD PTR [ebp-0x1c]
+d000037c:	01 c0                	add    eax,eax
+d000037e:	50                   	push   eax
+d000037f:	8d 47 04             	lea    eax,[edi+0x4]
+d0000382:	50                   	push   eax
+d0000383:	8d 44 0a 04          	lea    eax,[edx+ecx*1+0x4]
+d0000387:	50                   	push   eax
+d0000388:	e8 fc ff ff ff       	call   d0000389 <region_add_data_block+0x3f>	d0000389: R_386_PC32	memcmp
+d000038d:	83 c4 10             	add    esp,0x10
+d0000390:	85 c0                	test   eax,eax
+d0000392:	75 12                	jne    d00003a6 <region_add_data_block+0x5c>
+d0000394:	8b 43 14             	mov    eax,DWORD PTR [ebx+0x14]
+d0000397:	40                   	inc    eax
+d0000398:	01 c0                	add    eax,eax
+d000039a:	03 43 18             	add    eax,DWORD PTR [ebx+0x18]
+d000039d:	66 8b 57 02          	mov    dx,WORD PTR [edi+0x2]
+d00003a1:	66 01 10             	add    WORD PTR [eax],dx
+d00003a4:	eb 60                	jmp    d0000406 <region_add_data_block+0xbc>
+d00003a6:	8b 53 0c             	mov    edx,DWORD PTR [ebx+0xc]
+d00003a9:	89 53 14             	mov    DWORD PTR [ebx+0x14],edx
+d00003ac:	8b 43 10             	mov    eax,DWORD PTR [ebx+0x10]
+d00003af:	01 f2                	add    edx,esi
+d00003b1:	39 d0                	cmp    eax,edx
+d00003b3:	7f 37                	jg     d00003ec <region_add_data_block+0xa2>
+d00003b5:	01 c0                	add    eax,eax
+d00003b7:	01 f0                	add    eax,esi
+d00003b9:	89 43 10             	mov    DWORD PTR [ebx+0x10],eax
+d00003bc:	52                   	push   edx
+d00003bd:	52                   	push   edx
+d00003be:	01 c0                	add    eax,eax
+d00003c0:	50                   	push   eax
+d00003c1:	ff 73 18             	push   DWORD PTR [ebx+0x18]
+d00003c4:	e8 fc ff ff ff       	call   d00003c5 <region_add_data_block+0x7b>	d00003c5: R_386_PC32	realloc
+d00003c9:	83 c4 10             	add    esp,0x10
+d00003cc:	85 c0                	test   eax,eax
+d00003ce:	75 19                	jne    d00003e9 <region_add_data_block+0x9f>
+d00003d0:	68 c1 0a 00 d0       	push   0xd0000ac1	d00003d1: R_386_32	.rodata.str1.1
+d00003d5:	68 d1 0a 00 d0       	push   0xd0000ad1	d00003d6: R_386_32	.rodata.str1.1
+d00003da:	68 0e 0b 00 d0       	push   0xd0000b0e	d00003db: R_386_32	.rodata.str1.1
+d00003df:	68 d6 0a 00 d0       	push   0xd0000ad6	d00003e0: R_386_32	.rodata.str1.1
+d00003e4:	e8 fc ff ff ff       	call   d00003e5 <region_add_data_block+0x9b>	d00003e5: R_386_PC32	assertion_fail
+d00003e9:	89 43 18             	mov    DWORD PTR [ebx+0x18],eax
+d00003ec:	50                   	push   eax
+d00003ed:	8d 04 36             	lea    eax,[esi+esi*1]
+d00003f0:	50                   	push   eax
+d00003f1:	57                   	push   edi
+d00003f2:	8b 43 0c             	mov    eax,DWORD PTR [ebx+0xc]
+d00003f5:	01 c0                	add    eax,eax
+d00003f7:	03 43 18             	add    eax,DWORD PTR [ebx+0x18]
+d00003fa:	50                   	push   eax
+d00003fb:	e8 fc ff ff ff       	call   d00003fc <region_add_data_block+0xb2>	d00003fc: R_386_PC32	memcpy
+d0000400:	01 73 0c             	add    DWORD PTR [ebx+0xc],esi
+d0000403:	83 c4 10             	add    esp,0x10
+d0000406:	8d 65 f4             	lea    esp,[ebp-0xc]
+d0000409:	5b                   	pop    ebx
+d000040a:	5e                   	pop    esi
+d000040b:	5f                   	pop    edi
+d000040c:	5d                   	pop    ebp
+d000040d:	c3                   	ret    
+
+d000040e <region_add_padding_data_block>:
+d000040e:	55                   	push   ebp
+d000040f:	89 e5                	mov    ebp,esp
+d0000411:	83 ec 20             	sub    esp,0x20
+d0000414:	66 c7 45 f4 00 00    	mov    WORD PTR [ebp-0xc],0x0
+d000041a:	8b 45 0c             	mov    eax,DWORD PTR [ebp+0xc]
+d000041d:	66 89 45 f6          	mov    WORD PTR [ebp-0xa],ax
+d0000421:	8d 45 f4             	lea    eax,[ebp-0xc]
+d0000424:	50                   	push   eax
+d0000425:	ff 75 08             	push   DWORD PTR [ebp+0x8]
+d0000428:	e8 fc ff ff ff       	call   d0000429 <region_add_padding_data_block+0x1b>	d0000429: R_386_PC32	region_add_data_block
+d000042d:	83 c4 10             	add    esp,0x10
+d0000430:	c9                   	leave  
+d0000431:	c3                   	ret    
+
+d0000432 <region_add_data_block_from_existing>:
+d0000432:	55                   	push   ebp
+d0000433:	89 e5                	mov    ebp,esp
+d0000435:	56                   	push   esi
+d0000436:	53                   	push   ebx
+d0000437:	81 ec 00 02 00 00    	sub    esp,0x200
+d000043d:	8b 5d 0c             	mov    ebx,DWORD PTR [ebp+0xc]
+d0000440:	0f bf 45 10          	movsx  eax,WORD PTR [ebp+0x10]
+d0000444:	01 c0                	add    eax,eax
+d0000446:	03 43 18             	add    eax,DWORD PTR [ebx+0x18]
+d0000449:	0f bf 30             	movsx  esi,WORD PTR [eax]
+d000044c:	66 89 b5 f8 fd ff ff 	mov    WORD PTR [ebp-0x208],si
+d0000453:	8b 55 14             	mov    edx,DWORD PTR [ebp+0x14]
+d0000456:	66 89 95 fa fd ff ff 	mov    WORD PTR [ebp-0x206],dx
+d000045d:	31 d2                	xor    edx,edx
+d000045f:	39 f2                	cmp    edx,esi
+d0000461:	7d 12                	jge    d0000475 <region_add_data_block_from_existing+0x43>
+d0000463:	66 8b 4c 50 04       	mov    cx,WORD PTR [eax+edx*2+0x4]
+d0000468:	03 0b                	add    ecx,DWORD PTR [ebx]
+d000046a:	66 89 8c 55 fc fd ff ff 	mov    WORD PTR [ebp+edx*2-0x204],cx
+d0000472:	42                   	inc    edx
+d0000473:	eb ea                	jmp    d000045f <region_add_data_block_from_existing+0x2d>
+d0000475:	50                   	push   eax
+d0000476:	50                   	push   eax
+d0000477:	8d 85 f8 fd ff ff    	lea    eax,[ebp-0x208]
+d000047d:	50                   	push   eax
+d000047e:	ff 75 08             	push   DWORD PTR [ebp+0x8]
+d0000481:	e8 fc ff ff ff       	call   d0000482 <region_add_data_block_from_existing+0x50>	d0000482: R_386_PC32	region_add_data_block
+d0000486:	83 c4 10             	add    esp,0x10
+d0000489:	8d 65 f8             	lea    esp,[ebp-0x8]
+d000048c:	5b                   	pop    ebx
+d000048d:	5e                   	pop    esi
+d000048e:	5d                   	pop    ebp
+d000048f:	c3                   	ret    
+
+d0000490 <region_operation_check_special_case>:
+d0000490:	55                   	push   ebp
+d0000491:	89 e5                	mov    ebp,esp
+d0000493:	57                   	push   edi
+d0000494:	56                   	push   esi
+d0000495:	53                   	push   ebx
+d0000496:	83 ec 0c             	sub    esp,0xc
+d0000499:	8b 5d 10             	mov    ebx,DWORD PTR [ebp+0x10]
+d000049c:	8b 7d 14             	mov    edi,DWORD PTR [ebp+0x14]
+d000049f:	8b 75 18             	mov    esi,DWORD PTR [ebp+0x18]
+d00004a2:	8b 55 1c             	mov    edx,DWORD PTR [ebp+0x1c]
+d00004a5:	8b 4d 20             	mov    ecx,DWORD PTR [ebp+0x20]
+d00004a8:	83 ff 01             	cmp    edi,0x1
+d00004ab:	75 19                	jne    d00004c6 <region_operation_check_special_case+0x36>
+d00004ad:	66 41                	inc    cx
+d00004af:	0f 94 c0             	sete   al
+d00004b2:	66 42                	inc    dx
+d00004b4:	0f 94 c2             	sete   dl
+d00004b7:	08 d0                	or     al,dl
+d00004b9:	74 47                	je     d0000502 <region_operation_check_special_case+0x72>
+d00004bb:	50                   	push   eax
+d00004bc:	50                   	push   eax
+d00004bd:	56                   	push   esi
+d00004be:	53                   	push   ebx
+d00004bf:	e8 fc ff ff ff       	call   d00004c0 <region_operation_check_special_case+0x30>	d00004c0: R_386_PC32	region_add_padding_data_block
+d00004c4:	eb 18                	jmp    d00004de <region_operation_check_special_case+0x4e>
+d00004c6:	85 ff                	test   edi,edi
+d00004c8:	75 1b                	jne    d00004e5 <region_operation_check_special_case+0x55>
+d00004ca:	66 83 fa ff          	cmp    dx,0xffff
+d00004ce:	75 22                	jne    d00004f2 <region_operation_check_special_case+0x62>
+d00004d0:	56                   	push   esi
+d00004d1:	0f bf c9             	movsx  ecx,cx
+d00004d4:	51                   	push   ecx
+d00004d5:	ff 75 0c             	push   DWORD PTR [ebp+0xc]
+d00004d8:	53                   	push   ebx
+d00004d9:	e8 fc ff ff ff       	call   d00004da <region_operation_check_special_case+0x4a>	d00004da: R_386_PC32	region_add_data_block_from_existing
+d00004de:	83 c4 10             	add    esp,0x10
+d00004e1:	b0 01                	mov    al,0x1
+d00004e3:	eb 1d                	jmp    d0000502 <region_operation_check_special_case+0x72>
+d00004e5:	31 c0                	xor    eax,eax
+d00004e7:	83 ff 02             	cmp    edi,0x2
+d00004ea:	75 16                	jne    d0000502 <region_operation_check_special_case+0x72>
+d00004ec:	66 83 fa ff          	cmp    dx,0xffff
+d00004f0:	74 c9                	je     d00004bb <region_operation_check_special_case+0x2b>
+d00004f2:	31 c0                	xor    eax,eax
+d00004f4:	66 41                	inc    cx
+d00004f6:	75 0a                	jne    d0000502 <region_operation_check_special_case+0x72>
+d00004f8:	56                   	push   esi
+d00004f9:	0f bf d2             	movsx  edx,dx
+d00004fc:	52                   	push   edx
+d00004fd:	ff 75 08             	push   DWORD PTR [ebp+0x8]
+d0000500:	eb d6                	jmp    d00004d8 <region_operation_check_special_case+0x48>
+d0000502:	8d 65 f4             	lea    esp,[ebp-0xc]
+d0000505:	5b                   	pop    ebx
+d0000506:	5e                   	pop    esi
+d0000507:	5f                   	pop    edi
+d0000508:	5d                   	pop    ebp
+d0000509:	c3                   	ret    
+
+d000050a <region_operation_on_data_block>:
+d000050a:	55                   	push   ebp
+d000050b:	89 e5                	mov    ebp,esp
+d000050d:	57                   	push   edi
+d000050e:	56                   	push   esi
+d000050f:	53                   	push   ebx
+d0000510:	81 ec 30 02 00 00    	sub    esp,0x230
+d0000516:	0f bf 45 20          	movsx  eax,WORD PTR [ebp+0x20]
+d000051a:	89 85 e0 fd ff ff    	mov    DWORD PTR [ebp-0x220],eax
+d0000520:	0f bf 45 1c          	movsx  eax,WORD PTR [ebp+0x1c]
+d0000524:	89 85 dc fd ff ff    	mov    DWORD PTR [ebp-0x224],eax
+d000052a:	ff b5 e0 fd ff ff    	push   DWORD PTR [ebp-0x220]
+d0000530:	50                   	push   eax
+d0000531:	ff 75 18             	push   DWORD PTR [ebp+0x18]
+d0000534:	ff 75 14             	push   DWORD PTR [ebp+0x14]
+d0000537:	ff 75 10             	push   DWORD PTR [ebp+0x10]
+d000053a:	ff 75 0c             	push   DWORD PTR [ebp+0xc]
+d000053d:	ff 75 08             	push   DWORD PTR [ebp+0x8]
+d0000540:	e8 fc ff ff ff       	call   d0000541 <region_operation_on_data_block+0x37>	d0000541: R_386_PC32	region_operation_check_special_case
+d0000545:	83 c4 20             	add    esp,0x20
+d0000548:	84 c0                	test   al,al
+d000054a:	0f 85 b8 01 00 00    	jne    d0000708 <region_operation_on_data_block+0x1fe>
+d0000550:	8b 5d 08             	mov    ebx,DWORD PTR [ebp+0x8]
+d0000553:	8b 5b 18             	mov    ebx,DWORD PTR [ebx+0x18]
+d0000556:	89 9d d4 fd ff ff    	mov    DWORD PTR [ebp-0x22c],ebx
+d000055c:	8b 95 dc fd ff ff    	mov    edx,DWORD PTR [ebp-0x224]
+d0000562:	01 d2                	add    edx,edx
+d0000564:	01 da                	add    edx,ebx
+d0000566:	89 95 d0 fd ff ff    	mov    DWORD PTR [ebp-0x230],edx
+d000056c:	89 d7                	mov    edi,edx
+d000056e:	31 d2                	xor    edx,edx
+d0000570:	66 83 3f 00          	cmp    WORD PTR [edi],0x0
+d0000574:	0f 9e c2             	setle  dl
+d0000577:	f7 da                	neg    edx
+d0000579:	8b 5d 0c             	mov    ebx,DWORD PTR [ebp+0xc]
+d000057c:	8b 7b 18             	mov    edi,DWORD PTR [ebx+0x18]
+d000057f:	89 bd cc fd ff ff    	mov    DWORD PTR [ebp-0x234],edi
+d0000585:	8b 8d e0 fd ff ff    	mov    ecx,DWORD PTR [ebp-0x220]
+d000058b:	01 c9                	add    ecx,ecx
+d000058d:	01 f9                	add    ecx,edi
+d000058f:	89 8d c8 fd ff ff    	mov    DWORD PTR [ebp-0x238],ecx
+d0000595:	89 cb                	mov    ebx,ecx
+d0000597:	31 c9                	xor    ecx,ecx
+d0000599:	66 83 3b 00          	cmp    WORD PTR [ebx],0x0
+d000059d:	0f 9e c1             	setle  cl
+d00005a0:	f7 d9                	neg    ecx
+d00005a2:	c6 85 e6 fd ff ff 00 	mov    BYTE PTR [ebp-0x21a],0x0
+d00005a9:	c6 85 e7 fd ff ff 00 	mov    BYTE PTR [ebp-0x219],0x0
+d00005b0:	c7 85 d8 fd ff ff 00 00 00 00 	mov    DWORD PTR [ebp-0x228],0x0
+d00005ba:	83 fa ff             	cmp    edx,0xffffffff
+d00005bd:	74 20                	je     d00005df <region_operation_on_data_block+0xd5>
+d00005bf:	8b bd dc fd ff ff    	mov    edi,DWORD PTR [ebp-0x224]
+d00005c5:	8d 74 17 02          	lea    esi,[edi+edx*1+0x2]
+d00005c9:	8b 9d d4 fd ff ff    	mov    ebx,DWORD PTR [ebp-0x22c]
+d00005cf:	66 8b 34 73          	mov    si,WORD PTR [ebx+esi*2]
+d00005d3:	8b 7d 08             	mov    edi,DWORD PTR [ebp+0x8]
+d00005d6:	03 37                	add    esi,DWORD PTR [edi]
+d00005d8:	83 f9 ff             	cmp    ecx,0xffffffff
+d00005db:	74 50                	je     d000062d <region_operation_on_data_block+0x123>
+d00005dd:	eb 0e                	jmp    d00005ed <region_operation_on_data_block+0xe3>
+d00005df:	83 f9 ff             	cmp    ecx,0xffffffff
+d00005e2:	0f 84 f5 00 00 00    	je     d00006dd <region_operation_on_data_block+0x1d3>
+d00005e8:	be 0f 27 00 00       	mov    esi,0x270f
+d00005ed:	8b 9d e0 fd ff ff    	mov    ebx,DWORD PTR [ebp-0x220]
+d00005f3:	8d 7c 0b 02          	lea    edi,[ebx+ecx*1+0x2]
+d00005f7:	8b 9d cc fd ff ff    	mov    ebx,DWORD PTR [ebp-0x234]
+d00005fd:	66 8b 3c 7b          	mov    di,WORD PTR [ebx+edi*2]
+d0000601:	8b 5d 0c             	mov    ebx,DWORD PTR [ebp+0xc]
+d0000604:	03 3b                	add    edi,DWORD PTR [ebx]
+d0000606:	66 39 f7             	cmp    di,si
+d0000609:	75 0e                	jne    d0000619 <region_operation_on_data_block+0x10f>
+d000060b:	83 f0 01             	xor    eax,0x1
+d000060e:	80 b5 e7 fd ff ff 01 	xor    BYTE PTR [ebp-0x219],0x1
+d0000615:	42                   	inc    edx
+d0000616:	41                   	inc    ecx
+d0000617:	eb 1f                	jmp    d0000638 <region_operation_on_data_block+0x12e>
+d0000619:	83 fa ff             	cmp    edx,0xffffffff
+d000061c:	74 05                	je     d0000623 <region_operation_on_data_block+0x119>
+d000061e:	66 39 f7             	cmp    di,si
+d0000621:	7d 11                	jge    d0000634 <region_operation_on_data_block+0x12a>
+d0000623:	80 b5 e7 fd ff ff 01 	xor    BYTE PTR [ebp-0x219],0x1
+d000062a:	41                   	inc    ecx
+d000062b:	eb 0d                	jmp    d000063a <region_operation_on_data_block+0x130>
+d000062d:	66 81 fe b8 22       	cmp    si,0x22b8
+d0000632:	74 d7                	je     d000060b <region_operation_on_data_block+0x101>
+d0000634:	83 f0 01             	xor    eax,0x1
+d0000637:	42                   	inc    edx
+d0000638:	89 f7                	mov    edi,esi
+d000063a:	8b 9d d0 fd ff ff    	mov    ebx,DWORD PTR [ebp-0x230]
+d0000640:	0f bf 33             	movsx  esi,WORD PTR [ebx]
+d0000643:	39 d6                	cmp    esi,edx
+d0000645:	7f 03                	jg     d000064a <region_operation_on_data_block+0x140>
+d0000647:	83 ca ff             	or     edx,0xffffffff
+d000064a:	8b 9d c8 fd ff ff    	mov    ebx,DWORD PTR [ebp-0x238]
+d0000650:	0f bf 33             	movsx  esi,WORD PTR [ebx]
+d0000653:	39 ce                	cmp    esi,ecx
+d0000655:	7f 03                	jg     d000065a <region_operation_on_data_block+0x150>
+d0000657:	83 c9 ff             	or     ecx,0xffffffff
+d000065a:	83 7d 14 01          	cmp    DWORD PTR [ebp+0x14],0x1
+d000065e:	75 0c                	jne    d000066c <region_operation_on_data_block+0x162>
+d0000660:	89 c6                	mov    esi,eax
+d0000662:	8a 9d e7 fd ff ff    	mov    bl,BYTE PTR [ebp-0x219]
+d0000668:	21 de                	and    esi,ebx
+d000066a:	eb 43                	jmp    d00006af <region_operation_on_data_block+0x1a5>
+d000066c:	83 7d 14 02          	cmp    DWORD PTR [ebp+0x14],0x2
+d0000670:	75 12                	jne    d0000684 <region_operation_on_data_block+0x17a>
+d0000672:	89 c6                	mov    esi,eax
+d0000674:	83 f6 01             	xor    esi,0x1
+d0000677:	8a 9d e7 fd ff ff    	mov    bl,BYTE PTR [ebp-0x219]
+d000067d:	09 de                	or     esi,ebx
+d000067f:	83 f6 01             	xor    esi,0x1
+d0000682:	eb 2b                	jmp    d00006af <region_operation_on_data_block+0x1a5>
+d0000684:	83 7d 14 00          	cmp    DWORD PTR [ebp+0x14],0x0
+d0000688:	75 0c                	jne    d0000696 <region_operation_on_data_block+0x18c>
+d000068a:	89 c6                	mov    esi,eax
+d000068c:	8a 9d e7 fd ff ff    	mov    bl,BYTE PTR [ebp-0x219]
+d0000692:	09 de                	or     esi,ebx
+d0000694:	eb 19                	jmp    d00006af <region_operation_on_data_block+0x1a5>
+d0000696:	68 c1 0a 00 d0       	push   0xd0000ac1	d0000697: R_386_32	.rodata.str1.1
+d000069b:	68 d1 0a 00 d0       	push   0xd0000ad1	d000069c: R_386_32	.rodata.str1.1
+d00006a0:	68 12 0b 00 d0       	push   0xd0000b12	d00006a1: R_386_32	.rodata.str1.1
+d00006a5:	68 d6 0a 00 d0       	push   0xd0000ad6	d00006a6: R_386_32	.rodata.str1.1
+d00006aa:	e8 fc ff ff ff       	call   d00006ab <region_operation_on_data_block+0x1a1>	d00006ab: R_386_PC32	assertion_fail
+d00006af:	89 f3                	mov    ebx,esi
+d00006b1:	38 9d e6 fd ff ff    	cmp    BYTE PTR [ebp-0x21a],bl
+d00006b7:	74 17                	je     d00006d0 <region_operation_on_data_block+0x1c6>
+d00006b9:	8b 9d d8 fd ff ff    	mov    ebx,DWORD PTR [ebp-0x228]
+d00006bf:	66 89 bc 5d ec fd ff ff 	mov    WORD PTR [ebp+ebx*2-0x214],di
+d00006c7:	89 df                	mov    edi,ebx
+d00006c9:	47                   	inc    edi
+d00006ca:	89 bd d8 fd ff ff    	mov    DWORD PTR [ebp-0x228],edi
+d00006d0:	89 f3                	mov    ebx,esi
+d00006d2:	88 9d e6 fd ff ff    	mov    BYTE PTR [ebp-0x21a],bl
+d00006d8:	e9 dd fe ff ff       	jmp    d00005ba <region_operation_on_data_block+0xb0>
+d00006dd:	8b 85 d8 fd ff ff    	mov    eax,DWORD PTR [ebp-0x228]
+d00006e3:	66 89 85 e8 fd ff ff 	mov    WORD PTR [ebp-0x218],ax
+d00006ea:	8b 45 18             	mov    eax,DWORD PTR [ebp+0x18]
+d00006ed:	66 89 85 ea fd ff ff 	mov    WORD PTR [ebp-0x216],ax
+d00006f4:	50                   	push   eax
+d00006f5:	50                   	push   eax
+d00006f6:	8d 85 e8 fd ff ff    	lea    eax,[ebp-0x218]
+d00006fc:	50                   	push   eax
+d00006fd:	ff 75 10             	push   DWORD PTR [ebp+0x10]
+d0000700:	e8 fc ff ff ff       	call   d0000701 <region_operation_on_data_block+0x1f7>	d0000701: R_386_PC32	region_add_data_block
+d0000705:	83 c4 10             	add    esp,0x10
+d0000708:	8d 65 f4             	lea    esp,[ebp-0xc]
+d000070b:	5b                   	pop    ebx
+d000070c:	5e                   	pop    esi
+d000070d:	5f                   	pop    edi
+d000070e:	5d                   	pop    ebp
+d000070f:	c3                   	ret    
+d0000710:	55                   	push   ebp
+d0000711:	89 e5                	mov    ebp,esp
+d0000713:	57                   	push   edi
+d0000714:	56                   	push   esi
+d0000715:	53                   	push   ebx
+d0000716:	81 ec 4c 20 00 00    	sub    esp,0x204c
+d000071c:	c7 85 dc df ff ff 20 00 00 00 	mov    DWORD PTR [ebp-0x2024],0x20
+d0000726:	c7 85 d4 df ff ff 00 00 00 00 	mov    DWORD PTR [ebp-0x202c],0x0
+d0000730:	c7 85 d8 df ff ff 00 00 00 00 	mov    DWORD PTR [ebp-0x2028],0x0
+d000073a:	c7 85 e0 df ff ff ff ff ff ff 	mov    DWORD PTR [ebp-0x2020],0xffffffff
+d0000744:	c7 85 cc df ff ff 00 00 00 00 	mov    DWORD PTR [ebp-0x2034],0x0
+d000074e:	8b 55 10             	mov    edx,DWORD PTR [ebp+0x10]
+d0000751:	8b 45 2c             	mov    eax,DWORD PTR [ebp+0x2c]
+d0000754:	39 d0                	cmp    eax,edx
+d0000756:	7e 02                	jle    d000075a <region_operation_on_data_block+0x250>
+d0000758:	89 d0                	mov    eax,edx
+d000075a:	89 85 d0 df ff ff    	mov    DWORD PTR [ebp-0x2030],eax
+d0000760:	83 ec 0c             	sub    esp,0xc
+d0000763:	6a 40                	push   0x40
+d0000765:	e8 fc ff ff ff       	call   d0000766 <region_operation_on_data_block+0x25c>	d0000766: R_386_PC32	malloc
+d000076a:	89 85 e4 df ff ff    	mov    DWORD PTR [ebp-0x201c],eax
+d0000770:	8b 4d 10             	mov    ecx,DWORD PTR [ebp+0x10]
+d0000773:	8b 55 2c             	mov    edx,DWORD PTR [ebp+0x2c]
+d0000776:	83 c4 10             	add    esp,0x10
+d0000779:	c7 85 bc df ff ff ff ff ff ff 	mov    DWORD PTR [ebp-0x2044],0xffffffff
+d0000783:	c7 85 b8 df ff ff ff ff ff ff 	mov    DWORD PTR [ebp-0x2048],0xffffffff
+d000078d:	31 db                	xor    ebx,ebx
+d000078f:	31 f6                	xor    esi,esi
+d0000791:	c7 85 c4 df ff ff 00 00 00 00 	mov    DWORD PTR [ebp-0x203c],0x0
+d000079b:	83 fe ff             	cmp    esi,0xffffffff
+d000079e:	0f 85 04 01 00 00    	jne    d00008a8 <region_operation_on_data_block+0x39e>
+d00007a4:	83 fb ff             	cmp    ebx,0xffffffff
+d00007a7:	0f 84 49 01 00 00    	je     d00008f6 <region_operation_on_data_block+0x3ec>
+d00007ad:	66 39 d1             	cmp    cx,dx
+d00007b0:	0f 94 85 c2 df ff ff 	sete   BYTE PTR [ebp-0x203e]
+d00007b7:	0f bf c2             	movsx  eax,dx
+d00007ba:	c6 85 c3 df ff ff 01 	mov    BYTE PTR [ebp-0x203d],0x1
+d00007c1:	ff 85 c4 df ff ff    	inc    DWORD PTR [ebp-0x203c]
+d00007c7:	8b bd c4 df ff ff    	mov    edi,DWORD PTR [ebp-0x203c]
+d00007cd:	66 89 84 7d e6 df ff ff 	mov    WORD PTR [ebp+edi*2-0x201a],ax
+d00007d5:	4f                   	dec    edi
+d00007d6:	74 54                	je     d000082c <region_operation_on_data_block+0x322>
+d00007d8:	89 95 b0 df ff ff    	mov    DWORD PTR [ebp-0x2050],edx
+d00007de:	89 8d b4 df ff ff    	mov    DWORD PTR [ebp-0x204c],ecx
+d00007e4:	52                   	push   edx
+d00007e5:	0f bf bd bc df ff ff 	movsx  edi,WORD PTR [ebp-0x2044]
+d00007ec:	57                   	push   edi
+d00007ed:	0f bf bd b8 df ff ff 	movsx  edi,WORD PTR [ebp-0x2048]
+d00007f4:	57                   	push   edi
+d00007f5:	8b 95 c4 df ff ff    	mov    edx,DWORD PTR [ebp-0x203c]
+d00007fb:	0f bf bc 55 e4 df ff ff 	movsx  edi,WORD PTR [ebp+edx*2-0x201c]
+d0000803:	29 f8                	sub    eax,edi
+d0000805:	50                   	push   eax
+d0000806:	ff 75 44             	push   DWORD PTR [ebp+0x44]
+d0000809:	8d 85 cc df ff ff    	lea    eax,[ebp-0x2034]
+d000080f:	50                   	push   eax
+d0000810:	8d 45 28             	lea    eax,[ebp+0x28]
+d0000813:	50                   	push   eax
+d0000814:	8d 45 0c             	lea    eax,[ebp+0xc]
+d0000817:	50                   	push   eax
+d0000818:	e8 fc ff ff ff       	call   d0000819 <region_operation_on_data_block+0x30f>	d0000819: R_386_PC32	region_operation_on_data_block
+d000081d:	83 c4 20             	add    esp,0x20
+d0000820:	8b 95 b0 df ff ff    	mov    edx,DWORD PTR [ebp-0x2050]
+d0000826:	8b 8d b4 df ff ff    	mov    ecx,DWORD PTR [ebp-0x204c]
+d000082c:	80 bd c2 df ff ff 00 	cmp    BYTE PTR [ebp-0x203e],0x0
+d0000833:	74 2f                	je     d0000864 <region_operation_on_data_block+0x35a>
+d0000835:	39 75 18             	cmp    DWORD PTR [ebp+0x18],esi
+d0000838:	7e 1d                	jle    d0000857 <region_operation_on_data_block+0x34d>
+d000083a:	8b 7d 24             	mov    edi,DWORD PTR [ebp+0x24]
+d000083d:	8d 46 01             	lea    eax,[esi+0x1]
+d0000840:	01 c0                	add    eax,eax
+d0000842:	66 03 0c 07          	add    cx,WORD PTR [edi+eax*1]
+d0000846:	0f bf 44 07 fe       	movsx  eax,WORD PTR [edi+eax*1-0x2]
+d000084b:	89 b5 b8 df ff ff    	mov    DWORD PTR [ebp-0x2048],esi
+d0000851:	8d 74 06 02          	lea    esi,[esi+eax*1+0x2]
+d0000855:	eb 0d                	jmp    d0000864 <region_operation_on_data_block+0x35a>
+d0000857:	c7 85 b8 df ff ff ff ff ff ff 	mov    DWORD PTR [ebp-0x2048],0xffffffff
+d0000861:	83 ce ff             	or     esi,0xffffffff
+d0000864:	80 bd c3 df ff ff 00 	cmp    BYTE PTR [ebp-0x203d],0x0
+d000086b:	0f 84 2a ff ff ff    	je     d000079b <region_operation_on_data_block+0x291>
+d0000871:	39 5d 34             	cmp    DWORD PTR [ebp+0x34],ebx
+d0000874:	7e 20                	jle    d0000896 <region_operation_on_data_block+0x38c>
+d0000876:	8b 7d 40             	mov    edi,DWORD PTR [ebp+0x40]
+d0000879:	8d 43 01             	lea    eax,[ebx+0x1]
+d000087c:	01 c0                	add    eax,eax
+d000087e:	66 03 14 07          	add    dx,WORD PTR [edi+eax*1]
+d0000882:	0f bf 44 07 fe       	movsx  eax,WORD PTR [edi+eax*1-0x2]
+d0000887:	89 9d bc df ff ff    	mov    DWORD PTR [ebp-0x2044],ebx
+d000088d:	8d 5c 03 02          	lea    ebx,[ebx+eax*1+0x2]
+d0000891:	e9 05 ff ff ff       	jmp    d000079b <region_operation_on_data_block+0x291>
+d0000896:	c7 85 bc df ff ff ff ff ff ff 	mov    DWORD PTR [ebp-0x2044],0xffffffff
+d00008a0:	83 cb ff             	or     ebx,0xffffffff
+d00008a3:	e9 f3 fe ff ff       	jmp    d000079b <region_operation_on_data_block+0x291>
+d00008a8:	66 39 d1             	cmp    cx,dx
+d00008ab:	74 33                	je     d00008e0 <region_operation_on_data_block+0x3d6>
+d00008ad:	83 fb ff             	cmp    ebx,0xffffffff
+d00008b0:	74 22                	je     d00008d4 <region_operation_on_data_block+0x3ca>
+d00008b2:	66 39 d1             	cmp    cx,dx
+d00008b5:	0f 9c 85 c2 df ff ff 	setl   BYTE PTR [ebp-0x203e]
+d00008bc:	0f 9d 85 c3 df ff ff 	setge  BYTE PTR [ebp-0x203d]
+d00008c3:	0f bf c1             	movsx  eax,cx
+d00008c6:	0f 8e f5 fe ff ff    	jle    d00007c1 <region_operation_on_data_block+0x2b7>
+d00008cc:	0f bf c2             	movsx  eax,dx
+d00008cf:	e9 ed fe ff ff       	jmp    d00007c1 <region_operation_on_data_block+0x2b7>
+d00008d4:	0f bf c1             	movsx  eax,cx
+d00008d7:	c6 85 c3 df ff ff 00 	mov    BYTE PTR [ebp-0x203d],0x0
+d00008de:	eb 0a                	jmp    d00008ea <region_operation_on_data_block+0x3e0>
+d00008e0:	0f bf c1             	movsx  eax,cx
+d00008e3:	c6 85 c3 df ff ff 01 	mov    BYTE PTR [ebp-0x203d],0x1
+d00008ea:	c6 85 c2 df ff ff 01 	mov    BYTE PTR [ebp-0x203e],0x1
+d00008f1:	e9 cb fe ff ff       	jmp    d00007c1 <region_operation_on_data_block+0x2b7>
+d00008f6:	8d b5 cc df ff ff    	lea    esi,[ebp-0x2034]
+d00008fc:	b9 07 00 00 00       	mov    ecx,0x7
+d0000901:	8b 7d 08             	mov    edi,DWORD PTR [ebp+0x8]
+d0000904:	f3 a5                	rep movs DWORD PTR es:[edi],DWORD PTR ds:[esi]
+d0000906:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+d0000909:	8d 65 f4             	lea    esp,[ebp-0xc]
+d000090c:	5b                   	pop    ebx
+d000090d:	5e                   	pop    esi
+d000090e:	5f                   	pop    edi
+d000090f:	5d                   	pop    ebp
+d0000910:	c2 04 00             	ret    0x4
+
+d0000913 <region_debug_print>:
+d0000913:	55                   	push   ebp
+d0000914:	89 e5                	mov    ebp,esp
+d0000916:	57                   	push   edi
+d0000917:	56                   	push   esi
+d0000918:	53                   	push   ebx
+d0000919:	83 ec 0c             	sub    esp,0xc
+d000091c:	8b 7d 20             	mov    edi,DWORD PTR [ebp+0x20]
+d000091f:	31 f6                	xor    esi,esi
+d0000921:	31 db                	xor    ebx,ebx
+d0000923:	39 75 14             	cmp    DWORD PTR [ebp+0x14],esi
+d0000926:	7e 31                	jle    d0000959 <region_debug_print+0x46>
+d0000928:	0f bf 04 77          	movsx  eax,WORD PTR [edi+esi*2]
+d000092c:	85 db                	test   ebx,ebx
+d000092e:	75 03                	jne    d0000933 <region_debug_print+0x20>
+d0000930:	8d 58 02             	lea    ebx,[eax+0x2]
+d0000933:	52                   	push   edx
+d0000934:	52                   	push   edx
+d0000935:	50                   	push   eax
+d0000936:	68 16 0b 00 d0       	push   0xd0000b16	d0000937: R_386_32	.rodata.str1.1
+d000093b:	e8 fc ff ff ff       	call   d000093c <region_debug_print+0x29>	d000093c: R_386_PC32	printf
+d0000940:	83 c4 10             	add    esp,0x10
+d0000943:	4b                   	dec    ebx
+d0000944:	75 10                	jne    d0000956 <region_debug_print+0x43>
+d0000946:	83 ec 0c             	sub    esp,0xc
+d0000949:	68 c0 0a 00 d0       	push   0xd0000ac0	d000094a: R_386_32	.rodata.str1.1
+d000094e:	e8 fc ff ff ff       	call   d000094f <region_debug_print+0x3c>	d000094f: R_386_PC32	printf
+d0000953:	83 c4 10             	add    esp,0x10
+d0000956:	46                   	inc    esi
+d0000957:	eb ca                	jmp    d0000923 <region_debug_print+0x10>
+d0000959:	c7 45 08 c0 0a 00 d0 	mov    DWORD PTR [ebp+0x8],0xd0000ac0	d000095c: R_386_32	.rodata.str1.1
+d0000960:	8d 65 f4             	lea    esp,[ebp-0xc]
+d0000963:	5b                   	pop    ebx
+d0000964:	5e                   	pop    esi
+d0000965:	5f                   	pop    edi
+d0000966:	5d                   	pop    ebp
+d0000967:	e9 fc ff ff ff       	jmp    d0000968 <region_debug_print+0x55>	d0000968: R_386_PC32	printf
+
+d000096c <__udivdi3>:
+d000096c:	55                   	push   ebp
+d000096d:	57                   	push   edi
+d000096e:	56                   	push   esi
+d000096f:	53                   	push   ebx
+d0000970:	83 ec 1c             	sub    esp,0x1c
+d0000973:	8b 6c 24 30          	mov    ebp,DWORD PTR [esp+0x30]
+d0000977:	8b 74 24 34          	mov    esi,DWORD PTR [esp+0x34]
+d000097b:	8b 7c 24 38          	mov    edi,DWORD PTR [esp+0x38]
+d000097f:	8b 54 24 3c          	mov    edx,DWORD PTR [esp+0x3c]
+d0000983:	85 d2                	test   edx,edx
+d0000985:	75 41                	jne    d00009c8 <__udivdi3+0x5c>
+d0000987:	39 f7                	cmp    edi,esi
+d0000989:	76 15                	jbe    d00009a0 <__udivdi3+0x34>
+d000098b:	89 e8                	mov    eax,ebp
+d000098d:	89 f2                	mov    edx,esi
+d000098f:	f7 f7                	div    edi
+d0000991:	31 db                	xor    ebx,ebx
+d0000993:	89 da                	mov    edx,ebx
+d0000995:	83 c4 1c             	add    esp,0x1c
+d0000998:	5b                   	pop    ebx
+d0000999:	5e                   	pop    esi
+d000099a:	5f                   	pop    edi
+d000099b:	5d                   	pop    ebp
+d000099c:	c3                   	ret    
+d000099d:	8d 76 00             	lea    esi,[esi+0x0]
+d00009a0:	89 f9                	mov    ecx,edi
+d00009a2:	85 ff                	test   edi,edi
+d00009a4:	75 0b                	jne    d00009b1 <__udivdi3+0x45>
+d00009a6:	b8 01 00 00 00       	mov    eax,0x1
+d00009ab:	31 d2                	xor    edx,edx
+d00009ad:	f7 f7                	div    edi
+d00009af:	89 c1                	mov    ecx,eax
+d00009b1:	31 d2                	xor    edx,edx
+d00009b3:	89 f0                	mov    eax,esi
+d00009b5:	f7 f1                	div    ecx
+d00009b7:	89 c3                	mov    ebx,eax
+d00009b9:	89 e8                	mov    eax,ebp
+d00009bb:	f7 f1                	div    ecx
+d00009bd:	89 da                	mov    edx,ebx
+d00009bf:	83 c4 1c             	add    esp,0x1c
+d00009c2:	5b                   	pop    ebx
+d00009c3:	5e                   	pop    esi
+d00009c4:	5f                   	pop    edi
+d00009c5:	5d                   	pop    ebp
+d00009c6:	c3                   	ret    
+d00009c7:	90                   	nop
+d00009c8:	39 f2                	cmp    edx,esi
+d00009ca:	77 1c                	ja     d00009e8 <__udivdi3+0x7c>
+d00009cc:	0f bd da             	bsr    ebx,edx
+d00009cf:	83 f3 1f             	xor    ebx,0x1f
+d00009d2:	75 24                	jne    d00009f8 <__udivdi3+0x8c>
+d00009d4:	39 f2                	cmp    edx,esi
+d00009d6:	72 08                	jb     d00009e0 <__udivdi3+0x74>
+d00009d8:	39 ef                	cmp    edi,ebp
+d00009da:	0f 87 84 00 00 00    	ja     d0000a64 <__udivdi3+0xf8>
+d00009e0:	b8 01 00 00 00       	mov    eax,0x1
+d00009e5:	eb ac                	jmp    d0000993 <__udivdi3+0x27>
+d00009e7:	90                   	nop
+d00009e8:	31 db                	xor    ebx,ebx
+d00009ea:	31 c0                	xor    eax,eax
+d00009ec:	89 da                	mov    edx,ebx
+d00009ee:	83 c4 1c             	add    esp,0x1c
+d00009f1:	5b                   	pop    ebx
+d00009f2:	5e                   	pop    esi
+d00009f3:	5f                   	pop    edi
+d00009f4:	5d                   	pop    ebp
+d00009f5:	c3                   	ret    
+d00009f6:	66 90                	xchg   ax,ax
+d00009f8:	b8 20 00 00 00       	mov    eax,0x20
+d00009fd:	29 d8                	sub    eax,ebx
+d00009ff:	88 d9                	mov    cl,bl
+d0000a01:	d3 e2                	shl    edx,cl
+d0000a03:	89 54 24 08          	mov    DWORD PTR [esp+0x8],edx
+d0000a07:	89 fa                	mov    edx,edi
+d0000a09:	88 c1                	mov    cl,al
+d0000a0b:	d3 ea                	shr    edx,cl
+d0000a0d:	8b 4c 24 08          	mov    ecx,DWORD PTR [esp+0x8]
+d0000a11:	09 d1                	or     ecx,edx
+d0000a13:	89 4c 24 08          	mov    DWORD PTR [esp+0x8],ecx
+d0000a17:	88 d9                	mov    cl,bl
+d0000a19:	d3 e7                	shl    edi,cl
+d0000a1b:	89 7c 24 0c          	mov    DWORD PTR [esp+0xc],edi
+d0000a1f:	89 f7                	mov    edi,esi
+d0000a21:	88 c1                	mov    cl,al
+d0000a23:	d3 ef                	shr    edi,cl
+d0000a25:	88 d9                	mov    cl,bl
+d0000a27:	d3 e6                	shl    esi,cl
+d0000a29:	89 ea                	mov    edx,ebp
+d0000a2b:	88 c1                	mov    cl,al
+d0000a2d:	d3 ea                	shr    edx,cl
+d0000a2f:	09 d6                	or     esi,edx
+d0000a31:	89 f0                	mov    eax,esi
+d0000a33:	89 fa                	mov    edx,edi
+d0000a35:	f7 74 24 08          	div    DWORD PTR [esp+0x8]
+d0000a39:	89 d7                	mov    edi,edx
+d0000a3b:	89 c6                	mov    esi,eax
+d0000a3d:	f7 64 24 0c          	mul    DWORD PTR [esp+0xc]
+d0000a41:	39 d7                	cmp    edi,edx
+d0000a43:	72 13                	jb     d0000a58 <__udivdi3+0xec>
+d0000a45:	74 09                	je     d0000a50 <__udivdi3+0xe4>
+d0000a47:	89 f0                	mov    eax,esi
+d0000a49:	31 db                	xor    ebx,ebx
+d0000a4b:	e9 43 ff ff ff       	jmp    d0000993 <__udivdi3+0x27>
+d0000a50:	88 d9                	mov    cl,bl
+d0000a52:	d3 e5                	shl    ebp,cl
+d0000a54:	39 c5                	cmp    ebp,eax
+d0000a56:	73 ef                	jae    d0000a47 <__udivdi3+0xdb>
+d0000a58:	8d 46 ff             	lea    eax,[esi-0x1]
+d0000a5b:	31 db                	xor    ebx,ebx
+d0000a5d:	e9 31 ff ff ff       	jmp    d0000993 <__udivdi3+0x27>
+d0000a62:	66 90                	xchg   ax,ax
+d0000a64:	31 c0                	xor    eax,eax
+d0000a66:	e9 28 ff ff ff       	jmp    d0000993 <__udivdi3+0x27>
+
+Disassembly of section .text.startup:
+
+d0000a6b <.text.startup>:
+d0000a6b:	8d 4c 24 04          	lea    ecx,[esp+0x4]
+d0000a6f:	83 e4 f0             	and    esp,0xfffffff0
+d0000a72:	ff 71 fc             	push   DWORD PTR [ecx-0x4]
+d0000a75:	55                   	push   ebp
+d0000a76:	89 e5                	mov    ebp,esp
+d0000a78:	57                   	push   edi
+d0000a79:	56                   	push   esi
+d0000a7a:	51                   	push   ecx
+d0000a7b:	83 ec 34             	sub    esp,0x34
+d0000a7e:	8d 75 cc             	lea    esi,[ebp-0x34]
+d0000a81:	6a 0a                	push   0xa
+d0000a83:	6a 1e                	push   0x1e
+d0000a85:	6a 32                	push   0x32
+d0000a87:	6a 00                	push   0x0
+d0000a89:	6a 00                	push   0x0
+d0000a8b:	56                   	push   esi
+d0000a8c:	e8 fc ff ff ff       	call   d0000a8d <.text.startup+0x22>	d0000a8d: R_386_PC32	region_create_rounded_rectangle
+d0000a91:	83 ec 14             	sub    esp,0x14
+d0000a94:	b9 07 00 00 00       	mov    ecx,0x7
+d0000a99:	89 e7                	mov    edi,esp
+d0000a9b:	f3 a5                	rep movs DWORD PTR es:[edi],DWORD PTR ds:[esi]
+d0000a9d:	e8 fc ff ff ff       	call   d0000a9e <.text.startup+0x33>	d0000a9e: R_386_PC32	region_debug_print
+d0000aa2:	31 c0                	xor    eax,eax
+d0000aa4:	8d 65 f4             	lea    esp,[ebp-0xc]
+d0000aa7:	59                   	pop    ecx
+d0000aa8:	5e                   	pop    esi
+d0000aa9:	5f                   	pop    edi
+d0000aaa:	5d                   	pop    ebp
+d0000aab:	8d 61 fc             	lea    esp,[ecx-0x4]
+d0000aae:	c3                   	ret    

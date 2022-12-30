@@ -1,0 +1,23 @@
+
+TEMPLATE.SYS:     file format elf32-i386
+
+
+Disassembly of section .text:
+
+d0000000 <.text>:
+d0000000:	55                   	push   ebp
+d0000001:	89 e5                	mov    ebp,esp
+d0000003:	83 ec 14             	sub    esp,0x14
+d0000006:	68 2a 00 00 d0       	push   0xd000002a	d0000007: R_386_32	.rodata.str1.1
+d000000b:	e8 fc ff ff ff       	call   0xd000000c	d000000c: R_386_PC32	kprintf
+d0000010:	83 c4 10             	add    esp,0x10
+d0000013:	c9                   	leave  
+d0000014:	c3                   	ret    
+d0000015:	55                   	push   ebp
+d0000016:	89 e5                	mov    ebp,esp
+d0000018:	83 ec 14             	sub    esp,0x14
+d000001b:	68 43 00 00 d0       	push   0xd0000043	d000001c: R_386_32	.rodata.str1.1
+d0000020:	e8 fc ff ff ff       	call   0xd0000021	d0000021: R_386_PC32	kprintf
+d0000025:	83 c4 10             	add    esp,0x10
+d0000028:	c9                   	leave  
+d0000029:	c3                   	ret    
