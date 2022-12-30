@@ -76,7 +76,7 @@ Just print the percentage sign %
 
     fprintf(f, ".%4.0d.\n", 0);
     fprintf(f, ".%4.1d.\n", 0);
-    fprintf(f, ".%4.9d.\n", 0);
+    fprintf(f, ".%4.9d.\n\n", 0);
 /*
 EXPECTED
 .  13.

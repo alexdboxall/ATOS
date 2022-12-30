@@ -615,6 +615,7 @@ int vfprintf(FILE* stream, const char* format, va_list ap) {
             } else {
                 bool numeric = false;
                 bool integral = false;
+                bool pointer = false;
                 char base = 0;      // or 'x' or 'X' or 'o'
                 bool signed_arg = false;
                 char sign_to_display = 0;       // either '', '+', '-', or ' '
@@ -643,6 +644,7 @@ int vfprintf(FILE* stream, const char* format, va_list ap) {
                     integral = true;
                     signed_arg = false;
                     base = 'x';
+                    pointer = true;
                     alternative_form = true;
                 
                 } else if (format[i] == 'o' || format[i] == 'x' || format[i] == 'X') {
@@ -708,16 +710,22 @@ int vfprintf(FILE* stream, const char* format, va_list ap) {
                     } else {
                         uint64_t value;
 
-                        if (modifier == 'H') value = (unsigned char) va_arg(ap, unsigned int);
-                        else if (modifier == 'h') value = (unsigned short) va_arg(ap, unsigned int);
-                        else if (modifier == 'l') value = va_arg(ap, unsigned long);
-                        else if (modifier == 'q') value = va_arg(ap, unsigned long long);
-                        else if (modifier == 'j') value = va_arg(ap, uintmax_t);
-                        else if (modifier == 'z') value = va_arg(ap, size_t);
-                        else if (modifier == 't') value = va_arg(ap, ptrdiff_t);
-                        else {
-                            value = va_arg(ap, unsigned int);
+                        if (pointer) {
+                            value = (size_t) va_arg(ap, void*);
+
+                        } else {
+                            if (modifier == 'H') value = (unsigned char) va_arg(ap, unsigned int);
+                            else if (modifier == 'h') value = (unsigned short) va_arg(ap, unsigned int);
+                            else if (modifier == 'l') value = va_arg(ap, unsigned long);
+                            else if (modifier == 'q') value = va_arg(ap, unsigned long long);
+                            else if (modifier == 'j') value = va_arg(ap, uintmax_t);
+                            else if (modifier == 'z') value = va_arg(ap, size_t);
+                            else if (modifier == 't') value = va_arg(ap, ptrdiff_t);
+                            else {
+                                value = va_arg(ap, unsigned int);
+                            }
                         }
+                        
 
                         real_value = value;
 
