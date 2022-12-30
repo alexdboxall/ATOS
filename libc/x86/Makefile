@@ -3,7 +3,7 @@ CC = i386-banana-gcc
 AR = i386-banana-ar
 AS = nasm
 FAKE_CROSS_COMPILER = -m32 -I../common/include -I../hosted/include
-COMPILE_FLAGS = -c -Os -fno-strict-aliasing -Wall -Wextra -Wpedantic -Werror -Wcast-align=strict -Wpointer-arith -fmax-errors=5 -std=gnu11 -ffreestanding $(FAKE_CROSS_COMPILER)
+COMPILE_FLAGS = -c -Os -ffunction-sections -fdata-sections -fno-strict-aliasing -Wall -Wextra -Wpedantic -Werror -Wcast-align=strict -Wpointer-arith -fmax-errors=5 -std=gnu11 -ffreestanding $(FAKE_CROSS_COMPILER)
 LINK_FLAGS = -nostartfiles -nostdlib -lgcc 
 
 # Set by the higher level Makefile before calling us - changes depending on whether we are compiling the debug or release build

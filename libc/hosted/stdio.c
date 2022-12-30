@@ -17,7 +17,6 @@
 
 struct FILE {
     int fd;
-    bool binary_mode;
     int ungetc;        /* EOF if there is none */
     bool eof;
     bool error;
@@ -26,10 +25,33 @@ struct FILE {
     size_t buffer_used;     
     size_t buffer_size;
     bool buffer_needs_freeing;
+
+    ssize_t (*read)(struct FILE* stream, void* buffer, size_t count);
+    ssize_t (*write)(struct FILE* stream, void* buffer, size_t count);
+
+    int flags;
+
+    char* mem_buffer;
+    size_t mem_size;
+    size_t mem_seek_pos;
+    bool mem_buffer_needs_freeing;
+
+    /*
+    * The direction of the most recent operation. Used by fflush() to determine
+    * how to flush the buffer. As per the C standard, you cannot interleave reads
+    * and writes without a call to fflush(), or fseek() (which calls fflush()), or
+    * similar. Thus the 'most recent operation' should stay the same between calls to
+    * fflush() if the program conforms to the spec.
+    * 
+    * It is set to BUFFER_DIR_UNSET if no operation has taken place yet, this is also
+    * used by setvbuf to determine if any operation has been performed on it yet.
+    */
     int buffer_direction;
+
     bool been_accessed;
     volatile size_t lock_count;
     volatile int lock_owner;
+    bool memopen;
 };
 
 /*
@@ -58,7 +80,6 @@ static FILE* fopen_existing_stream(const char* filename, const char* mode, FILE*
     stream->been_accessed = false;
     stream->ungetc = EOF;
     stream->eof = false;
-    stream->binary_mode = false;
     stream->error = false;
     stream->buffer = malloc(BUFSIZ);
     stream->buffer_size = BUFSIZ;
@@ -87,12 +108,19 @@ static FILE* fopen_existing_stream(const char* filename, const char* mode, FILE*
             flags |= O_RDWR;
 
         } else if (mode[i] == 'b') {
-            stream->binary_mode = true;
+            /* Binary mode has no effect on ATOS */
 
         } else if (mode[i] == 'x') {
             /* Defined in ISO C11 */
             flags |= O_EXCL;
         }
+    }
+
+    stream->flags = flags;
+
+    if (stream->memopen) {
+        stream->buffer_mode = _IOFBF;
+        return stream;
     }
 
     int fd = open(filename, flags, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);
@@ -108,6 +136,107 @@ static FILE* fopen_existing_stream(const char* filename, const char* mode, FILE*
     return stream;
 }
 
+ssize_t _file_read(FILE* stream, void* buffer, size_t size) {
+    return read(stream->fd, buffer, size);
+}
+
+ssize_t _file_write(FILE* stream, void* buffer, size_t size) {
+    return write(stream->fd, buffer, size);
+}
+
+
+ssize_t _mem_read(FILE* stream, void* buffer, size_t size) {
+    if (!(stream->flags & O_RDONLY)) {
+        errno = EINVAL;
+        return -1;
+    }
+
+    if (stream->mem_seek_pos >= stream->mem_size) {
+        return 0;
+    }
+    if (stream->mem_seek_pos + size >= stream->mem_size) {
+        size = stream->mem_size - stream->mem_seek_pos;
+    }
+
+    memcpy(buffer, stream->mem_buffer + stream->mem_seek_pos, size);
+    stream->mem_seek_pos += size;
+
+    return size;
+}
+
+ssize_t _mem_write(FILE* stream, void* buffer, size_t size) {
+    if (!(stream->flags & O_WRONLY)) {
+        errno = EINVAL;
+        return -1;
+    }
+
+    if (stream->flags & O_APPEND) {
+        while (stream->mem_buffer[stream->mem_seek_pos] && stream->mem_seek_pos < size) {
+            ++stream->mem_seek_pos;
+        }
+    }
+    
+    if (stream->mem_seek_pos + size >= stream->mem_size) {
+        errno = ENOSPC;
+        return -1;
+    }
+
+    memcpy(stream->mem_buffer + stream->mem_seek_pos, buffer, size);
+    stream->mem_seek_pos += size;
+
+    return size;
+}
+
+FILE* fmemopen(void* buffer, size_t size, const char* mode) {    
+    if (size == 0) {
+        errno = ENOMEM;
+        return NULL;
+    }
+
+    FILE* stream = malloc(sizeof(FILE));
+
+    /*
+    * fopen_existing_stream does not touch the lock. We don't need to set the
+    * lock, as no-one else would have access to this FILE until we return it.
+    */
+    stream->lock_count = 0;
+    stream->lock_owner = -1;
+    stream->memopen = true;
+    stream->read = _mem_read;
+    stream->write = _mem_write;
+
+    FILE* result = fopen_existing_stream("", mode, stream);
+
+    stream->mem_size = size;
+    stream->mem_seek_pos = 0;
+
+    if (buffer == NULL) {
+        stream->mem_buffer = malloc(size);
+        stream->mem_buffer[0] = 0;      /* to keep append modes happy */
+        if (stream->mem_buffer == NULL) {
+            errno = ENOMEM;
+            return NULL;
+        }
+
+        stream->mem_buffer_needs_freeing = true;
+
+    } else {
+        stream->mem_buffer = buffer;
+        stream->mem_buffer_needs_freeing = false;
+    }
+
+    if (mode[0] == 'a') {
+        while (stream->mem_buffer[stream->mem_seek_pos] && stream->mem_seek_pos < size) {
+            ++stream->mem_seek_pos;
+        }
+
+    } else if (!strcmp(mode, "w+")) {
+        stream->mem_buffer[0] = 0;
+    }
+
+    return result;
+}
+
 FILE* fopen(const char* filename, const char* mode) {
     FILE* stream = malloc(sizeof(FILE));
 
@@ -117,6 +246,9 @@ FILE* fopen(const char* filename, const char* mode) {
     */
     stream->lock_count = 0;
     stream->lock_owner = -1;
+    stream->memopen = false;
+    stream->read = _file_read;
+    stream->write = _file_write;
     return fopen_existing_stream(filename, mode, stream);
 }
 
@@ -124,6 +256,7 @@ FILE* freopen(const char* filename, const char* mode, FILE* stream) {
     flockfile(stream);
     fclose(stream);
     FILE* result = fopen_existing_stream(filename, mode, stream);
+    stream->memopen = false;
     funlockfile(stream);
     return result;
 }
@@ -139,9 +272,13 @@ int fclose(FILE* stream) {
         free(stream->buffer);
     }
 
-    int status = close(stream->fd);
-    if (status != 0) {
-        return EOF;
+    if (!stream->memopen) {
+        int status = close(stream->fd);
+        if (status != 0) {
+            return EOF;
+        }
+    } else if (stream->mem_buffer_needs_freeing) {
+        free(stream->mem_buffer);
     }
     free(stream);
     return 0;
@@ -171,7 +308,7 @@ void clearerr(FILE* stream) {
 int setvbuf(FILE* stream, char* buf, int mode, size_t size) {
     flockfile(stream);
 
-    if (stream == NULL || stream->been_accessed) {
+    if (stream == NULL || stream->buffer_direction != BUFFER_DIR_UNSET) {
         errno = EBADF;
         funlockfile(stream);
         return -1;
@@ -217,7 +354,6 @@ int fflush(FILE* stream) {
         * Discard all existing input.
         */ 
         stream->buffer_used = 0;
-        stream->buffer_direction = BUFFER_DIR_UNSET;
         funlockfile(stream);
         return 0;
 
@@ -225,9 +361,27 @@ int fflush(FILE* stream) {
         /*
         * Perform the write.
         */
-        write(stream->fd, stream->buffer, stream->buffer_used);
+        ssize_t bytes_written = stream->write(stream, stream->buffer, stream->buffer_used);
+        if (bytes_written == -1) {
+            stream->error = true;
+            funlockfile(stream);
+            return EOF;   
+        }
+        
         stream->buffer_used = 0;
-        stream->buffer_direction = BUFFER_DIR_UNSET;
+
+        if (stream->memopen) {
+            /* "When a stream that has been opened for writing is flushed
+            * (fflush(3)) or closed (fclose(3)), a null byte is written at the
+            * end of the buffer if there is space.  The caller should ensure
+            * that an extra byte is available in the buffer (and that size
+            * counts that byte) to allow for this."
+            */
+            if (stream->mem_seek_pos < stream->mem_size) {
+                stream->mem_buffer[stream->mem_seek_pos++] = 0;
+            }
+        }
+
         funlockfile(stream);
         return 0;
     
@@ -240,8 +394,6 @@ int fflush(FILE* stream) {
 
 int ungetc(int c, FILE* stream) {
     flockfile(stream);
-
-    stream->been_accessed = true;
 
     if (c == EOF) {
         funlockfile(stream);
@@ -262,19 +414,12 @@ int ungetc(int c, FILE* stream) {
 int fputc(int c, FILE *stream) {
     flockfile(stream);
 
-    stream->been_accessed = true;
-
-    if (stream->buffer_direction == BUFFER_DIR_UNSET) {
-        stream->buffer_direction = BUFFER_DIR_WRITE;
-
-    } else if (stream->buffer_direction == BUFFER_DIR_READ) {
-        // hmm... TODO: ?
-    }
+    stream->buffer_direction = BUFFER_DIR_WRITE;
 
     unsigned char byte = c;
 
     if (stream->buffer_mode == _IONBF) {
-        ssize_t written = write(stream->fd, &byte, 1);
+        ssize_t written = stream->write(stream, &byte, 1);
         if (written == -1) {
             /* errno already set */
             stream->error = true;
@@ -306,7 +451,6 @@ int fputc(int c, FILE *stream) {
                 funlockfile(stream);
                 return EOF;
             }
-            stream->buffer_direction = BUFFER_DIR_WRITE;    
         } 
 
     } else if (stream->buffer_mode == _IOFBF) {
@@ -331,14 +475,7 @@ int fputc(int c, FILE *stream) {
 int fgetc(FILE* stream) {
     flockfile(stream);
 
-    stream->been_accessed = true;
-
-    if (stream->buffer_direction == BUFFER_DIR_UNSET) {
-        stream->buffer_direction = BUFFER_DIR_READ;
-
-    } else if (stream->buffer_direction == BUFFER_DIR_WRITE) {
-        // hmm... TODO: ?
-    }
+    stream->buffer_direction = BUFFER_DIR_READ;
 
     if (stream->ungetc != EOF) {
         int c = stream->ungetc;
@@ -347,8 +484,8 @@ int fgetc(FILE* stream) {
         return c;
     }
 
-    if (stream->buffer_size == 0) {
-        ssize_t bytes_read = read(stream->fd, stream->buffer, stream->buffer_mode == _IONBF ? 1 : stream->buffer_size);
+    if (stream->buffer_used == 0) {
+        ssize_t bytes_read = stream->read(stream, stream->buffer, stream->buffer_mode == _IONBF ? 1 : stream->buffer_size);
         if (bytes_read == -1) {
             stream->error = true;
             funlockfile(stream);
@@ -390,6 +527,11 @@ int fputs(const char* s, FILE* stream) {
 
 int fileno(FILE* stream) {
     flockfile(stream);
+    if (stream->memopen) {
+        funlockfile(stream);
+        errno = EBADF;
+        return -1;
+    }
     int fd = stream->fd;
     funlockfile(stream);
     return fd;
@@ -804,16 +946,32 @@ int vfprintf(FILE* stream, const char* format, va_list ap) {
 }
 
 int vsnprintf(char* str, size_t size, const char* format, va_list ap) {
-    // TODO: use fmemopen, and then call vfprintf
-    (void) str;
-    (void) size;
-    (void) format;
-    (void) ap;
-    return 0;
+    FILE* f = fmemopen(str, size - 1, "w");
+
+    if (f == NULL) {
+        return -1;
+    }
+
+    int status_1 = vfprintf(f, format, ap);
+    int status_2 = fclose(f);
+    
+    if (status_1 == -1) {
+        return -1;
+    }
+    if (status_2 != 0) {
+        errno = status_2;
+        return -1;
+    }
+
+    if (status_1 >= (int) size - 1) {
+        str[size - 1] = 0;
+    }
+
+    return status_1;
 }
 
 int vsprintf(char* str, const char* format, va_list ap) {
-    return vsnprintf(str, 0xFFFFFFFFU, format, ap);
+    return vsnprintf(str, 0x7FFFFFFFU, format, ap);
 }
 
 int vprintf(const char* format, va_list ap) {

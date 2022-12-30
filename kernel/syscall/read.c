@@ -29,7 +29,6 @@ int sys_read(size_t args[4]) {
         return EBADF;
     }
 
-
     struct uio io = uio_construct_write_to_usermode((void*) args[0], args[1], 0);
     int result = vfs_write(node, &io);
     if (result != 0) {

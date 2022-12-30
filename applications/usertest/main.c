@@ -4,8 +4,12 @@
 #include <unistd.h>
 #include <errno.h>
 #include <stdio.h>
+#include <string.h>
 
 void _start() {
+    stdout = fopen("con:", "w");
+    setvbuf(stdout, NULL, _IOLBF, 64);
+
     FILE* f = fopen("con:", "w");
     fputs("Hello world from usermode!\n", f);
 
@@ -111,6 +115,8 @@ EXPECTED
     fprintf(f, ".%.*d.\n", 1, 0);
     fprintf(f, ".%*.*d.\n", 3, 0, 0);
     fprintf(f, ".%*.*d.\n", 4, 1, 0);
+    fflush(f);
+    fclose(f);
 
 /*
 EXPECTED
@@ -125,8 +131,18 @@ EXPECTED
 .   0.
 */
 
-    fflush(f);
-    fclose(f);
+    char* buffer = "foobar";
+    int ch;
+    FILE* stream;
+    stream = fmemopen(buffer, strlen(buffer), "r");
+    while ((ch = fgetc(stream)) != EOF) {
+        printf("Got %c\n", ch);
+    }
+    fclose(stream);
+
+    char test_buffer[50];
+    sprintf(test_buffer, "\nHello from sprintf!\n");
+    fputs(test_buffer, stdout);
 
     while (1) {
         _system_call(SYSCALL_YIELD, 0, 0, 0, 0);
