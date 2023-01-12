@@ -7,3 +7,4 @@ void video_init(void);
 int video_register_driver(struct video_device_interface* driver);
 int video_putpixel(int x, int y, uint32_t colour);
 int video_putline(int x, int y, int width, uint32_t colour);
+int video_putrect(int x, int y, int width, int height, uint32_t colour);

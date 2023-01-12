@@ -112,11 +112,42 @@ static int vesa_putpixel(struct video_device_interface* dev, int x, int y, uint3
         return EINVAL;
     }
 
-    uint8_t* position = data->framebuffer_virtual + y * data->pitch + x * 3;
+    uint8_t* position = data->framebuffer_virtual + y * data->pitch + x * 3;   
+    uint8_t alpha_value = colour >> 24;
 
-    *position++ = (colour >> 0) & 0xFF;
-    *position++ = (colour >> 8) & 0xFF;
-    *position++ = (colour >> 16) & 0xFF;
+    if (alpha_value == 0xFF) {
+        /*
+        * No alpha. Just write the colour.
+        */
+        *position++ = (colour >> 0) & 0xFF;
+        *position++ = (colour >> 8) & 0xFF;
+        *position++ = (colour >> 16) & 0xFF;
+
+    } else if (alpha_value == 0x00) {
+        /*
+        * Fully transparent. Do nothing.
+        */
+
+    } else {
+        /*
+        * Perform alpha blending.
+        */
+        uint8_t existing_red = (*(position + 0) >> 0) & 0xFF;
+        uint8_t existing_green = (*(position + 1) >> 8) & 0xFF;
+        uint8_t existing_blue = (*(position + 2) >> 16) & 0xFF;
+
+        uint8_t new_red = (colour >> 0) & 0xFF;
+        uint8_t new_green = (colour >> 8) & 0xFF;
+        uint8_t new_blue = (colour >> 16) & 0xFF;
+
+        uint8_t new_red_alpha = (new_red * alpha_value + existing_red * (255 - alpha_value)) >> 8;
+        uint8_t new_green_alpha = (new_green * alpha_value + existing_green * (255 - alpha_value)) >> 8;
+        uint8_t new_blue_alpha = (new_blue * alpha_value + existing_blue * (255 - alpha_value)) >> 8;
+
+        *position++ = new_red_alpha;
+        *position++ = new_green_alpha;
+        *position++ = new_blue_alpha;
+    }
 
     return 0;
 }
@@ -133,20 +164,52 @@ static int vesa_putline(struct video_device_interface* dev, int x, int y, int wi
     }
 
     uint8_t* position = data->framebuffer_virtual + y * data->pitch + x * 3;
+    uint8_t alpha_value = colour >> 24;
 
-    for (int i = 0; i < width; ++i) {
-        *position++ = (colour >> 0) & 0xFF;
-        *position++ = (colour >> 8) & 0xFF;
-        *position++ = (colour >> 16) & 0xFF;
+    if (alpha_value == 0xFF) {
+        /*
+        * No alpha. Just write the colour.
+        */
+        for (int i = 0; i < width; ++i) {
+            *position++ = (colour >> 0) & 0xFF;
+            *position++ = (colour >> 8) & 0xFF;
+            *position++ = (colour >> 16) & 0xFF;
+        }
+
+    } else if (alpha_value == 0x00) {
+        /*
+        * Fully transparent. Do nothing.
+        */
+
+    } else {
+        /*
+        * Perform alpha blending.
+        */
+        for (int i = 0; i < width; ++i) {
+            uint8_t existing_red = (*(position + 0) >> 0) & 0xFF;
+            uint8_t existing_green = (*(position + 1) >> 8) & 0xFF;
+            uint8_t existing_blue = (*(position + 2) >> 16) & 0xFF;
+
+            uint8_t new_red = (colour >> 0) & 0xFF;
+            uint8_t new_green = (colour >> 8) & 0xFF;
+            uint8_t new_blue = (colour >> 16) & 0xFF;
+
+            uint8_t new_red_alpha = (new_red * alpha_value + existing_red * (255 - alpha_value)) >> 8;
+            uint8_t new_green_alpha = (new_green * alpha_value + existing_green * (255 - alpha_value)) >> 8;
+            uint8_t new_blue_alpha = (new_blue * alpha_value + existing_blue * (255 - alpha_value)) >> 8;
+
+            *position++ = new_red_alpha;
+            *position++ = new_green_alpha;
+            *position++ = new_blue_alpha;
+        }
     }
+    
 
     return 0;
 }
 
 static int vesa_putrect(struct video_device_interface* dev, int x, int y, int width, int height, uint32_t colour) {
     struct vesa_data* data = dev->data;
-
-    printf("VESA_PUTRECT\n");
 
     if (x < 0 || x >= data->width || y < 0 || y >= data->height) {
         return EINVAL;

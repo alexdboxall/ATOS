@@ -8,6 +8,7 @@
 #include <kprintf.h>
 #include <stddef.h>
 #include <assert.h>
+#include <string.h>
 
 /* 
 * heap.h - Kernel Heap
@@ -354,4 +355,15 @@ void free(void* ptr)
     }
 
     heap_used -= size;
+}
+
+
+void* realloc(void* ptr, size_t size) {
+    /* 
+    * TODO: this is REALLY BAD, but it might work for now...
+    */
+    void* new_ptr = malloc(size);
+    memcpy(new_ptr, ptr, size);
+    free(ptr);
+    return new_ptr;
 }

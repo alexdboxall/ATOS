@@ -489,6 +489,4 @@ max_kernel_addr = 0xC011C000
  ATOS Kernel
      Copyright Alex Boxall 2022
 
->>Tests are not included in release builds.
-
 >>
