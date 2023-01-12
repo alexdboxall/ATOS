@@ -11,6 +11,7 @@
 #include <uio.h>
 #include <cpu.h>
 #include <vfs.h>
+#include <video.h>
 #include <fcntl.h>
 #include <loader.h>
 #include <device.h>
@@ -116,7 +117,11 @@ void basic_shell(void* arg) {
 		} else if (!strcmp(buffer, "restart")) {
 			arch_reboot();
 			continue;
-		}
+
+		} else if (!strcmp(buffer, "gui")) {
+            load_driver("sys:/CLIPDRAW.SYS", false);
+            continue;
+        }
 		
 		kprintf("Unsupported command '%s'\n\n", buffer);
 	}
@@ -145,6 +150,7 @@ void kernel_main()
     process_init();
     vfs_init();
 	interface_init();
+    video_init();
 
     arch_initialise_devices_no_fs();
 

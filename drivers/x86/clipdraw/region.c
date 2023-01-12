@@ -23,6 +23,7 @@
 *
 * Hence we will use fixed width integers instead of floats. This should work fine for now, we only really
 * need floats to calculate curved sections (ovals, curved rectangles), which only requires sqrt().
+* And fixed point sqrt() is really easy (Newton's method).
 */
 
 uint64_t sqrt_fp8(uint64_t val) {
@@ -152,6 +153,7 @@ struct region region_create_rounded_rectangle(int x, int y, int w, int h, int ra
         */
         int start = radius + (384 - sqrt_fp8(256 * i * (2 * radius - i))) / 256;
         int end = w - start * 2;
+
 
         /*
         * The top curved part.

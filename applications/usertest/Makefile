@@ -14,6 +14,7 @@ COBJECTS = $(patsubst %.c, %.o, $(wildcard *.c) $(wildcard */*.c) $(wildcard */*
 build: $(COBJECTS)
 	$(CC) -T "../../source/machine/application.ld" -o $(APPLICATION_NAME) $^ $(LINK_FLAGS) $(LINKER_STRIP)
 	cp $(APPLICATION_NAME) ..\..\output\applications
+	objdump -drwC -Mintel $(APPLICATION_NAME) >> disassembly.txt
 	
 %.o: %.c
 	$(CC) $(CPPDEFINES) $(COMPILE_FLAGS) $^ -o $@ 

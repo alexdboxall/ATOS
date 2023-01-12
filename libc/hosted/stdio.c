@@ -48,7 +48,6 @@ struct FILE {
     */
     int buffer_direction;
 
-    bool been_accessed;
     volatile size_t lock_count;
     volatile int lock_owner;
     bool memopen;
@@ -77,7 +76,6 @@ static FILE* fopen_existing_stream(const char* filename, const char* mode, FILE*
         return NULL;
     }
 
-    stream->been_accessed = false;
     stream->ungetc = EOF;
     stream->eof = false;
     stream->error = false;
@@ -348,7 +346,7 @@ int setvbuf(FILE* stream, char* buf, int mode, size_t size) {
 
 
 void setbuffer(FILE* stream, char* buf, size_t size) {
-    setvbuf(stream, buf, buf ? _IOFBF : _IONBF, BUFSIZ);
+    setvbuf(stream, buf, buf ? _IOFBF : _IONBF, size);
 }
 
 void setbuf(FILE* stream, char* buf) {

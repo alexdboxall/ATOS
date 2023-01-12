@@ -25,7 +25,6 @@ int fclose(FILE* stream);
 
 int feof(FILE* stream);
 int ferror(FILE* stream);
-
 void clearerr(FILE* stream);
 
 void flockfile(FILE* stream);
@@ -35,10 +34,13 @@ void funlockfile(FILE* stream);
 /*
 * The 'core' read/write functions that (for now) everything else will be
 * implemented in terms of. Obviously we will implement optimised fread/fwrite
-* later on to increase performance greatly.
+* later on to increase performance.
 */
 int fputc(int c, FILE *stream);
 int fgetc(FILE* stream);
+
+
+
 int getc(FILE* stream);
 int getchar(void);
 int ungetc(int c, FILE* stream);

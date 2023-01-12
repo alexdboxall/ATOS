@@ -16,7 +16,7 @@
 #include <assert.h>
 
 /*
-* x86/dev/console.c - VGA Terminal Driver for x86 Systems
+* VGA Terminal Driver for x86 Systems
 * 
 * A console driver for VGA text mode. Supports 80 columns and 25 columns
 * of ASCII text. It only supports writing bytes to the terminal in sequence.

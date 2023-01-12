@@ -6,7 +6,8 @@
 #include <heap.h>
 #include <vnode.h>
 #include <sys/stat.h>
+#include <video.h>
 
 void _driver_entry_point() {
-    kprintf("Lol, drivers work\n");
+    video_putrect(0, 0, 100, 100, 0x00FF00);
 }

@@ -52,14 +52,15 @@ static void console_flush_line_buffer(void) {
     /*
     * Flush the line buffer.
     * For *reasons* we shouldn't do any important cleanup after the last character.
+    * (e.g. like setting line_buffer_pos to zero)
     * 
     * (it's because that causes the main thread to start running again, causing
     *  it to block for keyboard. that causes a task switch which *may* go to us, in
     *  which case we can cleanup. but if it does to another thread that doesn't yield
     *  control, the preempter won't have anything to go to because the other thread
-    *  is blocking for keyboard. as we are actually part of that thread (just in the
-    *  keyboard handler, the cleanup won't run until after the next line flush, which
-    *  causes a double input of the inputted line)
+    *  is blocking for keyboard. as we are actually part of that thread that is blocking
+    *  (just in the keyboard handler, the cleanup won't run until after the next line flush,
+    *  which causes a double input of the inputted line)
     */
 
     int line_buffer_pos_copy = line_buffer_pos;

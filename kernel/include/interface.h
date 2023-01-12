@@ -43,6 +43,13 @@ struct console_device_interface
 	void* data;
 };
 
+struct video_device_interface
+{
+    void* data;
+    int (*putpixel)(struct video_device_interface* dev, int x, int y, uint32_t color);
+    int (*putline)(struct video_device_interface* dev, int x, int y, int width, uint32_t colour);
+    int (*putrect)(struct video_device_interface* dev, int x, int y, int width, int height, uint32_t colour);
+};
 
 /*
 * Interface for VFS mountable devices - supporting the standard read, write, open and ioctl
