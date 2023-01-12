@@ -22,10 +22,10 @@ void _driver_entry_point() {
     struct region shadow_5 = region_create_rounded_rectangle(104, 104, 496, 396, 10);
     struct region rgn = region_create_rounded_rectangle(105, 105, 490, 390, 10);
 
-    region_fill(&shadow_1, 0x10000000);
-    region_fill(&shadow_2, 0x10000000);
+    region_fill(&shadow_1, 0x04000000);
+    region_fill(&shadow_2, 0x08000000);
     region_fill(&shadow_3, 0x10000000);
-    region_fill(&shadow_4, 0x10000000);
-    region_fill(&shadow_5, 0x10000000);
+    region_fill(&shadow_4, 0x20000000);
+    region_fill(&shadow_5, 0x40000000);
     region_fill(&rgn, 0xFFF2F0F0);
 }

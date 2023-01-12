@@ -73,13 +73,13 @@ d00000e2:	6a 69                	push   0x69
 d00000e4:	53                   	push   ebx
 d00000e5:	e8 fc ff ff ff       	call   d00000e6 <region_fill-0x70>	d00000e6: R_386_PC32	region_create_rounded_rectangle
 d00000ea:	83 c4 24             	add    esp,0x24
-d00000ed:	68 00 00 00 10       	push   0x10000000
+d00000ed:	68 00 00 00 04       	push   0x4000000
 d00000f2:	8d 8d 40 ff ff ff    	lea    ecx,[ebp-0xc0]
 d00000f8:	51                   	push   ecx
 d00000f9:	e8 fc ff ff ff       	call   d00000fa <region_fill-0x5c>	d00000fa: R_386_PC32	region_fill
 d00000fe:	58                   	pop    eax
 d00000ff:	5a                   	pop    edx
-d0000100:	68 00 00 00 10       	push   0x10000000
+d0000100:	68 00 00 00 08       	push   0x8000000
 d0000105:	8d 95 5c ff ff ff    	lea    edx,[ebp-0xa4]
 d000010b:	52                   	push   edx
 d000010c:	e8 fc ff ff ff       	call   d000010d <region_fill-0x49>	d000010d: R_386_PC32	region_fill
@@ -91,12 +91,12 @@ d000011e:	50                   	push   eax
 d000011f:	e8 fc ff ff ff       	call   d0000120 <region_fill-0x36>	d0000120: R_386_PC32	region_fill
 d0000124:	58                   	pop    eax
 d0000125:	5a                   	pop    edx
-d0000126:	68 00 00 00 10       	push   0x10000000
+d0000126:	68 00 00 00 20       	push   0x20000000
 d000012b:	57                   	push   edi
 d000012c:	e8 fc ff ff ff       	call   d000012d <region_fill-0x29>	d000012d: R_386_PC32	region_fill
 d0000131:	59                   	pop    ecx
 d0000132:	5f                   	pop    edi
-d0000133:	68 00 00 00 10       	push   0x10000000
+d0000133:	68 00 00 00 40       	push   0x40000000
 d0000138:	56                   	push   esi
 d0000139:	e8 fc ff ff ff       	call   d000013a <region_fill-0x1c>	d000013a: R_386_PC32	region_fill
 d000013e:	58                   	pop    eax

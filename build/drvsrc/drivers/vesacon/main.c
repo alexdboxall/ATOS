@@ -186,9 +186,9 @@ static int vesa_putline(struct video_device_interface* dev, int x, int y, int wi
         * Perform alpha blending.
         */
         for (int i = 0; i < width; ++i) {
-            uint8_t existing_red = (*(position + 0) >> 0) & 0xFF;
-            uint8_t existing_green = (*(position + 1) >> 8) & 0xFF;
-            uint8_t existing_blue = (*(position + 2) >> 16) & 0xFF;
+            uint8_t existing_red = *(position + 0);
+            uint8_t existing_green = *(position + 1);
+            uint8_t existing_blue = *(position + 2);
 
             uint8_t new_red = (colour >> 0) & 0xFF;
             uint8_t new_green = (colour >> 8) & 0xFF;
