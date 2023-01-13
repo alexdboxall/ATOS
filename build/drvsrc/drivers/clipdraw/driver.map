@@ -31,80 +31,81 @@ LOAD region/region.o
 LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a
                 0x00000000d0000000                . = 0xd0000000
 
-.text           0x00000000d0000000      0xbcb
+.text           0x00000000d0000000      0xb77
  *(.text)
- .text          0x00000000d0000000      0x156 main.o
-                0x00000000d0000000                _driver_entry_point
- .text          0x00000000d0000156       0x74 region/draw.o
-                0x00000000d0000156                region_fill
- .text          0x00000000d00001ca      0x8ff region/region.o
-                0x00000000d00001ca                sqrt_fp8
-                0x00000000d0000231                region_destroy
-                0x00000000d0000240                region_create_oval
-                0x00000000d0000352                region_create_rounded_rectangle
-                0x00000000d0000488                region_create_rectangle
-                0x00000000d0000500                region_add_data_block
-                0x00000000d00005c4                region_add_padding_data_block
-                0x00000000d00005e8                region_add_data_block_from_existing
-                0x00000000d0000646                region_operation_check_special_case
-                0x00000000d00006c0                region_operation_on_data_block
-                0x00000000d00008c6                region_operate
- *fill*         0x00000000d0000ac9        0x3 
- .text          0x00000000d0000acc       0xff /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivdi3.o)
-                0x00000000d0000acc                __udivdi3
+ .text          0x00000000d0000000      0x102 main.o
+                0x00000000d0000000                demo_window_draw
+                0x00000000d0000099                _driver_entry_point
+ .text          0x00000000d0000102       0x74 region/draw.o
+                0x00000000d0000102                region_fill
+ .text          0x00000000d0000176      0x8ff region/region.o
+                0x00000000d0000176                sqrt_fp8
+                0x00000000d00001dd                region_destroy
+                0x00000000d00001ec                region_create_oval
+                0x00000000d00002fe                region_create_rounded_rectangle
+                0x00000000d0000434                region_create_rectangle
+                0x00000000d00004ac                region_add_data_block
+                0x00000000d0000570                region_add_padding_data_block
+                0x00000000d0000594                region_add_data_block_from_existing
+                0x00000000d00005f2                region_operation_check_special_case
+                0x00000000d000066c                region_operation_on_data_block
+                0x00000000d0000872                region_operate
+ *fill*         0x00000000d0000a75        0x3 
+ .text          0x00000000d0000a78       0xff /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivdi3.o)
+                0x00000000d0000a78                __udivdi3
  *(.rodata)
  *(.symtab)
  *(.strtab)
 
-.plt            0x00000000d0000bd0        0x0
- .plt           0x00000000d0000bd0        0x0 main.o
+.plt            0x00000000d0000b80        0x0
+ .plt           0x00000000d0000b80        0x0 main.o
 
-.plt.got        0x00000000d0000bd0        0x0
- .plt.got       0x00000000d0000bd0        0x0 main.o
+.plt.got        0x00000000d0000b78        0x0
+ .plt.got       0x00000000d0000b78        0x0 main.o
 
-.eh_frame       0x00000000d0000bcc      0x2b8
- .eh_frame      0x00000000d0000bcc       0x48 main.o
- .eh_frame      0x00000000d0000c14       0x2c region/draw.o
+.eh_frame       0x00000000d0000b78      0x2d8
+ .eh_frame      0x00000000d0000b78       0x68 main.o
+ .eh_frame      0x00000000d0000be0       0x2c region/draw.o
                                          0x44 (size before relaxing)
- .eh_frame      0x00000000d0000c40      0x1d8 region/region.o
+ .eh_frame      0x00000000d0000c0c      0x1d8 region/region.o
                                         0x1f0 (size before relaxing)
- .eh_frame      0x00000000d0000e18       0x6c /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivdi3.o)
+ .eh_frame      0x00000000d0000de4       0x6c /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivdi3.o)
                                          0x84 (size before relaxing)
 
-.gnu.version_d  0x00000000d0000e84        0x0
+.gnu.version_d  0x00000000d0000e50        0x0
  .gnu.version_d
-                0x00000000d0000e84        0x0 main.o
+                0x00000000d0000e50        0x0 main.o
 
-.gnu.version    0x00000000d0000e84        0x0
- .gnu.version   0x00000000d0000e84        0x0 main.o
+.gnu.version    0x00000000d0000e50        0x0
+ .gnu.version   0x00000000d0000e50        0x0 main.o
 
-.gnu.version_r  0x00000000d0000e84        0x0
+.gnu.version_r  0x00000000d0000e50        0x0
  .gnu.version_r
-                0x00000000d0000e84        0x0 main.o
+                0x00000000d0000e50        0x0 main.o
 
-.dynsym         0x00000000d0000e84      0x150
- .dynsym        0x00000000d0000e84      0x150 main.o
+.dynsym         0x00000000d0000e50      0x160
+ .dynsym        0x00000000d0000e50      0x160 main.o
 
-.dynstr         0x00000000d0000fd4      0x16d
- .dynstr        0x00000000d0000fd4      0x16d main.o
+.dynstr         0x00000000d0000fb0      0x17e
+ .dynstr        0x00000000d0000fb0      0x17e main.o
 
-.hash           0x00000000d0001144       0xa0
- .hash          0x00000000d0001144       0xa0 main.o
+.hash           0x00000000d0001130       0xa4
+ .hash          0x00000000d0001130       0xa4 main.o
 
-.eh_frame       0x00000000d00011e4        0x0
- .eh_frame      0x00000000d00011e4        0x0 main.o
- .eh_frame      0x00000000d00011e4        0x0 main.o
+.eh_frame       0x00000000d00011d4        0x0
+ .eh_frame      0x00000000d00011d4        0x0 main.o
+ .eh_frame      0x00000000d00011d4        0x0 main.o
 
-.rodata.str1.1  0x00000000d00011e4       0x86
+.rodata.str1.1  0x00000000d00011d4       0x86
  .rodata.str1.1
-                0x00000000d00011e4       0x86 region/region.o
+                0x00000000d00011d4       0x86 region/region.o
                                          0x89 (size before relaxing)
 
-.rel.dyn        0x00000000d000126c      0x1c8
- .rel.plt       0x00000000d000126c        0x0 main.o
- .rel.got       0x00000000d000126c        0x0 main.o
- .rel.ifunc     0x00000000d000126c        0x0 main.o
- .rel.text      0x00000000d000126c      0x1c8 main.o
+.rel.dyn        0x00000000d000125c      0x198
+ .rel.plt       0x00000000d000125c        0x0 main.o
+ .rel.got       0x00000000d000125c        0x0 main.o
+ .rel.ifunc     0x00000000d000125c        0x0 main.o
+ .rel.text      0x00000000d000125c      0x198 main.o
 
 .data           0x00000000d0002000        0x0
  *(.data)
