@@ -1,4 +1,5 @@
 #include <video.h>
+#include <kprintf.h>
 
 #include "region/draw.h"
 #include "region/region.h"
@@ -22,7 +23,8 @@ void region_fill(struct region* region, uint32_t colour) {
             inversion_t end = *data++;      // what if odd number of inv. points? can this even happen? if so, should it??
 
             video_putrect(start + region->offset_x, vertical_offset, end - start, height, colour);
-            vertical_offset += height;
         }    
+        
+        vertical_offset += height;
     }
 }

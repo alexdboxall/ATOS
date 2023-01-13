@@ -23,12 +23,14 @@
 
 /*
 * Local fixed sized arrays and variables need to fit on the kernel stack.
-* Allocate at least 4KB (depending on the system page size).
+* Allocate at least 8KB (depending on the system page size).
 *
 * Please note that overflowing the kernel stack into non-paged memory will lead to
 * an immediate and unrecoverable crash on most systems.
+* 
+* (Drivers like CLIPDRAW.SYS are going to want at least 8KB!)
 */
-#define KERNEL_STACK_SIZE   (virt_bytes_to_pages(4096) * ARCH_PAGE_SIZE)
+#define KERNEL_STACK_SIZE   (virt_bytes_to_pages(1024 * 8) * ARCH_PAGE_SIZE)
 
 /*
 * The user stack is allocated as needed - this is the maximum size of the stack in
@@ -99,9 +101,13 @@ static struct spinlock time_since_boot_lock;
 * combined.
 *
 * If the canary page is only partially used for the canary, the remainder of the
-* page is able to be used normally. Hence at the moment kernel pages are 6KB.
+* page is able to be used normally.
 */
+#ifdef NDEBUG
+#define NUM_CANARY_BYTES (1024 * 8)
+#else
 #define NUM_CANARY_BYTES 2048
+#endif
 #define NUM_CANARY_PAGES (virt_bytes_to_pages(NUM_CANARY_BYTES))
 
 #define CANARY_VALUE     0x8BADF00D

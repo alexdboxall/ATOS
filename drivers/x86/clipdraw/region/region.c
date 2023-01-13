@@ -1,11 +1,10 @@
 #include "region/region.h"
-#include <stdio.h>      // printf
-#include <stdlib.h>     // malloc, realloc, free
-#include <string.h>     // memcpy, memcmp
+#include <heap.h>
+#include <kprintf.h>
+#include <string.h>
 #include <assert.h>
-#include <math.h>       // sqrt for debugging things
 
-#define MAX_VERTICAL_CHANGES        4096
+#define MAX_VERTICAL_CHANGES        2048
 #define MAX_HORIZONTAL_INVERSIONS   256
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b))
@@ -212,6 +211,8 @@ void region_add_data_block(struct region* r, inversion_t* data) {
     */
     memcpy(r->data + r->data_total_length, data, count * sizeof(inversion_t));
     r->data_total_length += count;
+
+    r->num_data_blocks++;
 }
 
 void region_add_padding_data_block(struct region* r, int height) {
@@ -288,7 +289,7 @@ bool region_operation_check_special_case(struct region* a, struct region* b, str
     return false;
 }
 
-void region_operation_on_data_block(struct region* a, struct region* b, struct region* output, enum region_operation op, int height, inversion_t a_base, inversion_t b_base) {
+void region_operation_on_data_block(struct region* a, struct region* b, struct region* output, enum region_operation op, int height, inversion_t a_base, inversion_t b_base) {    
     /*
     * Check for cases where one of the input regions is not yet active (i.e. does not contain
     * any data for this part of the region).
@@ -450,6 +451,7 @@ struct region region_operate(struct region a, struct region b, enum region_opera
     output.prev_add_index = -1;
     output.offset_x = 0;
     output.offset_y = MIN(a.offset_y, b.offset_y);
+
     output.data = malloc(output.allocated_amount * sizeof(inversion_t));
 
     /*
@@ -530,8 +532,7 @@ struct region region_operate(struct region a, struct region b, enum region_opera
 
         if (num_vertical_changes >= 2) {
             /*
-            * TODO:
-            * This is where we would actually perform the scanline based set operation.
+            * This is where we actually perform the scanline based set operation.
             */
             int height = vertical_changes[num_vertical_changes - 1] - vertical_changes[num_vertical_changes - 2];
 
