@@ -121,10 +121,7 @@ int demofs_each_open(struct demofs_data* fs, const char* name, int flags)
         return ENAMETOOLONG;
     }
 
-    if (flags & O_WRONLY) {
-        return EROFS;
-    }
-    if (flags & O_RDWR) {
+    if ((flags & O_ACCMODE) == O_RDONLY || (flags & O_ACCMODE) == O_RDWR) {
         return EROFS;
     }
     if (flags & O_CREAT) {

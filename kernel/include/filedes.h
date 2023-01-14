@@ -2,6 +2,8 @@
 
 #include <stddef.h>
 
+#define MAX_FD_PER_PROCESS 1024
+
 struct filedes_table;
 struct vnode;
 

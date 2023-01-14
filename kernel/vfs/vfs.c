@@ -588,7 +588,8 @@ int vfs_close(struct vnode* node) {
 	if (node == NULL) {
 		return EINVAL;
 	}
-	vnode_dereference(node);
+
+    vnode_dereference(node);
 	return 0;
 }
 
@@ -600,6 +601,17 @@ int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out) {
 	if (path == NULL || out == NULL || strlen(path) <= 0) {
 		return EINVAL;
 	}
+
+    /*
+    * O_NONBLOCK has two meanings, one of which is to prevent open() from 
+    * blocking for a "long time" to open (e.g. serial ports). This usage of the flags
+    * does not get saved. As we don't block for a "long time" here, we can ignore
+    * this usage of the flag. We also don't want O_NONBLOCK to ever be saved to initial_flags,
+    * as that is where the second meaning gets used.
+    */
+    if (flags & O_NONBLOCK) {
+        flags &= ~O_NONBLOCK;
+    }
 
 	int status;
 
@@ -654,11 +666,8 @@ int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out) {
 		return status;
 	}
 
-	/*
-	* The O_RDWR flag is both O_RDONLY and O_WRONLY set.
-	*/
-	node->can_read = flags & O_RDONLY;
-	node->can_write = flags & O_WRONLY;
+	node->can_read = (flags & O_ACCMODE) != O_WRONLY;
+	node->can_write = (flags & O_ACCMODE) != O_RDONLY;
 
 	if (vnode_op_dirent_type(node) == DT_DIR && node->can_write) {
 		/*
@@ -677,8 +686,9 @@ int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out) {
 		}
 	}
 
+    /* TODO: clear out the flags that don't normally get saved */
     node->initial_mode = mode;
-    node->initial_flags = flags;
+    node->flags = flags;
 
 	*out = node;
 	return 0;
@@ -693,6 +703,11 @@ int vfs_write(struct vnode* node, struct uio* io) {
 	}
     if (!node->can_write) {
         return EBADF;
+    }
+    // TODO: lock??
+
+    if (node->flags & O_APPEND) {
+        // TODO: seek the end of the file
     }
 	return vnode_op_write(node, io);
 }

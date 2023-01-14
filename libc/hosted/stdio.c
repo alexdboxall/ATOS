@@ -90,9 +90,6 @@ static FILE* fopen_existing_stream(const char* filename, const char* mode, FILE*
         return NULL;
     }
 
-    /*
-    * This works as our OS defines O_RDWR as O_RDONLY | O_WRONLY
-    */
     if (mode[0] == 'r') flags |= O_RDONLY;
     else if (mode[0] == 'w') flags |= O_WRONLY | O_CREAT | O_TRUNC;
     else if (mode[0] == 'a') flags |= O_WRONLY | O_CREAT | O_APPEND;
@@ -103,6 +100,7 @@ static FILE* fopen_existing_stream(const char* filename, const char* mode, FILE*
 
     for (int i = 1; mode[i]; ++i) {
         if (mode[i] == '+') {
+            flags &= ~O_ACCMODE;
             flags |= O_RDWR;
 
         } else if (mode[i] == 'b') {
@@ -127,7 +125,7 @@ static FILE* fopen_existing_stream(const char* filename, const char* mode, FILE*
         return NULL;
     }
 
-    if ((flags & O_WRONLY) && isatty(fd)) {
+    if ((flags & O_ACCMODE) != O_RDONLY && isatty(fd)) {
         stream->buffer_mode = _IOLBF;
     } else {
         stream->buffer_mode = _IOFBF;
@@ -147,7 +145,7 @@ ssize_t _file_write(FILE* stream, void* buffer, size_t size) {
 
 
 ssize_t _mem_read(FILE* stream, void* buffer, size_t size) {
-    if (!(stream->flags & O_RDONLY)) {
+    if ((stream->flags & O_ACCMODE) == O_WRONLY) {
         errno = EINVAL;
         return -1;
     }
@@ -166,7 +164,7 @@ ssize_t _mem_read(FILE* stream, void* buffer, size_t size) {
 }
 
 ssize_t _mem_write(FILE* stream, void* buffer, size_t size) {
-    if (!(stream->flags & O_WRONLY)) {
+    if ((stream->flags & O_ACCMODE) == O_RDONLY) {
         errno = EINVAL;
         return -1;
     }
