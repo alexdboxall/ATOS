@@ -5,8 +5,6 @@
 #include <spinlock.h>
 #include <errno.h>
 
-// TODO: more entries and offsets, and add a flags column (for things like O_NOBLOCK)
-
 /*
 * FYI: from here: https://www.gnu.org/software/libc/manual/html_node/Duplicating-Descriptors.html
 *
@@ -28,14 +26,29 @@
 * i.e. these are shared by a dup()
 *
 * The "file descriptor flags" are unique to every FD.
-* There is but one, called O_CLOEXEC.
+* There is but one, called FD_CLOEXEC.
 */
+
+struct filedes_entry {
+    /*
+    * Set to NULL if this entry isn't in use.
+    */
+    struct vnode* vnode;
+
+    /*
+    * This actually needs to be stored in the vnode itself.
+    */
+    size_t seek_position;
+
+    /*
+    * The only flag that can live here is FD_CLOEXEC.
+    */
+    int flags;
+};
+
 struct filedes_table {
-    int next_fd;
-    int entries_allocated;
     struct spinlock lock;
-    struct vnode** entries;
-    size_t* offsets;
+    struct filedes_entry entries[MAX_FD_PER_PROCESS];
 };
 
 struct filedes_table* filedes_table_create(void) {
@@ -43,11 +56,9 @@ struct filedes_table* filedes_table_create(void) {
 
     spinlock_init(&table->lock, "filedes table lock");
 
-    table->next_fd = 0;
-    table->entries_allocated = 16;
-
-    table->entries = malloc(sizeof(struct vnode*) * table->entries_allocated);
-    table->offsets = malloc(sizeof(size_t) * table->entries_allocated);
+    for (int i = 0; i < MAX_FD_PER_PROCESS; ++i) {
+        table->entries[i].vnode = NULL;
+    }
 
     return table;
 }
@@ -56,38 +67,19 @@ struct filedes_table* filedes_table_copy(struct filedes_table* original) {
     struct filedes_table* new_table = malloc(sizeof(struct filedes_table));
 
     spinlock_acquire(&original->lock);
-
-    new_table->next_fd = original->next_fd;
-    new_table->entries_allocated = original->entries_allocated;
-
-    new_table->entries = malloc(sizeof(struct vnode*) * original->entries_allocated);
-    new_table->offsets = malloc(sizeof(size_t) * original->entries_allocated);
-    memcpy(new_table->entries, original->entries, original->entries_allocated * sizeof(struct vnode*));
-    memcpy(new_table->offsets, original->offsets, original->entries_allocated * sizeof(size_t));
-
+    memcpy(new_table->entries, original->entries, sizeof(struct filedes_entry) * MAX_FD_PER_PROCESS);
     spinlock_release(&original->lock);
     
     return new_table;
 }
 
-int filedesc_seek(struct filedes_table* table, int fd, size_t offset) {
-    spinlock_acquire(&table->lock);
-    if (fd >= table->next_fd) {
-        return EINVAL;
-    }
-    table->offsets[fd] = offset;
-    spinlock_release(&table->lock);
 
-    return 0;
-}
-
-struct vnode* fildesc_convert_to_vnode(struct filedes_table* table, int fd, size_t* offset_out) {
+struct vnode* fildesc_convert_to_vnode(struct filedes_table* table, int fd) {
     spinlock_acquire(&table->lock);
-    if (fd >= table->next_fd) {
+    if (fd < 0 || fd >= MAX_FD_PER_PROCESS) {
         return NULL;
     }
-    struct vnode* result = table->entries[fd];
-    *offset_out = table->offsets[fd];
+    struct vnode* result = table->entries[fd].vnode;
     spinlock_release(&table->lock);
 
     return result;
@@ -96,31 +88,17 @@ struct vnode* fildesc_convert_to_vnode(struct filedes_table* table, int fd, size
 int filedesc_table_register_vnode(struct filedes_table* table, struct vnode* node) {
     spinlock_acquire(&table->lock);
 
-    int fd = table->next_fd++;
-
-    table->entries[fd] = node;
-    table->offsets[fd] = 0;
-
-    /* We haven't written realloc yet! (But even if we did, we still would have needed to
-    * keep track of the allocated size (so we can double it)).
-    */
-
-    if (table->next_fd >= table->entries_allocated) {
-        struct vnode** new_e_table = malloc(sizeof(struct vnode*) * table->entries_allocated * 2);
-        size_t* new_o_table = malloc(sizeof(size_t) * table->entries_allocated * 2);
-
-        memcpy(new_e_table, table->entries, sizeof(struct vnode*) * table->entries_allocated);
-        memcpy(new_o_table, table->offsets, sizeof(size_t) * table->entries_allocated);
-
-        free(table->entries);
-        free(table->offsets);
-        
-        table->entries = new_e_table;
-        table->offsets = new_o_table;
-        table->entries_allocated *= 2;
+    for (int i = 0; i < MAX_FD_PER_PROCESS; ++i) {
+        if (table->entries[i].vnode == NULL) {
+            table->entries[i].vnode = node;
+            table->entries[i].seek_position = 0;
+            table->entries[i].flags = 0;
+            spinlock_release(&table->lock);
+            return i;
+        }
     }
 
     spinlock_release(&table->lock);
 
-    return fd;
+    return -1;
 }

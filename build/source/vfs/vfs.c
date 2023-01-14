@@ -686,6 +686,8 @@ int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out) {
 		}
 	}
 
+    /* TODO: clear out the flags that don't normally get saved */
+
     node->initial_mode = mode;
     node->flags = flags;
 

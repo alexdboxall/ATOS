@@ -37,6 +37,9 @@
 #define ENOTTY          21          // Not a terminal
 #define ERANGE          22          // Result of out range
 #define EILSEQ          23          // Illegal byte sequence
+#define EMFILE          24          // Too many open files
+#define ENFILE          25          // Too many open files in system
+#define EPIPE           26          // Broken pipe
 
 #ifndef COMPILE_KERNEL
 

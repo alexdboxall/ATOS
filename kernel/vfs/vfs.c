@@ -687,6 +687,7 @@ int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out) {
 	}
 
     /* TODO: clear out the flags that don't normally get saved */
+
     node->initial_mode = mode;
     node->flags = flags;
 
@@ -696,6 +697,9 @@ int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out) {
 
 /*
 * Write data to a file.
+*
+* The O_APPEND flag is handled in the system call layer, as seek positions must
+* be handled before we reach the uio stage.
 */
 int vfs_write(struct vnode* node, struct uio* io) {
 	if (io == NULL || io->address == NULL) {
@@ -706,9 +710,6 @@ int vfs_write(struct vnode* node, struct uio* io) {
     }
     // TODO: lock??
 
-    if (node->flags & O_APPEND) {
-        // TODO: seek the end of the file
-    }
 	return vnode_op_write(node, io);
 }
 

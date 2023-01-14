@@ -37,11 +37,12 @@ int sys_lseek(size_t args[4]) {
         return result;
     }
     
-    size_t current;
-    struct vnode* node = fildesc_convert_to_vnode(current_cpu->current_thread->process->fdtable, args[0], &current);
+    struct vnode* node = fildesc_convert_to_vnode(current_cpu->current_thread->process->fdtable, args[0]);
     if (node == NULL) {
         return EINVAL;
     }
+
+    size_t current = node->seek_position;
     
     if (args[2] == SEEK_CUR) {
         offset += current;
@@ -58,10 +59,7 @@ int sys_lseek(size_t args[4]) {
         return EINVAL;
     }
 
-    result = filedesc_seek(current_cpu->current_thread->process->fdtable, args[0], offset);
-    if (result != 0) {
-        return result;
-    }
+    node->seek_position = offset;
 
     io = uio_construct_write_to_usermode((void*) args[1], sizeof(off_t), 0);
     return uio_move(&offset, &io, sizeof(off_t));

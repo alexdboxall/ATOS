@@ -51,9 +51,9 @@ Discarded input sections
  .text.strdup   0x0000000000000000       0x2e ../../../libc/x86/libc.a(string.o)
  .text.strncmp  0x0000000000000000       0x30 ../../../libc/x86/libc.a(string.o)
  .rodata.str1.1
-                0x0000000000000000      0x1bd ../../../libc/x86/libc.a(string.o)
+                0x0000000000000000      0x254 ../../../libc/x86/libc.a(string.o)
  .rodata.CSWTCH.14
-                0x0000000000000000       0x4c ../../../libc/x86/libc.a(string.o)
+                0x0000000000000000       0x6c ../../../libc/x86/libc.a(string.o)
  .comment       0x0000000000000000       0x12 ../../../libc/x86/libc.a(string.o)
  .eh_frame      0x0000000000000000      0x210 ../../../libc/x86/libc.a(string.o)
  .text          0x0000000000000000        0x0 ../../../libc/x86/libc.a(stdio.o)

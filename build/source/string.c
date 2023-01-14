@@ -192,6 +192,22 @@ char* strerror(int err)
 		return "Read-only filesystem";
 	case EAGAIN: /* == EWOULDBLOCK */
 		return "Resource temporarily unavailable / Operation would block";
+    case EFAULT:
+        return "Bad address";
+    case EBADF:
+        return "Bad file descriptor";
+    case ENOTTY:
+        return "Not a terminal";
+    case ERANGE:
+        return "Result of out range";
+    case EILSEQ:
+        return "Illegal byte sequence";
+    case EMFILE:
+        return "Too many open files";
+    case ENFILE:
+        return "Too many open files in system";
+    case EPIPE:
+        return "Broken pipe";
 	default:
 		return "Unknown error";
 	}

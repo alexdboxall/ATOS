@@ -11,6 +11,7 @@
 #include <kprintf.h>
 #include <loader.h>
 #include <errno.h>
+#include <filedes.h>
 #include <machine/config.h>
 
 /*
@@ -200,6 +201,11 @@ static size_t thread_create_user_stack(int size) {
 
 int thread_execve(const char* filename, char* const argv[], char* const envp[], size_t* entry_point) {
     /* TODO: argv and envp stuff */
+    
+    int result = filedes_handle_exec(current_cpu->current_thread->process->fdtable);
+    if (result != 0) {
+        return result;
+    }
     
     (void) argv;
     (void) envp;

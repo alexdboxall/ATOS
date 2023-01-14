@@ -7,6 +7,7 @@
 #include <cpu.h>
 #include <process.h>
 #include <uio.h>
+#include <vnode.h>
 #include <kprintf.h>
 #include <fcntl.h>
 
@@ -24,14 +25,12 @@
 *         error code        on failure
 */
 int sys_write(size_t args[4]) {
-    size_t offset = 0;
-
-    struct vnode* node = fildesc_convert_to_vnode(current_cpu->current_thread->process->fdtable, args[2], &offset);   
+    struct vnode* node = fildesc_convert_to_vnode(current_cpu->current_thread->process->fdtable, args[2]);   
     if (node == NULL) {
         return EBADF;
     }
 
-    struct uio io = uio_construct_read_from_usermode((void*) args[0], args[1], offset);
+    struct uio io = uio_construct_read_from_usermode((void*) args[0], args[1], node->seek_position);
     
     int result = vfs_write(node, &io);
     if (result != 0) {
@@ -40,5 +39,8 @@ int sys_write(size_t args[4]) {
 
     io = uio_construct_write_to_usermode((size_t*) args[3], sizeof(size_t), 0);
     size_t br = args[1] - io.length_remaining;
+
+    node->seek_position += br;
+
     return uio_move(&br, &io, sizeof(size_t));
 }

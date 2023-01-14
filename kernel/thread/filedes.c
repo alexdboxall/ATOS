@@ -5,10 +5,6 @@
 #include <spinlock.h>
 #include <errno.h>
 
-// TODO: more entries and offsets, and add a flags column (for things like O_NOBLOCK)
-
-// TODO: need to be able to allocate the 'lowest unavilable' FD, not just the next one
-
 /*
 * FYI: from here: https://www.gnu.org/software/libc/manual/html_node/Duplicating-Descriptors.html
 *
@@ -77,24 +73,12 @@ struct filedes_table* filedes_table_copy(struct filedes_table* original) {
     return new_table;
 }
 
-int filedesc_seek(struct filedes_table* table, int fd, size_t offset) {
-    spinlock_acquire(&table->lock);
-    if (fd < 0 || fd >= MAX_FD_PER_PROCESS) {
-        return EBADF;
-    }
-    table->entries[fd].seek_position = offset;
-    spinlock_release(&table->lock);
-
-    return 0;
-}
-
-struct vnode* fildesc_convert_to_vnode(struct filedes_table* table, int fd, size_t* offset_out) {
+struct vnode* fildesc_convert_to_vnode(struct filedes_table* table, int fd) {
     spinlock_acquire(&table->lock);
     if (fd < 0 || fd >= MAX_FD_PER_PROCESS) {
         return NULL;
     }
-    struct vnode* result = table->entries[fd]->vnode;
-    *offset_out = table->entries[fd].seek_position;
+    struct vnode* result = table->entries[fd].vnode;
     spinlock_release(&table->lock);
 
     return result;
@@ -116,4 +100,37 @@ int filedesc_table_register_vnode(struct filedes_table* table, struct vnode* nod
     spinlock_release(&table->lock);
 
     return -1;
+}
+
+int filedesc_table_deregister_vnode(struct filedes_table* table, struct vnode* node) {
+    spinlock_acquire(&table->lock);
+
+    for (int i = 0; i < MAX_FD_PER_PROCESS; ++i) {
+        if (table->entries[i].vnode == node) {
+            table->entries[i].vnode = NULL;
+            spinlock_release(&table->lock);
+            return 0;
+        }
+    }
+
+    spinlock_release(&table->lock);
+
+    return EINVAL;
+}
+
+int filedes_handle_exec(struct filedes_table* table) {
+    spinlock_acquire(&table->lock);
+
+    for (int i = 0; i < MAX_FD_PER_PROCESS; ++i) {
+        if (table->entries[i].vnode != NULL) {
+            if (table->entries[i].flags & FD_CLOEXEC) {
+                vfs_close(table->entries[i].vnode);
+                table->entries[i].vnode = NULL;
+            }
+        }
+    }
+
+    spinlock_release(&table->lock);
+
+    return 0;
 }

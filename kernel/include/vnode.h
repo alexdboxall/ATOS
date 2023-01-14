@@ -91,6 +91,13 @@ struct vnode {
 
     mode_t initial_mode;
     int flags;
+
+    /*
+    * It is the responsibility of the system calls to ensure that this is put into the right place.
+    * System calls will then pass this value in to the uio. System calls also need to update the seek after
+    * reading/writing.
+    */
+    size_t seek_position;
 };
 
 
