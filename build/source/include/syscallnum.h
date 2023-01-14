@@ -10,6 +10,9 @@ enum SyscallNumber {
     SYSCALL_LSEEK,
     SYSCALL_SBRK,
     SYSCALL_ISATTY,
+    SYSCALL_DUP,
+    SYSCALL_DUP2,
+    SYSCALL_DUP3,
 };
 
 #ifndef COMPILE_KERNEL

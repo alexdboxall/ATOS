@@ -53,6 +53,7 @@ Discarded input sections
  .comment       0x0000000000000000       0x12 mem/vas.o
  .comment       0x0000000000000000       0x12 mem/virtual.o
  .comment       0x0000000000000000       0x12 syscall/close.o
+ .comment       0x0000000000000000       0x12 syscall/dup.o
  .comment       0x0000000000000000       0x12 syscall/isatty.o
  .comment       0x0000000000000000       0x12 syscall/lseek.o
  .comment       0x0000000000000000       0x12 syscall/open.o
@@ -129,6 +130,7 @@ LOAD mem/swapfile.o
 LOAD mem/vas.o
 LOAD mem/virtual.o
 LOAD syscall/close.o
+LOAD syscall/dup.o
 LOAD syscall/isatty.o
 LOAD syscall/lseek.o
 LOAD syscall/open.o
@@ -208,7 +210,7 @@ LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/li
                 0x000000000010000c                _start
                 0x00000000c0100083                . = (. + 0xc0000000)
 
-.text           0x00000000c0101000     0x7b4f load address 0x0000000000101000
+.text           0x00000000c0101000     0x7bdf load address 0x0000000000101000
  *(.text)
  .text          0x00000000c0101000       0x29 assert.o
                 0x00000000c0101000                assertion_fail
@@ -310,338 +312,343 @@ LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/li
                 0x00000000c0102b1b                virt_free_backed_pages
  .text          0x00000000c0102b5a       0x59 syscall/close.o
                 0x00000000c0102b5a                sys_close
- .text          0x00000000c0102bb3       0x41 syscall/isatty.o
-                0x00000000c0102bb3                sys_isatty
- .text          0x00000000c0102bf4       0xe0 syscall/lseek.o
-                0x00000000c0102bf4                sys_lseek
- .text          0x00000000c0102cd4       0x96 syscall/open.o
-                0x00000000c0102cd4                sys_open
- .text          0x00000000c0102d6a       0xb0 syscall/read.o
-                0x00000000c0102d6a                sys_read
- .text          0x00000000c0102e1a       0xed syscall/sbrk.o
-                0x00000000c0102e1a                sys_sbrk
- .text          0x00000000c0102f07       0x99 syscall/syscall.o
-                0x00000000c0102f07                syscall_init
-                0x00000000c0102f7a                syscall_perform
- .text          0x00000000c0102fa0       0x18 syscall/terminate.o
-                0x00000000c0102fa0                sys_terminate
- .text          0x00000000c0102fb8       0xe3 syscall/write.o
-                0x00000000c0102fb8                sys_write
- .text          0x00000000c010309b        0xf syscall/yield.o
-                0x00000000c010309b                sys_yield
- .text          0x00000000c01030aa       0x47 test/runtest.o
-                0x00000000c01030aa                test_run
- .text          0x00000000c01030f1       0xee thread/cleaner.o
-                0x00000000c01030f1                cleaner_thread_task
-                0x00000000c010319f                cleaner_thread_init
-                0x00000000c01031c2                cleaner_thread_awaken
- .text          0x00000000c01031df       0x39 thread/idle.o
-                0x00000000c01031f9                idle_thread_init
- .text          0x00000000c0103218      0x1ae thread/loader.o
-                0x00000000c0103218                load_program
-                0x00000000c01032d1                load_driver
- .text          0x00000000c01033c6      0x116 thread/process.o
-                0x00000000c01033c6                process_create_child
-                0x00000000c010342f                process_create
-                0x00000000c010344e                process_kill
-                0x00000000c0103454                process_add_thread
-                0x00000000c010348b                process_create_thread
-                0x00000000c01034c2                process_init
- .text          0x00000000c01034dc       0x6b thread/spinlock.o
-                0x00000000c01034dc                spinlock_is_held
-                0x00000000c01034eb                spinlock_init
-                0x00000000c010351c                spinlock_acquire
-                0x00000000c0103521                spinlock_release
-                0x00000000c0103526                spinlock_acquire_if_unlocked
- .text          0x00000000c0103547      0x285 thread/synch.o
-                0x00000000c0103547                semaphore_create
-                0x00000000c0103570                semaphore_destory
-                0x00000000c0103575                semaphore_acquire
-                0x00000000c01035e6                semaphore_try_acquire
-                0x00000000c0103636                semaphore_release
-                0x00000000c010368c                semaphore_set_count
-                0x00000000c01036cf                rw_lock_create
-                0x00000000c010370a                rw_lock_destroy
-                0x00000000c0103733                rw_lock_acquire_read
-                0x00000000c010376e                rw_lock_release_read
-                0x00000000c01037aa                rw_lock_acquire_write
-                0x00000000c01037bb                rw_lock_release_write
- .text          0x00000000c01037cc      0xa95 thread/thread.o
-                0x00000000c0103899                thread_stack_check_canary
-                0x00000000c01038c8                thread_execve
-                0x00000000c0103917                thread_init
-                0x00000000c0103a46                thread_fork
-                0x00000000c0103b75                thread_create
-                0x00000000c0103c68                thread_postpone_switches
-                0x00000000c0103c8b                thread_schedule
-                0x00000000c0103da4                thread_block
-                0x00000000c0103dba                thread_unblock
-                0x00000000c0103dfa                thread_end_postpone_switches
-                0x00000000c0103e3f                get_time_since_boot
-                0x00000000c0103e74                thread_nano_sleep_until
-                0x00000000c0103eea                thread_nano_sleep
-                0x00000000c0103f0c                thread_sleep
-                0x00000000c0103f26                thread_yield
-                0x00000000c0103f4c                thread_terminate
-                0x00000000c0103ff0                thread_execute_in_usermode
-                0x00000000c01040d7                thread_startup_handler
-                0x00000000c01040fe                thread_received_timer_interrupt_bsp
-                0x00000000c0104137                thread_received_timer_interrupt
-                0x00000000c010421f                thread_set_priority
- .text          0x00000000c0104261      0x189 util/adt_blocking_byte_buffer.o
-                0x00000000c0104261                adt_blocking_byte_buffer_create
-                0x00000000c01042c6                adt_blocking_byte_buffer_destroy
-                0x00000000c01042e6                adt_blocking_byte_buffer_add
-                0x00000000c010434c                adt_blocking_byte_buffer_get
-                0x00000000c0104391                adt_blocking_byte_buffer_try_get
- .text          0x00000000c01043ea      0x207 util/adt_hashmap.o
-                0x00000000c01043ea                adt_hashmap_create
-                0x00000000c0104457                adt_hashmap_contains
-                0x00000000c01044c2                adt_hashmap_add
-                0x00000000c0104530                adt_hashmap_get
-                0x00000000c01045ae                adt_hashmap_size
-                0x00000000c01045b9                adt_hashmap_null_terminated_string_hash_function
-                0x00000000c01045d6                adt_hashmap_null_terminated_string_equality_function
- .text          0x00000000c01045f1      0x2e6 util/adt_list.o
-                0x00000000c01045f1                adt_list_create
-                0x00000000c010461f                adt_list_add_front
-                0x00000000c010465d                adt_list_add_back
-                0x00000000c010469c                adt_list_remove_front
-                0x00000000c01046e4                adt_list_destroy
-                0x00000000c010470c                adt_list_remove_back
-                0x00000000c010477d                adt_list_get_front
-                0x00000000c010479f                adt_list_get_back
-                0x00000000c01047c2                adt_list_size
-                0x00000000c01047cd                adt_list_reset
-                0x00000000c01047de                adt_list_has_next
-                0x00000000c0104803                adt_list_get_next
-                0x00000000c010483a                adt_list_circulate
-                0x00000000c010485e                adt_list_remove_element
- .text          0x00000000c01048d7       0x71 util/adt_stack.o
-                0x00000000c01048d7                adt_stack_create
-                0x00000000c01048f5                adt_stack_destroy
-                0x00000000c0104915                adt_stack_push
-                0x00000000c0104926                adt_stack_pop
-                0x00000000c0104937                adt_stack_size
- .text          0x00000000c0104948       0x5d util/bitarray.o
-                0x00000000c0104948                bitarray_set
-                0x00000000c0104964                bitarray_clear
-                0x00000000c0104982                bitarray_is_set
- .text          0x00000000c01049a5       0x1d util/cpu.o
-                0x00000000c01049a5                cpu_get_count
-                0x00000000c01049ab                cpu_init
- .text          0x00000000c01049c2      0x281 util/kprintf.o
-                0x00000000c0104a89                kprintf
-                0x00000000c0104b66                kprintfnv
- .text          0x00000000c0104c43       0x22 util/panic.o
-                0x00000000c0104c43                panic
- .text          0x00000000c0104c65      0x10f vfs/copyinout.o
-                0x00000000c0104d01                copyin
-                0x00000000c0104d39                copyout
- .text          0x00000000c0104d74      0x17a vfs/device.o
-                0x00000000c0104eaf                dev_create_vnode
- .text          0x00000000c0104eee      0x313 vfs/filedes.o
-                0x00000000c0104eee                filedes_table_create
-                0x00000000c0104f29                filedes_table_copy
-                0x00000000c0104f6e                fildesc_convert_to_vnode
-                0x00000000c0104faa                filedesc_table_register_vnode
-                0x00000000c0105006                filedesc_table_deregister_vnode
-                0x00000000c010505a                filedes_handle_exec
-                0x00000000c01050ae                filedesc_table_dup2
-                0x00000000c0105130                filedesc_table_dup
-                0x00000000c01051ad                filedesc_table_dup3
- .text          0x00000000c0105201      0x16c vfs/uio.o
-                0x00000000c0105201                uio_move
-                0x00000000c0105271                uio_move_string_to_usermode
-                0x00000000c01052ea                uio_move_string_from_usermode
-                0x00000000c0105346                uio_construct
- .text          0x00000000c010536d      0xa5c vfs/vfs.o
-                0x00000000c0105490                vfs_init
-                0x00000000c01054b4                vfs_get_path_component
-                0x00000000c010578d                vfs_get_final_component
-                0x00000000c010590e                vfs_mount_filesystem
-                0x00000000c0105a49                vfs_add_device
-                0x00000000c0105b14                vfs_remove_device
-                0x00000000c0105be2                vfs_close
-                0x00000000c0105c04                vfs_open
-                0x00000000c0105c57                vfs_add_virtual_mount_point
-                0x00000000c0105d48                vfs_write
-                0x00000000c0105d74                vfs_read
- .text          0x00000000c0105dc9      0x2c5 vfs/vnode.o
-                0x00000000c0105dc9                vnode_init
-                0x00000000c0105e3c                vnode_check
-                0x00000000c0105e73                vnode_reference
-                0x00000000c0105e9b                vnode_op_check_open
-                0x00000000c0105ecb                vnode_op_read
-                0x00000000c0105ef3                vnode_op_readdir
-                0x00000000c0105f1b                vnode_op_write
-                0x00000000c0105f43                vnode_op_ioctl
-                0x00000000c0105f73                vnode_op_is_seekable
-                0x00000000c0105f92                vnode_op_is_tty
-                0x00000000c0105fb1                vnode_op_close
-                0x00000000c0105fbd                vnode_dereference
-                0x00000000c0106017                vnode_op_follow
-                0x00000000c0106047                vnode_op_dirent_type
-                0x00000000c0106066                vnode_op_stat
- .text          0x00000000c010608e      0x2e6 fs/demofs/demofs_inodes.o
-                0x00000000c010608e                demofs_read_inode
-                0x00000000c01060e2                demofs_read_file
-                0x00000000c010620d                demofs_follow
- .text          0x00000000c0106374      0x235 fs/demofs/demofs_vnode.o
-                0x00000000c0106495                demofs_root_creator
-                0x00000000c01064e9                demofs_create_file_vnode
-                0x00000000c010650d                demofs_create_dir_vnode
- .text          0x00000000c01065a9       0x60 machine/dev/beeper.o
-                0x00000000c01065e0                x86_beeper_register
- .text          0x00000000c0106609       0xa8 machine/dev/cpu.o
-                0x00000000c0106609                arch_initialise_devices_no_fs
-                0x00000000c010660e                arch_initialise_devices_with_fs
-                0x00000000c010663a                arch_cpu_initialise_bootstrap
-                0x00000000c010668b                arch_all_cpus_are_done
-                0x00000000c010669a                arch_reboot
- .text          0x00000000c01066b1      0x73e machine/dev/floppy.o
-                0x00000000c0106d0e                floppy_initialise
- .text          0x00000000c0106def      0x45e machine/dev/ide.o
-                0x00000000c0106def                ide_check_errors
-                0x00000000c0106e45                ide_poll
-                0x00000000c010712f                ide_initialise
- .text          0x00000000c010724d       0x93 machine/dev/pic.o
-                0x00000000c010724d                pic_is_spurious
-                0x00000000c010729a                pic_eoi
-                0x00000000c01072ad                pic_initialise
- .text          0x00000000c01072e0       0x78 machine/dev/pit.o
-                0x00000000c0107311                pit_initialise
- .text          0x00000000c0107358      0x3b4 machine/elf/elf.o
-                0x00000000c0107628                is_elf_valid
-                0x00000000c010764a                arch_load_driver
-                0x00000000c01076a3                arch_start_driver
-                0x00000000c01076c4                arch_exec
- .text          0x00000000c010770c      0x399 machine/elf/symbols.o
-                0x00000000c010770c                ksymbol_add_symbol
-                0x00000000c0107a60                ksymbol_get_address_from_name
- .text          0x00000000c0107aa5       0xe8 machine/lowlevel/gdt.o
-                0x00000000c0107aa5                x86_gdt_create_entry
-                0x00000000c0107ae4                x86_gdt_initialise
-                0x00000000c0107b5a                x86_gdt_add_tss
- .text          0x00000000c0107b8d       0xf3 machine/lowlevel/idt.o
-                0x00000000c0107b8d                x86_idt_set_entry
-                0x00000000c0107bcf                x86_idt_initialise
- .text          0x00000000c0107c80      0x12c machine/lowlevel/interrupt.o
-                0x00000000c0107c80                x86_handle_syscall
-                0x00000000c0107cb6                x86_register_interrupt_handler
-                0x00000000c0107ce6                x86_interrupt_initialise
-                0x00000000c0107d1e                x86_interrupt_handler
- .text          0x00000000c0107dac       0x51 machine/lowlevel/tss.o
-                0x00000000c0107dac                x86_tss_initialise
- .text          0x00000000c0107dfd       0xdc machine/mem/physical.o
-                0x00000000c0107dfd                arch_get_memory
- .text          0x00000000c0107ed9      0x750 machine/mem/virtual.o
-                0x00000000c0107ed9                lowmem_physical_to_virtual
-                0x00000000c0107ee6                arch_vas_destroy
-                0x00000000c0107eeb                arch_vas_load
-                0x00000000c0107efc                arch_vas_set_entry
-                0x00000000c0107fc4                x86_per_cpu_virt_initialise
-                0x00000000c0108188                x86_get_entry
-                0x00000000c0108291                arch_vas_create
-                0x00000000c0108316                arch_vas_copy
-                0x00000000c010840c                x86_handle_page_fault
-                0x00000000c010856a                arch_vas_get_entry
-                0x00000000c01085c7                arch_find_page_replacement_virt_address
- .text          0x00000000c0108629       0x68 machine/thread/fork.o
-                0x00000000c0108629                arch_set_forked_kernel_stack
- .text          0x00000000c0108691       0x37 test/runnable/canary.o
-                0x00000000c0108691                test_stack_canary
- .text          0x00000000c01086c8       0x7e test/runnable/heap.o
-                0x00000000c01086c8                test_heap
- .text          0x00000000c0108746       0x4a test/runnable/sleep.o
-                0x00000000c0108746                test_sleep
- .text          0x00000000c0108790       0x6b machine/boot/kernel_entry.oo
-                0x00000000c0108790                vesa_depth
-                0x00000000c0108791                vesa_framebuffer
-                0x00000000c0108795                vesa_width
-                0x00000000c0108797                vesa_height
-                0x00000000c0108799                vesa_pitch
-                0x00000000c010879b                x86_grub_table
- *fill*         0x00000000c01087fb        0x5 
- .text          0x00000000c0108800       0x1d machine/lowlevel/gdt.oo
-                0x00000000c0108800                x86_gdt_load
- *fill*         0x00000000c010881d        0x3 
- .text          0x00000000c0108820        0x8 machine/lowlevel/idt.oo
-                0x00000000c0108820                x86_idt_load
- *fill*         0x00000000c0108828        0x8 
- .text          0x00000000c0108830       0x1f machine/lowlevel/misc.oo
-                0x00000000c0108830                arch_read_timestamp
-                0x00000000c0108833                arch_enable_interrupts
-                0x00000000c0108835                arch_disable_interrupts
-                0x00000000c0108837                arch_stall_processor
-                0x00000000c0108839                arch_flush_tlb
-                0x00000000c0108840                x86_get_cr2
-                0x00000000c0108844                x86_are_irqs_on
- *fill*         0x00000000c010884f        0x1 
- .text          0x00000000c0108850      0x138 machine/lowlevel/trap.oo
-                0x00000000c0108850                isr0
-                0x00000000c0108859                isr1
-                0x00000000c0108862                isr2
-                0x00000000c010886b                isr3
-                0x00000000c0108874                isr4
-                0x00000000c010887d                isr5
-                0x00000000c0108886                isr6
-                0x00000000c010888f                isr7
-                0x00000000c0108898                isr8
-                0x00000000c010889f                isr9
-                0x00000000c01088a8                isr10
-                0x00000000c01088af                isr11
-                0x00000000c01088b6                isr12
-                0x00000000c01088bd                isr13
-                0x00000000c01088c4                isr14
-                0x00000000c01088cb                isr15
-                0x00000000c01088d4                isr16
-                0x00000000c01088dd                isr17
-                0x00000000c01088e1                isr18
-                0x00000000c01088e7                isr19
-                0x00000000c01088ed                isr20
-                0x00000000c01088f3                isr21
-                0x00000000c01088f9                isr96
-                0x00000000c01088ff                irq0
-                0x00000000c0108905                irq1
-                0x00000000c010890b                irq2
-                0x00000000c0108911                irq3
-                0x00000000c0108917                irq4
-                0x00000000c010891d                irq5
-                0x00000000c0108923                irq6
-                0x00000000c0108929                irq7
-                0x00000000c010892f                irq8
-                0x00000000c0108935                irq9
-                0x00000000c010893b                irq10
-                0x00000000c0108941                irq11
-                0x00000000c0108947                irq12
-                0x00000000c010894d                irq13
-                0x00000000c0108953                irq14
-                0x00000000c0108959                irq15
- *fill*         0x00000000c0108988        0x8 
- .text          0x00000000c0108990        0x8 machine/lowlevel/tss.oo
-                0x00000000c0108990                x86_tss_load
- *fill*         0x00000000c0108998        0x8 
- .text          0x00000000c01089a0        0x8 machine/mem/virtual.oo
-                0x00000000c01089a0                x86_set_cr3
- *fill*         0x00000000c01089a8        0x8 
- .text          0x00000000c01089b0       0x3f machine/thread/spinlock.oo
-                0x00000000c01089b4                arch_irq_spinlock_acquire
-                0x00000000c01089d3                arch_irq_spinlock_release
- *fill*         0x00000000c01089ef        0x1 
- .text          0x00000000c01089f0       0x3d machine/thread/switch.oo
-                0x00000000c01089f0                arch_prepare_stack
-                0x00000000c01089ff                arch_switch_thread
- *fill*         0x00000000c0108a2d        0x3 
- .text          0x00000000c0108a30       0x20 machine/thread/usermode.oo
-                0x00000000c0108a30                arch_switch_to_usermode
- .text          0x00000000c0108a50       0xff /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivdi3.o)
-                0x00000000c0108a50                __udivdi3
+ .text          0x00000000c0102bb3       0x66 syscall/dup.o
+                0x00000000c0102bb3                sys_dup
+                0x00000000c0102bd2                sys_dup2
+                0x00000000c0102bf4                sys_dup3
+ .text          0x00000000c0102c19       0x41 syscall/isatty.o
+                0x00000000c0102c19                sys_isatty
+ .text          0x00000000c0102c5a       0xe0 syscall/lseek.o
+                0x00000000c0102c5a                sys_lseek
+ .text          0x00000000c0102d3a       0x96 syscall/open.o
+                0x00000000c0102d3a                sys_open
+ .text          0x00000000c0102dd0       0xb0 syscall/read.o
+                0x00000000c0102dd0                sys_read
+ .text          0x00000000c0102e80       0xed syscall/sbrk.o
+                0x00000000c0102e80                sys_sbrk
+ .text          0x00000000c0102f6d       0xb7 syscall/syscall.o
+                0x00000000c0102f6d                syscall_init
+                0x00000000c0102ffe                syscall_perform
+ .text          0x00000000c0103024       0x18 syscall/terminate.o
+                0x00000000c0103024                sys_terminate
+ .text          0x00000000c010303c       0xe3 syscall/write.o
+                0x00000000c010303c                sys_write
+ .text          0x00000000c010311f        0xf syscall/yield.o
+                0x00000000c010311f                sys_yield
+ .text          0x00000000c010312e       0x47 test/runtest.o
+                0x00000000c010312e                test_run
+ .text          0x00000000c0103175       0xee thread/cleaner.o
+                0x00000000c0103175                cleaner_thread_task
+                0x00000000c0103223                cleaner_thread_init
+                0x00000000c0103246                cleaner_thread_awaken
+ .text          0x00000000c0103263       0x39 thread/idle.o
+                0x00000000c010327d                idle_thread_init
+ .text          0x00000000c010329c      0x1ae thread/loader.o
+                0x00000000c010329c                load_program
+                0x00000000c0103355                load_driver
+ .text          0x00000000c010344a      0x116 thread/process.o
+                0x00000000c010344a                process_create_child
+                0x00000000c01034b3                process_create
+                0x00000000c01034d2                process_kill
+                0x00000000c01034d8                process_add_thread
+                0x00000000c010350f                process_create_thread
+                0x00000000c0103546                process_init
+ .text          0x00000000c0103560       0x6b thread/spinlock.o
+                0x00000000c0103560                spinlock_is_held
+                0x00000000c010356f                spinlock_init
+                0x00000000c01035a0                spinlock_acquire
+                0x00000000c01035a5                spinlock_release
+                0x00000000c01035aa                spinlock_acquire_if_unlocked
+ .text          0x00000000c01035cb      0x285 thread/synch.o
+                0x00000000c01035cb                semaphore_create
+                0x00000000c01035f4                semaphore_destory
+                0x00000000c01035f9                semaphore_acquire
+                0x00000000c010366a                semaphore_try_acquire
+                0x00000000c01036ba                semaphore_release
+                0x00000000c0103710                semaphore_set_count
+                0x00000000c0103753                rw_lock_create
+                0x00000000c010378e                rw_lock_destroy
+                0x00000000c01037b7                rw_lock_acquire_read
+                0x00000000c01037f2                rw_lock_release_read
+                0x00000000c010382e                rw_lock_acquire_write
+                0x00000000c010383f                rw_lock_release_write
+ .text          0x00000000c0103850      0xa95 thread/thread.o
+                0x00000000c010391d                thread_stack_check_canary
+                0x00000000c010394c                thread_execve
+                0x00000000c010399b                thread_init
+                0x00000000c0103aca                thread_fork
+                0x00000000c0103bf9                thread_create
+                0x00000000c0103cec                thread_postpone_switches
+                0x00000000c0103d0f                thread_schedule
+                0x00000000c0103e28                thread_block
+                0x00000000c0103e3e                thread_unblock
+                0x00000000c0103e7e                thread_end_postpone_switches
+                0x00000000c0103ec3                get_time_since_boot
+                0x00000000c0103ef8                thread_nano_sleep_until
+                0x00000000c0103f6e                thread_nano_sleep
+                0x00000000c0103f90                thread_sleep
+                0x00000000c0103faa                thread_yield
+                0x00000000c0103fd0                thread_terminate
+                0x00000000c0104074                thread_execute_in_usermode
+                0x00000000c010415b                thread_startup_handler
+                0x00000000c0104182                thread_received_timer_interrupt_bsp
+                0x00000000c01041bb                thread_received_timer_interrupt
+                0x00000000c01042a3                thread_set_priority
+ .text          0x00000000c01042e5      0x189 util/adt_blocking_byte_buffer.o
+                0x00000000c01042e5                adt_blocking_byte_buffer_create
+                0x00000000c010434a                adt_blocking_byte_buffer_destroy
+                0x00000000c010436a                adt_blocking_byte_buffer_add
+                0x00000000c01043d0                adt_blocking_byte_buffer_get
+                0x00000000c0104415                adt_blocking_byte_buffer_try_get
+ .text          0x00000000c010446e      0x207 util/adt_hashmap.o
+                0x00000000c010446e                adt_hashmap_create
+                0x00000000c01044db                adt_hashmap_contains
+                0x00000000c0104546                adt_hashmap_add
+                0x00000000c01045b4                adt_hashmap_get
+                0x00000000c0104632                adt_hashmap_size
+                0x00000000c010463d                adt_hashmap_null_terminated_string_hash_function
+                0x00000000c010465a                adt_hashmap_null_terminated_string_equality_function
+ .text          0x00000000c0104675      0x2e6 util/adt_list.o
+                0x00000000c0104675                adt_list_create
+                0x00000000c01046a3                adt_list_add_front
+                0x00000000c01046e1                adt_list_add_back
+                0x00000000c0104720                adt_list_remove_front
+                0x00000000c0104768                adt_list_destroy
+                0x00000000c0104790                adt_list_remove_back
+                0x00000000c0104801                adt_list_get_front
+                0x00000000c0104823                adt_list_get_back
+                0x00000000c0104846                adt_list_size
+                0x00000000c0104851                adt_list_reset
+                0x00000000c0104862                adt_list_has_next
+                0x00000000c0104887                adt_list_get_next
+                0x00000000c01048be                adt_list_circulate
+                0x00000000c01048e2                adt_list_remove_element
+ .text          0x00000000c010495b       0x71 util/adt_stack.o
+                0x00000000c010495b                adt_stack_create
+                0x00000000c0104979                adt_stack_destroy
+                0x00000000c0104999                adt_stack_push
+                0x00000000c01049aa                adt_stack_pop
+                0x00000000c01049bb                adt_stack_size
+ .text          0x00000000c01049cc       0x5d util/bitarray.o
+                0x00000000c01049cc                bitarray_set
+                0x00000000c01049e8                bitarray_clear
+                0x00000000c0104a06                bitarray_is_set
+ .text          0x00000000c0104a29       0x1d util/cpu.o
+                0x00000000c0104a29                cpu_get_count
+                0x00000000c0104a2f                cpu_init
+ .text          0x00000000c0104a46      0x281 util/kprintf.o
+                0x00000000c0104b0d                kprintf
+                0x00000000c0104bea                kprintfnv
+ .text          0x00000000c0104cc7       0x22 util/panic.o
+                0x00000000c0104cc7                panic
+ .text          0x00000000c0104ce9      0x10f vfs/copyinout.o
+                0x00000000c0104d85                copyin
+                0x00000000c0104dbd                copyout
+ .text          0x00000000c0104df8      0x17a vfs/device.o
+                0x00000000c0104f33                dev_create_vnode
+ .text          0x00000000c0104f72      0x313 vfs/filedes.o
+                0x00000000c0104f72                filedes_table_create
+                0x00000000c0104fad                filedes_table_copy
+                0x00000000c0104ff2                fildesc_convert_to_vnode
+                0x00000000c010502e                filedesc_table_register_vnode
+                0x00000000c010508a                filedesc_table_deregister_vnode
+                0x00000000c01050de                filedes_handle_exec
+                0x00000000c0105132                filedesc_table_dup2
+                0x00000000c01051b4                filedesc_table_dup
+                0x00000000c0105231                filedesc_table_dup3
+ .text          0x00000000c0105285      0x16c vfs/uio.o
+                0x00000000c0105285                uio_move
+                0x00000000c01052f5                uio_move_string_to_usermode
+                0x00000000c010536e                uio_move_string_from_usermode
+                0x00000000c01053ca                uio_construct
+ .text          0x00000000c01053f1      0xa5c vfs/vfs.o
+                0x00000000c0105514                vfs_init
+                0x00000000c0105538                vfs_get_path_component
+                0x00000000c0105811                vfs_get_final_component
+                0x00000000c0105992                vfs_mount_filesystem
+                0x00000000c0105acd                vfs_add_device
+                0x00000000c0105b98                vfs_remove_device
+                0x00000000c0105c66                vfs_close
+                0x00000000c0105c88                vfs_open
+                0x00000000c0105cdb                vfs_add_virtual_mount_point
+                0x00000000c0105dcc                vfs_write
+                0x00000000c0105df8                vfs_read
+ .text          0x00000000c0105e4d      0x2c5 vfs/vnode.o
+                0x00000000c0105e4d                vnode_init
+                0x00000000c0105ec0                vnode_check
+                0x00000000c0105ef7                vnode_reference
+                0x00000000c0105f1f                vnode_op_check_open
+                0x00000000c0105f4f                vnode_op_read
+                0x00000000c0105f77                vnode_op_readdir
+                0x00000000c0105f9f                vnode_op_write
+                0x00000000c0105fc7                vnode_op_ioctl
+                0x00000000c0105ff7                vnode_op_is_seekable
+                0x00000000c0106016                vnode_op_is_tty
+                0x00000000c0106035                vnode_op_close
+                0x00000000c0106041                vnode_dereference
+                0x00000000c010609b                vnode_op_follow
+                0x00000000c01060cb                vnode_op_dirent_type
+                0x00000000c01060ea                vnode_op_stat
+ .text          0x00000000c0106112      0x2e6 fs/demofs/demofs_inodes.o
+                0x00000000c0106112                demofs_read_inode
+                0x00000000c0106166                demofs_read_file
+                0x00000000c0106291                demofs_follow
+ .text          0x00000000c01063f8      0x235 fs/demofs/demofs_vnode.o
+                0x00000000c0106519                demofs_root_creator
+                0x00000000c010656d                demofs_create_file_vnode
+                0x00000000c0106591                demofs_create_dir_vnode
+ .text          0x00000000c010662d       0x60 machine/dev/beeper.o
+                0x00000000c0106664                x86_beeper_register
+ .text          0x00000000c010668d       0xa8 machine/dev/cpu.o
+                0x00000000c010668d                arch_initialise_devices_no_fs
+                0x00000000c0106692                arch_initialise_devices_with_fs
+                0x00000000c01066be                arch_cpu_initialise_bootstrap
+                0x00000000c010670f                arch_all_cpus_are_done
+                0x00000000c010671e                arch_reboot
+ .text          0x00000000c0106735      0x73e machine/dev/floppy.o
+                0x00000000c0106d92                floppy_initialise
+ .text          0x00000000c0106e73      0x45e machine/dev/ide.o
+                0x00000000c0106e73                ide_check_errors
+                0x00000000c0106ec9                ide_poll
+                0x00000000c01071b3                ide_initialise
+ .text          0x00000000c01072d1       0x93 machine/dev/pic.o
+                0x00000000c01072d1                pic_is_spurious
+                0x00000000c010731e                pic_eoi
+                0x00000000c0107331                pic_initialise
+ .text          0x00000000c0107364       0x78 machine/dev/pit.o
+                0x00000000c0107395                pit_initialise
+ .text          0x00000000c01073dc      0x3b4 machine/elf/elf.o
+                0x00000000c01076ac                is_elf_valid
+                0x00000000c01076ce                arch_load_driver
+                0x00000000c0107727                arch_start_driver
+                0x00000000c0107748                arch_exec
+ .text          0x00000000c0107790      0x399 machine/elf/symbols.o
+                0x00000000c0107790                ksymbol_add_symbol
+                0x00000000c0107ae4                ksymbol_get_address_from_name
+ .text          0x00000000c0107b29       0xe8 machine/lowlevel/gdt.o
+                0x00000000c0107b29                x86_gdt_create_entry
+                0x00000000c0107b68                x86_gdt_initialise
+                0x00000000c0107bde                x86_gdt_add_tss
+ .text          0x00000000c0107c11       0xf3 machine/lowlevel/idt.o
+                0x00000000c0107c11                x86_idt_set_entry
+                0x00000000c0107c53                x86_idt_initialise
+ .text          0x00000000c0107d04      0x12c machine/lowlevel/interrupt.o
+                0x00000000c0107d04                x86_handle_syscall
+                0x00000000c0107d3a                x86_register_interrupt_handler
+                0x00000000c0107d6a                x86_interrupt_initialise
+                0x00000000c0107da2                x86_interrupt_handler
+ .text          0x00000000c0107e30       0x51 machine/lowlevel/tss.o
+                0x00000000c0107e30                x86_tss_initialise
+ .text          0x00000000c0107e81       0xdc machine/mem/physical.o
+                0x00000000c0107e81                arch_get_memory
+ .text          0x00000000c0107f5d      0x750 machine/mem/virtual.o
+                0x00000000c0107f5d                lowmem_physical_to_virtual
+                0x00000000c0107f6a                arch_vas_destroy
+                0x00000000c0107f6f                arch_vas_load
+                0x00000000c0107f80                arch_vas_set_entry
+                0x00000000c0108048                x86_per_cpu_virt_initialise
+                0x00000000c010820c                x86_get_entry
+                0x00000000c0108315                arch_vas_create
+                0x00000000c010839a                arch_vas_copy
+                0x00000000c0108490                x86_handle_page_fault
+                0x00000000c01085ee                arch_vas_get_entry
+                0x00000000c010864b                arch_find_page_replacement_virt_address
+ .text          0x00000000c01086ad       0x68 machine/thread/fork.o
+                0x00000000c01086ad                arch_set_forked_kernel_stack
+ .text          0x00000000c0108715       0x37 test/runnable/canary.o
+                0x00000000c0108715                test_stack_canary
+ .text          0x00000000c010874c       0x7e test/runnable/heap.o
+                0x00000000c010874c                test_heap
+ .text          0x00000000c01087ca       0x4a test/runnable/sleep.o
+                0x00000000c01087ca                test_sleep
+ *fill*         0x00000000c0108814        0xc 
+ .text          0x00000000c0108820       0x6b machine/boot/kernel_entry.oo
+                0x00000000c0108820                vesa_depth
+                0x00000000c0108821                vesa_framebuffer
+                0x00000000c0108825                vesa_width
+                0x00000000c0108827                vesa_height
+                0x00000000c0108829                vesa_pitch
+                0x00000000c010882b                x86_grub_table
+ *fill*         0x00000000c010888b        0x5 
+ .text          0x00000000c0108890       0x1d machine/lowlevel/gdt.oo
+                0x00000000c0108890                x86_gdt_load
+ *fill*         0x00000000c01088ad        0x3 
+ .text          0x00000000c01088b0        0x8 machine/lowlevel/idt.oo
+                0x00000000c01088b0                x86_idt_load
+ *fill*         0x00000000c01088b8        0x8 
+ .text          0x00000000c01088c0       0x1f machine/lowlevel/misc.oo
+                0x00000000c01088c0                arch_read_timestamp
+                0x00000000c01088c3                arch_enable_interrupts
+                0x00000000c01088c5                arch_disable_interrupts
+                0x00000000c01088c7                arch_stall_processor
+                0x00000000c01088c9                arch_flush_tlb
+                0x00000000c01088d0                x86_get_cr2
+                0x00000000c01088d4                x86_are_irqs_on
+ *fill*         0x00000000c01088df        0x1 
+ .text          0x00000000c01088e0      0x138 machine/lowlevel/trap.oo
+                0x00000000c01088e0                isr0
+                0x00000000c01088e9                isr1
+                0x00000000c01088f2                isr2
+                0x00000000c01088fb                isr3
+                0x00000000c0108904                isr4
+                0x00000000c010890d                isr5
+                0x00000000c0108916                isr6
+                0x00000000c010891f                isr7
+                0x00000000c0108928                isr8
+                0x00000000c010892f                isr9
+                0x00000000c0108938                isr10
+                0x00000000c010893f                isr11
+                0x00000000c0108946                isr12
+                0x00000000c010894d                isr13
+                0x00000000c0108954                isr14
+                0x00000000c010895b                isr15
+                0x00000000c0108964                isr16
+                0x00000000c010896d                isr17
+                0x00000000c0108971                isr18
+                0x00000000c0108977                isr19
+                0x00000000c010897d                isr20
+                0x00000000c0108983                isr21
+                0x00000000c0108989                isr96
+                0x00000000c010898f                irq0
+                0x00000000c0108995                irq1
+                0x00000000c010899b                irq2
+                0x00000000c01089a1                irq3
+                0x00000000c01089a7                irq4
+                0x00000000c01089ad                irq5
+                0x00000000c01089b3                irq6
+                0x00000000c01089b9                irq7
+                0x00000000c01089bf                irq8
+                0x00000000c01089c5                irq9
+                0x00000000c01089cb                irq10
+                0x00000000c01089d1                irq11
+                0x00000000c01089d7                irq12
+                0x00000000c01089dd                irq13
+                0x00000000c01089e3                irq14
+                0x00000000c01089e9                irq15
+ *fill*         0x00000000c0108a18        0x8 
+ .text          0x00000000c0108a20        0x8 machine/lowlevel/tss.oo
+                0x00000000c0108a20                x86_tss_load
+ *fill*         0x00000000c0108a28        0x8 
+ .text          0x00000000c0108a30        0x8 machine/mem/virtual.oo
+                0x00000000c0108a30                x86_set_cr3
+ *fill*         0x00000000c0108a38        0x8 
+ .text          0x00000000c0108a40       0x3f machine/thread/spinlock.oo
+                0x00000000c0108a44                arch_irq_spinlock_acquire
+                0x00000000c0108a63                arch_irq_spinlock_release
+ *fill*         0x00000000c0108a7f        0x1 
+ .text          0x00000000c0108a80       0x3d machine/thread/switch.oo
+                0x00000000c0108a80                arch_prepare_stack
+                0x00000000c0108a8f                arch_switch_thread
+ *fill*         0x00000000c0108abd        0x3 
+ .text          0x00000000c0108ac0       0x20 machine/thread/usermode.oo
+                0x00000000c0108ac0                arch_switch_to_usermode
+ .text          0x00000000c0108ae0       0xff /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivdi3.o)
+                0x00000000c0108ae0                __udivdi3
  *(.ctors)
  *(.dtors)
 
-.iplt           0x00000000c0108b50        0x0 load address 0x0000000000108b50
- .iplt          0x00000000c0108b50        0x0 assert.o
+.iplt           0x00000000c0108be0        0x0 load address 0x0000000000108be0
+ .iplt          0x00000000c0108be0        0x0 assert.o
 
 .rodata         0x00000000c0109000      0x1e0 load address 0x0000000000109000
  *(.rodata)
@@ -737,7 +744,7 @@ LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/li
  .rodata.str1.1
                 0x00000000c0109ee7       0x12 test/runnable/sleep.o
 
-.eh_frame       0x00000000c0109efc     0x319c load address 0x0000000000109efc
+.eh_frame       0x00000000c0109efc     0x31fc load address 0x0000000000109efc
  .eh_frame      0x00000000c0109efc       0x34 assert.o
  .eh_frame      0x00000000c0109f30      0x1c8 ctype.o
                                         0x1e0 (size before relaxing)
@@ -769,117 +776,119 @@ LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/li
                                          0xe4 (size before relaxing)
  .eh_frame      0x00000000c010ab10       0x2c syscall/close.o
                                          0x44 (size before relaxing)
- .eh_frame      0x00000000c010ab3c       0x20 syscall/isatty.o
+ .eh_frame      0x00000000c010ab3c       0x60 syscall/dup.o
+                                         0x78 (size before relaxing)
+ .eh_frame      0x00000000c010ab9c       0x20 syscall/isatty.o
                                          0x38 (size before relaxing)
- .eh_frame      0x00000000c010ab5c       0x2c syscall/lseek.o
+ .eh_frame      0x00000000c010abbc       0x2c syscall/lseek.o
                                          0x44 (size before relaxing)
- .eh_frame      0x00000000c010ab88       0x28 syscall/open.o
+ .eh_frame      0x00000000c010abe8       0x28 syscall/open.o
                                          0x40 (size before relaxing)
- .eh_frame      0x00000000c010abb0       0x2c syscall/read.o
+ .eh_frame      0x00000000c010ac10       0x2c syscall/read.o
                                          0x44 (size before relaxing)
- .eh_frame      0x00000000c010abdc       0x2c syscall/sbrk.o
+ .eh_frame      0x00000000c010ac3c       0x2c syscall/sbrk.o
                                          0x44 (size before relaxing)
- .eh_frame      0x00000000c010ac08       0x48 syscall/syscall.o
+ .eh_frame      0x00000000c010ac68       0x48 syscall/syscall.o
                                          0x60 (size before relaxing)
- .eh_frame      0x00000000c010ac50       0x1c syscall/terminate.o
+ .eh_frame      0x00000000c010acb0       0x1c syscall/terminate.o
                                          0x34 (size before relaxing)
- .eh_frame      0x00000000c010ac6c       0x2c syscall/write.o
+ .eh_frame      0x00000000c010accc       0x2c syscall/write.o
                                          0x44 (size before relaxing)
- .eh_frame      0x00000000c010ac98       0x20 syscall/yield.o
+ .eh_frame      0x00000000c010acf8       0x20 syscall/yield.o
                                          0x38 (size before relaxing)
- .eh_frame      0x00000000c010acb8       0x34 test/runtest.o
+ .eh_frame      0x00000000c010ad18       0x34 test/runtest.o
                                          0x4c (size before relaxing)
- .eh_frame      0x00000000c010acec       0x60 thread/cleaner.o
+ .eh_frame      0x00000000c010ad4c       0x60 thread/cleaner.o
                                          0x78 (size before relaxing)
- .eh_frame      0x00000000c010ad4c       0x3c thread/idle.o
+ .eh_frame      0x00000000c010adac       0x3c thread/idle.o
                                          0x54 (size before relaxing)
- .eh_frame      0x00000000c010ad88       0x54 thread/loader.o
+ .eh_frame      0x00000000c010ade8       0x54 thread/loader.o
                                          0x6c (size before relaxing)
- .eh_frame      0x00000000c010addc       0xcc thread/process.o
+ .eh_frame      0x00000000c010ae3c       0xcc thread/process.o
                                          0xe4 (size before relaxing)
- .eh_frame      0x00000000c010aea8       0x8c thread/spinlock.o
+ .eh_frame      0x00000000c010af08       0x8c thread/spinlock.o
                                          0xa4 (size before relaxing)
- .eh_frame      0x00000000c010af34      0x198 thread/synch.o
+ .eh_frame      0x00000000c010af94      0x198 thread/synch.o
                                         0x1b0 (size before relaxing)
- .eh_frame      0x00000000c010b0cc      0x3a0 thread/thread.o
+ .eh_frame      0x00000000c010b12c      0x3a0 thread/thread.o
                                         0x3b8 (size before relaxing)
- .eh_frame      0x00000000c010b46c       0xd0 util/adt_blocking_byte_buffer.o
+ .eh_frame      0x00000000c010b4cc       0xd0 util/adt_blocking_byte_buffer.o
                                          0xe8 (size before relaxing)
- .eh_frame      0x00000000c010b53c      0x10c util/adt_hashmap.o
+ .eh_frame      0x00000000c010b59c      0x10c util/adt_hashmap.o
                                         0x124 (size before relaxing)
- .eh_frame      0x00000000c010b648      0x1e0 util/adt_list.o
+ .eh_frame      0x00000000c010b6a8      0x1e0 util/adt_list.o
                                         0x1f8 (size before relaxing)
- .eh_frame      0x00000000c010b828       0xa8 util/adt_stack.o
+ .eh_frame      0x00000000c010b888       0xa8 util/adt_stack.o
                                          0xc0 (size before relaxing)
- .eh_frame      0x00000000c010b8d0       0x60 util/bitarray.o
+ .eh_frame      0x00000000c010b930       0x60 util/bitarray.o
                                          0x78 (size before relaxing)
- .eh_frame      0x00000000c010b930       0x34 util/cpu.o
+ .eh_frame      0x00000000c010b990       0x34 util/cpu.o
                                          0x4c (size before relaxing)
- .eh_frame      0x00000000c010b964      0x104 util/kprintf.o
+ .eh_frame      0x00000000c010b9c4      0x104 util/kprintf.o
                                         0x11c (size before relaxing)
- .eh_frame      0x00000000c010ba68       0x1c util/panic.o
+ .eh_frame      0x00000000c010bac8       0x1c util/panic.o
                                          0x34 (size before relaxing)
- .eh_frame      0x00000000c010ba84       0x84 vfs/copyinout.o
+ .eh_frame      0x00000000c010bae4       0x84 vfs/copyinout.o
                                          0x9c (size before relaxing)
- .eh_frame      0x00000000c010bb08      0x18c vfs/device.o
+ .eh_frame      0x00000000c010bb68      0x18c vfs/device.o
                                         0x1a4 (size before relaxing)
- .eh_frame      0x00000000c010bc94      0x168 vfs/filedes.o
+ .eh_frame      0x00000000c010bcf4      0x168 vfs/filedes.o
                                         0x180 (size before relaxing)
- .eh_frame      0x00000000c010bdfc       0x9c vfs/uio.o
+ .eh_frame      0x00000000c010be5c       0x9c vfs/uio.o
                                          0xb4 (size before relaxing)
- .eh_frame      0x00000000c010be98      0x324 vfs/vfs.o
+ .eh_frame      0x00000000c010bef8      0x324 vfs/vfs.o
                                         0x33c (size before relaxing)
- .eh_frame      0x00000000c010c1bc      0x260 vfs/vnode.o
+ .eh_frame      0x00000000c010c21c      0x260 vfs/vnode.o
                                         0x278 (size before relaxing)
- .eh_frame      0x00000000c010c41c       0x88 fs/demofs/demofs_inodes.o
+ .eh_frame      0x00000000c010c47c       0x88 fs/demofs/demofs_inodes.o
                                          0xa0 (size before relaxing)
- .eh_frame      0x00000000c010c4a4      0x208 fs/demofs/demofs_vnode.o
+ .eh_frame      0x00000000c010c504      0x208 fs/demofs/demofs_vnode.o
                                         0x220 (size before relaxing)
- .eh_frame      0x00000000c010c6ac       0x58 machine/dev/beeper.o
+ .eh_frame      0x00000000c010c70c       0x58 machine/dev/beeper.o
                                          0x70 (size before relaxing)
- .eh_frame      0x00000000c010c704       0x84 machine/dev/cpu.o
+ .eh_frame      0x00000000c010c764       0x84 machine/dev/cpu.o
                                          0x9c (size before relaxing)
- .eh_frame      0x00000000c010c788      0x1e0 machine/dev/floppy.o
+ .eh_frame      0x00000000c010c7e8      0x1e0 machine/dev/floppy.o
                                         0x1f8 (size before relaxing)
- .eh_frame      0x00000000c010c968       0xa8 machine/dev/ide.o
+ .eh_frame      0x00000000c010c9c8       0xa8 machine/dev/ide.o
                                          0xc0 (size before relaxing)
- .eh_frame      0x00000000c010ca10       0x54 machine/dev/pic.o
+ .eh_frame      0x00000000c010ca70       0x54 machine/dev/pic.o
                                          0x6c (size before relaxing)
- .eh_frame      0x00000000c010ca64       0x44 machine/dev/pit.o
+ .eh_frame      0x00000000c010cac4       0x44 machine/dev/pit.o
                                          0x5c (size before relaxing)
- .eh_frame      0x00000000c010caa8       0xec machine/elf/elf.o
+ .eh_frame      0x00000000c010cb08       0xec machine/elf/elf.o
                                         0x104 (size before relaxing)
- .eh_frame      0x00000000c010cb94       0x74 machine/elf/symbols.o
+ .eh_frame      0x00000000c010cbf4       0x74 machine/elf/symbols.o
                                          0x8c (size before relaxing)
- .eh_frame      0x00000000c010cc08       0x64 machine/lowlevel/gdt.o
+ .eh_frame      0x00000000c010cc68       0x64 machine/lowlevel/gdt.o
                                          0x7c (size before relaxing)
- .eh_frame      0x00000000c010cc6c       0x50 machine/lowlevel/idt.o
+ .eh_frame      0x00000000c010cccc       0x50 machine/lowlevel/idt.o
                                          0x68 (size before relaxing)
- .eh_frame      0x00000000c010ccbc       0x98 machine/lowlevel/interrupt.o
+ .eh_frame      0x00000000c010cd1c       0x98 machine/lowlevel/interrupt.o
                                          0xb0 (size before relaxing)
- .eh_frame      0x00000000c010cd54       0x24 machine/lowlevel/tss.o
+ .eh_frame      0x00000000c010cdb4       0x24 machine/lowlevel/tss.o
                                          0x3c (size before relaxing)
- .eh_frame      0x00000000c010cd78       0x28 machine/mem/physical.o
+ .eh_frame      0x00000000c010cdd8       0x28 machine/mem/physical.o
                                          0x40 (size before relaxing)
- .eh_frame      0x00000000c010cda0      0x1f4 machine/mem/virtual.o
+ .eh_frame      0x00000000c010ce00      0x1f4 machine/mem/virtual.o
                                         0x20c (size before relaxing)
- .eh_frame      0x00000000c010cf94       0x2c machine/thread/fork.o
+ .eh_frame      0x00000000c010cff4       0x2c machine/thread/fork.o
                                          0x44 (size before relaxing)
- .eh_frame      0x00000000c010cfc0       0x20 test/runnable/canary.o
+ .eh_frame      0x00000000c010d020       0x20 test/runnable/canary.o
                                          0x38 (size before relaxing)
- .eh_frame      0x00000000c010cfe0       0x28 test/runnable/heap.o
+ .eh_frame      0x00000000c010d040       0x28 test/runnable/heap.o
                                          0x40 (size before relaxing)
- .eh_frame      0x00000000c010d008       0x24 test/runnable/sleep.o
+ .eh_frame      0x00000000c010d068       0x24 test/runnable/sleep.o
                                          0x3c (size before relaxing)
- .eh_frame      0x00000000c010d02c       0x6c /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivdi3.o)
+ .eh_frame      0x00000000c010d08c       0x6c /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivdi3.o)
                                          0x84 (size before relaxing)
 
-.rel.dyn        0x00000000c010d098        0x0 load address 0x000000000010d098
- .rel.got       0x00000000c010d098        0x0 assert.o
- .rel.iplt      0x00000000c010d098        0x0 assert.o
- .rel.text      0x00000000c010d098        0x0 assert.o
+.rel.dyn        0x00000000c010d0f8        0x0 load address 0x000000000010d0f8
+ .rel.got       0x00000000c010d0f8        0x0 assert.o
+ .rel.iplt      0x00000000c010d0f8        0x0 assert.o
+ .rel.text      0x00000000c010d0f8        0x0 assert.o
  .rel.multiboot.text
-                0x00000000c010d098        0x0 assert.o
+                0x00000000c010d0f8        0x0 assert.o
 
 .data           0x00000000c010e000      0x2a4 load address 0x000000000010e000
  *(.data)
@@ -900,6 +909,7 @@ LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/li
  .data          0x00000000c010e008        0x4 mem/virtual.o
                 0x00000000c010e008                kernel_sbrk
  .data          0x00000000c010e00c        0x0 syscall/close.o
+ .data          0x00000000c010e00c        0x0 syscall/dup.o
  .data          0x00000000c010e00c        0x0 syscall/isatty.o
  .data          0x00000000c010e00c        0x0 syscall/lseek.o
  .data          0x00000000c010e00c        0x0 syscall/open.o
@@ -1043,6 +1053,7 @@ LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/li
  .bss           0x00000000c011665c        0x0 mem/vas.o
  .bss           0x00000000c011665c        0x0 mem/virtual.o
  .bss           0x00000000c011665c        0x0 syscall/close.o
+ .bss           0x00000000c011665c        0x0 syscall/dup.o
  .bss           0x00000000c011665c        0x0 syscall/isatty.o
  .bss           0x00000000c011665c        0x0 syscall/lseek.o
  .bss           0x00000000c011665c        0x0 syscall/open.o

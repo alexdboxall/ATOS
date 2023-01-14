@@ -399,14 +399,14 @@ LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/li
  *(.bss)
  *(.bootstrap_stack)
 
-.bss.recent_sbrk.1255
+.bss.recent_sbrk.1258
                 0x0000000010002010        0x4
- .bss.recent_sbrk.1255
+ .bss.recent_sbrk.1258
                 0x0000000010002010        0x4 ../../../libc/x86/libc.a(stdlib.o)
 
-.bss.allocation_position.1256
+.bss.allocation_position.1259
                 0x0000000010002014        0x4
- .bss.allocation_position.1256
+ .bss.allocation_position.1259
                 0x0000000010002014        0x4 ../../../libc/x86/libc.a(stdlib.o)
 
 /DISCARD/

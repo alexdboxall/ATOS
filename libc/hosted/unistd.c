@@ -2,6 +2,36 @@
 #include <errno.h>
 #include <syscallnum.h>
 
+int dup(int oldfd) {
+    int result = _system_call(SYSCALL_DUP, oldfd, 0, 0, 0);
+    if (result >= 0) {
+        return result;
+    }
+
+    errno = -result;
+    return -1;
+}
+
+int dup2(int oldfd, int newfd) {
+    int result = _system_call(SYSCALL_DUP2, oldfd, newfd, 0, 0);
+    if (result >= 0) {
+        return result;
+    }
+
+    errno = -result;
+    return -1;
+}
+
+int dup3(int oldfd, int newfd, int flags) {
+    int result = _system_call(SYSCALL_DUP3, oldfd, newfd, flags, 0);
+    if (result >= 0) {
+        return result;
+    }
+
+    errno = -result;
+    return -1;
+}
+
 int isatty(int fd) {
     int result = _system_call(SYSCALL_ISATTY, fd, 0, 0, 0);
     if (result == 0) {
