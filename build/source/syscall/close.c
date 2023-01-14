@@ -27,5 +27,10 @@ int sys_close(size_t args[4]) {
         return EBADF;
     }
 
+    int result = filedesc_table_deregister_vnode(current_cpu->current_thread->process->fdtable, node);
+    if (result != 0) {
+        return result;
+    }
+    
     return vfs_close(node);
 }

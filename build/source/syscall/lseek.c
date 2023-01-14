@@ -63,5 +63,4 @@ int sys_lseek(size_t args[4]) {
 
     io = uio_construct_write_to_usermode((void*) args[1], sizeof(off_t), 0);
     return uio_move(&offset, &io, sizeof(off_t));
-
 }

@@ -1,6 +1,5 @@
 
 kernel_main
-can use 0x11C000
 can use 0x11D000
 can use 0x11E000
 can use 0x11F000
@@ -484,9 +483,9 @@ can use 0x2FC000
 can use 0x2FD000
 can use 0x2FE000
 can use 0x2FF000
-max_kernel_addr = 0xC011C000
+max_kernel_addr = 0xC011D000
 
  ATOS Kernel
      Copyright Alex Boxall 2022
 
->
+>>

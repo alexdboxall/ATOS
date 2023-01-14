@@ -30,6 +30,16 @@ int sys_write(size_t args[4]) {
         return EBADF;
     }
 
+    if (node->flags & O_APPEND) {
+        struct stat st;
+        int result = vnode_op_stat(node, &st);
+        if (result != 0) {
+            return result;
+        }
+
+        node->seek_position = st.st_size;
+    }
+
     struct uio io = uio_construct_read_from_usermode((void*) args[0], args[1], node->seek_position);
     
     int result = vfs_write(node, &io);
