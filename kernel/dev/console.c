@@ -9,6 +9,7 @@
 #include <string.h>
 #include <synch.h>
 #include <adt.h>
+#include <termios.h>
 #include <beeper.h>
 #include <cpu.h>
 
@@ -275,7 +276,7 @@ void console_init(void) {
     dev.io = console_io;
     dev.check_open = interface_check_open_not_needed;
     dev.ioctl = interface_ioctl_not_needed;
-    dev.is_tty = 1;
+    dev.termios = malloc(sizeof(struct termios));
 
     input_buffer = adt_blocking_byte_buffer_create(INPUT_BUFFER_SIZE);
 

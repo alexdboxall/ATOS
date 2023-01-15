@@ -1,8 +1,8 @@
-#pragma onec
+#pragma once
 
 #include <stdint.h>
 
-typedef uint32_t cc_t;
+typedef uint16_t cc_t;
 typedef uint32_t speed_t;
 typedef uint32_t tcflag_t;
 

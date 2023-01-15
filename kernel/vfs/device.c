@@ -50,7 +50,7 @@ static bool dev_isseekable(struct vnode* node) {
 static int dev_istty(struct vnode* node) {
     assert(node != NULL && node->dev != NULL);
 
-    return node->dev->is_tty;
+    return node->dev->termios != NULL;
 }
 
 static int dev_read(struct vnode* node, struct uio* io) {

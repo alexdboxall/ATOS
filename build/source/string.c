@@ -208,6 +208,8 @@ char* strerror(int err)
         return "Too many open files in system";
     case EPIPE:
         return "Broken pipe";
+    case ESPIPE:
+        return "Invalid seek";
 	default:
 		return "Unknown error";
 	}

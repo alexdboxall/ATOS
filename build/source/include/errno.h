@@ -40,6 +40,7 @@
 #define EMFILE          24          // Too many open files
 #define ENFILE          25          // Too many open files in system
 #define EPIPE           26          // Broken pipe
+#define ESPIPE          27          // Illegal seek
 
 #ifndef COMPILE_KERNEL
 

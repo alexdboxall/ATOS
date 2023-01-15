@@ -19,6 +19,8 @@ int sys_isatty(size_t args[4]);
 int sys_dup(size_t args[4]);
 int sys_dup2(size_t args[4]);
 int sys_dup3(size_t args[4]);
+int sys_tcgetattr(size_t args[4]);
+int sys_tcsetattr(size_t args[4]);
 
 void syscall_init(void) {
     memset(syscall_table, 0, sizeof(syscall_table));
@@ -35,6 +37,8 @@ void syscall_init(void) {
     syscall_table[SYSCALL_DUP] = sys_dup;
     syscall_table[SYSCALL_DUP2] = sys_dup2;
     syscall_table[SYSCALL_DUP3] = sys_dup3;
+    syscall_table[SYSCALL_TCGETATTR] = sys_tcgetattr;
+    syscall_table[SYSCALL_TCSETATTR] = sys_tcsetattr;
 }
 
 /*

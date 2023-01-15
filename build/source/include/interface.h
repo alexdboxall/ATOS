@@ -22,6 +22,7 @@
 #include <common.h>
 #include <uio.h>
 #include <sys/types.h>
+#include <termios.h>
 
 /*
 * Interface for beepers - devices that can produce audible beeps of a given frequency.
@@ -41,6 +42,7 @@ struct console_device_interface
 	void (*putc)(struct console_device_interface*, char c);
     void (*panic)(const char* message);
 	void* data;
+    struct termios* termios;
 };
 
 struct video_device_interface

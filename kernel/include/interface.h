@@ -22,6 +22,7 @@
 #include <common.h>
 #include <uio.h>
 #include <sys/types.h>
+#include <termios.h>
 
 /*
 * Interface for beepers - devices that can produce audible beeps of a given frequency.
@@ -60,7 +61,11 @@ struct std_device_interface
 	int (*ioctl)(struct std_device_interface* dev, int request, void* arg);
 	int (*io)(struct std_device_interface* dev, struct uio* trans);
 
-    int is_tty;
+    /*
+    * Set to NULL if it is not a terminal. Otherwise, it points to the terminal's termios structure.
+    * Used to implement isatty, tcgetattr and tcsetattr.
+    */
+    struct termios* termios;
     
 	blkcnt_t num_blocks;
 	blksize_t block_size;
