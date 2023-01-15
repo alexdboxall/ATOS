@@ -43,6 +43,6 @@
 
 #ifndef COMPILE_KERNEL
 
-int errno;
+extern int errno;
 
 #endif

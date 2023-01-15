@@ -13,6 +13,8 @@ enum SyscallNumber {
     SYSCALL_DUP,
     SYSCALL_DUP2,
     SYSCALL_DUP3,
+    SYSCALL_TCGETATTR,
+    SYSCALL_TCSETATTR
 };
 
 #ifndef COMPILE_KERNEL

@@ -10,6 +10,7 @@
 #include <panic.h>
 #include <cpu.h>
 #include <uio.h>
+#include <dirent.h>
 #include <filedes.h>
 #include <process.h>
 #include <unistd.h>
@@ -37,9 +38,14 @@ int sys_lseek(size_t args[4]) {
         return result;
     }
     
-    struct vnode* node = fildesc_convert_to_vnode(current_cpu->current_thread->process->fdtable, args[0]);
+    struct vnode* node = filedesc_convert_to_vnode(current_cpu->current_thread->process->fdtable, args[0]);
     if (node == NULL) {
         return EINVAL;
+    }
+
+    int type = vnode_op_dirent_type(node);
+    if (type == DT_FIFO || type == DT_SOCK) {
+        return ESPIPE;
     }
 
     size_t current = node->seek_position;

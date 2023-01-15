@@ -22,7 +22,7 @@
 *         error code        on failure
 */
 int sys_close(size_t args[4]) {
-    struct vnode* node = fildesc_convert_to_vnode(current_cpu->current_thread->process->fdtable, args[0]);
+    struct vnode* node = filedesc_convert_to_vnode(current_cpu->current_thread->process->fdtable, args[0]);
     if (node == NULL) {
         return EBADF;
     }
@@ -31,6 +31,6 @@ int sys_close(size_t args[4]) {
     if (result != 0) {
         return result;
     }
-    
+
     return vfs_close(node);
 }
