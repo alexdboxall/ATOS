@@ -19,13 +19,26 @@
 #include <process.h>
 #include <syscall.h>
 #include <test.h>
+#include <termios.h>
 #include <thread.h>
 #include <fs/demofs/demofs.h>
 
 void basic_shell(void* arg) {
 	(void) arg;
 
-	kprintf("\n ATOS Kernel\n     Copyright Alex Boxall 2022\n\n");
+	kprintf("\n ATOS Kernel\n     Copyright Alex Boxall 2022-2023\n\n");
+
+    char username[128];
+
+    struct vnode* con;
+    vfs_open("con", O_RDONLY, 0, &con);
+    con->dev->termios->c_lflag &= ~ICANON;
+    for (int i = 0; i < 10; ++i) {
+        console_gets(username, 1);
+        kprintf("\ncharacter!\n");
+    }
+    con->dev->termios->c_lflag |= ICANON;
+    vfs_close(con);
 
 	/*
 	* Just launch into a very basic command line shell.

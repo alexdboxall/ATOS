@@ -20,7 +20,8 @@
 *         C                 ?
 *         D                 ?
 * Output:
-*         ?
+*         0                 on success
+*         error code        on failure
 */
 int sys_tcgetattr(size_t args[4]) {
     struct vnode* node = filedesc_convert_to_vnode(current_cpu->current_thread->process->fdtable, args[0]);
@@ -28,13 +29,11 @@ int sys_tcgetattr(size_t args[4]) {
         return EBADF;
     }
 
-    if (args[2] != TCSANOW) {
-        return EINVAL;
-    }
-    
-    if (!vnode_op_is_tty(node)) {
+    struct termios* tty_termios = node->dev->termios;
+    if (tty_termios == NULL) {
         return ENOTTY;
     }
 
-    return ENOSYS;
+    struct uio io = uio_construct_write_to_usermode((void*) args[1], sizeof(struct termios), 0);    
+    return uio_move(tty_termios, &io, sizeof(struct termios));
 }

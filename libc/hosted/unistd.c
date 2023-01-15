@@ -78,16 +78,6 @@ ssize_t write(int fd, const void* buffer, size_t size) {
 }
 
 off_t lseek(int fd, off_t offset, int whence) {
-    /*
-    * Inputs: 
-*         A                 the file descriptor
-*         B                 a pointer to an off_t (the offset), the resulting offset is written back here
-*         C                 either SEEK_SET, SEEK_CUR or SEEK_END
-*         D                 not used
-* Output:
-*         0                 on success
-*         error code        on failure*/
-
     off_t working_var = offset;
     int result = _system_call(SYSCALL_LSEEK, fd, (size_t) &working_var, whence, 0);
 

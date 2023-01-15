@@ -19,6 +19,7 @@
 #include <process.h>
 #include <syscall.h>
 #include <test.h>
+#include <termios.h>
 #include <thread.h>
 #include <fs/demofs/demofs.h>
 

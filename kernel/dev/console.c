@@ -32,6 +32,7 @@
 #define INPUT_BUFFER_SIZE   1024
 #define LINE_BUFFER_SIZE    1024
 
+struct std_device_interface console_device;
 struct console_device_interface* default_console_driver = NULL;
 struct spinlock console_driver_lock;
 struct adt_blocking_byte_buffer* input_buffer = NULL;
@@ -104,6 +105,11 @@ static void console_make_beep(void) {
 void console_received_character(char c, bool control_held) {
     char converted_character = c;
 
+    spinlock_acquire(&console_driver_lock);
+    bool echo = console_device.termios->c_lflag & ECHO;
+    bool canon = console_device.termios->c_lflag & ICANON;
+    spinlock_release(&console_driver_lock);
+
     /*
     * When CTRL is held while pressing keys in the ASCII range from @ to _ terminals interpret it as
     * being a control code, mapping to the early ASCII values. Also accept lowercase, as this is what
@@ -136,16 +142,18 @@ void console_received_character(char c, bool control_held) {
 
         line_buffer_pos--;
 
-        for (int i = 0; i < line_buffer_char_width[line_buffer_pos]; ++i) {
-            /*
-            * Erase the current character ("\b "), and then move it back again.
-            * Control codes require two characters to be erased from the screen.
-            */
-            console_putc('\b');
-            console_putc(' ');
-            console_putc('\b');
+        if (echo) {
+            for (int i = 0; i < line_buffer_char_width[line_buffer_pos]; ++i) {
+                /*
+                * Erase the current character ("\b "), and then move it back again.
+                * Control codes require two characters to be erased from the screen.
+                */
+                console_putc('\b');
+                console_putc(' ');
+                console_putc('\b');
+            }
         }
-
+        
     } else if (converted_character == '\a') {
         /*
         * ^G is meant to create an audible alert.
@@ -159,9 +167,11 @@ void console_received_character(char c, bool control_held) {
         * them to uppercase above.
         */
         if (is_control_code) {
-            console_putc('^');
-            console_putc(c);
-
+            if (echo) {
+                console_putc('^');
+                console_putc(c);
+            }
+            
             console_add_to_line_buffer(converted_character, 2);
 
         } else {
@@ -171,7 +181,9 @@ void console_received_character(char c, bool control_held) {
         }
         
     } else {
-        console_putc(c);
+        if (echo) {
+            console_putc(c);
+        }
         console_add_to_line_buffer(converted_character, 1);
     }
     
@@ -179,7 +191,7 @@ void console_received_character(char c, bool control_held) {
     * ASCII 3 is the same as ^C, which we want to immediately flush so the application can
     * process it. 
     */
-    if (converted_character == '\n' || converted_character == 3) {
+    if (converted_character == '\n' || converted_character == 3 || !canon) {
         console_flush_line_buffer();
     }
 }
@@ -264,24 +276,20 @@ static int console_io(struct std_device_interface* dev, struct uio* io) {
 }
 
 void console_init(void) {
-    /*
-    * Static means the reference is not invalid upon returning.
-    */
-    static struct std_device_interface dev;
-
     spinlock_init(&console_driver_lock, "console driver lock");
 
-    dev.data = NULL;
-    dev.block_size = 0;
-    dev.num_blocks = 0;
-    dev.io = console_io;
-    dev.check_open = interface_check_open_not_needed;
-    dev.ioctl = interface_ioctl_not_needed;
-    dev.termios = malloc(sizeof(struct termios));
+    console_device.data = NULL;
+    console_device.block_size = 0;
+    console_device.num_blocks = 0;
+    console_device.io = console_io;
+    console_device.check_open = interface_check_open_not_needed;
+    console_device.ioctl = interface_ioctl_not_needed;
+    console_device.termios = malloc(sizeof(struct termios));
+    console_device.termios->c_lflag = ECHO | ICANON;
 
     input_buffer = adt_blocking_byte_buffer_create(INPUT_BUFFER_SIZE);
 
-    vfs_add_device(&dev, "con");
+    vfs_add_device(&console_device, "con");
 }
 
 void console_panic(const char* message) {
@@ -321,6 +329,10 @@ void console_gets(char* buffer, int size) {
     * first character, then adt_blocking_byte_buffer_try_get every other iteration)
     */
 
+    spinlock_acquire(&console_driver_lock);
+    bool canon = console_device.termios->c_lflag & ICANON;
+    spinlock_release(&console_driver_lock);
+
     for (int i = 0; i < size - 1; ++i) {
         char c = console_getc();
 
@@ -329,7 +341,7 @@ void console_gets(char* buffer, int size) {
         */
         buffer[i + 1] = 0;
         buffer[i] = c;
-        if (c == '\n' || c == 3) {
+        if (c == '\n' || c == 3 || !canon) {
             break;
         }
     }

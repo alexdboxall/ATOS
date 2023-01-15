@@ -486,6 +486,26 @@ can use 0x2FF000
 max_kernel_addr = 0xC011D000
 
  ATOS Kernel
-     Copyright Alex Boxall 2022
+     Copyright Alex Boxall 2022-2023
 
+
+character!
+
+character!
+
+character!
+
+character!
+
+character!
+
+character!
+
+character!
+
+character!
+
+character!
+
+character!
 >
