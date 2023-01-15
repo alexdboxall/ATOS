@@ -83,14 +83,14 @@ LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/li
 .data.rel.ro    0x00000000d0001078        0x0
  .data.rel.ro   0x00000000d0001078        0x0 main.o
 
-.bss            0x00000000d0002000       0x10
+.bss            0x00000000d0002000        0xc
  *(COMMON)
  *(.bss)
- .bss           0x00000000d0002000       0x10 main.o
+ .bss           0x00000000d0002000        0xc main.o
  *(.bootstrap_stack)
 
-.dynbss         0x00000000d0002010        0x0
- .dynbss        0x00000000d0002010        0x0 main.o
+.dynbss         0x00000000d000200c        0x0
+ .dynbss        0x00000000d000200c        0x0 main.o
 
 /DISCARD/
  *(.comment)

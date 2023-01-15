@@ -63,7 +63,7 @@ static int pipe_io(struct std_device_interface* dev, struct uio* io) {
 
 struct std_device_interface* pipe_initialise_internal(int(*io_func)(struct std_device_interface*, struct uio*)) {
     struct std_device_interface* dev = malloc(sizeof(struct std_device_interface));
-    dev->is_tty = false;
+    dev->termios = NULL;
     dev->check_open = interface_check_open_not_needed;
     dev->ioctl = interface_ioctl_not_needed;
     dev->io = io_func;

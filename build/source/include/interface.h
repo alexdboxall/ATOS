@@ -42,7 +42,6 @@ struct console_device_interface
 	void (*putc)(struct console_device_interface*, char c);
     void (*panic)(const char* message);
 	void* data;
-    struct termios* termios;
 };
 
 struct video_device_interface
@@ -62,7 +61,11 @@ struct std_device_interface
 	int (*ioctl)(struct std_device_interface* dev, int request, void* arg);
 	int (*io)(struct std_device_interface* dev, struct uio* trans);
 
-    int is_tty;
+    /*
+    * Set to NULL if it is not a terminal. Otherwise, it points to the terminal's termios structure.
+    * Used to implement isatty, tcgetattr and tcsetattr.
+    */
+    struct termios* termios;
     
 	blkcnt_t num_blocks;
 	blksize_t block_size;

@@ -11,7 +11,6 @@
 #include "region/region.h"
 #include "region/draw.h"
 
-
 void demo_window_draw(int x, int y, int w, int h, bool has_focus) {
     int shadow_width = has_focus ? 12 : 8;
 

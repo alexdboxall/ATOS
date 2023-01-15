@@ -25,7 +25,7 @@
 void basic_shell(void* arg) {
 	(void) arg;
 
-	kprintf("\n ATOS Kernel\n     Copyright Alex Boxall 2022\n\n");
+	kprintf("\n ATOS Kernel\n     Copyright Alex Boxall 2022-2023\n\n");
 
 	/*
 	* Just launch into a very basic command line shell.

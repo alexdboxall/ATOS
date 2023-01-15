@@ -9,6 +9,7 @@ BUILD_SOURCE_DIR = $(ROOT_BUILD_DIR)/source
 BUILD_OUTPUT_DIR = $(ROOT_BUILD_DIR)/output
 KERNEL_DIR = ./kernel
 DRIVER_DIR = ./drivers/$(TARGET)
+COMMON_DRIVER_DIR = ./drivers/$(TARGET)
 APP_DIR = ./applications
 FREESTANDING_LIBC_DIR = ./libc/common
 LIBC_MAKEFILE_DIR = ./libc/$(TARGET)
@@ -26,6 +27,7 @@ release_compile:
 	
 common_header:
 	/usr/bin/find $(KERNEL_DIR) -type f -name '*.o' -delete
+	/usr/bin/find ./libc -type f -name '*.o' -delete
 	rm -r $(ROOT_BUILD_DIR) || true
 	rm -r $(SYSROOT)/System || true
 	mkdir $(SYSROOT)/System
@@ -71,6 +73,7 @@ driver_header:
 	mkdir $(BUILD_DRIVER_SOURCE_DIR)/drivers
 	mkdir $(BUILD_OUTPUT_DIR)/drivers
 	cp -r $(DRIVER_DIR)/* $(BUILD_DRIVER_SOURCE_DIR)/drivers
+	cp -r $(COMMON_DRIVER_DIR)/* $(BUILD_DRIVER_SOURCE_DIR)/drivers
 
 driver_all:
 	for dir in $(wildcard ./$(BUILD_DRIVER_SOURCE_DIR)/drivers/*/.); do \

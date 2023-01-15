@@ -9,6 +9,7 @@ BUILD_SOURCE_DIR = $(ROOT_BUILD_DIR)/source
 BUILD_OUTPUT_DIR = $(ROOT_BUILD_DIR)/output
 KERNEL_DIR = ./kernel
 DRIVER_DIR = ./drivers/$(TARGET)
+COMMON_DRIVER_DIR = ./drivers/common
 APP_DIR = ./applications
 FREESTANDING_LIBC_DIR = ./libc/common
 LIBC_MAKEFILE_DIR = ./libc/$(TARGET)
@@ -72,6 +73,7 @@ driver_header:
 	mkdir $(BUILD_DRIVER_SOURCE_DIR)/drivers
 	mkdir $(BUILD_OUTPUT_DIR)/drivers
 	cp -r $(DRIVER_DIR)/* $(BUILD_DRIVER_SOURCE_DIR)/drivers
+	cp -r $(COMMON_DRIVER_DIR)/* $(BUILD_DRIVER_SOURCE_DIR)/drivers
 
 driver_all:
 	for dir in $(wildcard ./$(BUILD_DRIVER_SOURCE_DIR)/drivers/*/.); do \

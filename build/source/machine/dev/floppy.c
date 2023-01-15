@@ -518,7 +518,7 @@ void floppy_initialise(void) {
     dev.io = floppy_io;
     dev.check_open = interface_check_open_not_needed;
     dev.ioctl = interface_ioctl_not_needed;
-    dev.is_tty = 0;
+    dev.termios = NULL;
 
     vfs_add_device(&dev, "raw-hd0");
 

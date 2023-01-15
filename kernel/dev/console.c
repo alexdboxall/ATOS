@@ -9,6 +9,7 @@
 #include <string.h>
 #include <synch.h>
 #include <adt.h>
+#include <heap.h>
 #include <termios.h>
 #include <beeper.h>
 #include <cpu.h>
