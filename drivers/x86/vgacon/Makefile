@@ -1,5 +1,5 @@
 
-DRIVER_NAME = VGACON.SYS
+DRIVER_NAME = vgacon.sys
 
 CC = i386-banana-gcc
 AS = nasm

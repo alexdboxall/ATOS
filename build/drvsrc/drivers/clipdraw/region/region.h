@@ -54,6 +54,8 @@ enum region_operation {
 
 struct region region_operate(struct region a, struct region b, enum region_operation operation);
 
+struct region region_create_empty(void);
+bool region_is_empty(struct region r);
 struct region region_create_rectangle(int x, int y, int w, int h);
 struct region region_create_oval(int x, int y, int w, int h);
 struct region region_create_rounded_rectangle(int x, int y, int w, int h, int radius);

@@ -120,7 +120,7 @@ void basic_shell(void* arg) {
 			continue;
 
 		} else if (!strcmp(buffer, "gui")) {
-            load_driver("sys:/CLIPDRAW.SYS", false);
+            load_driver("sys:/clipdraw.sys", false);
             continue;
         }
 		

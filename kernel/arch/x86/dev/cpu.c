@@ -56,9 +56,9 @@ void arch_initialise_devices_with_fs(void) {
     * Don't swap out the VGA console driver, as the page fault
     * handler might use it (to kprintf() or panic())
     */
-    load_driver("sys:/VESACON.SYS", true);
+    load_driver("sys:/vesacon.sys", true);
 
-    load_driver("sys:/PS2.SYS", false);
+    load_driver("sys:/ps2.sys", false);
 
     //load_driver("sys:/ACPICA.SYS", false);
 }

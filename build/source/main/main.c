@@ -28,18 +28,6 @@ void basic_shell(void* arg) {
 
 	kprintf("\n ATOS Kernel\n     Copyright Alex Boxall 2022-2023\n\n");
 
-    char username[128];
-
-    struct vnode* con;
-    vfs_open("con", O_RDONLY, 0, &con);
-    con->dev->termios->c_lflag &= ~ICANON;
-    for (int i = 0; i < 10; ++i) {
-        console_gets(username, 1);
-        kprintf("\ncharacter!\n");
-    }
-    con->dev->termios->c_lflag |= ICANON;
-    vfs_close(con);
-
 	/*
 	* Just launch into a very basic command line shell.
 	*/
@@ -132,7 +120,7 @@ void basic_shell(void* arg) {
 			continue;
 
 		} else if (!strcmp(buffer, "gui")) {
-            load_driver("sys:/CLIPDRAW.SYS", false);
+            load_driver("sys:/clipdraw.sys", false);
             continue;
         }
 		

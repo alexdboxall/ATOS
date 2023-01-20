@@ -47,6 +47,34 @@ void region_destroy(struct region r) {
     free(r.data);
 }
 
+struct region region_create_empty(void) {
+    return region_create_rectangle(0, 0, 0, 0);
+}
+
+bool region_is_empty(struct region r) {
+    if (r.num_data_blocks == 0) {
+        return true;
+    }
+
+    inversion_t* data = r.data;
+
+    for (int i = 0; i < r.num_data_blocks; ++i) {
+        inversion_t num_inversion_points = *data;
+        data += 2;
+
+        for (int j = 0; j < num_inversion_points; j += 2) {
+            inversion_t start = *data++;
+            inversion_t end = *data++;
+            
+            if (start != end) {
+                return false;
+            }
+        }    
+    }
+
+    return true;
+}
+
 struct region region_create_oval(int x, int y, int w, int h) {
     assert(w >= 0 && h >= 0);
 

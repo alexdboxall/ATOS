@@ -1,5 +1,5 @@
 
-DRIVER_NAME = ACPICA.SYS
+DRIVER_NAME = acpica.sys
 
 CC = i386-banana-gcc
 AS = nasm

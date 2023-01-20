@@ -13,7 +13,7 @@ To run it in QEMU, use the following command: `qemu-system-i386 -soundhw pcspk -
 It supports the following features:
 - Boots and runs on real hardware
 - A virtual filesystem (VFS) to manage files, folders and devices
-- Dynamic loading of kernel drivers from ELF files (e.g. VGACON.SYS, PS2.SYS)
+- Dynamic loading of kernel drivers from ELF files (e.g. video and keyboard drivers)
 - Virtual memory manager which supports page replacement when it runs out of physical memory, allocate on demand pages, and copy on write pages
 - Userspace programs loaded from the disk
 - A very basic read-only custom filesystem (DemoFS)

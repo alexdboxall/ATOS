@@ -29,7 +29,7 @@
 * Please note that overflowing the kernel stack into non-paged memory will lead to
 * an immediate and unrecoverable crash on most systems.
 * 
-* (Drivers like CLIPDRAW.SYS are going to want at least 8KB!)
+* (Drivers like clipdraw.sys are going to want at least 8KB!)
 */
 #define KERNEL_STACK_SIZE   (virt_bytes_to_pages(1024 * 8) * ARCH_PAGE_SIZE)
 

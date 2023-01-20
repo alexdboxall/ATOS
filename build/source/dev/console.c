@@ -329,6 +329,10 @@ void console_gets(char* buffer, int size) {
     * first character, then adt_blocking_byte_buffer_try_get every other iteration)
     */
 
+    spinlock_acquire(&console_driver_lock);
+    bool canon = console_device.termios->c_lflag & ICANON;
+    spinlock_release(&console_driver_lock);
+
     for (int i = 0; i < size - 1; ++i) {
         char c = console_getc();
 
@@ -337,7 +341,7 @@ void console_gets(char* buffer, int size) {
         */
         buffer[i + 1] = 0;
         buffer[i] = c;
-        if (c == '\n' || c == 3) {
+        if (c == '\n' || c == 3 || !canon) {
             break;
         }
     }

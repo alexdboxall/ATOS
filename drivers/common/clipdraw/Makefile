@@ -1,5 +1,5 @@
 
-DRIVER_NAME = CLIPDRAW.SYS
+DRIVER_NAME = clipdraw.sys
 
 CC = i386-banana-gcc
 AS = nasm
