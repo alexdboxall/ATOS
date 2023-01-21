@@ -97,4 +97,4 @@ LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/li
 
 /DISCARD/
  *(.comment)
-OUTPUT(VESACON.SYS elf32-i386)
+OUTPUT(vesacon.sys elf32-i386)

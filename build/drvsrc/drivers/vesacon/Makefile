@@ -1,5 +1,5 @@
 
-DRIVER_NAME = VESACON.SYS
+DRIVER_NAME = vesacon.sys
 
 CC = i386-banana-gcc
 AS = nasm

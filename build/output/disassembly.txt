@@ -1556,7 +1556,7 @@ c0101fd9:	89 c3                	mov    ebx,eax
 c0101fdb:	56                   	push   esi
 c0101fdc:	56                   	push   esi
 c0101fdd:	53                   	push   ebx
-c0101fde:	68 9e 99 10 c0       	push   0xc010999e
+c0101fde:	68 9a 99 10 c0       	push   0xc010999a
 c0101fe3:	e8 d6 2c 00 00       	call   c0104cbe <kprintf>
 c0101fe8:	c7 04 24 01 00 00 00 	mov    DWORD PTR [esp],0x1
 c0101fef:	e8 4d 21 00 00       	call   c0104141 <thread_sleep>
@@ -1627,12 +1627,12 @@ c01020b9:	e8 87 47 00 00       	call   c0106845 <arch_initialise_devices_no_fs>
 c01020be:	58                   	pop    eax
 c01020bf:	5a                   	pop    edx
 c01020c0:	68 d1 66 10 c0       	push   0xc01066d1
-c01020c5:	68 a9 96 10 c0       	push   0xc01096a9
+c01020c5:	68 a5 96 10 c0       	push   0xc01096a5
 c01020ca:	e8 7b 3a 00 00       	call   c0105b4a <vfs_mount_filesystem>
 c01020cf:	59                   	pop    ecx
 c01020d0:	58                   	pop    eax
 c01020d1:	68 23 96 10 c0       	push   0xc0109623
-c01020d6:	68 2f 96 10 c0       	push   0xc010962f
+c01020d6:	68 6b 9c 10 c0       	push   0xc0109c6b
 c01020db:	e8 b3 3d 00 00       	call   c0105e93 <vfs_add_virtual_mount_point>
 c01020e0:	e8 f4 04 00 00       	call   c01025d9 <swapfile_init>
 c01020e5:	e8 32 0f 00 00       	call   c010301c <syscall_init>
@@ -1680,7 +1680,7 @@ c0102168 <heap_init>:
 c0102168:	55                   	push   ebp
 c0102169:	89 e5                	mov    ebp,esp
 c010216b:	83 ec 10             	sub    esp,0x10
-c010216e:	68 33 96 10 c0       	push   0xc0109633
+c010216e:	68 2f 96 10 c0       	push   0xc010962f
 c0102173:	68 c0 19 11 c0       	push   0xc01119c0
 c0102178:	e8 a3 15 00 00       	call   c0103720 <spinlock_init>
 c010217d:	c6 05 bc 65 11 c0 00 	mov    BYTE PTR ds:0xc01165bc,0x0
@@ -1777,7 +1777,7 @@ c01022ae:	89 75 e4             	mov    DWORD PTR [ebp-0x1c],esi
 c01022b1:	75 0c                	jne    c01022bf <malloc+0x7e>
 c01022b3:	eb 11                	jmp    c01022c6 <malloc+0x85>
 c01022b5:	83 ec 0c             	sub    esp,0xc
-c01022b8:	68 3d 96 10 c0       	push   0xc010963d
+c01022b8:	68 39 96 10 c0       	push   0xc0109639
 c01022bd:	eb 36                	jmp    c01022f5 <malloc+0xb4>
 c01022bf:	8d 72 10             	lea    esi,[edx+0x10]
 c01022c2:	39 fe                	cmp    esi,edi
@@ -1797,7 +1797,7 @@ c01022e4:	a3 a0 19 11 c0       	mov    ds:0xc01119a0,eax
 c01022e9:	85 c0                	test   eax,eax
 c01022eb:	75 0d                	jne    c01022fa <malloc+0xb9>
 c01022ed:	83 ec 0c             	sub    esp,0xc
-c01022f0:	68 64 96 10 c0       	push   0xc0109664
+c01022f0:	68 60 96 10 c0       	push   0xc0109660
 c01022f5:	e8 7e 2b 00 00       	call   c0104e78 <panic>
 c01022fa:	8b 75 e4             	mov    esi,DWORD PTR [ebp-0x1c]
 c01022fd:	89 70 08             	mov    DWORD PTR [eax+0x8],esi
@@ -1945,7 +1945,7 @@ c0102458:	57                   	push   edi
 c0102459:	56                   	push   esi
 c010245a:	53                   	push   ebx
 c010245b:	83 ec 24             	sub    esp,0x24
-c010245e:	68 82 96 10 c0       	push   0xc0109682
+c010245e:	68 7e 96 10 c0       	push   0xc010967e
 c0102463:	68 20 1a 11 c0       	push   0xc0111a20
 c0102468:	e8 b3 12 00 00       	call   c0103720 <spinlock_init>
 c010246d:	c7 04 24 20 1a 11 c0 	mov    DWORD PTR [esp],0xc0111a20
@@ -1978,7 +1978,7 @@ c01024c1:	89 d0                	mov    eax,edx
 c01024c3:	89 55 e4             	mov    DWORD PTR [ebp-0x1c],edx
 c01024c6:	c1 e0 0c             	shl    eax,0xc
 c01024c9:	50                   	push   eax
-c01024ca:	68 97 96 10 c0       	push   0xc0109697
+c01024ca:	68 93 96 10 c0       	push   0xc0109693
 c01024cf:	e8 ea 27 00 00       	call   c0104cbe <kprintf>
 c01024d4:	8b 55 e4             	mov    edx,DWORD PTR [ebp-0x1c]
 c01024d7:	8d 7a 01             	lea    edi,[edx+0x1]
@@ -2080,13 +2080,13 @@ c01025f3:	c7 05 34 66 11 c0 08 00 00 00 	mov    DWORD PTR ds:0xc0116634,0x8
 c01025fd:	68 2c 66 11 c0       	push   0xc011662c
 c0102602:	6a 00                	push   0x0
 c0102604:	6a 02                	push   0x2
-c0102606:	68 a5 96 10 c0       	push   0xc01096a5
+c0102606:	68 a1 96 10 c0       	push   0xc01096a1
 c010260b:	e8 30 38 00 00       	call   c0105e40 <vfs_open>
 c0102610:	83 c4 10             	add    esp,0x10
 c0102613:	85 c0                	test   eax,eax
 c0102615:	74 0d                	je     c0102624 <swapfile_init+0x4b>
 c0102617:	83 ec 0c             	sub    esp,0xc
-c010261a:	68 ad 96 10 c0       	push   0xc01096ad
+c010261a:	68 a9 96 10 c0       	push   0xc01096a9
 c010261f:	e8 54 28 00 00       	call   c0104e78 <panic>
 c0102624:	83 ec 0c             	sub    esp,0xc
 c0102627:	68 00 02 00 00       	push   0x200
@@ -2099,7 +2099,7 @@ c0102640:	50                   	push   eax
 c0102641:	e8 15 ec ff ff       	call   c010125b <memset>
 c0102646:	58                   	pop    eax
 c0102647:	5a                   	pop    edx
-c0102648:	68 c6 96 10 c0       	push   0xc01096c6
+c0102648:	68 c2 96 10 c0       	push   0xc01096c2
 c010264d:	68 e0 65 11 c0       	push   0xc01165e0
 c0102652:	e8 c9 10 00 00       	call   c0103720 <spinlock_init>
 c0102657:	83 c4 10             	add    esp,0x10
@@ -2152,13 +2152,13 @@ c01026d3:	83 c4 20             	add    esp,0x20
 c01026d6:	85 c0                	test   eax,eax
 c01026d8:	74 20                	je     c01026fa <swapfile_write+0x9e>
 c01026da:	83 ec 0c             	sub    esp,0xc
-c01026dd:	68 d4 96 10 c0       	push   0xc01096d4
+c01026dd:	68 d0 96 10 c0       	push   0xc01096d0
 c01026e2:	eb 11                	jmp    c01026f5 <swapfile_write+0x99>
 c01026e4:	43                   	inc    ebx
 c01026e5:	81 fb 00 10 00 00    	cmp    ebx,0x1000
 c01026eb:	75 8a                	jne    c0102677 <swapfile_write+0x1b>
 c01026ed:	83 ec 0c             	sub    esp,0xc
-c01026f0:	68 ee 96 10 c0       	push   0xc01096ee
+c01026f0:	68 ea 96 10 c0       	push   0xc01096ea
 c01026f5:	e8 7e 27 00 00       	call   c0104e78 <panic>
 c01026fa:	50                   	push   eax
 c01026fb:	6a 00                	push   0x0
@@ -2185,7 +2185,7 @@ c0102726:	8b 5d 0c             	mov    ebx,DWORD PTR [ebp+0xc]
 c0102729:	81 fb ff 0f 00 00    	cmp    ebx,0xfff
 c010272f:	76 0a                	jbe    c010273b <swapfile_read+0x1d>
 c0102731:	83 ec 0c             	sub    esp,0xc
-c0102734:	68 05 97 10 c0       	push   0xc0109705
+c0102734:	68 01 97 10 c0       	push   0xc0109701
 c0102739:	eb 4a                	jmp    c0102785 <swapfile_read+0x67>
 c010273b:	8d 75 e4             	lea    esi,[ebp-0x1c]
 c010273e:	52                   	push   edx
@@ -2208,7 +2208,7 @@ c0102776:	83 c4 20             	add    esp,0x20
 c0102779:	85 c0                	test   eax,eax
 c010277b:	74 0d                	je     c010278a <swapfile_read+0x6c>
 c010277d:	83 ec 0c             	sub    esp,0xc
-c0102780:	68 22 97 10 c0       	push   0xc0109722
+c0102780:	68 1e 97 10 c0       	push   0xc010971e
 c0102785:	e8 ee 26 00 00       	call   c0104e78 <panic>
 c010278a:	50                   	push   eax
 c010278b:	50                   	push   eax
@@ -2233,7 +2233,7 @@ c01027b0:	89 c3                	mov    ebx,eax
 c01027b2:	c7 40 04 00 00 00 00 	mov    DWORD PTR [eax+0x4],0x0
 c01027b9:	58                   	pop    eax
 c01027ba:	5a                   	pop    edx
-c01027bb:	68 3b 97 10 c0       	push   0xc010973b
+c01027bb:	68 37 97 10 c0       	push   0xc0109737
 c01027c0:	8d 43 08             	lea    eax,[ebx+0x8]
 c01027c3:	50                   	push   eax
 c01027c4:	e8 57 0f 00 00       	call   c0103720 <spinlock_init>
@@ -2267,7 +2267,7 @@ c01027fd:	a1 68 2b 11 c0       	mov    eax,ds:0xc0112b68
 c0102802:	39 58 04             	cmp    DWORD PTR [eax+0x4],ebx
 c0102805:	75 0d                	jne    c0102814 <vas_destroy+0x2e>
 c0102807:	83 ec 0c             	sub    esp,0xc
-c010280a:	68 48 97 10 c0       	push   0xc0109748
+c010280a:	68 44 97 10 c0       	push   0xc0109744
 c010280f:	e8 64 26 00 00       	call   c0104e78 <panic>
 c0102814:	83 ec 0c             	sub    esp,0xc
 c0102817:	ff 33                	push   DWORD PTR [ebx]
@@ -2318,7 +2318,7 @@ c010287a:	e8 c2 f9 ff ff       	call   c0102241 <malloc>
 c010287f:	89 c3                	mov    ebx,eax
 c0102881:	58                   	pop    eax
 c0102882:	5a                   	pop    edx
-c0102883:	68 3b 97 10 c0       	push   0xc010973b
+c0102883:	68 37 97 10 c0       	push   0xc0109737
 c0102888:	8d 43 08             	lea    eax,[ebx+0x8]
 c010288b:	50                   	push   eax
 c010288c:	e8 8f 0e 00 00       	call   c0103720 <spinlock_init>
@@ -2468,7 +2468,7 @@ c01029c4:	83 c4 10             	add    esp,0x10
 c01029c7:	a8 08                	test   al,0x8
 c01029c9:	74 0d                	je     c01029d8 <vas_unmap+0x54>
 c01029cb:	83 ec 0c             	sub    esp,0xc
-c01029ce:	68 78 97 10 c0       	push   0xc0109778
+c01029ce:	68 74 97 10 c0       	push   0xc0109774
 c01029d3:	e8 a0 24 00 00       	call   c0104e78 <panic>
 c01029d8:	83 e0 50             	and    eax,0x50
 c01029db:	89 c2                	mov    edx,eax
@@ -2566,7 +2566,7 @@ c0102aae <virt_init>:
 c0102aae:	55                   	push   ebp
 c0102aaf:	89 e5                	mov    ebp,esp
 c0102ab1:	83 ec 10             	sub    esp,0x10
-c0102ab4:	68 b2 97 10 c0       	push   0xc01097b2
+c0102ab4:	68 ae 97 10 c0       	push   0xc01097ae
 c0102ab9:	68 80 2a 11 c0       	push   0xc0112a80
 c0102abe:	e8 5d 0c 00 00       	call   c0103720 <spinlock_init>
 c0102ac3:	83 c4 10             	add    esp,0x10
@@ -2594,7 +2594,7 @@ c0102aef:	83 c4 10             	add    esp,0x10
 c0102af2:	81 fb ff ff 7f ff    	cmp    ebx,0xff7fffff
 c0102af8:	76 0d                	jbe    c0102b07 <virt_allocate_unbacked_krnl_region+0x2f>
 c0102afa:	83 ec 0c             	sub    esp,0xc
-c0102afd:	68 bc 97 10 c0       	push   0xc01097bc
+c0102afd:	68 b8 97 10 c0       	push   0xc01097b8
 c0102b02:	e8 71 23 00 00       	call   c0104e78 <panic>
 c0102b07:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
 c0102b0a:	8d 90 ff 0f 00 00    	lea    edx,[eax+0xfff]
@@ -3283,7 +3283,7 @@ c01031d6:	89 e5                	mov    ebp,esp
 c01031d8:	83 ec 08             	sub    esp,0x8
 c01031db:	e8 a1 0f 00 00       	call   c0104181 <thread_terminate>
 c01031e0:	83 ec 0c             	sub    esp,0xc
-c01031e3:	68 d6 97 10 c0       	push   0xc01097d6
+c01031e3:	68 d2 97 10 c0       	push   0xc01097d2
 c01031e8:	e8 8b 1c 00 00       	call   c0104e78 <panic>
 
 c01031ed <sys_write>:
@@ -3404,7 +3404,7 @@ c010330c:	ff e0                	jmp    eax
 c010330e:	43                   	inc    ebx
 c010330f:	83 fb 03             	cmp    ebx,0x3
 c0103312:	75 d5                	jne    c01032e9 <test_run+0xa>
-c0103314:	c7 45 08 fb 97 10 c0 	mov    DWORD PTR [ebp+0x8],0xc01097fb
+c0103314:	c7 45 08 f7 97 10 c0 	mov    DWORD PTR [ebp+0x8],0xc01097f7
 c010331b:	8d 65 f8             	lea    esp,[ebp-0x8]
 c010331e:	5b                   	pop    ebx
 c010331f:	5e                   	pop    esi
@@ -3726,7 +3726,7 @@ c0103641:	c7 04 24 40 66 11 c0 	mov    DWORD PTR [esp],0xc0116640
 c0103648:	e8 09 01 00 00       	call   c0103756 <spinlock_release>
 c010364d:	5a                   	pop    edx
 c010364e:	59                   	pop    ecx
-c010364f:	68 1e 98 10 c0       	push   0xc010981e
+c010364f:	68 1a 98 10 c0       	push   0xc010981a
 c0103654:	8d 43 10             	lea    eax,[ebx+0x10]
 c0103657:	50                   	push   eax
 c0103658:	e8 c3 00 00 00       	call   c0103720 <spinlock_init>
@@ -3811,7 +3811,7 @@ c01036f7 <process_init>:
 c01036f7:	55                   	push   ebp
 c01036f8:	89 e5                	mov    ebp,esp
 c01036fa:	83 ec 10             	sub    esp,0x10
-c01036fd:	68 2b 98 10 c0       	push   0xc010982b
+c01036fd:	68 27 98 10 c0       	push   0xc0109827
 c0103702:	68 40 66 11 c0       	push   0xc0116640
 c0103707:	e8 14 00 00 00       	call   c0103720 <spinlock_init>
 c010370c:	83 c4 10             	add    esp,0x10
@@ -3996,7 +3996,7 @@ c01038d9:	83 c4 10             	add    esp,0x10
 c01038dc:	83 7b 04 00          	cmp    DWORD PTR [ebx+0x4],0x0
 c01038e0:	74 0d                	je     c01038ef <semaphore_set_count+0x2e>
 c01038e2:	83 ec 0c             	sub    esp,0xc
-c01038e5:	68 39 98 10 c0       	push   0xc0109839
+c01038e5:	68 35 98 10 c0       	push   0xc0109835
 c01038ea:	e8 89 15 00 00       	call   c0104e78 <panic>
 c01038ef:	89 73 04             	mov    DWORD PTR [ebx+0x4],esi
 c01038f2:	c7 45 08 20 2b 11 c0 	mov    DWORD PTR [ebp+0x8],0xc0112b20
@@ -4191,7 +4191,7 @@ c0103add:	8d 48 04             	lea    ecx,[eax+0x4]
 c0103ae0:	81 38 0d f0 ad 8b    	cmp    DWORD PTR [eax],0x8badf00d
 c0103ae6:	74 0d                	je     c0103af5 <thread_stack_check_canary+0x27>
 c0103ae8:	83 ec 0c             	sub    esp,0xc
-c0103aeb:	68 80 98 10 c0       	push   0xc0109880
+c0103aeb:	68 7c 98 10 c0       	push   0xc010987c
 c0103af0:	e8 83 13 00 00       	call   c0104e78 <panic>
 c0103af5:	89 c8                	mov    eax,ecx
 c0103af7:	39 ca                	cmp    edx,ecx
@@ -4240,17 +4240,17 @@ c0103b4f:	56                   	push   esi
 c0103b50:	53                   	push   ebx
 c0103b51:	50                   	push   eax
 c0103b52:	50                   	push   eax
-c0103b53:	68 a0 98 10 c0       	push   0xc01098a0
+c0103b53:	68 9c 98 10 c0       	push   0xc010989c
 c0103b58:	68 20 2b 11 c0       	push   0xc0112b20
 c0103b5d:	e8 be fb ff ff       	call   c0103720 <spinlock_init>
 c0103b62:	5a                   	pop    edx
 c0103b63:	59                   	pop    ecx
-c0103b64:	68 b3 98 10 c0       	push   0xc01098b3
+c0103b64:	68 af 98 10 c0       	push   0xc01098af
 c0103b69:	68 20 67 11 c0       	push   0xc0116720
 c0103b6e:	e8 ad fb ff ff       	call   c0103720 <spinlock_init>
 c0103b73:	5b                   	pop    ebx
 c0103b74:	5e                   	pop    esi
-c0103b75:	68 cf 98 10 c0       	push   0xc01098cf
+c0103b75:	68 cb 98 10 c0       	push   0xc01098cb
 c0103b7a:	68 c0 66 11 c0       	push   0xc01166c0
 c0103b7f:	e8 9c fb ff ff       	call   c0103720 <spinlock_init>
 c0103b84:	c7 04 24 50 00 00 00 	mov    DWORD PTR [esp],0x50
@@ -4278,7 +4278,7 @@ c0103be4:	c7 43 14 00 00 00 00 	mov    DWORD PTR [ebx+0x14],0x0
 c0103beb:	c7 43 1c 00 00 00 00 	mov    DWORD PTR [ebx+0x1c],0x0
 c0103bf2:	c7 43 20 00 00 00 00 	mov    DWORD PTR [ebx+0x20],0x0
 c0103bf9:	c7 43 24 00 00 00 00 	mov    DWORD PTR [ebx+0x24],0x0
-c0103c00:	c7 43 28 e4 98 10 c0 	mov    DWORD PTR [ebx+0x28],0xc01098e4
+c0103c00:	c7 43 28 e0 98 10 c0 	mov    DWORD PTR [ebx+0x28],0xc01098e0
 c0103c07:	c7 43 34 80 00 00 00 	mov    DWORD PTR [ebx+0x34],0x80
 c0103c0e:	c7 43 2c 00 00 00 00 	mov    DWORD PTR [ebx+0x2c],0x0
 c0103c15:	c7 43 30 00 00 00 00 	mov    DWORD PTR [ebx+0x30],0x0
@@ -4334,7 +4334,7 @@ c0103ccc:	c7 43 24 00 00 00 00 	mov    DWORD PTR [ebx+0x24],0x0
 c0103cd3:	c7 43 1c 00 00 00 00 	mov    DWORD PTR [ebx+0x1c],0x0
 c0103cda:	c7 43 20 00 00 00 00 	mov    DWORD PTR [ebx+0x20],0x0
 c0103ce1:	c7 43 14 01 00 00 00 	mov    DWORD PTR [ebx+0x14],0x1
-c0103ce8:	c7 04 24 eb 98 10 c0 	mov    DWORD PTR [esp],0xc01098eb
+c0103ce8:	c7 04 24 e7 98 10 c0 	mov    DWORD PTR [esp],0xc01098e7
 c0103cef:	e8 ca 0f 00 00       	call   c0104cbe <kprintf>
 c0103cf4:	58                   	pop    eax
 c0103cf5:	ff 73 0c             	push   DWORD PTR [ebx+0xc]
@@ -4413,7 +4413,7 @@ c0103dcb:	89 43 38             	mov    DWORD PTR [ebx+0x38],eax
 c0103dce:	c7 43 1c 00 00 00 00 	mov    DWORD PTR [ebx+0x1c],0x0
 c0103dd5:	c7 43 20 00 00 00 00 	mov    DWORD PTR [ebx+0x20],0x0
 c0103ddc:	c7 43 24 00 00 00 00 	mov    DWORD PTR [ebx+0x24],0x0
-c0103de3:	c7 43 28 62 99 10 c0 	mov    DWORD PTR [ebx+0x28],0xc0109962
+c0103de3:	c7 43 28 5e 99 10 c0 	mov    DWORD PTR [ebx+0x28],0xc010995e
 c0103dea:	c7 43 34 80 00 00 00 	mov    DWORD PTR [ebx+0x34],0x80
 c0103df1:	c7 43 2c 00 00 00 00 	mov    DWORD PTR [ebx+0x2c],0x0
 c0103df8:	c7 43 30 00 00 00 00 	mov    DWORD PTR [ebx+0x30],0x0
@@ -4804,7 +4804,7 @@ c010428c:	8b 00                	mov    eax,DWORD PTR [eax]
 c010428e:	c7 40 08 00 00 00 10 	mov    DWORD PTR [eax+0x8],0x10000000
 c0104295:	c7 04 24 20 2b 11 c0 	mov    DWORD PTR [esp],0xc0112b20
 c010429c:	e8 b5 f4 ff ff       	call   c0103756 <spinlock_release>
-c01042a1:	c7 45 e0 70 99 10 c0 	mov    DWORD PTR [ebp-0x20],0xc0109970
+c01042a1:	c7 45 e0 6c 99 10 c0 	mov    DWORD PTR [ebp-0x20],0xc010996c
 c01042a8:	c7 45 e4 00 00 00 00 	mov    DWORD PTR [ebp-0x1c],0x0
 c01042af:	c7 45 d8 00 00 00 00 	mov    DWORD PTR [ebp-0x28],0x0
 c01042b6:	8d 45 dc             	lea    eax,[ebp-0x24]
@@ -4813,7 +4813,7 @@ c01042ba:	8d 45 d8             	lea    eax,[ebp-0x28]
 c01042bd:	50                   	push   eax
 c01042be:	8d 45 e0             	lea    eax,[ebp-0x20]
 c01042c1:	50                   	push   eax
-c01042c2:	68 70 99 10 c0       	push   0xc0109970
+c01042c2:	68 6c 99 10 c0       	push   0xc010996c
 c01042c7:	e8 31 f8 ff ff       	call   c0103afd <thread_execve>
 c01042cc:	83 c4 20             	add    esp,0x20
 c01042cf:	85 c0                	test   eax,eax
@@ -4821,7 +4821,7 @@ c01042d1:	74 15                	je     c01042e8 <thread_execute_in_usermode+0xc3
 c01042d3:	52                   	push   edx
 c01042d4:	52                   	push   edx
 c01042d5:	50                   	push   eax
-c01042d6:	68 89 99 10 c0       	push   0xc0109989
+c01042d6:	68 85 99 10 c0       	push   0xc0109985
 c01042db:	e8 de 09 00 00       	call   c0104cbe <kprintf>
 c01042e0:	e8 9c fe ff ff       	call   c0104181 <thread_terminate>
 c01042e5:	83 c4 10             	add    esp,0x10
@@ -4985,7 +4985,7 @@ c01044cf:	e8 a8 f2 ff ff       	call   c010377c <semaphore_create>
 c01044d4:	89 43 14             	mov    DWORD PTR [ebx+0x14],eax
 c01044d7:	58                   	pop    eax
 c01044d8:	5a                   	pop    edx
-c01044d9:	68 a2 99 10 c0       	push   0xc01099a2
+c01044d9:	68 9e 99 10 c0       	push   0xc010999e
 c01044de:	8d 43 18             	lea    eax,[ebx+0x18]
 c01044e1:	50                   	push   eax
 c01044e2:	e8 39 f2 ff ff       	call   c0103720 <spinlock_init>
@@ -5032,7 +5032,7 @@ c0104536:	8b 43 04             	mov    eax,DWORD PTR [ebx+0x4]
 c0104539:	39 43 08             	cmp    DWORD PTR [ebx+0x8],eax
 c010453c:	75 0d                	jne    c010454b <adt_blocking_byte_buffer_add+0x30>
 c010453e:	83 ec 0c             	sub    esp,0xc
-c0104541:	68 bc 99 10 c0       	push   0xc01099bc
+c0104541:	68 b8 99 10 c0       	push   0xc01099b8
 c0104546:	e8 2d 09 00 00       	call   c0104e78 <panic>
 c010454b:	8b 13                	mov    edx,DWORD PTR [ebx]
 c010454d:	8b 43 10             	mov    eax,DWORD PTR [ebx+0x10]
@@ -5141,7 +5141,7 @@ c0104631:	83 c4 10             	add    esp,0x10
 c0104634:	85 f6                	test   esi,esi
 c0104636:	7f 0d                	jg     c0104645 <adt_hashmap_create+0x26>
 c0104638:	83 ec 0c             	sub    esp,0xc
-c010463b:	68 ef 99 10 c0       	push   0xc01099ef
+c010463b:	68 eb 99 10 c0       	push   0xc01099eb
 c0104640:	e8 33 08 00 00       	call   c0104e78 <panic>
 c0104645:	89 c3                	mov    ebx,eax
 c0104647:	8b 45 10             	mov    eax,DWORD PTR [ebp+0x10]
@@ -5310,7 +5310,7 @@ c01047c5:	74 cd                	je     c0104794 <adt_hashmap_get+0x2f>
 c01047c7:	8b 47 04             	mov    eax,DWORD PTR [edi+0x4]
 c01047ca:	eb 0f                	jmp    c01047db <adt_hashmap_get+0x76>
 c01047cc:	83 ec 0c             	sub    esp,0xc
-c01047cf:	68 23 9a 10 c0       	push   0xc0109a23
+c01047cf:	68 1f 9a 10 c0       	push   0xc0109a1f
 c01047d4:	e8 9f 06 00 00       	call   c0104e78 <panic>
 c01047d9:	31 c0                	xor    eax,eax
 c01047db:	8d 65 f4             	lea    esp,[ebp-0xc]
@@ -5430,7 +5430,7 @@ c01048d9:	8b 50 08             	mov    edx,DWORD PTR [eax+0x8]
 c01048dc:	85 d2                	test   edx,edx
 c01048de:	75 0d                	jne    c01048ed <adt_list_remove_front+0x1c>
 c01048e0:	83 ec 0c             	sub    esp,0xc
-c01048e3:	68 68 9a 10 c0       	push   0xc0109a68
+c01048e3:	68 64 9a 10 c0       	push   0xc0109a64
 c01048e8:	e8 8b 05 00 00       	call   c0104e78 <panic>
 c01048ed:	8b 08                	mov    ecx,DWORD PTR [eax]
 c01048ef:	8b 59 04             	mov    ebx,DWORD PTR [ecx+0x4]
@@ -5477,7 +5477,7 @@ c0104946:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
 c0104949:	83 78 08 00          	cmp    DWORD PTR [eax+0x8],0x0
 c010494d:	75 0d                	jne    c010495c <adt_list_remove_back+0x1b>
 c010494f:	83 ec 0c             	sub    esp,0xc
-c0104952:	68 8d 9a 10 c0       	push   0xc0109a8d
+c0104952:	68 89 9a 10 c0       	push   0xc0109a89
 c0104957:	e8 1c 05 00 00       	call   c0104e78 <panic>
 c010495c:	8b 50 04             	mov    edx,DWORD PTR [eax+0x4]
 c010495f:	8b 08                	mov    ecx,DWORD PTR [eax]
@@ -5518,7 +5518,7 @@ c01049b8:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
 c01049bb:	83 78 08 00          	cmp    DWORD PTR [eax+0x8],0x0
 c01049bf:	75 0d                	jne    c01049ce <adt_list_get_front+0x1c>
 c01049c1:	83 ec 0c             	sub    esp,0xc
-c01049c4:	68 b1 9a 10 c0       	push   0xc0109ab1
+c01049c4:	68 ad 9a 10 c0       	push   0xc0109aad
 c01049c9:	e8 aa 04 00 00       	call   c0104e78 <panic>
 c01049ce:	8b 00                	mov    eax,DWORD PTR [eax]
 c01049d0:	8b 00                	mov    eax,DWORD PTR [eax]
@@ -5533,7 +5533,7 @@ c01049da:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
 c01049dd:	83 78 08 00          	cmp    DWORD PTR [eax+0x8],0x0
 c01049e1:	75 0d                	jne    c01049f0 <adt_list_get_back+0x1c>
 c01049e3:	83 ec 0c             	sub    esp,0xc
-c01049e6:	68 d3 9a 10 c0       	push   0xc0109ad3
+c01049e6:	68 cf 9a 10 c0       	push   0xc0109acf
 c01049eb:	e8 88 04 00 00       	call   c0104e78 <panic>
 c01049f0:	8b 40 04             	mov    eax,DWORD PTR [eax+0x4]
 c01049f3:	8b 00                	mov    eax,DWORD PTR [eax]
@@ -5566,7 +5566,7 @@ c0104a19:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
 c0104a1c:	80 78 10 00          	cmp    BYTE PTR [eax+0x10],0x0
 c0104a20:	74 0d                	je     c0104a2f <adt_list_has_next+0x1c>
 c0104a22:	83 ec 0c             	sub    esp,0xc
-c0104a25:	68 f4 9a 10 c0       	push   0xc0109af4
+c0104a25:	68 f0 9a 10 c0       	push   0xc0109af0
 c0104a2a:	e8 49 04 00 00       	call   c0104e78 <panic>
 c0104a2f:	83 78 0c 00          	cmp    DWORD PTR [eax+0xc],0x0
 c0104a33:	0f 95 c0             	setne  al
@@ -5581,13 +5581,13 @@ c0104a3e:	8b 55 08             	mov    edx,DWORD PTR [ebp+0x8]
 c0104a41:	80 7a 10 00          	cmp    BYTE PTR [edx+0x10],0x0
 c0104a45:	74 0a                	je     c0104a51 <adt_list_get_next+0x19>
 c0104a47:	83 ec 0c             	sub    esp,0xc
-c0104a4a:	68 25 9b 10 c0       	push   0xc0109b25
+c0104a4a:	68 21 9b 10 c0       	push   0xc0109b21
 c0104a4f:	eb 0f                	jmp    c0104a60 <adt_list_get_next+0x28>
 c0104a51:	8b 4a 0c             	mov    ecx,DWORD PTR [edx+0xc]
 c0104a54:	85 c9                	test   ecx,ecx
 c0104a56:	75 0d                	jne    c0104a65 <adt_list_get_next+0x2d>
 c0104a58:	83 ec 0c             	sub    esp,0xc
-c0104a5b:	68 56 9b 10 c0       	push   0xc0109b56
+c0104a5b:	68 52 9b 10 c0       	push   0xc0109b52
 c0104a60:	e8 13 04 00 00       	call   c0104e78 <panic>
 c0104a65:	8b 01                	mov    eax,DWORD PTR [ecx]
 c0104a67:	8b 49 04             	mov    ecx,DWORD PTR [ecx+0x4]
@@ -5623,7 +5623,7 @@ c0104a98:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
 c0104a9b:	83 78 08 00          	cmp    DWORD PTR [eax+0x8],0x0
 c0104a9f:	75 0d                	jne    c0104aae <adt_list_remove_element+0x1b>
 c0104aa1:	83 ec 0c             	sub    esp,0xc
-c0104aa4:	68 79 9b 10 c0       	push   0xc0109b79
+c0104aa4:	68 75 9b 10 c0       	push   0xc0109b75
 c0104aa9:	e8 ca 03 00 00       	call   c0104e78 <panic>
 c0104aae:	8b 10                	mov    edx,DWORD PTR [eax]
 c0104ab0:	89 50 0c             	mov    DWORD PTR [eax+0xc],edx
@@ -5797,7 +5797,7 @@ c0104c0f:	89 f0                	mov    eax,esi
 c0104c11:	31 d2                	xor    edx,edx
 c0104c13:	f7 f1                	div    ecx
 c0104c15:	4b                   	dec    ebx
-c0104c16:	8a 92 a0 9b 10 c0    	mov    dl,BYTE PTR [edx-0x3fef6460]
+c0104c16:	8a 92 9c 9b 10 c0    	mov    dl,BYTE PTR [edx-0x3fef6464]
 c0104c1c:	88 13                	mov    BYTE PTR [ebx],dl
 c0104c1e:	39 f1                	cmp    ecx,esi
 c0104c20:	77 04                	ja     c0104c26 <convert_int_to_string+0x2f>
@@ -5891,7 +5891,7 @@ c0104cc4:	83 ec 0c             	sub    esp,0xc
 c0104cc7:	83 7d 08 00          	cmp    DWORD PTR [ebp+0x8],0x0
 c0104ccb:	75 10                	jne    c0104cdd <kprintf+0x1f>
 c0104ccd:	83 ec 0c             	sub    esp,0xc
-c0104cd0:	68 b1 9b 10 c0       	push   0xc0109bb1
+c0104cd0:	68 ad 9b 10 c0       	push   0xc0109bad
 c0104cd5:	e8 e4 ff ff ff       	call   c0104cbe <kprintf>
 c0104cda:	83 c4 10             	add    esp,0x10
 c0104cdd:	8d 75 0c             	lea    esi,[ebp+0xc]
@@ -5978,7 +5978,7 @@ c0104da1:	83 ec 0c             	sub    esp,0xc
 c0104da4:	83 7d 08 00          	cmp    DWORD PTR [ebp+0x8],0x0
 c0104da8:	75 10                	jne    c0104dba <kprintfnv+0x1f>
 c0104daa:	83 ec 0c             	sub    esp,0xc
-c0104dad:	68 b1 9b 10 c0       	push   0xc0109bb1
+c0104dad:	68 ad 9b 10 c0       	push   0xc0109bad
 c0104db2:	e8 e4 ff ff ff       	call   c0104d9b <kprintfnv>
 c0104db7:	83 c4 10             	add    esp,0x10
 c0104dba:	8d 75 0c             	lea    esi,[ebp+0xc]
@@ -6060,7 +6060,7 @@ c0104e78:	55                   	push   ebp
 c0104e79:	89 e5                	mov    ebp,esp
 c0104e7b:	83 ec 10             	sub    esp,0x10
 c0104e7e:	ff 75 08             	push   DWORD PTR [ebp+0x8]
-c0104e81:	68 db 9b 10 c0       	push   0xc0109bdb
+c0104e81:	68 d7 9b 10 c0       	push   0xc0109bd7
 c0104e86:	e8 33 fe ff ff       	call   c0104cbe <kprintf>
 c0104e8b:	83 c4 10             	add    esp,0x10
 c0104e8e:	e8 e2 3b 00 00       	call   c0108a75 <arch_disable_interrupts>
@@ -6355,7 +6355,7 @@ c0105130:	68 48 20 00 00       	push   0x2048
 c0105135:	e8 07 d1 ff ff       	call   c0102241 <malloc>
 c010513a:	5a                   	pop    edx
 c010513b:	59                   	pop    ecx
-c010513c:	68 ed 9b 10 c0       	push   0xc0109bed
+c010513c:	68 e9 9b 10 c0       	push   0xc0109be9
 c0105141:	50                   	push   eax
 c0105142:	89 45 f4             	mov    DWORD PTR [ebp-0xc],eax
 c0105145:	e8 d6 e5 ff ff       	call   c0103720 <spinlock_init>
@@ -6965,7 +6965,7 @@ c01056cc <vfs_init>:
 c01056cc:	55                   	push   ebp
 c01056cd:	89 e5                	mov    ebp,esp
 c01056cf:	83 ec 10             	sub    esp,0x10
-c01056d2:	68 00 9c 10 c0       	push   0xc0109c00
+c01056d2:	68 fc 9b 10 c0       	push   0xc0109bfc
 c01056d7:	68 80 2b 11 c0       	push   0xc0112b80
 c01056dc:	e8 3f e0 ff ff       	call   c0103720 <spinlock_init>
 c01056e1:	e8 40 f1 ff ff       	call   c0104826 <adt_list_create>
@@ -7100,7 +7100,7 @@ c010585d:	85 c0                	test   eax,eax
 c010585f:	0f 85 84 00 00 00    	jne    c01058e9 <vfs_get_vnode_from_path.part.2+0x192>
 c0105865:	50                   	push   eax
 c0105866:	50                   	push   eax
-c0105867:	68 0a 9c 10 c0       	push   0xc0109c0a
+c0105867:	68 06 9c 10 c0       	push   0xc0109c06
 c010586c:	8d 85 e7 fe ff ff    	lea    eax,[ebp-0x119]
 c0105872:	50                   	push   eax
 c0105873:	e8 35 ba ff ff       	call   c01012ad <strcmp>
@@ -7109,7 +7109,7 @@ c010587b:	85 c0                	test   eax,eax
 c010587d:	0f 84 68 ff ff ff    	je     c01057eb <vfs_get_vnode_from_path.part.2+0x94>
 c0105883:	51                   	push   ecx
 c0105884:	51                   	push   ecx
-c0105885:	68 09 9c 10 c0       	push   0xc0109c09
+c0105885:	68 05 9c 10 c0       	push   0xc0109c05
 c010588a:	8d 85 e7 fe ff ff    	lea    eax,[ebp-0x119]
 c0105890:	50                   	push   eax
 c0105891:	e8 17 ba ff ff       	call   c01012ad <strcmp>
@@ -7383,7 +7383,7 @@ c0105b75:	68 80 2b 11 c0       	push   0xc0112b80
 c0105b7a:	e8 d2 db ff ff       	call   c0103751 <spinlock_acquire>
 c0105b7f:	5b                   	pop    ebx
 c0105b80:	5f                   	pop    edi
-c0105b81:	68 0c 9c 10 c0       	push   0xc0109c0c
+c0105b81:	68 08 9c 10 c0       	push   0xc0109c08
 c0105b86:	8d 9d e0 fe ff ff    	lea    ebx,[ebp-0x120]
 c0105b8c:	53                   	push   ebx
 c0105b8d:	e8 3b b7 ff ff       	call   c01012cd <strcpy>
@@ -7818,7 +7818,7 @@ c0106047:	c7 80 94 00 00 00 00 00 00 00 	mov    DWORD PTR [eax+0x94],0x0
 c0106051:	c7 80 8c 00 00 00 00 00 00 00 	mov    DWORD PTR [eax+0x8c],0x0
 c010605b:	5a                   	pop    edx
 c010605c:	59                   	pop    ecx
-c010605d:	68 11 9c 10 c0       	push   0xc0109c11
+c010605d:	68 0d 9c 10 c0       	push   0xc0109c0d
 c0106062:	8d 50 44             	lea    edx,[eax+0x44]
 c0106065:	89 45 f4             	mov    DWORD PTR [ebp-0xc],eax
 c0106068:	52                   	push   edx
@@ -8127,7 +8127,7 @@ c01062d7:	8b 00                	mov    eax,DWORD PTR [eax]
 c01062d9:	81 78 14 00 02 00 00 	cmp    DWORD PTR [eax+0x14],0x200
 c01062e0:	74 0d                	je     c01062ef <demofs_read_inode+0x25>
 c01062e2:	83 ec 0c             	sub    esp,0xc
-c01062e5:	68 2c 9c 10 c0       	push   0xc0109c2c
+c01062e5:	68 28 9c 10 c0       	push   0xc0109c28
 c01062ea:	e8 89 eb ff ff       	call   c0104e78 <panic>
 c01062ef:	8d 75 e4             	lea    esi,[ebp-0x1c]
 c01062f2:	50                   	push   eax
@@ -8646,12 +8646,12 @@ c0106850:	e8 c7 ff ff ff       	call   c010681c <x86_beeper_register>
 c0106855:	52                   	push   edx
 c0106856:	52                   	push   edx
 c0106857:	6a 01                	push   0x1
-c0106859:	68 55 9c 10 c0       	push   0xc0109c55
+c0106859:	68 51 9c 10 c0       	push   0xc0109c51
 c010685e:	e8 a3 cc ff ff       	call   c0103506 <load_driver>
 c0106863:	59                   	pop    ecx
 c0106864:	58                   	pop    eax
 c0106865:	6a 00                	push   0x0
-c0106867:	68 66 9c 10 c0       	push   0xc0109c66
+c0106867:	68 62 9c 10 c0       	push   0xc0109c62
 c010686c:	e8 95 cc ff ff       	call   c0103506 <load_driver>
 c0106871:	83 c4 10             	add    esp,0x10
 c0106874:	c9                   	leave  
@@ -8794,7 +8794,7 @@ c01069fd:	eb 15                	jmp    c0106a14 <floppy_read_data.constprop.11+0
 c01069ff:	4b                   	dec    ebx
 c0106a00:	75 da                	jne    c01069dc <floppy_read_data.constprop.11+0xa>
 c0106a02:	83 ec 0c             	sub    esp,0xc
-c0106a05:	68 73 9c 10 c0       	push   0xc0109c73
+c0106a05:	68 6f 9c 10 c0       	push   0xc0109c6f
 c0106a0a:	e8 af e2 ff ff       	call   c0104cbe <kprintf>
 c0106a0f:	83 c4 10             	add    esp,0x10
 c0106a12:	31 c0                	xor    eax,eax
@@ -8826,7 +8826,7 @@ c0106a48:	eb 13                	jmp    c0106a5d <floppy_write_cmd.constprop.12+0
 c0106a4a:	4b                   	dec    ebx
 c0106a4b:	75 d8                	jne    c0106a25 <floppy_write_cmd.constprop.12+0xc>
 c0106a4d:	83 ec 0c             	sub    esp,0xc
-c0106a50:	68 8e 9c 10 c0       	push   0xc0109c8e
+c0106a50:	68 8a 9c 10 c0       	push   0xc0109c8a
 c0106a55:	e8 64 e2 ff ff       	call   c0104cbe <kprintf>
 c0106a5a:	83 c4 10             	add    esp,0x10
 c0106a5d:	8d 65 f8             	lea    esp,[ebp-0x8]
@@ -8884,7 +8884,7 @@ c0106aea:	eb 1f                	jmp    c0106b0b <floppy_calibrate.constprop.7+0x
 c0106aec:	4e                   	dec    esi
 c0106aed:	75 c5                	jne    c0106ab4 <floppy_calibrate.constprop.7+0x25>
 c0106aef:	83 ec 0c             	sub    esp,0xc
-c0106af2:	68 a9 9c 10 c0       	push   0xc0109ca9
+c0106af2:	68 a5 9c 10 c0       	push   0xc0109ca5
 c0106af7:	e8 c2 e1 ff ff       	call   c0104cbe <kprintf>
 c0106afc:	31 c0                	xor    eax,eax
 c0106afe:	e8 79 fe ff ff       	call   c010697c <floppy_motor.constprop.8>
@@ -8985,7 +8985,7 @@ c0106c23:	eb 1f                	jmp    c0106c44 <floppy_seek.constprop.4+0x87>
 c0106c25:	4e                   	dec    esi
 c0106c26:	75 bb                	jne    c0106be3 <floppy_seek.constprop.4+0x26>
 c0106c28:	83 ec 0c             	sub    esp,0xc
-c0106c2b:	68 c4 9c 10 c0       	push   0xc0109cc4
+c0106c2b:	68 c0 9c 10 c0       	push   0xc0109cc0
 c0106c30:	e8 89 e0 ff ff       	call   c0104cbe <kprintf>
 c0106c35:	31 c0                	xor    eax,eax
 c0106c37:	e8 40 fd ff ff       	call   c010697c <floppy_motor.constprop.8>
@@ -9116,7 +9116,7 @@ c0106db2:	43                   	inc    ebx
 c0106db3:	83 fb 14             	cmp    ebx,0x14
 c0106db6:	0f 85 c4 fe ff ff    	jne    c0106c80 <floppy_do_cylinder.constprop.2+0x32>
 c0106dbc:	83 ec 0c             	sub    esp,0xc
-c0106dbf:	68 da 9c 10 c0       	push   0xc0109cda
+c0106dbf:	68 d6 9c 10 c0       	push   0xc0109cd6
 c0106dc4:	e8 f5 de ff ff       	call   c0104cbe <kprintf>
 c0106dc9:	31 c0                	xor    eax,eax
 c0106dcb:	e8 ac fb ff ff       	call   c010697c <floppy_motor.constprop.8>
@@ -9262,7 +9262,7 @@ c0106f92:	c7 05 94 67 11 c0 c1 19 10 c0 	mov    DWORD PTR ds:0xc0116794,0xc01019
 c0106f9c:	c7 05 9c 67 11 c0 00 00 00 00 	mov    DWORD PTR ds:0xc011679c,0x0
 c0106fa6:	5a                   	pop    edx
 c0106fa7:	59                   	pop    ecx
-c0106fa8:	68 a5 96 10 c0       	push   0xc01096a5
+c0106fa8:	68 a1 96 10 c0       	push   0xc01096a1
 c0106fad:	68 90 67 11 c0       	push   0xc0116790
 c0106fb2:	e8 ce ec ff ff       	call   c0105c85 <vfs_add_device>
 c0106fb7:	5b                   	pop    ebx
@@ -9313,18 +9313,18 @@ c0107045:	88 c2                	mov    dl,al
 c0107047:	a8 01                	test   al,0x1
 c0107049:	74 0a                	je     c0107055 <ide_check_errors+0x2a>
 c010704b:	83 ec 0c             	sub    esp,0xc
-c010704e:	68 f0 9c 10 c0       	push   0xc0109cf0
+c010704e:	68 ec 9c 10 c0       	push   0xc0109cec
 c0107053:	eb 1d                	jmp    c0107072 <ide_check_errors+0x47>
 c0107055:	a8 20                	test   al,0x20
 c0107057:	74 0a                	je     c0107063 <ide_check_errors+0x38>
 c0107059:	83 ec 0c             	sub    esp,0xc
-c010705c:	68 fb 9c 10 c0       	push   0xc0109cfb
+c010705c:	68 f7 9c 10 c0       	push   0xc0109cf7
 c0107061:	eb 0f                	jmp    c0107072 <ide_check_errors+0x47>
 c0107063:	31 c0                	xor    eax,eax
 c0107065:	80 e2 08             	and    dl,0x8
 c0107068:	75 15                	jne    c010707f <ide_check_errors+0x54>
 c010706a:	83 ec 0c             	sub    esp,0xc
-c010706d:	68 06 9d 10 c0       	push   0xc0109d06
+c010706d:	68 02 9d 10 c0       	push   0xc0109d02
 c0107072:	e8 47 dc ff ff       	call   c0104cbe <kprintf>
 c0107077:	83 c4 10             	add    esp,0x10
 c010707a:	b8 0a 00 00 00       	mov    eax,0xa
@@ -9670,7 +9670,7 @@ c0107459:	c7 05 bc 67 11 c0 be 19 10 c0 	mov    DWORD PTR ds:0xc01167bc,0xc01019
 c0107463:	c7 05 c0 67 11 c0 c1 19 10 c0 	mov    DWORD PTR ds:0xc01167c0,0xc01019c1
 c010746d:	5a                   	pop    edx
 c010746e:	59                   	pop    ecx
-c010746f:	68 a5 96 10 c0       	push   0xc01096a5
+c010746f:	68 a1 96 10 c0       	push   0xc01096a1
 c0107474:	68 bc 67 11 c0       	push   0xc01167bc
 c0107479:	e8 07 e8 ff ff       	call   c0105c85 <vfs_add_device>
 c010747e:	83 c4 10             	add    esp,0x10
@@ -9942,7 +9942,7 @@ c0107708:	74 02                	je     c010770c <elf_perform_relocations+0x67>
 c010770a:	01 ca                	add    edx,ecx
 c010770c:	51                   	push   ecx
 c010770d:	51                   	push   ecx
-c010770e:	68 11 9d 10 c0       	push   0xc0109d11
+c010770e:	68 0d 9d 10 c0       	push   0xc0109d0d
 c0107713:	52                   	push   edx
 c0107714:	e8 94 9b ff ff       	call   c01012ad <strcmp>
 c0107719:	83 c4 10             	add    esp,0x10
@@ -10014,7 +10014,7 @@ c01077da:	50                   	push   eax
 c01077db:	50                   	push   eax
 c01077dc:	8b 55 d0             	mov    edx,DWORD PTR [ebp-0x30]
 c01077df:	52                   	push   edx
-c01077e0:	68 1a 9d 10 c0       	push   0xc0109d1a
+c01077e0:	68 16 9d 10 c0       	push   0xc0109d16
 c01077e5:	e8 d4 d4 ff ff       	call   c0104cbe <kprintf>
 c01077ea:	83 c4 10             	add    esp,0x10
 c01077ed:	84 db                	test   bl,bl
@@ -10047,7 +10047,7 @@ c0107837:	e9 ff fe ff ff       	jmp    c010773b <elf_perform_relocations+0x96>
 c010783c:	83 f8 04             	cmp    eax,0x4
 c010783f:	75 0d                	jne    c010784e <elf_perform_relocations+0x1a9>
 c0107841:	83 ec 0c             	sub    esp,0xc
-c0107844:	68 2e 9d 10 c0       	push   0xc0109d2e
+c0107844:	68 2a 9d 10 c0       	push   0xc0109d2a
 c0107849:	e8 2a d6 ff ff       	call   c0104e78 <panic>
 c010784e:	ff 45 d8             	inc    DWORD PTR [ebp-0x28]
 c0107851:	83 45 e4 28          	add    DWORD PTR [ebp-0x1c],0x28
@@ -10191,7 +10191,7 @@ c0107998:	8d 45 b0             	lea    eax,[ebp-0x50]
 c010799b:	50                   	push   eax
 c010799c:	6a 00                	push   0x0
 c010799e:	6a 00                	push   0x0
-c01079a0:	68 51 9d 10 c0       	push   0xc0109d51
+c01079a0:	68 4d 9d 10 c0       	push   0xc0109d4d
 c01079a5:	e8 96 e4 ff ff       	call   c0105e40 <vfs_open>
 c01079aa:	83 c4 20             	add    esp,0x20
 c01079ad:	85 c0                	test   eax,eax
@@ -10284,7 +10284,7 @@ c0107ae2:	85 c0                	test   eax,eax
 c0107ae4:	0f 85 a5 01 00 00    	jne    c0107c8f <ksymbol_init+0x31c>
 c0107aea:	50                   	push   eax
 c0107aeb:	50                   	push   eax
-c0107aec:	68 61 9d 10 c0       	push   0xc0109d61
+c0107aec:	68 5d 9d 10 c0       	push   0xc0109d5d
 c0107af1:	56                   	push   esi
 c0107af2:	e8 b6 97 ff ff       	call   c01012ad <strcmp>
 c0107af7:	83 c4 10             	add    esp,0x10
@@ -10297,7 +10297,7 @@ c0107b0a:	89 85 74 ff ff ff    	mov    DWORD PTR [ebp-0x8c],eax
 c0107b10:	eb 26                	jmp    c0107b38 <ksymbol_init+0x1c5>
 c0107b12:	50                   	push   eax
 c0107b13:	50                   	push   eax
-c0107b14:	68 69 9d 10 c0       	push   0xc0109d69
+c0107b14:	68 65 9d 10 c0       	push   0xc0109d65
 c0107b19:	56                   	push   esi
 c0107b1a:	e8 8e 97 ff ff       	call   c01012ad <strcmp>
 c0107b1f:	83 c4 10             	add    esp,0x10
@@ -10415,7 +10415,7 @@ c0107c8c:	5f                   	pop    edi
 c0107c8d:	5d                   	pop    ebp
 c0107c8e:	c3                   	ret    
 c0107c8f:	83 ec 0c             	sub    esp,0xc
-c0107c92:	68 71 9d 10 c0       	push   0xc0109d71
+c0107c92:	68 6d 9d 10 c0       	push   0xc0109d6d
 c0107c97:	e8 dc d1 ff ff       	call   c0104e78 <panic>
 
 c0107c9c <ksymbol_get_address_from_name>:
@@ -10690,7 +10690,7 @@ c0107fa9:	83 fb 60             	cmp    ebx,0x60
 c0107fac:	74 33                	je     c0107fe1 <x86_interrupt_handler+0x87>
 c0107fae:	85 c0                	test   eax,eax
 c0107fb0:	74 2f                	je     c0107fe1 <x86_interrupt_handler+0x87>
-c0107fb2:	b8 aa 9d 10 c0       	mov    eax,0xc0109daa
+c0107fb2:	b8 a6 9d 10 c0       	mov    eax,0xc0109da6
 c0107fb7:	83 fb 12             	cmp    ebx,0x12
 c0107fba:	7f 0a                	jg     c0107fc6 <x86_interrupt_handler+0x6c>
 c0107fbc:	89 d8                	mov    eax,ebx
@@ -10699,7 +10699,7 @@ c0107fc1:	05 40 e0 10 c0       	add    eax,0xc010e040
 c0107fc6:	52                   	push   edx
 c0107fc7:	53                   	push   ebx
 c0107fc8:	50                   	push   eax
-c0107fc9:	68 b2 9d 10 c0       	push   0xc0109db2
+c0107fc9:	68 ae 9d 10 c0       	push   0xc0109dae
 c0107fce:	e8 eb cc ff ff       	call   c0104cbe <kprintf>
 c0107fd3:	83 c4 10             	add    esp,0x10
 c0107fd6:	8d 65 f8             	lea    esp,[ebp-0x8]
@@ -10758,7 +10758,7 @@ c0108062:	83 c4 10             	add    esp,0x10
 c0108065:	c1 ea 06             	shr    edx,0x6
 c0108068:	75 0d                	jne    c0108077 <arch_get_memory+0x3e>
 c010806a:	83 ec 0c             	sub    esp,0xc
-c010806d:	68 d1 9d 10 c0       	push   0xc0109dd1
+c010806d:	68 cd 9d 10 c0       	push   0xc0109dcd
 c0108072:	e8 01 ce ff ff       	call   c0104e78 <panic>
 c0108077:	8b 50 2c             	mov    edx,DWORD PTR [eax+0x2c]
 c010807a:	89 15 f4 67 11 c0    	mov    DWORD PTR ds:0xc01167f4,edx
@@ -10920,7 +10920,7 @@ c010821c:	81 e3 00 f0 ff ff    	and    ebx,0xfffff000
 c0108222:	5e                   	pop    esi
 c0108223:	58                   	pop    eax
 c0108224:	53                   	push   ebx
-c0108225:	68 e9 9d 10 c0       	push   0xc0109de9
+c0108225:	68 e5 9d 10 c0       	push   0xc0109de5
 c010822a:	e8 8f ca ff ff       	call   c0104cbe <kprintf>
 c010822f:	81 c3 00 00 00 40    	add    ebx,0x40000000
 c0108235:	c1 eb 0c             	shr    ebx,0xc
@@ -10949,7 +10949,7 @@ c0108288:	a3 fc 5f 11 c0       	mov    ds:0xc0115ffc,eax
 c010828d:	e8 48 c9 ff ff       	call   c0104bda <cpu_get_count>
 c0108292:	52                   	push   edx
 c0108293:	52                   	push   edx
-c0108294:	68 01 9e 10 c0       	push   0xc0109e01
+c0108294:	68 fd 9d 10 c0       	push   0xc0109dfd
 c0108299:	6b c0 50             	imul   eax,eax,0x50
 c010829c:	05 88 60 11 c0       	add    eax,0xc0116088
 c01082a1:	50                   	push   eax
@@ -11047,7 +11047,7 @@ c01083e4:	75 27                	jne    c010840d <x86_get_entry+0x49>
 c01083e6:	81 fb ff ff ff bf    	cmp    ebx,0xbfffffff
 c01083ec:	76 0d                	jbe    c01083fb <x86_get_entry+0x37>
 c01083ee:	83 ec 0c             	sub    esp,0xc
-c01083f1:	68 11 9e 10 c0       	push   0xc0109e11
+c01083f1:	68 0d 9e 10 c0       	push   0xc0109e0d
 c01083f6:	e8 7d ca ff ff       	call   c0104e78 <panic>
 c01083fb:	31 c9                	xor    ecx,ecx
 c01083fd:	89 f8                	mov    eax,edi
@@ -11294,7 +11294,7 @@ c0108687:	75 1e                	jne    c01086a7 <x86_handle_page_fault+0x5f>
 c0108689:	ff 77 34             	push   DWORD PTR [edi+0x34]
 c010868c:	ff 77 38             	push   DWORD PTR [edi+0x38]
 c010868f:	53                   	push   ebx
-c0108690:	68 48 9e 10 c0       	push   0xc0109e48
+c0108690:	68 44 9e 10 c0       	push   0xc0109e44
 c0108695:	e8 24 c6 ff ff       	call   c0104cbe <kprintf>
 c010869a:	83 c4 10             	add    esp,0x10
 c010869d:	b8 13 00 00 00       	mov    eax,0x13
@@ -11328,7 +11328,7 @@ c01086fa:	e9 9a 00 00 00       	jmp    c0108799 <x86_handle_page_fault+0x151>
 c01086ff:	ff 77 34             	push   DWORD PTR [edi+0x34]
 c0108702:	ff 77 38             	push   DWORD PTR [edi+0x38]
 c0108705:	53                   	push   ebx
-c0108706:	68 7c 9e 10 c0       	push   0xc0109e7c
+c0108706:	68 78 9e 10 c0       	push   0xc0109e78
 c010870b:	e8 ae c5 ff ff       	call   c0104cbe <kprintf>
 c0108710:	8b 36                	mov    esi,DWORD PTR [esi]
 c0108712:	83 c4 10             	add    esp,0x10
@@ -11337,7 +11337,7 @@ c0108719:	73 16                	jae    c0108731 <x86_handle_page_fault+0xe9>
 c010871b:	ff 77 34             	push   DWORD PTR [edi+0x34]
 c010871e:	ff 77 38             	push   DWORD PTR [edi+0x38]
 c0108721:	53                   	push   ebx
-c0108722:	68 a5 9e 10 c0       	push   0xc0109ea5
+c0108722:	68 a1 9e 10 c0       	push   0xc0109ea1
 c0108727:	e8 92 c5 ff ff       	call   c0104cbe <kprintf>
 c010872c:	83 c4 10             	add    esp,0x10
 c010872f:	eb fe                	jmp    c010872f <x86_handle_page_fault+0xe7>
@@ -11446,7 +11446,7 @@ c0108843:	81 c3 00 10 00 00    	add    ebx,0x1000
 c0108849:	81 fb ff ff 7f ff    	cmp    ebx,0xff7fffff
 c010884f:	76 b9                	jbe    c010880a <arch_find_page_replacement_virt_address+0x7>
 c0108851:	83 ec 0c             	sub    esp,0xc
-c0108854:	68 db 9e 10 c0       	push   0xc0109edb
+c0108854:	68 d7 9e 10 c0       	push   0xc0109ed7
 c0108859:	e8 1a c6 ff ff       	call   c0104e78 <panic>
 c010885e:	89 d8                	mov    eax,ebx
 c0108860:	8b 5d fc             	mov    ebx,DWORD PTR [ebp-0x4]
@@ -11502,7 +11502,7 @@ c01088dd:	e8 de b5 ff ff       	call   c0103ec0 <thread_schedule>
 c01088e2:	c7 04 24 20 2b 11 c0 	mov    DWORD PTR [esp],0xc0112b20
 c01088e9:	e8 68 ae ff ff       	call   c0103756 <spinlock_release>
 c01088ee:	e8 da ff ff ff       	call   c01088cd <test_stack_canary>
-c01088f3:	c7 04 24 e9 9e 10 c0 	mov    DWORD PTR [esp],0xc0109ee9
+c01088f3:	c7 04 24 e5 9e 10 c0 	mov    DWORD PTR [esp],0xc0109ee5
 c01088fa:	e8 bf c3 ff ff       	call   c0104cbe <kprintf>
 c01088ff:	83 c4 10             	add    esp,0x10
 c0108902:	c9                   	leave  
@@ -11546,7 +11546,7 @@ c0108960:	83 c4 10             	add    esp,0x10
 c0108963:	81 fb 88 13 00 00    	cmp    ebx,0x1388
 c0108969:	75 ce                	jne    c0108939 <test_heap+0x35>
 c010896b:	83 ec 0c             	sub    esp,0xc
-c010896e:	68 f2 9e 10 c0       	push   0xc0109ef2
+c010896e:	68 ee 9e 10 c0       	push   0xc0109eee
 c0108973:	e8 46 c3 ff ff       	call   c0104cbe <kprintf>
 c0108978:	83 c4 10             	add    esp,0x10
 c010897b:	8d 65 f8             	lea    esp,[ebp-0x8]
@@ -11564,7 +11564,7 @@ c0108987:	bb 0a 00 00 00       	mov    ebx,0xa
 c010898c:	50                   	push   eax
 c010898d:	50                   	push   eax
 c010898e:	53                   	push   ebx
-c010898f:	68 f9 9e 10 c0       	push   0xc0109ef9
+c010898f:	68 f5 9e 10 c0       	push   0xc0109ef5
 c0108994:	e8 25 c3 ff ff       	call   c0104cbe <kprintf>
 c0108999:	c7 04 24 01 00 00 00 	mov    DWORD PTR [esp],0x1
 c01089a0:	e8 9c b7 ff ff       	call   c0104141 <thread_sleep>
@@ -11572,7 +11572,7 @@ c01089a5:	83 c4 10             	add    esp,0x10
 c01089a8:	4b                   	dec    ebx
 c01089a9:	75 e1                	jne    c010898c <test_sleep+0xa>
 c01089ab:	83 ec 0c             	sub    esp,0xc
-c01089ae:	68 00 9f 10 c0       	push   0xc0109f00
+c01089ae:	68 fc 9e 10 c0       	push   0xc0109efc
 c01089b3:	e8 06 c3 ff ff       	call   c0104cbe <kprintf>
 c01089b8:	c7 04 24 01 00 00 00 	mov    DWORD PTR [esp],0x1
 c01089bf:	e8 7d b7 ff ff       	call   c0104141 <thread_sleep>

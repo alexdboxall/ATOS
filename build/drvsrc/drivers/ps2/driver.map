@@ -96,4 +96,4 @@ LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/li
 
 /DISCARD/
  *(.comment)
-OUTPUT(PS2.SYS elf32-i386)
+OUTPUT(ps2.sys elf32-i386)

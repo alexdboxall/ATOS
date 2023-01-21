@@ -671,7 +671,7 @@ LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/li
  *fill*         0x00000000c0109134        0xc 
  .rodata        0x00000000c0109140       0xa0 machine/lowlevel/idt.o
 
-.rodata.str1.1  0x00000000c01091e0      0xd2b load address 0x00000000001091e0
+.rodata.str1.1  0x00000000c01091e0      0xd27 load address 0x00000000001091e0
  .rodata.str1.1
                 0x00000000c01091e0       0x31 assert.o
  .rodata.str1.1
@@ -687,221 +687,221 @@ LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/li
  .rodata.str1.1
                 0x00000000c0109512        0xb dev/video.o
  .rodata.str1.1
-                0x00000000c010951d      0x116 main/main.o
+                0x00000000c010951d      0x112 main/main.o
                                         0x120 (size before relaxing)
  .rodata.str1.1
-                0x00000000c0109633       0x4f mem/heap.o
+                0x00000000c010962f       0x4f mem/heap.o
  .rodata.str1.1
-                0x00000000c0109682       0x23 mem/physical.o
+                0x00000000c010967e       0x23 mem/physical.o
  .rodata.str1.1
-                0x00000000c01096a5       0x96 mem/swapfile.o
+                0x00000000c01096a1       0x96 mem/swapfile.o
  .rodata.str1.1
-                0x00000000c010973b       0x77 mem/vas.o
+                0x00000000c0109737       0x77 mem/vas.o
  .rodata.str1.1
-                0x00000000c01097b2       0x24 mem/virtual.o
+                0x00000000c01097ae       0x24 mem/virtual.o
  .rodata.str1.1
-                0x00000000c01097d6       0x25 syscall/terminate.o
+                0x00000000c01097d2       0x25 syscall/terminate.o
  .rodata.str1.1
-                0x00000000c01097fb       0x23 test/runtest.o
+                0x00000000c01097f7       0x23 test/runtest.o
  .rodata.str1.1
-                0x00000000c010981e       0x1b thread/process.o
+                0x00000000c010981a       0x1b thread/process.o
  .rodata.str1.1
-                0x00000000c0109839       0x47 thread/synch.o
+                0x00000000c0109835       0x47 thread/synch.o
  .rodata.str1.1
-                0x00000000c0109880      0x122 thread/thread.o
+                0x00000000c010987c      0x122 thread/thread.o
  .rodata.str1.1
-                0x00000000c01099a2       0x4d util/adt_blocking_byte_buffer.o
+                0x00000000c010999e       0x4d util/adt_blocking_byte_buffer.o
  .rodata.str1.1
-                0x00000000c01099ef       0x79 util/adt_hashmap.o
+                0x00000000c01099eb       0x79 util/adt_hashmap.o
  .rodata.str1.1
-                0x00000000c0109a68      0x138 util/adt_list.o
+                0x00000000c0109a64      0x138 util/adt_list.o
  .rodata.str1.1
-                0x00000000c0109ba0       0x3b util/kprintf.o
+                0x00000000c0109b9c       0x3b util/kprintf.o
  .rodata.str1.1
-                0x00000000c0109bdb       0x12 util/panic.o
+                0x00000000c0109bd7       0x12 util/panic.o
  .rodata.str1.1
-                0x00000000c0109bed       0x13 vfs/filedes.o
+                0x00000000c0109be9       0x13 vfs/filedes.o
  .rodata.str1.1
-                0x00000000c0109c00       0x11 vfs/vfs.o
+                0x00000000c0109bfc       0x11 vfs/vfs.o
                                          0x13 (size before relaxing)
  .rodata.str1.1
-                0x00000000c0109c11       0x1b vfs/vnode.o
+                0x00000000c0109c0d       0x1b vfs/vnode.o
  .rodata.str1.1
-                0x00000000c0109c2c       0x29 fs/demofs/demofs_inodes.o
+                0x00000000c0109c28       0x29 fs/demofs/demofs_inodes.o
  .rodata.str1.1
-                0x00000000c0109c55       0x1e machine/dev/cpu.o
+                0x00000000c0109c51       0x1e machine/dev/cpu.o
  .rodata.str1.1
-                0x00000000c0109c73       0x7d machine/dev/floppy.o
+                0x00000000c0109c6f       0x7d machine/dev/floppy.o
                                          0x85 (size before relaxing)
  .rodata.str1.1
-                0x00000000c0109cf0       0x21 machine/dev/ide.o
+                0x00000000c0109cec       0x21 machine/dev/ide.o
                                          0x29 (size before relaxing)
  .rodata.str1.1
-                0x00000000c0109d11       0x40 machine/elf/elf.o
+                0x00000000c0109d0d       0x40 machine/elf/elf.o
  .rodata.str1.1
-                0x00000000c0109d51       0x59 machine/elf/symbols.o
+                0x00000000c0109d4d       0x59 machine/elf/symbols.o
  .rodata.str1.1
-                0x00000000c0109daa       0x27 machine/lowlevel/interrupt.o
+                0x00000000c0109da6       0x27 machine/lowlevel/interrupt.o
  .rodata.str1.1
-                0x00000000c0109dd1       0x18 machine/mem/physical.o
+                0x00000000c0109dcd       0x18 machine/mem/physical.o
  .rodata.str1.1
-                0x00000000c0109de9      0x100 machine/mem/virtual.o
+                0x00000000c0109de5      0x100 machine/mem/virtual.o
  .rodata.str1.1
-                0x00000000c0109ee9        0x9 test/runnable/canary.o
+                0x00000000c0109ee5        0x9 test/runnable/canary.o
  .rodata.str1.1
-                0x00000000c0109ef2        0x7 test/runnable/heap.o
+                0x00000000c0109eee        0x7 test/runnable/heap.o
  .rodata.str1.1
-                0x00000000c0109ef9       0x12 test/runnable/sleep.o
+                0x00000000c0109ef5       0x12 test/runnable/sleep.o
 
-.eh_frame       0x00000000c0109f0c     0x3258 load address 0x0000000000109f0c
- .eh_frame      0x00000000c0109f0c       0x34 assert.o
- .eh_frame      0x00000000c0109f40      0x1c8 ctype.o
+.eh_frame       0x00000000c0109f08     0x3258 load address 0x0000000000109f08
+ .eh_frame      0x00000000c0109f08       0x34 assert.o
+ .eh_frame      0x00000000c0109f3c      0x1c8 ctype.o
                                         0x1e0 (size before relaxing)
- .eh_frame      0x00000000c010a108      0x1f8 string.o
+ .eh_frame      0x00000000c010a104      0x1f8 string.o
                                         0x210 (size before relaxing)
- .eh_frame      0x00000000c010a300       0x64 dev/beeper.o
+ .eh_frame      0x00000000c010a2fc       0x64 dev/beeper.o
                                          0x7c (size before relaxing)
- .eh_frame      0x00000000c010a364      0x144 dev/console.o
+ .eh_frame      0x00000000c010a360      0x144 dev/console.o
                                         0x15c (size before relaxing)
- .eh_frame      0x00000000c010a4a8       0x5c dev/interface.o
+ .eh_frame      0x00000000c010a4a4       0x5c dev/interface.o
                                          0x74 (size before relaxing)
- .eh_frame      0x00000000c010a504       0x78 dev/pipe.o
+ .eh_frame      0x00000000c010a500       0x78 dev/pipe.o
                                          0x90 (size before relaxing)
- .eh_frame      0x00000000c010a57c       0x70 dev/random.o
+ .eh_frame      0x00000000c010a578       0x70 dev/random.o
                                          0x88 (size before relaxing)
- .eh_frame      0x00000000c010a5ec       0xa4 dev/video.o
+ .eh_frame      0x00000000c010a5e8       0xa4 dev/video.o
                                          0xbc (size before relaxing)
- .eh_frame      0x00000000c010a690       0x3c main/main.o
+ .eh_frame      0x00000000c010a68c       0x3c main/main.o
                                          0x54 (size before relaxing)
- .eh_frame      0x00000000c010a6cc       0xfc mem/heap.o
+ .eh_frame      0x00000000c010a6c8       0xfc mem/heap.o
                                         0x114 (size before relaxing)
- .eh_frame      0x00000000c010a7c8       0x7c mem/physical.o
+ .eh_frame      0x00000000c010a7c4       0x7c mem/physical.o
                                          0x94 (size before relaxing)
- .eh_frame      0x00000000c010a844       0x74 mem/swapfile.o
+ .eh_frame      0x00000000c010a840       0x74 mem/swapfile.o
                                          0x8c (size before relaxing)
- .eh_frame      0x00000000c010a8b8      0x1a0 mem/vas.o
+ .eh_frame      0x00000000c010a8b4      0x1a0 mem/vas.o
                                         0x1b8 (size before relaxing)
- .eh_frame      0x00000000c010aa58       0xcc mem/virtual.o
+ .eh_frame      0x00000000c010aa54       0xcc mem/virtual.o
                                          0xe4 (size before relaxing)
- .eh_frame      0x00000000c010ab24       0x2c syscall/close.o
+ .eh_frame      0x00000000c010ab20       0x2c syscall/close.o
                                          0x44 (size before relaxing)
- .eh_frame      0x00000000c010ab50       0x60 syscall/dup.o
+ .eh_frame      0x00000000c010ab4c       0x60 syscall/dup.o
                                          0x78 (size before relaxing)
- .eh_frame      0x00000000c010abb0       0x20 syscall/isatty.o
+ .eh_frame      0x00000000c010abac       0x20 syscall/isatty.o
                                          0x38 (size before relaxing)
- .eh_frame      0x00000000c010abd0       0x2c syscall/lseek.o
+ .eh_frame      0x00000000c010abcc       0x2c syscall/lseek.o
                                          0x44 (size before relaxing)
- .eh_frame      0x00000000c010abfc       0x28 syscall/open.o
+ .eh_frame      0x00000000c010abf8       0x28 syscall/open.o
                                          0x40 (size before relaxing)
- .eh_frame      0x00000000c010ac24       0x2c syscall/read.o
+ .eh_frame      0x00000000c010ac20       0x2c syscall/read.o
                                          0x44 (size before relaxing)
- .eh_frame      0x00000000c010ac50       0x2c syscall/sbrk.o
+ .eh_frame      0x00000000c010ac4c       0x2c syscall/sbrk.o
                                          0x44 (size before relaxing)
- .eh_frame      0x00000000c010ac7c       0x48 syscall/syscall.o
+ .eh_frame      0x00000000c010ac78       0x48 syscall/syscall.o
                                          0x60 (size before relaxing)
- .eh_frame      0x00000000c010acc4       0x2c syscall/tcgetattr.o
+ .eh_frame      0x00000000c010acc0       0x2c syscall/tcgetattr.o
                                          0x44 (size before relaxing)
- .eh_frame      0x00000000c010acf0       0x2c syscall/tcsetattr.o
+ .eh_frame      0x00000000c010acec       0x2c syscall/tcsetattr.o
                                          0x44 (size before relaxing)
- .eh_frame      0x00000000c010ad1c       0x1c syscall/terminate.o
+ .eh_frame      0x00000000c010ad18       0x1c syscall/terminate.o
                                          0x34 (size before relaxing)
- .eh_frame      0x00000000c010ad38       0x2c syscall/write.o
+ .eh_frame      0x00000000c010ad34       0x2c syscall/write.o
                                          0x44 (size before relaxing)
- .eh_frame      0x00000000c010ad64       0x20 syscall/yield.o
+ .eh_frame      0x00000000c010ad60       0x20 syscall/yield.o
                                          0x38 (size before relaxing)
- .eh_frame      0x00000000c010ad84       0x34 test/runtest.o
+ .eh_frame      0x00000000c010ad80       0x34 test/runtest.o
                                          0x4c (size before relaxing)
- .eh_frame      0x00000000c010adb8       0x60 thread/cleaner.o
+ .eh_frame      0x00000000c010adb4       0x60 thread/cleaner.o
                                          0x78 (size before relaxing)
- .eh_frame      0x00000000c010ae18       0x3c thread/idle.o
+ .eh_frame      0x00000000c010ae14       0x3c thread/idle.o
                                          0x54 (size before relaxing)
- .eh_frame      0x00000000c010ae54       0x54 thread/loader.o
+ .eh_frame      0x00000000c010ae50       0x54 thread/loader.o
                                          0x6c (size before relaxing)
- .eh_frame      0x00000000c010aea8       0xcc thread/process.o
+ .eh_frame      0x00000000c010aea4       0xcc thread/process.o
                                          0xe4 (size before relaxing)
- .eh_frame      0x00000000c010af74       0x8c thread/spinlock.o
+ .eh_frame      0x00000000c010af70       0x8c thread/spinlock.o
                                          0xa4 (size before relaxing)
- .eh_frame      0x00000000c010b000      0x198 thread/synch.o
+ .eh_frame      0x00000000c010affc      0x198 thread/synch.o
                                         0x1b0 (size before relaxing)
- .eh_frame      0x00000000c010b198      0x3a0 thread/thread.o
+ .eh_frame      0x00000000c010b194      0x3a0 thread/thread.o
                                         0x3b8 (size before relaxing)
- .eh_frame      0x00000000c010b538       0xd0 util/adt_blocking_byte_buffer.o
+ .eh_frame      0x00000000c010b534       0xd0 util/adt_blocking_byte_buffer.o
                                          0xe8 (size before relaxing)
- .eh_frame      0x00000000c010b608      0x10c util/adt_hashmap.o
+ .eh_frame      0x00000000c010b604      0x10c util/adt_hashmap.o
                                         0x124 (size before relaxing)
- .eh_frame      0x00000000c010b714      0x1e0 util/adt_list.o
+ .eh_frame      0x00000000c010b710      0x1e0 util/adt_list.o
                                         0x1f8 (size before relaxing)
- .eh_frame      0x00000000c010b8f4       0xa8 util/adt_stack.o
+ .eh_frame      0x00000000c010b8f0       0xa8 util/adt_stack.o
                                          0xc0 (size before relaxing)
- .eh_frame      0x00000000c010b99c       0x60 util/bitarray.o
+ .eh_frame      0x00000000c010b998       0x60 util/bitarray.o
                                          0x78 (size before relaxing)
- .eh_frame      0x00000000c010b9fc       0x34 util/cpu.o
+ .eh_frame      0x00000000c010b9f8       0x34 util/cpu.o
                                          0x4c (size before relaxing)
- .eh_frame      0x00000000c010ba30      0x104 util/kprintf.o
+ .eh_frame      0x00000000c010ba2c      0x104 util/kprintf.o
                                         0x11c (size before relaxing)
- .eh_frame      0x00000000c010bb34       0x1c util/panic.o
+ .eh_frame      0x00000000c010bb30       0x1c util/panic.o
                                          0x34 (size before relaxing)
- .eh_frame      0x00000000c010bb50       0x84 vfs/copyinout.o
+ .eh_frame      0x00000000c010bb4c       0x84 vfs/copyinout.o
                                          0x9c (size before relaxing)
- .eh_frame      0x00000000c010bbd4      0x18c vfs/device.o
+ .eh_frame      0x00000000c010bbd0      0x18c vfs/device.o
                                         0x1a4 (size before relaxing)
- .eh_frame      0x00000000c010bd60      0x168 vfs/filedes.o
+ .eh_frame      0x00000000c010bd5c      0x168 vfs/filedes.o
                                         0x180 (size before relaxing)
- .eh_frame      0x00000000c010bec8       0x9c vfs/uio.o
+ .eh_frame      0x00000000c010bec4       0x9c vfs/uio.o
                                          0xb4 (size before relaxing)
- .eh_frame      0x00000000c010bf64      0x324 vfs/vfs.o
+ .eh_frame      0x00000000c010bf60      0x324 vfs/vfs.o
                                         0x33c (size before relaxing)
- .eh_frame      0x00000000c010c288      0x260 vfs/vnode.o
+ .eh_frame      0x00000000c010c284      0x260 vfs/vnode.o
                                         0x278 (size before relaxing)
- .eh_frame      0x00000000c010c4e8       0x88 fs/demofs/demofs_inodes.o
+ .eh_frame      0x00000000c010c4e4       0x88 fs/demofs/demofs_inodes.o
                                          0xa0 (size before relaxing)
- .eh_frame      0x00000000c010c570      0x208 fs/demofs/demofs_vnode.o
+ .eh_frame      0x00000000c010c56c      0x208 fs/demofs/demofs_vnode.o
                                         0x220 (size before relaxing)
- .eh_frame      0x00000000c010c778       0x58 machine/dev/beeper.o
+ .eh_frame      0x00000000c010c774       0x58 machine/dev/beeper.o
                                          0x70 (size before relaxing)
- .eh_frame      0x00000000c010c7d0       0x84 machine/dev/cpu.o
+ .eh_frame      0x00000000c010c7cc       0x84 machine/dev/cpu.o
                                          0x9c (size before relaxing)
- .eh_frame      0x00000000c010c854      0x1e0 machine/dev/floppy.o
+ .eh_frame      0x00000000c010c850      0x1e0 machine/dev/floppy.o
                                         0x1f8 (size before relaxing)
- .eh_frame      0x00000000c010ca34       0xa8 machine/dev/ide.o
+ .eh_frame      0x00000000c010ca30       0xa8 machine/dev/ide.o
                                          0xc0 (size before relaxing)
- .eh_frame      0x00000000c010cadc       0x54 machine/dev/pic.o
+ .eh_frame      0x00000000c010cad8       0x54 machine/dev/pic.o
                                          0x6c (size before relaxing)
- .eh_frame      0x00000000c010cb30       0x44 machine/dev/pit.o
+ .eh_frame      0x00000000c010cb2c       0x44 machine/dev/pit.o
                                          0x5c (size before relaxing)
- .eh_frame      0x00000000c010cb74       0xec machine/elf/elf.o
+ .eh_frame      0x00000000c010cb70       0xec machine/elf/elf.o
                                         0x104 (size before relaxing)
- .eh_frame      0x00000000c010cc60       0x74 machine/elf/symbols.o
+ .eh_frame      0x00000000c010cc5c       0x74 machine/elf/symbols.o
                                          0x8c (size before relaxing)
- .eh_frame      0x00000000c010ccd4       0x64 machine/lowlevel/gdt.o
+ .eh_frame      0x00000000c010ccd0       0x64 machine/lowlevel/gdt.o
                                          0x7c (size before relaxing)
- .eh_frame      0x00000000c010cd38       0x50 machine/lowlevel/idt.o
+ .eh_frame      0x00000000c010cd34       0x50 machine/lowlevel/idt.o
                                          0x68 (size before relaxing)
- .eh_frame      0x00000000c010cd88       0x98 machine/lowlevel/interrupt.o
+ .eh_frame      0x00000000c010cd84       0x98 machine/lowlevel/interrupt.o
                                          0xb0 (size before relaxing)
- .eh_frame      0x00000000c010ce20       0x24 machine/lowlevel/tss.o
+ .eh_frame      0x00000000c010ce1c       0x24 machine/lowlevel/tss.o
                                          0x3c (size before relaxing)
- .eh_frame      0x00000000c010ce44       0x28 machine/mem/physical.o
+ .eh_frame      0x00000000c010ce40       0x28 machine/mem/physical.o
                                          0x40 (size before relaxing)
- .eh_frame      0x00000000c010ce6c      0x1f4 machine/mem/virtual.o
+ .eh_frame      0x00000000c010ce68      0x1f4 machine/mem/virtual.o
                                         0x20c (size before relaxing)
- .eh_frame      0x00000000c010d060       0x2c machine/thread/fork.o
+ .eh_frame      0x00000000c010d05c       0x2c machine/thread/fork.o
                                          0x44 (size before relaxing)
- .eh_frame      0x00000000c010d08c       0x20 test/runnable/canary.o
+ .eh_frame      0x00000000c010d088       0x20 test/runnable/canary.o
                                          0x38 (size before relaxing)
- .eh_frame      0x00000000c010d0ac       0x28 test/runnable/heap.o
+ .eh_frame      0x00000000c010d0a8       0x28 test/runnable/heap.o
                                          0x40 (size before relaxing)
- .eh_frame      0x00000000c010d0d4       0x24 test/runnable/sleep.o
+ .eh_frame      0x00000000c010d0d0       0x24 test/runnable/sleep.o
                                          0x3c (size before relaxing)
- .eh_frame      0x00000000c010d0f8       0x6c /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivdi3.o)
+ .eh_frame      0x00000000c010d0f4       0x6c /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a(_udivdi3.o)
                                          0x84 (size before relaxing)
 
-.rel.dyn        0x00000000c010d164        0x0 load address 0x000000000010d164
- .rel.got       0x00000000c010d164        0x0 assert.o
- .rel.iplt      0x00000000c010d164        0x0 assert.o
- .rel.text      0x00000000c010d164        0x0 assert.o
+.rel.dyn        0x00000000c010d160        0x0 load address 0x000000000010d160
+ .rel.got       0x00000000c010d160        0x0 assert.o
+ .rel.iplt      0x00000000c010d160        0x0 assert.o
+ .rel.text      0x00000000c010d160        0x0 assert.o
  .rel.multiboot.text
-                0x00000000c010d164        0x0 assert.o
+                0x00000000c010d160        0x0 assert.o
 
 .data           0x00000000c010e000      0x2a4 load address 0x000000000010e000
  *(.data)

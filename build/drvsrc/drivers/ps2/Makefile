@@ -1,5 +1,5 @@
 
-DRIVER_NAME = PS2.SYS
+DRIVER_NAME = ps2.sys
 
 CC = i386-banana-gcc
 AS = nasm

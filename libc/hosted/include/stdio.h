@@ -3,6 +3,10 @@
 #include <stddef.h>
 #include <stdarg.h>
 
+#ifndef NULL
+#define NULL	((void*) 0)
+#endif
+
 #define FOPEN_MAX 4096
 #define EOF (-1)
 

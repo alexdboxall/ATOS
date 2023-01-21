@@ -157,4 +157,4 @@ LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/li
 
 /DISCARD/
  *(.comment)
-OUTPUT(CLIPDRAW.SYS elf32-i386)
+OUTPUT(clipdraw.sys elf32-i386)
