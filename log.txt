@@ -541,58 +541,20 @@ Testing backtracking after a file has been reached                  ... passed
 
 >>ABOUT TO ACQUIRE THE FILEDES LOCK IN filedes_handle_exec
 ACQUIRED
->>ABOUT TO ACQUIRE THE FILEDES LOCK IN filedes_handle_exec
-ACQUIRED
->>ABOUT TO ACQUIRE THE FILEDES LOCK IN filedes_handle_exec
-ACQUIRED
->Unsupported command ''
-
->>ABOUT TO ACQUIRE THE FILEDES LOCK IN filedes_handle_exec
-ACQUIRED
->PF (cr2 = 0xD8269000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD826A000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD826B000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD826C000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD826D000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD826E000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD826F000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD8270000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD8271000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD8272000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD8273000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD8274000, eip = 0xC0101287, err = 0x2)
->PF (cr2 = 0xD8275000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD8276000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD8277000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD8278000, eip = 0xC0101287, err = 0x2)
->PF (cr2 = 0xD8279000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD827A000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD827B000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD827C000, eip = 0xC0101287, err = 0x2)
->Unsupported command 'guyi'
-
->PF (cr2 = 0xD827D000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD827E000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD827F000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD8280000, eip = 0xC0101287, err = 0x2)
->PF (cr2 = 0xD8281000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD8282000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD8283000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD8284000, eip = 0xC0101287, err = 0x2)
->PF (cr2 = 0xD8285000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD8286000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD8287000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD8288000, eip = 0xC0101287, err = 0x2)
->PF (cr2 = 0xD8289000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD828A000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD828B000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD828C000, eip = 0xC0101287, err = 0x2)
-PF (cr2 = 0xD824E022, eip = 0xD824E022, err = 0x0)
-entry == NULL (cr2 = 0x0, eip = 0xD824E022, err = 0x0)
-unhandled exception - page fault (14)
-Assertion failed: !spinlock_is_held(lock) per-vas lock [thread/spinlock.c: 51]
----------------
-@@@
-
-Assertion failed: !spinlock_is_held(lock) per-vas lock [thread/spinlock.c: 51]
-Kernel panic: Assertion fail
+>TODO: vas_copy allocates a lot of memory, but it also needs to lock the VAS! (which the pf handler also needs to do!)
+0
+3
+0
+3
+0
+3
+0
+3
+0
+3
+0
+3
+0
+3
+0
+3
