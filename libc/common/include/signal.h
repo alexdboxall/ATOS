@@ -1,5 +1,8 @@
 #pragma once
 
+/*
+ * SIG_DFL must be 0, as we memset() the default signal structure to zero.
+ */
 #define SIG_DFL         0
 #define SIG_IGN         1
 #define SIG_ERR         -1

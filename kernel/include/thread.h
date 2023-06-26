@@ -21,6 +21,9 @@ enum thread_state {
 	/* On the sleep list */
 	THREAD_STATE_SLEEPING,
 
+	/* Stopped due SIGSTOP, can be resumed by SIGCONT */
+	THREAD_STATE_STOPPED,
+
 	/* Blocked, but allowed to be woken by a signal. */
 	THREAD_STATE_INTERRUPTIBLE,
 
