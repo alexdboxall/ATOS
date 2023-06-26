@@ -4,7 +4,6 @@
 #include <machine/cpu.h>
 #include <machine/gdt.h>
 #include <cpu.h>
-#include <malloc.h>
 #include <kprintf.h>
 
 extern void x86_tss_load(size_t selector);

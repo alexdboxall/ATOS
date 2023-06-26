@@ -1,6 +1,6 @@
 
-CC = i386-banana-gcc
-AR = i386-banana-ar
+CC = i686-elf-gcc
+AR = i686-elf-ar
 AS = nasm
 FAKE_CROSS_COMPILER = -m32 -I../common/include -I../hosted/include
 COMPILE_FLAGS = -c -Os -ffunction-sections -fdata-sections -fno-strict-aliasing -Wall -Wextra -Wpedantic -Werror -Wcast-align=strict -Wpointer-arith -fmax-errors=5 -std=gnu11 -ffreestanding $(FAKE_CROSS_COMPILER)

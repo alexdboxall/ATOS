@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <vfs.h>
+#include <kprintf.h>
 
 /*
 * vfs/filedesc.c - File Descriptors
@@ -60,7 +61,7 @@ struct filedes_table* filedes_table_create(void) {
 * to the same underlying files.
 */
 struct filedes_table* filedes_table_copy(struct filedes_table* original) {
-    struct filedes_table* new_table = malloc(sizeof(struct filedes_table));
+    struct filedes_table* new_table = filedes_table_create();
 
     spinlock_acquire(&original->lock);
     memcpy(new_table->entries, original->entries, sizeof(struct filedes_entry) * MAX_FD_PER_PROCESS);
@@ -75,6 +76,7 @@ struct filedes_table* filedes_table_copy(struct filedes_table* original) {
 struct vnode* filedesc_convert_to_vnode(struct filedes_table* table, int fd) {
     spinlock_acquire(&table->lock);
     if (fd < 0 || fd >= MAX_FD_PER_PROCESS) {
+        spinlock_release(&table->lock);
         return NULL;
     }
     struct vnode* result = table->entries[fd].vnode;
@@ -128,7 +130,9 @@ int filedesc_table_deregister_vnode(struct filedes_table* table, struct vnode* n
 * and closes the ones that have the flag set.
 */
 int filedes_handle_exec(struct filedes_table* table) {
+    kprintf("ABOUT TO ACQUIRE THE FILEDES LOCK IN filedes_handle_exec\n");
     spinlock_acquire(&table->lock);
+    kprintf("ACQUIRED\n");
 
     for (int i = 0; i < MAX_FD_PER_PROCESS; ++i) {
         if (table->entries[i].vnode != NULL) {
@@ -195,6 +199,7 @@ int filedesc_table_dup2(struct filedes_table* table, int oldfd, int newfd) {
     * value as oldfd, then dup2() does nothing, and returns newfd."
     */
     if (oldfd == newfd) {
+        spinlock_release(&table->lock);
         return newfd;
     }
 

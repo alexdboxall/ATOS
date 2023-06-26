@@ -16,14 +16,14 @@ struct lconv* localeconv(void) {
     current_locale_data.mon_grouping = "";
     current_locale_data.positive_sign = "";
     current_locale_data.negative_sign = "";
-    current_locale_data.int_frac_digits = UCHAR_MAX;
-    current_locale_data.frac_digits = UCHAR_MAX;
-    current_locale_data.p_cs_precedes = UCHAR_MAX;
-    current_locale_data.p_sep_by_space = UCHAR_MAX;
-    current_locale_data.n_cs_precedes = UCHAR_MAX;
-    current_locale_data.n_sep_by_space = UCHAR_MAX;
-    current_locale_data.p_sign_posn = UCHAR_MAX;
-    current_locale_data.n_sign_posn = UCHAR_MAX;
+    current_locale_data.int_frac_digits = -1;
+    current_locale_data.frac_digits = -1;
+    current_locale_data.p_cs_precedes = -1;
+    current_locale_data.p_sep_by_space = -1;
+    current_locale_data.n_cs_precedes = -1;
+    current_locale_data.n_sep_by_space = -1;
+    current_locale_data.p_sign_posn = -1;
+    current_locale_data.n_sign_posn = -1;
     
     return &current_locale_data;
 }

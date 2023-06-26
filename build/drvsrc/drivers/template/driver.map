@@ -1,96 +1,93 @@
 
 Discarded input sections
 
- .comment       0x0000000000000000       0x12 main.o
+ .comment       0x00000000       0x13 main.o
 
 Memory Configuration
 
 Name             Origin             Length             Attributes
-*default*        0x0000000000000000 0xffffffffffffffff
+*default*        0x00000000         0xffffffff
 
 Linker script and memory map
 
 LOAD main.o
-LOAD /cygdrive/c/Users/Alex/Toolchain/Output/bin/../lib/gcc/i386-banana/8.1.0/libgcc.a
-                0x00000000d0000000                . = 0xd0000000
+LOAD /opt/homebrew/Cellar/i686-elf-gcc/13.1.0/lib/gcc/i686-elf/13.1.0/libgcc.a
+                0xd0000000                        . = 0xd0000000
 
-.text           0x00000000d0000000       0x2a
+.text           0xd0000000       0x2a
  *(.text)
- .text          0x00000000d0000000       0x2a main.o
-                0x00000000d0000000                aha
-                0x00000000d0000015                _driver_entry_point
+ .text          0xd0000000       0x2a main.o
+                0xd0000000                aha
+                0xd0000015                _driver_entry_point
  *(.rodata)
  *(.symtab)
  *(.strtab)
 
-.plt            0x00000000d0000030        0x0
- .plt           0x00000000d0000030        0x0 main.o
+.plt            0xd0000030        0x0
+ .plt           0xd0000030        0x0 main.o
 
-.plt.got        0x00000000d0000030        0x0
- .plt.got       0x00000000d0000030        0x0 main.o
+.plt.got        0xd0000030        0x0
+ .plt.got       0xd0000030        0x0 main.o
 
-.rodata.str1.1  0x00000000d000002a       0x2c
+.rodata.str1.1  0xd000002a       0x2c
  .rodata.str1.1
-                0x00000000d000002a       0x2c main.o
+                0xd000002a       0x2c main.o
 
-.eh_frame       0x00000000d0000058       0x58
- .eh_frame      0x00000000d0000058       0x58 main.o
-
-.gnu.version_d  0x00000000d00000b0        0x0
+.gnu.version_d  0xd0000058        0x0
  .gnu.version_d
-                0x00000000d00000b0        0x0 main.o
+                0xd0000058        0x0 main.o
 
-.gnu.version    0x00000000d00000b0        0x0
- .gnu.version   0x00000000d00000b0        0x0 main.o
+.gnu.version    0xd0000056        0x0
+ .gnu.version   0xd0000056        0x0 main.o
 
-.gnu.version_r  0x00000000d00000b0        0x0
+.gnu.version_r  0xd0000058        0x0
  .gnu.version_r
-                0x00000000d00000b0        0x0 main.o
+                0xd0000058        0x0 main.o
 
-.dynsym         0x00000000d00000b0       0x40
- .dynsym        0x00000000d00000b0       0x40 main.o
+.dynsym         0xd0000058       0x40
+ .dynsym        0xd0000058       0x40 main.o
 
-.dynstr         0x00000000d00000f0       0x21
- .dynstr        0x00000000d00000f0       0x21 main.o
+.dynstr         0xd0000098       0x21
+ .dynstr        0xd0000098       0x21 main.o
 
-.hash           0x00000000d0000114       0x24
- .hash          0x00000000d0000114       0x24 main.o
+.hash           0xd00000bc       0x24
+ .hash          0xd00000bc       0x24 main.o
 
-.eh_frame       0x00000000d0000138        0x0
- .eh_frame      0x00000000d0000138        0x0 main.o
- .eh_frame      0x00000000d0000138        0x0 main.o
+.eh_frame       0xd00000e0        0x0
+ .eh_frame      0xd00000e0        0x0 main.o
+ .eh_frame      0xd00000e0        0x0 main.o
 
-.rel.dyn        0x00000000d0000138       0x20
- .rel.plt       0x00000000d0000138        0x0 main.o
- .rel.got       0x00000000d0000138        0x0 main.o
- .rel.ifunc     0x00000000d0000138        0x0 main.o
- .rel.text      0x00000000d0000138       0x20 main.o
+.rel.dyn        0xd00000e0       0x20
+ .rel.plt       0xd00000e0        0x0 main.o
+ .rel.got       0xd00000e0        0x0 main.o
+ .rel.ifunc     0xd00000e0        0x0 main.o
+ .rel.text      0xd00000e0       0x20 main.o
 
-.data           0x00000000d0001000        0x0
+.data           0xd0001000        0x0
  *(.data)
- .data          0x00000000d0001000        0x0 main.o
+ .data          0xd0001000        0x0 main.o
 
-.dynamic        0x00000000d0001000       0x78
- .dynamic       0x00000000d0001000       0x78 main.o
-                0x00000000d0001000                _DYNAMIC
+.dynamic        0xd0001000       0x78
+ .dynamic       0xd0001000       0x78 main.o
+                0xd0001000                _DYNAMIC
 
-.got            0x00000000d0001078        0x0
- .got           0x00000000d0001078        0x0 main.o
+.got            0xd0001078        0x0
+ .got           0xd0001078        0x0 main.o
 
-.got.plt        0x00000000d0001078        0x0
- .got.plt       0x00000000d0001078        0x0 main.o
+.got.plt        0xd0001078        0x0
+ .got.plt       0xd0001078        0x0 main.o
 
-.data.rel.ro    0x00000000d0001078        0x0
- .data.rel.ro   0x00000000d0001078        0x0 main.o
+.data.rel.ro    0xd0001078        0x0
+ .data.rel.ro   0xd0001078        0x0 main.o
 
-.bss            0x00000000d0002000        0x0
+.bss            0xd0002000        0x0
  *(COMMON)
  *(.bss)
- .bss           0x00000000d0002000        0x0 main.o
+ .bss           0xd0002000        0x0 main.o
  *(.bootstrap_stack)
 
-.dynbss         0x00000000d0002000        0x0
- .dynbss        0x00000000d0002000        0x0 main.o
+.dynbss         0xd0002000        0x0
+ .dynbss        0xd0002000        0x0 main.o
 
 /DISCARD/
  *(.comment)

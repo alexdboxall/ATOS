@@ -47,8 +47,8 @@ void spinlock_init(struct spinlock* lock, const char* name)
 * until it can acquire the lock.
 */
 void spinlock_acquire(struct spinlock* lock)
-{    
-    assert_with_message(!spinlock_is_held(lock), lock->name);
+{   
+	assert_with_message(!spinlock_is_held(lock), lock->name);
 	arch_irq_spinlock_acquire(&lock->lock);
 }
 
@@ -78,7 +78,7 @@ bool spinlock_acquire_if_unlocked(struct spinlock* lock) {
     */
     if (!spinlock_is_held(lock)) {
         spinlock_acquire(lock);
-        return true;
+		return true;
     }
     return false;
 }

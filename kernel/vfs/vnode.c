@@ -1,7 +1,6 @@
 #include <vnode.h>
 #include <spinlock.h>
 #include <assert.h>
-#include <malloc.h>
 #include <kprintf.h>
 #include <synch.h>
 #include <heap.h>

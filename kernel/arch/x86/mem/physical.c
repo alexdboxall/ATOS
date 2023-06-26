@@ -76,7 +76,7 @@ retry:
 		* A quick check to ensure that the table is somewhat valid.
 		*/
 		uint32_t flags = x86_grub_table[0];
-		if (!(flags >> 6) & 1) {
+		if (!((flags >> 6) & 1)) {
 			panic("No memory map from GRUB");
 		}
 		

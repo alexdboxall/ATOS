@@ -64,7 +64,7 @@ size_t swapfile_write(uint8_t* data) {
         panic("swapfile: failed to write");
     }
 
-    memset(data, ARCH_PAGE_SIZE, 0);
+    memset(data, 0, ARCH_PAGE_SIZE);
 
     spinlock_release(&swapfile_lock);
 

@@ -53,7 +53,9 @@ common_footer:
 	cp -r $(BUILD_OUTPUT_DIR)/drivers/* $(SYSROOT)/System
 	cp -r $(BUILD_OUTPUT_DIR)/applications/* $(SYSROOT)/System
 	cp $(BUILD_OUTPUT_DIR)/kernel.exe $(SYSROOT)/System
-	./tools/mkdemofs.exe 64 $(BUILD_OUTPUT_DIR)/kernel.exe $(SYSROOT) $(BUILD_OUTPUT_DIR)/disk.bin bootloader.bin
+	gcc ./tools/mkdemofs.cpp -o ./tools/mkdemofs
+	chmod 777 ./tools/mkdemofs
+	./tools/mkdemofs 64 $(BUILD_OUTPUT_DIR)/kernel.exe $(SYSROOT) $(BUILD_OUTPUT_DIR)/disk.bin bootloader.bin
 	head -c 1474560 $(BUILD_OUTPUT_DIR)/disk.bin >> $(BUILD_OUTPUT_DIR)/floppy.img
 
 
