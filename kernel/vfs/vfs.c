@@ -732,3 +732,22 @@ int vfs_read(struct vnode* node, struct uio* io) {
 
 	return vnode_op_read(node, io);
 }
+
+
+/*
+* Read data from a directory.
+*/
+int vfs_readdir(struct vnode* node, struct uio* io) {
+	if (io == NULL || io->address == NULL) {
+		return EINVAL;
+	}
+    if (!node->can_read) {
+        return EBADF;
+    }
+
+	if (vnode_op_dirent_type(node) != DT_DIR) {
+		return ENOTDIR;
+	}
+	
+	return vnode_op_readdir(node, io);
+}

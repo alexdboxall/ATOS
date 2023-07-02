@@ -10,6 +10,7 @@
 #include <process.h>
 #include <uio.h>
 #include <cpu.h>
+#include <dirent.h>
 #include <vfs.h>
 #include <video.h>
 #include <fcntl.h>
@@ -98,6 +99,42 @@ void basic_shell(void* arg) {
 				}
 			} else {
 				kprintf("Missing file name\n");
+			}
+			kprintf("\n");
+			continue;
+
+		} else if (!strncmp(buffer, "ls", 2)) {
+			if (strlen(buffer) > 3) {
+				char* filename = buffer + 3;
+				struct vnode* node;
+				int ret = vfs_open(filename, O_RDONLY, 0, &node);
+				if (ret != 0) {
+					kprintf("Cannot open: %s\n", strerror(ret));
+				} else {
+					for (int i = 0; true; ++i) {
+						struct dirent dir;
+						struct uio uio = uio_construct_kernel_read(&dir, sizeof(struct dirent), i * sizeof(struct dirent));
+						int ret = vfs_readdir(node, &uio);
+						if (ret != 0) {
+							kprintf("Cannot read: %s\n", strerror(ret));
+						} else {
+							if (uio.length_remaining != 0) {
+								break;
+							}
+							if (dir.d_type == DT_REG) {
+								kprintf("      %s\n", dir.d_name);
+							} else if (dir.d_type == DT_DIR) {
+								kprintf("<DIR> %s\n", dir.d_name);
+							} else {
+								kprintf("<...> %s\n", dir.d_name);
+							}
+						}
+					}
+					
+					vfs_close(node);
+				}
+			} else {
+				kprintf("Missing directory name\n");
 			}
 			kprintf("\n");
 			continue;

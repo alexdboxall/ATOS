@@ -169,7 +169,7 @@ static int demofs_vnode_read_file(struct vnode* node, struct uio* io) {
     return demofs_read_file(&data->fs, data->inode, data->file_length, io);
 }
 
-static int demofs_vnode_readdir_dir(struct vnode* node, struct uio* io) {
+static int demofs_vnode_readdir_dir(struct vnode* node, struct uio* io) {    
     struct vnode_data* data = node->data;
     assert(data != NULL);
     return demofs_read_directory_entry(&data->fs, data->inode, io);
