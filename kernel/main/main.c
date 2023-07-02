@@ -117,6 +117,7 @@ void basic_shell(void* arg) {
 						int ret = vfs_readdir(node, &uio);
 						if (ret != 0) {
 							kprintf("Cannot read: %s\n", strerror(ret));
+							break;
 						} else {
 							if (uio.length_remaining != 0) {
 								break;
