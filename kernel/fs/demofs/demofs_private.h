@@ -14,4 +14,5 @@ struct demofs {
 #define INODE_TO_DIR(inode) (inode | (1U << 31U))
 
 int demofs_read_file(struct demofs* fs, ino_t file, uint32_t file_size, struct uio* io);
+int demofs_read_directory_entry(struct demofs* fs, ino_t directory, struct uio* io);
 int demofs_follow(struct demofs* fs, ino_t parent, ino_t* child, const char* name, uint32_t* file_length_out);

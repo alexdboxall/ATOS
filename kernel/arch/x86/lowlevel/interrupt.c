@@ -8,8 +8,10 @@
 #include <panic.h>
 #include <string.h>
 #include <kprintf.h>
+#include <cpu.h>
 #include <errno.h>
 #include <syscall.h>
+#include <signal.h>
 #include <thread.h>
 
 #define PAGE_FAULT_VECTOR   14
@@ -17,13 +19,22 @@
 
 int (*x86_irq_handlers[256])(struct x86_regs*);
 
-
 int x86_handle_syscall(struct x86_regs* regs) {
     size_t args[4];
     args[0] = regs->ebx;
     args[1] = regs->ecx;
     args[2] = regs->esi;
     args[3] = regs->edi;
+
+    /*
+     * Process signals.
+     */
+    size_t signal_addr = signal_check(current_cpu->current_thread);
+    if (signal_addr) {
+        size_t old_eip = regs->eip;
+        (void) old_eip;
+        //regs->eip = ...;
+    }
 
     int res = syscall_perform(regs->eax, args);
 

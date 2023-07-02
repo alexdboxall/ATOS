@@ -2,7 +2,12 @@
 #include <thread.h>
 #include <kprintf.h>
 #include <signal.h>
+#include <heap.h>
+#include <errno.h>
 #include <spinlock.h>
+#include <panic.h>
+#include <assert.h>
+#include <string.h>
 
 /*
 * thread/signal.c - C Signals
@@ -35,11 +40,13 @@ void __attribute__((__section__("align_previous"))) DO_NOT_DELETE()
 
 void __attribute__((__section__("userkernel"))) signal_default_terminate_handler(int sig)
 {
+    (void) sig;
 	// TODO: call system call for 'exit'
 }
 
 void __attribute__((__section__("userkernel"))) signal_default_abort_handler(int sig)
 {
+    (void) sig;
 	// TODO: call system call for 'abort'
 }
 /*
@@ -80,24 +87,24 @@ static int signal_get_default_action(int number) {
         case SIGCHLD:
         case SIGURG:
         case SIGCONT:
-            return _SIG_IGN;
+            return SIG_IGN;
         default:
             return SIG_ERR;
     } 
 }
 
-struct signal_state signal_create_state() {
+struct signal_state* signal_create_state() {
     struct signal_state* state = malloc(sizeof(struct signal_state));
     memset(state, 0, sizeof(struct signal_state));
     return state;
 }
 
-int signal_install_handler(int number, size_t handler) {
+int signal_install_handler(struct thread* thread, int number, size_t handler) {
     if (number == SIGKILL || number == SIGSTOP || number < 0 || number >= _SIG_UPPER_BND) {
         return EINVAL;
     }
 
-    struct signal_state* signals;
+    struct signal_state* signals = thread->signals;
 
     if (handler == SIG_DFL) {
         signals->mode[number] = SIG_DFL;
@@ -107,11 +114,16 @@ int signal_install_handler(int number, size_t handler) {
 
     } else {
         signals->mode[number] = _SIG_HND;
-        signals->handler[number] = handler;
+        signals->handlers[number] = handler;
     }
+
+    return 0;
 }
 
-static size_t signal_get_handler(int number) {
+size_t signal_check(struct thread* thread);
+static size_t signal_get_handler(struct thread* thread, int number) {
+    struct signal_state* signals = thread->signals;
+
     /*
     * If the specified action for a kind of signal is to ignore it, then any such signal which
     * is generated is discarded immediately. This happens even if the signal is also blocked at
@@ -132,7 +144,7 @@ static size_t signal_get_handler(int number) {
         /*
         * Check for further signals that may actually need to be processed.
         */
-        return signal_check();
+        return signal_check(thread);
 
     } else if (action == _SIG_HND) {
         /*
@@ -141,15 +153,15 @@ static size_t signal_get_handler(int number) {
         * Setting it back to SIG_DFL is *way* easier for us.
         */
 
-        size_t handler = signals->handler[number];
-        signal_install_handler(number, SIG_DFL);
+        size_t handler = signals->handlers[number];
+        signal_install_handler(thread, number, SIG_DFL);
         return handler;
 
     } else if (action == _SIG_ABT) {
-        return (size_t) (void*) signal_default_abort_handler;
+        return (size_t) signal_default_abort_handler;
 
     } else if (action == _SIG_TRM) {
-        return (size_t) (void*) signal_default_terminate_handler;
+        return (size_t) signal_default_terminate_handler;
 
     } else {
         panic("invalid signal type!");
@@ -163,9 +175,8 @@ static size_t signal_get_handler(int number) {
 * highest priority. In this case, signal_check() should be called again to get any futher
 * signals that need handling. Return 0 if there is no signal handler to run at this time.
 */
-size_t signal_check() {
-    struct thread* thread;
-    struct signal_state* signals;
+size_t signal_check(struct thread* thread) {
+    struct signal_state* signals = thread->signals;
 
     /*
      * This should have been caught when the mask is being set, not here. Hence assert it.
@@ -195,7 +206,7 @@ size_t signal_check() {
          * Do this now, so the handler runs on this turn. Otherwise, another signal might be chosen,
          * and as we already cleared the pending bit for SIGCONT, we wouldn't ever actually run the handler. 
          */
-        return signal_get_handler(SIGCONT);
+        return signal_get_handler(thread, SIGCONT);
     }
 
     if (signals->pending_signals & (1 << SIGSTOP)) {
@@ -215,7 +226,7 @@ size_t signal_check() {
             pendingNotMasked >>= 1;
         }
 
-        return signal_get_handler(number);        
+        return signal_get_handler(thread, number);        
     }
 
     return 0;

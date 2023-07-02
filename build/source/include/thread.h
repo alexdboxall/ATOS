@@ -7,6 +7,7 @@
 #include <common.h>
 
 struct process;
+struct signal_state;
 
 #define PRIORITY_NORMAL		128
 #define PRIORITY_IDLE		255
@@ -20,6 +21,9 @@ enum thread_state {
 
 	/* On the sleep list */
 	THREAD_STATE_SLEEPING,
+
+	/* Stopped due SIGSTOP, can be resumed by SIGCONT */
+	THREAD_STATE_STOPPED,
 
 	/* Blocked, but allowed to be woken by a signal. */
 	THREAD_STATE_INTERRUPTIBLE,
@@ -67,6 +71,7 @@ struct thread
 	uint64_t timeslice_expiry;			/* Time since boot in nanoseconds. 0 means no preemption */
     size_t kernel_stack_size;
     struct process* process;            /* The owning process, or NULL if it is a freestanding thread. */
+	struct signal_state* signals;
 };
 
 struct thread* thread_init(void);

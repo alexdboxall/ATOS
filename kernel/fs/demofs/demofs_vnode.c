@@ -126,13 +126,6 @@ static int demofs_vnode_check_open(struct vnode* node, const char* name, int fla
     return 0;
 }
 
-static int demofs_vnode_readdir_dir(struct vnode* node, struct uio* io) {
-    (void) node;
-    (void) io;
-
-    return ENOSYS;
-}
-
 struct vnode* demofs_create_file_vnode();
 struct vnode* demofs_create_dir_vnode();
 
@@ -174,6 +167,12 @@ static int demofs_vnode_read_file(struct vnode* node, struct uio* io) {
     struct vnode_data* data = node->data;
     assert(data != NULL);
     return demofs_read_file(&data->fs, data->inode, data->file_length, io);
+}
+
+static int demofs_vnode_readdir_dir(struct vnode* node, struct uio* io) {
+    struct vnode_data* data = node->data;
+    assert(data != NULL);
+    return demofs_read_directory_entry(&data->fs, data->inode, io);
 }
 
 static int demofs_vnode_stat(struct vnode* node, struct stat* stat) {

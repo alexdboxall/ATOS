@@ -13,6 +13,7 @@
 #include <errno.h>
 #include <filedes.h>
 #include <machine/config.h>
+#include <signal.h>
 
 /*
 * thread/thread.c - Threads
@@ -343,6 +344,7 @@ struct thread* thread_init(void) {
     thr->timeslice_expiry = 1;
     thr->process = NULL;
     thr->argument = NULL;
+    thr->signals = signal_create_state();
 
     spinlock_acquire(&scheduler_lock);
     thr->thread_id = next_thread_id++;
@@ -452,6 +454,7 @@ struct thread* thread_create(void (*initial_address)(void*), void* argument, str
     thr->sleep_expiry = 0;
     thr->timeslice_expiry = 1;
     thr->process = NULL;
+    thr->signals = signal_create_state();
 
     /*
     * If we switch to usermode, we reassign the stack pointer to a new usermode

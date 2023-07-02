@@ -119,6 +119,15 @@ void basic_shell(void* arg) {
 			arch_reboot();
 			continue;
 
+		} else if (!strcmp(buffer, "ram")) {
+			// TODO: remove this as it isn't portable (or maintainable with 'extern'), this is just for our own use
+			extern int num_pages_used;
+			extern int num_pages_total;
+
+			int percent = num_pages_used * 100 / num_pages_total;
+			kprintf("Memory used: %d%% (%d / %d KB)\n\n", percent, num_pages_used * 4, num_pages_total * 4);
+			continue;
+
 		} else if (!strcmp(buffer, "gui")) {
             load_driver("sys:/clipdraw.sys", false);
             continue;

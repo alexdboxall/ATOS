@@ -478,6 +478,11 @@ can use 0x2FD000
 can use 0x2FE000
 can use 0x2FF000
 max_kernel_addr = 0xC0123000
+OPENING System, with ref count = 1
+OPENING raw-hd0, with ref count = 2
+OPENING vesacon.sys, with ref count = 1
+OPENING kernel.exe, with ref count = 1
+OPENING ps2.sys, with ref count = 1
 Testing basic insert_back and iter                                  ... passed
 Testing basic insert_front and iter                                 ... passed
 Testing basic get_head and tail                                     ... passed
@@ -511,50 +516,101 @@ Testing finding the last file in a path with a trailing slash       ... passed
 Testing finding the last file in a path                             ... passed
 Testing finding the root drive with a slash after the colon         ... passed
 Testing finding each segment of a filepath                          ... passed
-Testing opening a file                                              ... passed
-Testing reading a file                                              ... passed
-Testing reading a file from an offset                               ... passed
-Testing reading a file past the end                                 ... passed
-Testing reading a directory with the file read function             ... passed
-Testing reading a file twice                                        ... passed
-Testing opening a file with a dot slash in the path (1)             ... passed
-Testing opening a file with a dot slash in the path (2)             ... passed
+Testing opening a file                                              ...OPENING root file.txt, with ref count = 1
+ passed
+Testing reading a file                                              ...OPENING root file.txt, with ref count = 1
+ passed
+Testing reading a file from an offset                               ...OPENING root file.txt, with ref count = 1
+ passed
+Testing reading a file past the end                                 ...OPENING root file.txt, with ref count = 1
+ passed
+Testing reading a directory with the file read function             ...OPENING test, with ref count = 1
+ passed
+Testing reading a file twice                                        ...OPENING root file.txt, with ref count = 1
+ passed
+Testing opening a file with a dot slash in the path (1)             ...OPENING root file.txt, with ref count = 1
+ passed
+Testing opening a file with a dot slash in the path (2)             ...OPENING root file.txt, with ref count = 1
+ passed
 Testing opening a file with a dot slash after the path              ... passed
-Testing opening a file in a subdirectory                            ... passed
-Testing opening a directory                                         ... passed
+Testing opening a file in a subdirectory                            ...OPENING sub file.txt, with ref count = 1
+ passed
+Testing opening a directory                                         ...OPENING subdir, with ref count = 1
+ passed
 Testing opening a file for writing                                  ... passed
 Testing opening a directory for writing                             ... passed
 Testing opening a file with a non-existent device                   ... passed
 Testing opening a file that doesn't exist                           ... passed
 Testing opening a file in the middle of a path                      ... passed
-Testing opening the filesystem root                                 ... passed
-Testing backtracking through a filepath twice (1)                   ... passed
-Testing backtracking through a filepath once (2)                    ... passed
-Testing backtracking through a filepath twice (1)                   ... passed
-Testing backtracking through a filepath twice (2)                   ... passed
-Testing backtracking past the root                                  ... passed
-Testing backtracking through invalid filepath components            ... passed
-Testing backtracking after a file has been reached                  ... passed
+Testing opening the filesystem root                                 ...OPENING hd0, with ref count = 2
+ passed
+Testing backtracking through a filepath twice (1)                   ...OPENING root file.txt, with ref count = 1
+ passed
+Testing backtracking through a filepath once (2)                    ...OPENING root file.txt, with ref count = 1
+ passed
+Testing backtracking through a filepath twice (1)                   ...OPENING root file.txt, with ref count = 1
+ passed
+Testing backtracking through a filepath twice (2)                   ...OPENING .., with ref count = 1
+ passed
+Testing backtracking past the root                                  ...OPENING .., with ref count = 2
+OPENING .., with ref count = 2
+OPENING .., with ref count = 2
+OPENING test, with ref count = 1
+OPENING subdir, with ref count = 1
+ passed
+Testing backtracking through invalid filepath components            ...OPENING root file.txt, with ref count = 1
+OPENING sub file.txt, with ref count = 1
+ passed
+Testing backtracking after a file has been reached                  ...OPENING root file.txt, with ref count = 1
+ passed
 
  ATOS Kernel
      Copyright Alex Boxall 2022-2023
 
 >>ABOUT TO ACQUIRE THE FILEDES LOCK IN filedes_handle_exec
 ACQUIRED
->TODO: vas_copy allocates a lot of memory, but it also needs to lock the VAS! (which the pf handler also needs to do!)
-0
-3
-0
-3
-0
-3
-0
-3
-0
-3
-0
-3
-0
-3
-0
-3
+OPENING usertest.exe, with ref count = 1
+CALLING SBRK!
+sbrk will return 0x10003000
+OPENING con, with ref count = 2
+OPENING con, with ref count = 3
+OPENING con, with ref count = 4
+OPENING con, with ref count = 5
+>ABOUT TO ACQUIRE THE FILEDES LOCK IN filedes_handle_exec
+ACQUIRED
+OPENING usertest.exe, with ref count = 1
+CALLING SBRK!
+sbrk will return 0x10003000
+OPENING con, with ref count = 5
+OPENING con, with ref count = 6
+OPENING con, with ref count = 7
+OPENING con, with ref count = 8
+>ABOUT TO ACQUIRE THE FILEDES LOCK IN filedes_handle_exec
+ACQUIRED
+OPENING usertest.exe, with ref count = 1
+CALLING SBRK!
+sbrk will return 0x10003000
+OPENING con, with ref count = 8
+OPENING con, with ref count = 9
+OPENING con, with ref count = 10
+OPENING con, with ref count = 11
+>ABOUT TO ACQUIRE THE FILEDES LOCK IN filedes_handle_exec
+ACQUIRED
+OPENING usertest.exe, with ref count = 1
+CALLING SBRK!
+sbrk will return 0x10003000
+OPENING con, with ref count = 11
+OPENING con, with ref count = 12
+OPENING con, with ref count = 13
+OPENING con, with ref count = 14
+>ABOUT TO ACQUIRE THE FILEDES LOCK IN filedes_handle_exec
+ACQUIRED
+OPENING usertest.exe, with ref count = 1
+entry == NULL (cr2 = 0x1DAD0519, eip = 0x100009A7, err = 0x6)
+unhandled exception - page fault (14)
+Assertion failed: !spinlock_is_held(lock) per-vas lock [thread/spinlock.c: 51]
+---------------
+@@@
+
+Assertion failed: !spinlock_is_held(lock) per-vas lock [thread/spinlock.c: 51]
+Kernel panic: Assertion fail

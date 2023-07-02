@@ -9,6 +9,7 @@
 #include <uio.h>
 #include <kprintf.h>
 #include <sys/types.h>
+#include <dirent.h>
 #include <fs/demofs/demofs_private.h>
 
 #define SECTOR_SIZE 512
@@ -217,4 +218,94 @@ int demofs_follow(struct demofs* fs, ino_t parent, ino_t* child, const char* nam
             return EIO;
         }
     }
+}
+
+int demofs_read_directory_entry(struct demofs* fs, ino_t directory, struct uio* io) {
+        /*
+    *   readdir
+*           Reads a directory entry into a struct dirent. The offset in the struct uio
+*           will be a multiple of sizeof(struct dirent), and determines which directory
+*           entry to use. If the offset is beyond the end of the directory, no transfer
+*           should occur, and thus the bytes remaining should still be sizeof(struct dirent).
+    */
+
+    if (!INODE_IS_DIR(parent)) {
+        return ENOTDIR;
+    }
+
+    assert(SECTOR_SIZE % 32 == 0);
+    uint8_t buffer[SECTOR_SIZE];
+
+    struct dirent dir;
+    assert(io->offset % sizeof(struct dirent) == 0);
+    int entry_number = io->offset / sizeof(struct dirent);
+
+    /*
+    * Each directory inode contains 31 files, and a pointer to the next directory entry.
+    * Add 1 to the offset to skip past the header.
+    */
+    int indirections = entry_number / 31;
+    int offset = entry_number % 31 + 1;
+
+    /*
+    * Get the correct inode 
+    */
+    int status = 0;
+    ino_t current_inode = directory;
+    for (int i = 0; i < indirections; ++i) {
+        status = demofs_read_inode(fs, current_inode, buffer);
+        if (status != 0) {
+            return status;
+        }
+
+        /*
+        * Check for end of directory.
+        */
+        if (buffer[i] == 0xFF) {
+            return 0;
+        }
+
+        if (buffer[i] != 0xFE) {
+            return EIO;
+        }
+
+        /*
+        * Get the next in the chain.
+        */
+        current_inode = buffer[1];
+        current_inode |= (ino_t) buffer[2] << 8;
+        current_inode |= (ino_t) buffer[3] << 16;
+    }
+
+    status = demofs_read_inode(fs, current_inode, buffer);
+    if (status != 0) {
+        return status;
+    }
+
+    /*
+    * Check if we've gone past the end of the directory.
+    */
+    if (buffer[offset] == 0) {
+        return 0;
+    }
+
+    /*
+    * strncpy is a bit iffy, so let's just play it safe.
+    */
+    char name[MAX_NAME_LENGTH + 2];
+    memset(name, 0, MAX_NAME_LENGTH + 2);
+    strncpy(name, (char*) buffer + offset * 32, MAX_NAME_LENGTH);
+    strcpy(dir.d_name, name);
+
+    dir.d_namlen = strlen(name);
+
+    ino_t inode = buffer[offset * 32 + MAX_NAME_LENGTH + 4];
+    inode |= (ino_t) buffer[offset * 32 + MAX_NAME_LENGTH + 5] << 8;
+    inode |= (ino_t) buffer[offset * 32 + MAX_NAME_LENGTH + 6] << 16;
+
+    dir.d_ino = inode;
+    dir.d_type = INODE_IS_DIR(inode) ? DT_DIR ? DT_REG;
+
+    /* Perform the transfer to the correct location */
+    return uio_move(&dir, io, sizeof(struct dirent));
 }

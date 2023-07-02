@@ -252,6 +252,8 @@ irq15:
 
 ; Our common interrupt handler
 extern x86_interrupt_handler
+extern signal_check
+extern current_cpu
 int_common_handler:
     ; Save the registers and segments
     pushad
@@ -274,9 +276,9 @@ int_common_handler:
     push esp
 	cld
     call x86_interrupt_handler
-    add esp, 4
-	
+
     ; Restore registers
+    add esp, 4
     pop gs
     pop fs
     pop es

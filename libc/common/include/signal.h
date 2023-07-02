@@ -44,4 +44,10 @@
 #define _SIG_TRM        4
 #define _SIG_ABT        5
 
+#include <stddef.h>
+struct thread;
+struct signal_state;
+size_t signal_check(struct thread* thread);
+struct signal_state* signal_create_state();
+
 #endif
