@@ -1,5 +1,7 @@
 
 kernel_main
+can use 0x121000
+can use 0x122000
 can use 0x123000
 can use 0x124000
 can use 0x125000
@@ -477,94 +479,73 @@ can use 0x2FC000
 can use 0x2FD000
 can use 0x2FE000
 can use 0x2FF000
-max_kernel_addr = 0xC0123000
+max_kernel_addr = 0xC0121000
+got p=0x222000 
+got p=0x223000 
+got p=0x224000 
+got p=0x225000 
+got p=0x226000 
+got p=0x227000 
+got p=0x228000 
+got p=0x229000 
+got p=0x22A000 
 OPENING System, with ref count = 1
 OPENING raw-hd0, with ref count = 2
 OPENING vesacon.sys, with ref count = 1
+got p=0x230000 
+got p=0x231000 
+got p=0x232000 
+got p=0x233000 
 OPENING kernel.exe, with ref count = 1
 OPENING ps2.sys, with ref count = 1
-Testing basic insert_back and iter                                  ... passed
-Testing basic insert_front and iter                                 ... passed
-Testing basic get_head and tail                                     ... passed
-Testing circulate                                                   ... passed
-Testing insert alternating                                          ... passed
-Testing insert back updates tail correctly                          ... passed
-Testing insert front updates head correctly                         ... passed
-Testing remove back updates tail correctly                          ... passed
-Testing remove front updates head correctly                         ... passed
-Testing remove both ends                                            ... passed
-Testing remove final via back                                       ... passed
-Testing remove final via front                                      ... passed
-Testing add first via front                                         ... passed
-Testing add first via back                                          ... passed
-Testing reset                                                       ... passed
-Testing list remove element middle                                  ... passed
-Testing list remove element first                                   ... passed
-Testing list remove element last                                    ... passed
-Testing list remove element only                                    ... passed
-Testing list remove element non existent                            ... passed
-Testing finding the root drive of a path                            ... passed
-Testing splitting file paths                                        ... passed
-Testing splitting file paths with multiple slashes                  ... passed
-Testing colons in filenames                                         ... passed
-Testing backslashes in filenames                                    ... passed
-Testing long filenames (1)                                          ... passed
-Testing long filenames (2)                                          ... passed
-Testing long filenames (3)                                          ... passed
-Testing long filenames (4)                                          ... passed
-Testing finding the last file in a path with a trailing slash       ... passed
-Testing finding the last file in a path                             ... passed
-Testing finding the root drive with a slash after the colon         ... passed
-Testing finding each segment of a filepath                          ... passed
-Testing opening a file                                              ...OPENING root file.txt, with ref count = 1
- passed
-Testing reading a file                                              ...OPENING root file.txt, with ref count = 1
- passed
-Testing reading a file from an offset                               ...OPENING root file.txt, with ref count = 1
- passed
-Testing reading a file past the end                                 ...OPENING root file.txt, with ref count = 1
- passed
-Testing reading a directory with the file read function             ...OPENING test, with ref count = 1
- passed
-Testing reading a file twice                                        ...OPENING root file.txt, with ref count = 1
- passed
-Testing opening a file with a dot slash in the path (1)             ...OPENING root file.txt, with ref count = 1
- passed
-Testing opening a file with a dot slash in the path (2)             ...OPENING root file.txt, with ref count = 1
- passed
-Testing opening a file with a dot slash after the path              ... passed
-Testing opening a file in a subdirectory                            ...OPENING sub file.txt, with ref count = 1
- passed
-Testing opening a directory                                         ...OPENING subdir, with ref count = 1
- passed
-Testing opening a file for writing                                  ... passed
-Testing opening a directory for writing                             ... passed
-Testing opening a file with a non-existent device                   ... passed
-Testing opening a file that doesn't exist                           ... passed
-Testing opening a file in the middle of a path                      ... passed
-Testing opening the filesystem root                                 ...OPENING hd0, with ref count = 2
- passed
-Testing backtracking through a filepath twice (1)                   ...OPENING root file.txt, with ref count = 1
- passed
-Testing backtracking through a filepath once (2)                    ...OPENING root file.txt, with ref count = 1
- passed
-Testing backtracking through a filepath twice (1)                   ...OPENING root file.txt, with ref count = 1
- passed
-Testing backtracking through a filepath twice (2)                   ...OPENING .., with ref count = 1
- passed
-Testing backtracking past the root                                  ...OPENING .., with ref count = 2
+got p=0x245000 
+got p=0x246000 
+got p=0x247000 
+OPENING root file.txt, with ref count = 1
+OPENING root file.txt, with ref count = 1
+OPENING root file.txt, with ref count = 1
+OPENING root file.txt, with ref count = 1
+OPENING test, with ref count = 1
+OPENING root file.txt, with ref count = 1
+OPENING root file.txt, with ref count = 1
+OPENING root file.txt, with ref count = 1
+OPENING sub file.txt, with ref count = 1
+OPENING subdir, with ref count = 1
+OPENING hd0, with ref count = 2
+OPENING root file.txt, with ref count = 1
+OPENING root file.txt, with ref count = 1
+OPENING root file.txt, with ref count = 1
+OPENING .., with ref count = 1
+OPENING .., with ref count = 2
 OPENING .., with ref count = 2
 OPENING .., with ref count = 2
 OPENING test, with ref count = 1
 OPENING subdir, with ref count = 1
- passed
-Testing backtracking through invalid filepath components            ...OPENING root file.txt, with ref count = 1
+OPENING root file.txt, with ref count = 1
 OPENING sub file.txt, with ref count = 1
- passed
-Testing backtracking after a file has been reached                  ...OPENING root file.txt, with ref count = 1
- passed
+OPENING root file.txt, with ref count = 1
+got p=0x249000 
+got p=0x24A000 
+got p=0x24B000 
 
  ATOS Kernel
      Copyright Alex Boxall 2022-2023
 
->
+>Warning: driver sys:/clipdraw.sys isn't locked in memory - this could cause crashes, especially on low memoryOPENING clipdraw.sys, with ref count = 1
+got p=0x250000 
+got p=0x251000 
+got p=0x252000 
+got p=0x253000 
+PF (cr2 = 0xD8259000, eip = 0xC0101287, err = 0x2)
+PF (cr2 = 0xD825A000, eip = 0xC0101287, err = 0x2)
+PF (cr2 = 0xD825B000, eip = 0xC0101287, err = 0x2)
+PF (cr2 = 0xD825C000, eip = 0xC0101287, err = 0x2)
+PF (cr2 = 0xD825D000, eip = 0xC0101287, err = 0x2)
+PF (cr2 = 0xD825E000, eip = 0xC0101287, err = 0x2)
+PF (cr2 = 0xD825F000, eip = 0xC0101287, err = 0x2)
+PF (cr2 = 0xD8260000, eip = 0xC0101287, err = 0x2)
+PF (cr2 = 0xD8261000, eip = 0xC0101287, err = 0x2)
+PF (cr2 = 0xD8262000, eip = 0xC0101287, err = 0x2)
+PF (cr2 = 0xD8263000, eip = 0xC0101287, err = 0x2)
+PF (cr2 = 0xD8264000, eip = 0xC0101287, err = 0x2)
+>Kernel panic: Kernel stack overflow detected!

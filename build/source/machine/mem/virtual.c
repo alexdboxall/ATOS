@@ -228,7 +228,7 @@ void x86_per_cpu_virt_initialise(void)
 		first_page_table[i] = (i * PAGE_SIZE) | x86_PAGE_PRESENT | x86_PAGE_LOCKED;
 	}
     for (size_t i = num_pages + 1; i < 1024; ++i) {
-		first_page_table[i] = 0;
+		first_page_table[i] = x86_PAGE_LOCKED;
 	}
 
 	/*
@@ -300,7 +300,7 @@ void arch_vas_create(struct virtual_address_space* vas)
 	size_t* page_dir_entries = (size_t*) data->page_dir_virt;
 
 	for (int i = 0; i < 768; ++i) {
-		page_dir_entries[i] = 0;
+		page_dir_entries[i] = x86_PAGE_LOCKED;
 	}
 
 	/*
@@ -503,7 +503,7 @@ size_t* x86_get_entry(struct virtual_address_space* vas_, size_t virt_addr, bool
 	*/
 	if (virt_addr < KERNEL_VIRT_ADDR && current_vas_base != vas->page_dir_phys) {
         kprintf("weirdo mapping\n");
-        kernel_page_directory[1022] = current_vas_base | x86_PAGE_PRESENT | x86_PAGE_WRITABLE;
+        kernel_page_directory[1022] = current_vas_base | x86_PAGE_PRESENT | x86_PAGE_WRITABLE | x86_PAGE_LOCKED;
 		vas_flush_tlb();
 
 		recursive_base_addr = RECURSIVE_MAPPING_ALT_ADDR;

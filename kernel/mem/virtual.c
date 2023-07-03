@@ -96,6 +96,7 @@ size_t virt_allocate_backed_pages(size_t pages, int flags) {
 
 	for (size_t i = 0; i < pages; ++i) {
         size_t p = phys_allocate_page();
+    	kprintfnv("got p=0x%X \n", p);
 
         struct virtual_address_space* v = vas_get_current_vas();
 

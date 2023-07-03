@@ -7,7 +7,8 @@
 
 _Noreturn void panic(const char* message)
 {
-	kprintf("Kernel panic: %s\n", message);
+	kprintf("\n\n----------------\n  *** KERNEL PANIC ***\n\n")
+	kprintf("%s\n", message);
 
     //console_panic(message);
 

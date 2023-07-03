@@ -216,6 +216,7 @@ size_t vas_perform_page_replacement(void) {
     * Find our next victim.
     */
     size_t unlucky_addr = arch_find_page_replacement_virt_address(vas);
+    kprintfnv("EVICTING: 0x%X\n", unlucky_addr);
 
     /*
     * We need to release our lock in order to write to the disk, so lock the page 
@@ -224,38 +225,46 @@ size_t vas_perform_page_replacement(void) {
     int old_flags;
     size_t phys_addr;
     arch_vas_get_entry(vas, unlucky_addr, &phys_addr, &old_flags);
+    kprintfnv("phys_addr: 0x%X\n", phys_addr);
 	arch_vas_set_entry(vas, unlucky_addr, phys_addr, old_flags | VAS_FLAG_LOCKED);
+    kprintfnv("phys_addr: 0x%X\n", phys_addr);
 
     /*
     * We don't need to be (spin)locked any longer, as we are only writing out the page, which is
     * already marked as locked.
     */
     if (needs_unlocking) {
-        spinlock_release(&vas->lock);
+        //spinlock_release(&vas->lock);
     }
 
     /*
     * Save our page onto the disk.
     */
+    kprintfnv("about to write: 0x%X\n", unlucky_addr);
     size_t id = swapfile_write((uint8_t*) unlucky_addr);
+    kprintfnv("written -> id = 0x%X\n", id);
 
     /*
     * Reading/writing to page tables again requires us to lock.
     */
-    needs_unlocking = spinlock_acquire_if_unlocked(&vas->lock);
+    //needs_unlocking = spinlock_acquire_if_unlocked(&vas->lock);
 
     /*
     * Unmap the page, and then write the swapfile id to the page entry.
     * (Don't override the value of phys_addr, as we need to return it, so use a dummy variable.)
     */
     arch_vas_set_entry(vas, unlucky_addr, id * ARCH_PAGE_SIZE, old_flags & ~(VAS_FLAG_LOCKED | VAS_FLAG_PRESENT));
+    kprintfnv("set\n");
 
     size_t dummy;
+    // TODO: what the heck does reading this at this point do???
     arch_vas_get_entry(vas, unlucky_addr, &dummy, &old_flags);
+    kprintfnv("got\n");
 
     if (needs_unlocking) {
         spinlock_release(&vas->lock);
     }
 
+    kprintfnv("repl done\n");
     return phys_addr;
 }

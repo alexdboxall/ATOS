@@ -148,6 +148,26 @@ void basic_shell(void* arg) {
                 thread_sleep(1);
             }
 
+		} else if (!strcmp(buffer, "fork_silent")) {
+            int res = thread_fork();
+
+            while (res == 0) {
+                thread_sleep(1);
+            }
+			continue;
+
+		} else if (!strcmp(buffer, "eat")) {
+			size_t v = virt_allocate_backed_pages(32, VAS_FLAG_WRITABLE);
+			(void) v;
+			
+            continue;
+
+		} else if (!strcmp(buffer, "feast")) {
+			size_t v = virt_allocate_backed_pages(256, VAS_FLAG_WRITABLE);
+			(void) v;
+			
+            continue;
+
         } else if (!strcmp(buffer, "user")) {
             struct process* p = process_create();
             process_create_thread(p, thread_execute_in_usermode, NULL);

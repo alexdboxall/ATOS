@@ -42,6 +42,10 @@ int load_program(const char* filename, size_t* entry_point, size_t* sbrk_point) 
 }
 
 int load_driver(const char* filename, bool lock_in_memory) {
+    if (!lock_in_memory) {
+        kprintf("Warning: driver %s isn't locked in memory - this could cause crashes, especially on low memory", filename);
+    }
+    
     struct vnode* file;
     int ret = vfs_open(filename, O_RDONLY, 0, &file);
     if (ret != 0) {

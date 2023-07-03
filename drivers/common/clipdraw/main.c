@@ -9,6 +9,7 @@
 #include <video.h>
 
 #include "region/region.h"
+#include "region/cursor.h"
 #include "region/draw.h"
 
 struct window {
@@ -165,13 +166,38 @@ struct window create_window(int x, int y, int w, int h, bool has_focus) {
 void _driver_entry_point() {
     struct region bg = region_create_rectangle(0, 0, 1200, 800);
 
+    /*struct region cursor_b = region_create_cursor_black(50, 40);
+    struct region cursor_w = region_create_cursor_white(50, 40);
+    struct region cursor_union = region_operate(cursor_b, cursor_w, REGION_OP_UNION);
+
+    struct window cursor_b_win = {
+        .children = {NULL},
+        .num_children = 0,
+        .colour = 0xFF000000,
+        .rgn = cursor_b
+    };
+
+    struct window cursor_w_win = {
+        .children = {NULL},
+        .num_children = 0,
+        .colour = 0xFFFFFFFF,
+        .rgn = cursor_w
+    };
+
+    struct window cursor_window = {
+        .children = {&cursor_w_win, &cursor_b_win},
+        .num_children = 2,
+        .colour = 0xFFFF0000,
+        .rgn = bg
+    };*/
+
     struct window r1_win = create_window(100, 100, 500, 400, false);
     struct window r2_win = create_window(200, 130, 700, 400, false);
     struct window r3_win = create_window(300, 250, 400, 350, true);
 
     struct window bg_win = {
         .children = {&r3_win, &r2_win, &r1_win},
-        .num_children = 3,
+        .num_children = 4,
         .colour = 0xFF60D0F0,
         .rgn = bg
     };

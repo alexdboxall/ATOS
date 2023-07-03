@@ -57,9 +57,7 @@ void arch_initialise_devices_with_fs(void) {
     * handler might use it (to kprintf() or panic())
     */
     load_driver("sys:/vesacon.sys", true);
-
-    load_driver("sys:/ps2.sys", false);
-
+    load_driver("sys:/ps2.sys", true);
     //load_driver("sys:/ACPICA.SYS", false);
 }
 

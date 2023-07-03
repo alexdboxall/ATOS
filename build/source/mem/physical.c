@@ -161,6 +161,9 @@ size_t phys_allocate_page(void)
 	* No pages left. Stick one on the disk.
 	*/
     size_t ret = vas_perform_page_replacement();
+
+	kprintfnv("allocated page 0x%X\n", ret);
+
 	return ret;
 }
 
