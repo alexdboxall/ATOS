@@ -22,12 +22,12 @@
 *         error code        on failure
 */
 int sys_close(size_t args[4]) {
-    struct vnode* node = filedesc_convert_to_vnode(current_cpu->current_thread->process->fdtable, args[0]);
+    struct open_file* node = filedesc_get_open_file(current_cpu->current_thread->process->fdtable, args[0]);
     if (node == NULL) {
         return EBADF;
     }
 
-    int result = filedesc_table_deregister_vnode(current_cpu->current_thread->process->fdtable, node);
+    int result = filedesc_table_deregister_file(current_cpu->current_thread->process->fdtable, node);
     if (result != 0) {
         return result;
     }

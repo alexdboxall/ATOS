@@ -70,13 +70,13 @@ void basic_shell(void* arg) {
 		} else if (!strncmp(buffer, "type", 4)) {
 			if (strlen(buffer) > 5) {
 				char* filename = buffer + 5;
-				struct vnode* node;
+				struct open_file* node;
 				int ret = vfs_open(filename, O_RDONLY, 0, &node);
 				if (ret != 0) {
 					kprintf("Cannot open: %s\n", strerror(ret));
 				} else {
 					struct stat st;
-					ret = vnode_op_stat(node, &st);
+					ret = vnode_op_stat(node->node, &st);
 					if (ret == 0) {
 						uint8_t* buffer = malloc(st.st_size + 1);
 						memset(buffer, 0, st.st_size + 1);
@@ -106,7 +106,7 @@ void basic_shell(void* arg) {
 		} else if (!strncmp(buffer, "ls", 2)) {
 			if (strlen(buffer) > 3) {
 				char* filename = buffer + 3;
-				struct vnode* node;
+				struct open_file* node;
 				int ret = vfs_open(filename, O_RDONLY, 0, &node);
 				if (ret != 0) {
 					kprintf("Cannot open: %s\n", strerror(ret));

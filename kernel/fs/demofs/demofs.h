@@ -3,4 +3,4 @@
 #include <vfs.h>
 #include <vnode.h>
 
-int demofs_root_creator(struct vnode* raw_device, struct vnode** out);
+int demofs_root_creator(struct open_file* raw_device, struct open_file** out);

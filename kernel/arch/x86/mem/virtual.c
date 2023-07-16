@@ -577,20 +577,33 @@ int x86_handle_page_fault(struct x86_regs* regs) {
 	*/
 	if (entry == NULL) {
         kprintf("entry == NULL (cr2 = 0x%X, eip = 0x%X, err = 0x%X)\n", virt_addr, regs->eip, regs->err_code);
+
+		/*
+		 * Still need to release so we can properly call thread_terminate().
+		 */
+		spinlock_release(&current_cpu->current_vas->lock);
 		return EFAULT;
 	}
 
     if ((*entry & x86_PAGE_ALLOCATE_ON_ACCESS) && !(*entry & x86_PAGE_PRESENT)) {
+		kprintf("PF: alloc on acces... cr2 = 0x%X, eip = 0x%X, err = 0x%X\n", virt_addr, regs->eip, regs->err_code);
+
         size_t page = phys_allocate_page();
         *entry &= ~x86_PAGE_ALLOCATE_ON_ACCESS;
         *entry |= x86_PAGE_PRESENT;
         *entry |= page;
         arch_flush_tlb();
+
+		/*
+		 * Zero the memory, as one purpose to use allocate on access is for the BSS. 
+		 */
+		memset((void*) (virt_addr & ~0xFFF), 0, 4096);
         spinlock_release(&current_cpu->current_vas->lock);
         return 0;
     }
 
 	if ((*entry & x86_PAGE_COPY_ON_WRITE) && (*entry & x86_PAGE_PRESENT)) {
+		kprintf("PF: copy on write\n");
 		assert(!(*entry & x86_PAGE_WRITABLE));
 	
 		x86_perform_copy_on_write(virt_addr);
@@ -602,9 +615,11 @@ int x86_handle_page_fault(struct x86_regs* regs) {
 
     if (*entry & x86_PAGE_LOCKED) {
 		kprintf("x86_PAGE_LOCKED (cr2 = 0x%X, eip = 0x%X, err = 0x%X)\n", virt_addr, regs->eip, regs->err_code);
-        while (1) {
-            ;
-        }
+
+		/*
+		 * Still need to release so we can properly call thread_terminate().
+		 */
+		spinlock_release(&current_cpu->current_vas->lock);
         return EFAULT;
     }
 

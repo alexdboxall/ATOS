@@ -77,8 +77,12 @@ void cleaner_thread_task(void* arg) {
         * Wait for someone to call cleaner_thread_awaken() (i.e. wait for a task
         * to terminate).
         */
+        kprintf("Cleaner blocking...\n");
+
         spinlock_acquire(&scheduler_lock);
         thread_block(THREAD_STATE_INTERRUPTIBLE);
+
+        kprintf("Cleaner running...\n");
 
         /*
         * Cleanup all of the threads that are terminated but yet to be freed.

@@ -17,7 +17,7 @@ static void ksymbol_init(void) {
     /*
     * Open the kernel file so we can read its symbol table.
     */
-    struct vnode* file;
+    struct open_file* file;
     int ret = vfs_open("sys:/kernel.exe", O_RDONLY, 0, &file);
     if (ret != 0) {
         goto fail;

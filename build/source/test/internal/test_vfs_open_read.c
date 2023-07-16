@@ -10,7 +10,7 @@
 void test_open_file(void) {
     BEGIN_TEST("opening a file");
 
-    struct vnode* node;
+    struct open_file* node;
 	int status;
     
     status = vfs_open("hd0:/test/root file.txt", O_RDONLY, 0, &node);
@@ -24,7 +24,7 @@ void test_open_file(void) {
 void test_file_read(void) {
     BEGIN_TEST("reading a file");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     char buffer[9];
     
@@ -51,7 +51,7 @@ void test_file_read_with_offset(void) {
     * (when starting in a valid part of the file)
     */
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     char buffer[9];
     
@@ -73,7 +73,7 @@ void test_file_read_with_offset(void) {
 void test_file_read_way_past_end(void) {
     BEGIN_TEST("reading a file past the end");
     
-    struct vnode* node;
+    struct open_file* node;
     int status;
     char buffer[9];
     
@@ -97,7 +97,7 @@ void test_file_read_way_past_end(void) {
 void test_file_read_fails_on_dir(void) {
     BEGIN_TEST("reading a directory with the file read function");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     char buffer[9];
 
@@ -120,7 +120,7 @@ void test_file_read_fails_on_dir(void) {
 void test_double_file_read(void) {
     BEGIN_TEST("reading a file twice");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     char buffer[9];
     
@@ -146,7 +146,7 @@ void test_double_file_read(void) {
 void test_open_with_dot_slash(void) {
     BEGIN_TEST("opening a file with a dot slash in the path (1)");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd0:/test/././root file.txt/", O_RDONLY, 0, &node);
@@ -161,7 +161,7 @@ void test_open_with_dot_slash(void) {
 void test_open_with_dot_slash_2(void) {
     BEGIN_TEST("opening a file with a dot slash in the path (2)");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd0:/././test/./root file.txt", O_RDONLY, 0, &node);
@@ -175,7 +175,7 @@ void test_open_with_dot_slash_2(void) {
 void test_open_with_dot_slash_after_file(void) {
     BEGIN_TEST("opening a file with a dot slash after the path");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd0:/test/root file.txt/./", O_RDONLY, 0, &node);
@@ -187,7 +187,7 @@ void test_open_with_dot_slash_after_file(void) {
 void test_open_subdir_file(void) {
     BEGIN_TEST("opening a file in a subdirectory");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd0:/test/subdir/sub file.txt", O_RDONLY, 0, &node);
@@ -201,7 +201,7 @@ void test_open_subdir_file(void) {
 void test_open_dir(void) {
     BEGIN_TEST("opening a directory");
 
-    struct vnode* node;
+    struct open_file* node;
 	int status;
     
     status = vfs_open("hd0:/test/subdir", O_RDONLY, 0, &node);
@@ -215,7 +215,7 @@ void test_open_dir(void) {
 void test_open_file_write(void) {
     BEGIN_TEST("opening a file for writing");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd0:/test/root file.txt", O_WRONLY, 0, &node);
@@ -227,7 +227,7 @@ void test_open_file_write(void) {
 void test_open_dir_write(void) {
     BEGIN_TEST("opening a directory for writing");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd0:/test/subdir", O_WRONLY, 0, &node);
@@ -239,7 +239,7 @@ void test_open_dir_write(void) {
 void test_open_no_device(void) {
     BEGIN_TEST("opening a file with a non-existent device");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd123:/test/root file.txt", O_RDONLY, 0, &node);
@@ -251,7 +251,7 @@ void test_open_no_device(void) {
 void test_open_no_file(void) {
     BEGIN_TEST("opening a file that doesn't exist");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd0:/test/no file.txt", O_RDONLY, 0, &node);
@@ -263,7 +263,7 @@ void test_open_no_file(void) {
 void test_open_file_in_middle_of_path(void) {
     BEGIN_TEST("opening a file in the middle of a path");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd0:/test/root file.txt/subdir", O_RDONLY, 0, &node);
@@ -275,7 +275,7 @@ void test_open_file_in_middle_of_path(void) {
 void test_open_filesystem_root(void) {
     BEGIN_TEST("opening the filesystem root");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd0:/", O_RDONLY, 0, &node);
@@ -289,7 +289,7 @@ void test_open_filesystem_root(void) {
 void test_open_going_back_1(void) {
     BEGIN_TEST("backtracking through a filepath twice (1)");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd0:/test/../test/root file.txt", O_RDONLY, 0, &node);
@@ -303,7 +303,7 @@ void test_open_going_back_1(void) {
 void test_open_going_back_2(void) {
     BEGIN_TEST("backtracking through a filepath once (2)");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd0:/test/subdir/../root file.txt", O_RDONLY, 0, &node);
@@ -317,7 +317,7 @@ void test_open_going_back_2(void) {
 void test_open_going_back_twice_1(void) {
     BEGIN_TEST("backtracking through a filepath twice (1)");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd0:/test/subdir/../../test/root file.txt", O_RDONLY, 0, &node);
@@ -331,13 +331,13 @@ void test_open_going_back_twice_1(void) {
 void test_open_going_back_twice_2(void) {
     BEGIN_TEST("backtracking through a filepath twice (2)");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd0:/test/subdir/../../test/../test/subdir/../", O_RDONLY, 0, &node);
     assert(status == 0);
 
-    assert(vnode_op_dirent_type(node) == DT_DIR);
+    assert(vnode_op_dirent_type(node->node) == DT_DIR);
 
     vfs_close(node);
     
@@ -347,32 +347,32 @@ void test_open_going_back_twice_2(void) {
 void test_open_going_back_past_root(void) {
     BEGIN_TEST("backtracking past the root");
     
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd0:/test/subdir/../../../../../../..", O_RDONLY, 0, &node);
     assert(status == 0);
-    assert(vnode_op_dirent_type(node) == DT_DIR);
+    assert(vnode_op_dirent_type(node->node) == DT_DIR);
     vfs_close(node);
 
     status = vfs_open("hd0:/../", O_RDONLY, 0, &node);
     assert(status == 0);
-    assert(vnode_op_dirent_type(node) == DT_DIR);
+    assert(vnode_op_dirent_type(node->node) == DT_DIR);
     vfs_close(node);
 
     status = vfs_open("hd0:/../../../../test/subdir/../../../", O_RDONLY, 0, &node);
     assert(status == 0);
-    assert(vnode_op_dirent_type(node) == DT_DIR);
+    assert(vnode_op_dirent_type(node->node) == DT_DIR);
     vfs_close(node);
 
     status = vfs_open("hd0:/test/subdir/../../../../../../../test", O_RDONLY, 0, &node);
     assert(status == 0);
-    assert(vnode_op_dirent_type(node) == DT_DIR);
+    assert(vnode_op_dirent_type(node->node) == DT_DIR);
     vfs_close(node);
 
     status = vfs_open("hd0:/test/subdir/../../../../../../../test/subdir/", O_RDONLY, 0, &node);
     assert(status == 0);
-    assert(vnode_op_dirent_type(node) == DT_DIR);
+    assert(vnode_op_dirent_type(node->node) == DT_DIR);
     vfs_close(node);
 
     END_TEST();
@@ -381,7 +381,7 @@ void test_open_going_back_past_root(void) {
 void test_open_going_back_with_invalid(void) {
     BEGIN_TEST("backtracking through invalid filepath components");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd0:/test/notdir/../", O_RDONLY, 0, &node);
@@ -407,7 +407,7 @@ void test_open_going_back_with_invalid(void) {
 void test_open_going_back_after_file(void) {
     BEGIN_TEST("backtracking after a file has been reached");
 
-    struct vnode* node;
+    struct open_file* node;
     int status;
     
     status = vfs_open("hd0:/test/root file.txt/../", O_RDONLY, 0, &node);

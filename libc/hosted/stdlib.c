@@ -37,6 +37,9 @@ void* malloc(size_t size) {
 
     if (size == 0) {
         errno = ENOMEM;
+        while (1) {
+            ;
+        }
         return NULL;
     }
 

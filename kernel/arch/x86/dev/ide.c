@@ -30,6 +30,10 @@
 * not common enough for them to be worth supporting.
 */
 
+
+/*
+ * TODO: REFACTOR SO WE USE THE ide_data VALUES FOR EVERYTHING INSTEAD OF THESE CONSTANTS
+ */
 #define CHANNEL_1_BASE          0x1F0
 #define CHANNEL_2_BASE          0x170
 
@@ -58,6 +62,11 @@ struct semaphore* ide_lock = NULL;
 struct ide_data {
     int disk_num;
     uint16_t* transfer_buffer;
+    size_t primary_base;
+    size_t primary_alternative;
+    size_t secondary_base;
+    size_t secondary_alternative;
+    size_t busmaster_base;
 };
 
 int ide_check_errors(int disk_num) {
@@ -163,8 +172,8 @@ static int ide_io(struct std_device_interface* dev, struct uio* io) {
 
     semaphore_acquire(ide_lock);
 
-    uint16_t base = disk_num >= 2 ? CHANNEL_2_BASE : CHANNEL_1_BASE;
-    uint16_t dev_ctrl_reg = disk_num >= 2 ? CHANNEL_2_DEV_CTRL : CHANNEL_1_DEV_CTRL;
+    uint16_t base = disk_num >= 2 ? data->secondary_base : data->primary_base;
+    uint16_t dev_ctrl_reg = disk_num >= 2 ? data->secondary_alternative : data->primary_alternative;
 
     while (count > 0) {
         int sectors_in_this_transfer = count < 256 ? count : 255;
@@ -309,6 +318,10 @@ void ide_initialise(void) {
     struct ide_data* data = malloc(sizeof(struct ide_data));
     data->disk_num = 0;
     data->transfer_buffer = malloc(4096);
+    data->primary_base = 0x1F0;
+    data->primary_alternative = 0x3F6;
+    data->secondary_base = 0x170;
+    data->secondary_alternative = 0x376;
     dev.data = data;
 
     dev.termios = NULL;

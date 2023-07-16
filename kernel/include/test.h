@@ -6,8 +6,8 @@
 #include <assert.h>
 #include <stdbool.h>
 
-#define BEGIN_TEST(msg) //{ kprintf("Testing %s", msg); int j = 60 - strlen(msg); for (int i = 0; i < j; ++i) { kprintf(" ");} kprintf("..."); }
-#define END_TEST()      //kprintf(" passed\n");
+#define BEGIN_TEST(msg) { kprintf("Testing %s", msg); int j = 60 - strlen(msg); for (int i = 0; i < j; ++i) { kprintf(" ");} kprintf("..."); }
+#define END_TEST()      kprintf(" passed\n");
 
 /*
 * Internal kernel unit tests.

@@ -123,6 +123,10 @@ void x86_interrupt_handler(struct x86_regs* r) {
 
     if (status != 0 && num != SYSCALL_VECTOR) {
         kprintf("unhandled exception - %s (%d)\n", get_fault_name(num), num);
+        if (r->cs <= 0x10) {
+            panic("kernel fault");
+        }
+        kprintf("terminating thread (TODO: what lock state are we in at the moment? scheduler and VAS).\n");
         thread_terminate();
     }
 }

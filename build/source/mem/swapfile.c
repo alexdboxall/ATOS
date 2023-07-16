@@ -17,7 +17,7 @@
 static size_t swapfile_initial_sector = 0;
 static size_t swapfile_sectors_per_page = 0;
 static size_t swapfile_sector_size = 0;
-static struct vnode* swapfile_drive;
+static struct open_file* swapfile_drive;
 static uint8_t* swapfile_usage_bitmap;
 static struct spinlock swapfile_lock;
 

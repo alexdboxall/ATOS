@@ -29,14 +29,14 @@ int sys_open(size_t args[4]) {
         return result;
     }
 
-    struct vnode* node;
+    struct open_file* node;
     result = vfs_open(path, args[1], args[2], &node);
     
     if (result != 0) {
         return result;
     }
 
-    int filedes = filedesc_table_register_vnode(current_cpu->current_thread->process->fdtable, node);
+    int filedes = filedesc_table_register_file(current_cpu->current_thread->process->fdtable, node);
     if (filedes == -1) {
         return EMFILE;
     }

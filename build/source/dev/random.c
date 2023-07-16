@@ -73,7 +73,7 @@ uint32_t rand32(void) {
     uint32_t result;
 
     struct uio io = uio_construct_kernel_read(&result, sizeof(result), 0);
-    struct vnode* rand;
+    struct open_file* rand;
     
     vfs_open("rand:", O_RDONLY, 0, &rand);
     vfs_read(rand, &io);

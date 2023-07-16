@@ -211,6 +211,8 @@ int thread_execve(const char* filename, char* const argv[], char* const envp[], 
     (void) argv;
     (void) envp;
 
+    kprintf("ABOUT TO LOAD PROGRAM.\n");
+
     return load_program(filename, entry_point, &current_cpu->current_thread->process->sbrk);
 }
 
@@ -238,6 +240,7 @@ void thread_execute_in_usermode(void* ignored_arg) {
     }
 
     arch_flush_tlb();
+    kprintf("ABOUT TO START EXECVE'D PROGRAM: ENTRY 0x%X, STACK 0x%X\n", entry_point, new_stack);
     arch_switch_to_usermode(entry_point, new_stack);
 
     thread_terminate();
@@ -762,26 +765,35 @@ void thread_terminate(void) {
     * Doesn't need to be locked, as we cannot return to userspace in this thread
     * now.
     */
-
     for (size_t i = ARCH_USER_STACK_LIMIT - USER_STACK_MAX_SIZE; i < ARCH_USER_STACK_LIMIT; i += ARCH_PAGE_SIZE) {
         size_t physical = vas_unmap(vas_get_current_vas(), i);
         if (physical != 0) {
-            phys_free_page(physical);
+            kprintf("Terminating user thread... TODO: free stack memory at 0x%X\n", physical);
+            //phys_free_page(physical);
         }
     }
+
+    kprintf("GOT TO HERE. A\n");
         
     spinlock_acquire(&scheduler_lock);
     thread_postpone_switches();
 
     current_cpu->current_thread->next = terminated_thread_list;
     terminated_thread_list = current_cpu->current_thread;
+    kprintf("GOT TO HERE. B\n");
 
     thread_block(THREAD_STATE_TERMINATED);
+    kprintf("GOT TO HERE. B2\n");
 
     cleaner_thread_awaken();
+    kprintf("GOT TO HERE. B3\n");
 
     thread_end_postpone_switches();
+    kprintf("GOT TO HERE. C\n");
+
     spinlock_release(&scheduler_lock);
+
+    panic("very bad");
 }
 
 

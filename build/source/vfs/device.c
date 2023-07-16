@@ -169,17 +169,5 @@ static const struct vnode_operations dev_ops = {
 */
 struct vnode* dev_create_vnode(struct std_device_interface* dev)
 {
-    assert(dev != NULL);
-	struct vnode* node = vnode_init(dev, dev_ops);
-
-    /*
-    * We won't be able to mount filesystems to devices without this.
-    */
-    node->can_read = true;
-    node->can_write = true;
-
-    node->flags = 0;
-    node->initial_mode = 0;
-    
-    return node;
+    return vnode_init(dev, dev_ops);
 }

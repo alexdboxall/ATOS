@@ -281,112 +281,112 @@ LOAD /opt/homebrew/Cellar/i686-elf-gcc/13.1.0/lib/gcc/i686-elf/13.1.0/libgcc.a
  .text.exit     0x100015d5       0x27 ../../../libc/x86/libc.a(stdlib.o)
                 0x100015d5                exit
 
-.text.malloc    0x100015fc       0x80
- .text.malloc   0x100015fc       0x80 ../../../libc/x86/libc.a(stdlib.o)
+.text.malloc    0x100015fc       0x76
+ .text.malloc   0x100015fc       0x76 ../../../libc/x86/libc.a(stdlib.o)
                 0x100015fc                malloc
 
-.text.free      0x1000167c        0x1
- .text.free     0x1000167c        0x1 ../../../libc/x86/libc.a(stdlib.o)
-                0x1000167c                free
+.text.free      0x10001672        0x1
+ .text.free     0x10001672        0x1 ../../../libc/x86/libc.a(stdlib.o)
+                0x10001672                free
 
-.text.open      0x1000167d       0x30
- .text.open     0x1000167d       0x30 ../../../libc/x86/libc.a(fcntl.o)
-                0x1000167d                open
+.text.open      0x10001673       0x30
+ .text.open     0x10001673       0x30 ../../../libc/x86/libc.a(fcntl.o)
+                0x10001673                open
 
-.text.isatty    0x100016ad       0x2d
- .text.isatty   0x100016ad       0x2d ../../../libc/x86/libc.a(unistd.o)
-                0x100016ad                isatty
+.text.isatty    0x100016a3       0x2d
+ .text.isatty   0x100016a3       0x2d ../../../libc/x86/libc.a(unistd.o)
+                0x100016a3                isatty
 
-.text.close     0x100016da       0x27
- .text.close    0x100016da       0x27 ../../../libc/x86/libc.a(unistd.o)
-                0x100016da                close
+.text.close     0x100016d0       0x27
+ .text.close    0x100016d0       0x27 ../../../libc/x86/libc.a(unistd.o)
+                0x100016d0                close
 
-.text.read      0x10001701       0x30
- .text.read     0x10001701       0x30 ../../../libc/x86/libc.a(unistd.o)
-                0x10001701                read
+.text.read      0x100016f7       0x30
+ .text.read     0x100016f7       0x30 ../../../libc/x86/libc.a(unistd.o)
+                0x100016f7                read
 
-.text.write     0x10001731       0x30
- .text.write    0x10001731       0x30 ../../../libc/x86/libc.a(unistd.o)
-                0x10001731                write
+.text.write     0x10001727       0x30
+ .text.write    0x10001727       0x30 ../../../libc/x86/libc.a(unistd.o)
+                0x10001727                write
 
 .rodata._start.str1.1
-                0x10001761        0x9
+                0x10001757        0x9
  .rodata._start.str1.1
-                0x10001761        0x9 crt0.o
+                0x10001757        0x9 crt0.o
 
 .rodata.main.str1.1
-                0x1000176a      0x204
+                0x10001760      0x204
  .rodata.main.str1.1
-                0x1000176a      0x204 main.o
+                0x10001760      0x204 main.o
                                 0x206 (size before relaxing)
 
 .rodata.fmemopen.str1.1
-                0x1000196e        0x3
+                0x10001964        0x3
  .rodata.fmemopen.str1.1
-                0x1000196e        0x3 ../../../libc/x86/libc.a(stdio.o)
+                0x10001964        0x3 ../../../libc/x86/libc.a(stdio.o)
                                   0x4 (size before relaxing)
 
 .rodata.vfprintf.str1.1
-                0x10001971       0x3d
+                0x10001967       0x3d
  .rodata.vfprintf.str1.1
-                0x10001971       0x3d ../../../libc/x86/libc.a(stdio.o)
+                0x10001967       0x3d ../../../libc/x86/libc.a(stdio.o)
 
 .rodata.vfprintf
-                0x100019b0      0x128
+                0x100019a4      0x128
  .rodata.vfprintf
-                0x100019b0      0x128 ../../../libc/x86/libc.a(stdio.o)
+                0x100019a4      0x128 ../../../libc/x86/libc.a(stdio.o)
 
 .rodata.vsnprintf.str1.1
-                0x10001ad8        0x2
+                0x10001acc        0x2
  .rodata.vsnprintf.str1.1
-                0x10001ad8        0x2 ../../../libc/x86/libc.a(stdio.o)
+                0x10001acc        0x2 ../../../libc/x86/libc.a(stdio.o)
 
-.rel.dyn        0x10001adc        0x0
- .rel.got       0x10001adc        0x0 crt0.o
- .rel.iplt      0x10001adc        0x0 crt0.o
+.rel.dyn        0x10001ad0        0x0
+ .rel.got       0x10001ad0        0x0 crt0.o
+ .rel.iplt      0x10001ad0        0x0 crt0.o
 
 .data
  *(.data)
 
-.got            0x10001adc        0x0
- .got           0x10001adc        0x0 crt0.o
+.got            0x10001ad0        0x0
+ .got           0x10001ad0        0x0 crt0.o
 
-.got.plt        0x10001adc        0x0
- .got.plt       0x10001adc        0x0 crt0.o
+.got.plt        0x10001ad0        0x0
+ .got.plt       0x10001ad0        0x0 crt0.o
 
-.igot.plt       0x10001adc        0x0
- .igot.plt      0x10001adc        0x0 crt0.o
+.igot.plt       0x10001ad0        0x0
+ .igot.plt      0x10001ad0        0x0 crt0.o
 
 .bss
  *(COMMON)
  *(.bss)
  *(.bootstrap_stack)
 
-.bss.stderr     0x10001adc        0x4
- .bss.stderr    0x10001adc        0x4 ../../../libc/x86/libc.a(stdio.o)
-                0x10001adc                stderr
+.bss.stderr     0x10001ad0        0x4
+ .bss.stderr    0x10001ad0        0x4 ../../../libc/x86/libc.a(stdio.o)
+                0x10001ad0                stderr
 
-.bss.stdout     0x10001ae0        0x4
- .bss.stdout    0x10001ae0        0x4 ../../../libc/x86/libc.a(stdio.o)
-                0x10001ae0                stdout
+.bss.stdout     0x10001ad4        0x4
+ .bss.stdout    0x10001ad4        0x4 ../../../libc/x86/libc.a(stdio.o)
+                0x10001ad4                stdout
 
-.bss.stdin      0x10001ae4        0x4
- .bss.stdin     0x10001ae4        0x4 ../../../libc/x86/libc.a(stdio.o)
-                0x10001ae4                stdin
+.bss.stdin      0x10001ad8        0x4
+ .bss.stdin     0x10001ad8        0x4 ../../../libc/x86/libc.a(stdio.o)
+                0x10001ad8                stdin
 
 .bss.recent_sbrk.0
-                0x10001ae8        0x4
+                0x10001adc        0x4
  .bss.recent_sbrk.0
-                0x10001ae8        0x4 ../../../libc/x86/libc.a(stdlib.o)
+                0x10001adc        0x4 ../../../libc/x86/libc.a(stdlib.o)
 
 .bss.allocation_position.1
-                0x10001aec        0x4
+                0x10001ae0        0x4
  .bss.allocation_position.1
-                0x10001aec        0x4 ../../../libc/x86/libc.a(stdlib.o)
+                0x10001ae0        0x4 ../../../libc/x86/libc.a(stdlib.o)
 
-.bss.errno      0x10001af0        0x4
- .bss.errno     0x10001af0        0x4 ../../../libc/x86/libc.a(errno.o)
-                0x10001af0                errno
+.bss.errno      0x10001ae4        0x4
+ .bss.errno     0x10001ae4        0x4 ../../../libc/x86/libc.a(errno.o)
+                0x10001ae4                errno
 
 /DISCARD/
  *(.comment)

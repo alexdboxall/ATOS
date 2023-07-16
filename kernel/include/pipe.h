@@ -1,3 +1,3 @@
 #include <vnode.h>
 
-int pipe_create(struct vnode** out, int flags);
+int pipe_create(struct open_file** out, int flags);

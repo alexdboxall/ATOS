@@ -229,7 +229,7 @@ const struct vnode_operations demofs_vnode_dir_ops = {
 };
 
 
-int demofs_root_creator(struct vnode* raw_device, struct vnode** out) {
+int demofs_root_creator(struct open_file* raw_device, struct open_file** out) {
     (void) raw_device;
     
 	struct vnode* node = vnode_init(NULL, demofs_vnode_dir_ops);
@@ -242,7 +242,7 @@ int demofs_root_creator(struct vnode* raw_device, struct vnode** out) {
 
     node->data = data;
 
-	*out = node;
+	*out = open_file_create(node, 0, 0, true, false);
 
 	return 0;
 }

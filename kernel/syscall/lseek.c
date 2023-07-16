@@ -16,6 +16,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <vnode.h>
+#include <vfs.h>
 
 /*
 * ...?
@@ -38,24 +39,24 @@ int sys_lseek(size_t args[4]) {
         return result;
     }
     
-    struct vnode* node = filedesc_convert_to_vnode(current_cpu->current_thread->process->fdtable, args[0]);
-    if (node == NULL) {
+    struct open_file* file = filedesc_get_open_file(current_cpu->current_thread->process->fdtable, args[0]);
+    if (file == NULL) {
         return EINVAL;
     }
 
-    int type = vnode_op_dirent_type(node);
+    int type = vnode_op_dirent_type(file->node);
     if (type == DT_FIFO || type == DT_SOCK) {
         return ESPIPE;
     }
 
-    size_t current = node->seek_position;
+    size_t current = file->seek_position;
     
     if (args[2] == SEEK_CUR) {
         offset += current;
 
     } else if (args[2] == SEEK_END) {
         struct stat st;
-        result = vnode_op_stat(node, &st);
+        result = vnode_op_stat(file->node, &st);
         if (result != 0) {
             return result;
         }
@@ -65,7 +66,7 @@ int sys_lseek(size_t args[4]) {
         return EINVAL;
     }
 
-    node->seek_position = offset;
+    file->seek_position = offset;
 
     io = uio_construct_write_to_usermode((void*) args[1], sizeof(off_t), 0);
     return uio_move(&offset, &io, sizeof(off_t));

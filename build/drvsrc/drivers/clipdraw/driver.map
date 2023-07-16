@@ -37,9 +37,9 @@ LOAD region/region.o
 LOAD /opt/homebrew/Cellar/i686-elf-gcc/13.1.0/lib/gcc/i686-elf/13.1.0/libgcc.a
                 0xd0000000                        . = 0xd0000000
 
-.text           0xd0000000     0x145a
+.text           0xd0000000     0x139a
  *(.text)
- .text          0xd0000000      0x8fe main.o
+ .text          0xd0000000      0x83a main.o
                 0xd0000000                stack_push
                 0xd000002e                stack_pop
                 0xd0000060                window_paint
@@ -49,75 +49,75 @@ LOAD /opt/homebrew/Cellar/i686-elf-gcc/13.1.0/lib/gcc/i686-elf/13.1.0/libgcc.a
                 0xd0000546                window_add_child
                 0xd0000564                create_window
                 0xd0000736                _driver_entry_point
- .text          0xd00008fe       0x42 region/cursor.o
-                0xd00008fe                region_create_cursor_black
-                0xd000091d                region_create_cursor_white
- .text          0xd0000940       0x91 region/draw.o
-                0xd0000940                region_fill
- .text          0xd00009d1      0x96a region/region.o
-                0xd00009d1                sqrt_fp8
-                0xd0000a56                region_destroy
-                0xd0000a65                region_is_empty
-                0xd0000aa8                region_create_oval
-                0xd0000bbb                region_create_rounded_rectangle
-                0xd0000ce4                region_create_rectangle
-                0xd0000d5a                region_create_empty
-                0xd0000d77                region_add_data_block
-                0xd0000e3f                region_add_padding_data_block
-                0xd0000e63                region_add_data_block_from_existing
-                0xd0000ec1                region_operation_check_special_case
-                0xd0000f4a                region_operation_on_data_block
-                0xd0001174                region_operate
- *fill*         0xd000133b        0x5 
- .text          0xd0001340      0x11a /opt/homebrew/Cellar/i686-elf-gcc/13.1.0/lib/gcc/i686-elf/13.1.0/libgcc.a(_udivdi3.o)
-                0xd0001340                __udivdi3
+ .text          0xd000083a       0x42 region/cursor.o
+                0xd000083a                region_create_cursor_black
+                0xd0000859                region_create_cursor_white
+ .text          0xd000087c       0x91 region/draw.o
+                0xd000087c                region_fill
+ .text          0xd000090d      0x96a region/region.o
+                0xd000090d                sqrt_fp8
+                0xd0000992                region_destroy
+                0xd00009a1                region_is_empty
+                0xd00009e4                region_create_oval
+                0xd0000af7                region_create_rounded_rectangle
+                0xd0000c20                region_create_rectangle
+                0xd0000c96                region_create_empty
+                0xd0000cb3                region_add_data_block
+                0xd0000d7b                region_add_padding_data_block
+                0xd0000d9f                region_add_data_block_from_existing
+                0xd0000dfd                region_operation_check_special_case
+                0xd0000e86                region_operation_on_data_block
+                0xd00010b0                region_operate
+ *fill*         0xd0001277        0x9 
+ .text          0xd0001280      0x11a /opt/homebrew/Cellar/i686-elf-gcc/13.1.0/lib/gcc/i686-elf/13.1.0/libgcc.a(_udivdi3.o)
+                0xd0001280                __udivdi3
  *(.rodata)
  *(.symtab)
  *(.strtab)
 
-.plt            0xd0001460        0x0
- .plt           0xd0001460        0x0 main.o
+.plt            0xd00013a0        0x0
+ .plt           0xd00013a0        0x0 main.o
 
-.plt.got        0xd0001460        0x0
- .plt.got       0xd0001460        0x0 main.o
+.plt.got        0xd00013a0        0x0
+ .plt.got       0xd00013a0        0x0 main.o
 
-.gnu.version_d  0xd000145c        0x0
+.gnu.version_d  0xd000139c        0x0
  .gnu.version_d
-                0xd000145c        0x0 main.o
+                0xd000139c        0x0 main.o
 
-.gnu.version    0xd000145a        0x0
- .gnu.version   0xd000145a        0x0 main.o
+.gnu.version    0xd000139a        0x0
+ .gnu.version   0xd000139a        0x0 main.o
 
-.gnu.version_r  0xd000145c        0x0
+.gnu.version_r  0xd000139c        0x0
  .gnu.version_r
-                0xd000145c        0x0 main.o
+                0xd000139c        0x0 main.o
 
-.dynsym         0xd000145c      0x230
- .dynsym        0xd000145c      0x230 main.o
+.dynsym         0xd000139c      0x230
+ .dynsym        0xd000139c      0x230 main.o
 
-.dynstr         0xd000168c      0x254
- .dynstr        0xd000168c      0x254 main.o
+.dynstr         0xd00015cc      0x254
+ .dynstr        0xd00015cc      0x254 main.o
 
-.hash           0xd00018e0       0xd8
- .hash          0xd00018e0       0xd8 main.o
+.hash           0xd0001820       0xd8
+ .hash          0xd0001820       0xd8 main.o
 
-.eh_frame       0xd00019b8        0x0
- .eh_frame      0xd00019b8        0x0 main.o
- .eh_frame      0xd00019b8        0x0 main.o
+.eh_frame       0xd00018f8        0x0
+ .eh_frame      0xd00018f8        0x0 main.o
+ .eh_frame      0xd00018f8        0x0 main.o
 
-.rodata.str1.1  0xd00019b8       0x87
+.rodata.str1.1  0xd00018f8       0x87
  .rodata.str1.1
-                0xd00019b8       0x87 region/region.o
+                0xd00018f8       0x87 region/region.o
                                  0x8a (size before relaxing)
 
-.eh_frame       0xd0001a40       0x64
- .eh_frame      0xd0001a40       0x64 /opt/homebrew/Cellar/i686-elf-gcc/13.1.0/lib/gcc/i686-elf/13.1.0/libgcc.a(_udivdi3.o)
+.eh_frame       0xd0001980       0x64
+ .eh_frame      0xd0001980       0x64 /opt/homebrew/Cellar/i686-elf-gcc/13.1.0/lib/gcc/i686-elf/13.1.0/libgcc.a(_udivdi3.o)
 
-.rel.dyn        0xd0001aa4      0x320
- .rel.plt       0xd0001aa4        0x0 main.o
- .rel.got       0xd0001aa4        0x0 main.o
- .rel.ifunc     0xd0001aa4        0x0 main.o
- .rel.text      0xd0001aa4      0x320 main.o
+.rel.dyn        0xd00019e4      0x310
+ .rel.plt       0xd00019e4        0x0 main.o
+ .rel.got       0xd00019e4        0x0 main.o
+ .rel.ifunc     0xd00019e4        0x0 main.o
+ .rel.text      0xd00019e4      0x310 main.o
 
 .data           0xd0002000        0x0
  *(.data)

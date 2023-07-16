@@ -23,7 +23,7 @@ struct filedes_entry {
     /*
     * Set to NULL if this entry isn't in use.
     */
-    struct vnode* vnode;
+    struct open_file* file;
 
     /*
     * The only flag that can live here is FD_CLOEXEC. All other flags live on the filesytem
@@ -50,7 +50,7 @@ struct filedes_table* filedes_table_create(void) {
     spinlock_init(&table->lock, "filedes table lock");
 
     for (int i = 0; i < MAX_FD_PER_PROCESS; ++i) {
-        table->entries[i].vnode = NULL;
+        table->entries[i].file = NULL;
     }
 
     return table;
@@ -73,13 +73,13 @@ struct filedes_table* filedes_table_copy(struct filedes_table* original) {
 /*
 * Given a file descriptor, return the underlying virtual filesystem node.
 */
-struct vnode* filedesc_convert_to_vnode(struct filedes_table* table, int fd) {
+struct open_file* filedesc_get_open_file(struct filedes_table* table, int fd) {
     spinlock_acquire(&table->lock);
     if (fd < 0 || fd >= MAX_FD_PER_PROCESS) {
         spinlock_release(&table->lock);
         return NULL;
     }
-    struct vnode* result = table->entries[fd].vnode;
+    struct open_file* result = table->entries[fd].file;
     spinlock_release(&table->lock);
 
     return result;
@@ -89,12 +89,12 @@ struct vnode* filedesc_convert_to_vnode(struct filedes_table* table, int fd) {
 * Registers a file into the filedescriptor table. Returns the file descriptor that was assigned
 * to the file, or -1 on fail (i.e. EMFILE).
 */
-int filedesc_table_register_vnode(struct filedes_table* table, struct vnode* node) {
+int filedesc_table_register_file(struct filedes_table* table, struct open_file* file) {
     spinlock_acquire(&table->lock);
 
     for (int i = 0; i < MAX_FD_PER_PROCESS; ++i) {
-        if (table->entries[i].vnode == NULL) {
-            table->entries[i].vnode = node;
+        if (table->entries[i].file == NULL) {
+            table->entries[i].file = file;
             table->entries[i].flags = 0;
             spinlock_release(&table->lock);
             return i;
@@ -109,12 +109,12 @@ int filedesc_table_register_vnode(struct filedes_table* table, struct vnode* nod
 /*
 * Removes a file from the file descriptor table. Returns 0 on success.
 */
-int filedesc_table_deregister_vnode(struct filedes_table* table, struct vnode* node) {
+int filedesc_table_deregister_file(struct filedes_table* table, struct open_file* file) {
     spinlock_acquire(&table->lock);
 
     for (int i = 0; i < MAX_FD_PER_PROCESS; ++i) {
-        if (table->entries[i].vnode == node) {
-            table->entries[i].vnode = NULL;
+        if (table->entries[i].file == file) {
+            table->entries[i].file = NULL;
             spinlock_release(&table->lock);
             return 0;
         }
@@ -135,15 +135,16 @@ int filedes_handle_exec(struct filedes_table* table) {
     kprintf("ACQUIRED\n");
 
     for (int i = 0; i < MAX_FD_PER_PROCESS; ++i) {
-        if (table->entries[i].vnode != NULL) {
+        if (table->entries[i].file != NULL) {
             if (table->entries[i].flags & FD_CLOEXEC) {
-                vfs_close(table->entries[i].vnode);
-                table->entries[i].vnode = NULL;
+                vfs_close(table->entries[i].file);
+                table->entries[i].file = NULL;
             }
         }
     }
 
     spinlock_release(&table->lock);
+    kprintf("RELEASED.\n");
 
     return 0;
 }
@@ -158,15 +159,15 @@ int filedes_handle_exec(struct filedes_table* table) {
 int filedesc_table_dup(struct filedes_table* table, int oldfd) {
     spinlock_acquire(&table->lock);
 
-    struct vnode* original_vnode = filedesc_convert_to_vnode(table, oldfd);
-    if (original_vnode == NULL) {
+    struct open_file* original_file = filedesc_get_open_file(table, oldfd);
+    if (original_file == NULL) {
         spinlock_release(&table->lock);
         return -EBADF;
     }
 
     for (int i = 0; i < MAX_FD_PER_PROCESS; ++i) {
-        if (table->entries[i].vnode == NULL) {
-            table->entries[i].vnode = original_vnode;
+        if (table->entries[i].file == NULL) {
+            table->entries[i].file = original_file;
             table->entries[i].flags = 0;
             spinlock_release(&table->lock);
             return i;
@@ -183,13 +184,13 @@ int filedesc_table_dup(struct filedes_table* table, int oldfd) {
 int filedesc_table_dup2(struct filedes_table* table, int oldfd, int newfd) {
     spinlock_acquire(&table->lock);
 
-    struct vnode* original_vnode = filedesc_convert_to_vnode(table, oldfd);
+    struct open_file* original_file = filedesc_get_open_file(table, oldfd);
 
     /*
     * "If oldfd is not a valid file descriptor, then the call fails,
     * and newfd is not closed."
     */
-    if (original_vnode == NULL) {
+    if (original_file == NULL) {
         spinlock_release(&table->lock);
         return -EBADF;
     }
@@ -203,17 +204,17 @@ int filedesc_table_dup2(struct filedes_table* table, int oldfd, int newfd) {
         return newfd;
     }
 
-    struct vnode* current_vnode = filedesc_convert_to_vnode(table, oldfd);
-    if (current_vnode != NULL) {
+    struct open_file* current_file = filedesc_get_open_file(table, oldfd);
+    if (current_file != NULL) {
         /*
         * "If the file descriptor newfd was previously open, it is closed
         * before being reused; the close is performed silently (i.e., any
         * errors during the close are not reported by dup2())."
         */
-        vfs_close(current_vnode);
+        vfs_close(current_file);
     }
 
-    table->entries[newfd].vnode = original_vnode;
+    table->entries[newfd].file = original_file;
     table->entries[newfd].flags = 0;
     
     spinlock_release(&table->lock);

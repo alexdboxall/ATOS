@@ -72,7 +72,7 @@ struct std_device_interface* pipe_initialise_internal(int(*io_func)(struct std_d
     return dev;
 }
 
-int pipe_create(struct vnode** out, int flags) {
+int pipe_create(struct open_file** out, int flags) {
     if (out == NULL) {
         return EINVAL;
     }
@@ -96,11 +96,7 @@ int pipe_create(struct vnode** out, int flags) {
     pipe_data->buffer = adt_blocking_byte_buffer_create(4096);
 
     struct std_device_interface* data = pipe_initialise_internal(pipe_io);
-    *out = dev_create_vnode(data);
 
-    if (flags & O_NONBLOCK) {
-        (*out)->flags |= O_NONBLOCK;
-    }
-
+    *out = open_file_create(dev_create_vnode(data), 0, (flags & O_NONBLOCK) ? O_NONBLOCK : 0, true, true);
     return 0;
 }

@@ -3,7 +3,7 @@
 #include <sys/types.h>
 
 struct demofs {
-    struct vnode* disk;
+    struct open_file* disk;
     ino_t root_inode;  
 };
 

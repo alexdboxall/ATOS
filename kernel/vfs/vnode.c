@@ -19,12 +19,7 @@ struct vnode* vnode_init(struct std_device_interface* dev, struct vnode_operatio
     node->dev = dev;
     node->ops = ops;
     node->reference_count = 1;
-    node->can_write = false;
-    node->can_read = false;
     node->data = NULL;
-    node->flags = 0;
-    node->seek_position = 0;
-    node->initial_mode = 0;
     spinlock_init(&node->reference_count_lock, "vnode reference count lock");
 
     return node;

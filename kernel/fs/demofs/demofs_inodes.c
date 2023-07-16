@@ -27,7 +27,7 @@
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 int demofs_read_inode(struct demofs* fs, ino_t inode, uint8_t* buffer) {
-    if (fs->disk->dev->block_size != SECTOR_SIZE) {
+    if (fs->disk->node->dev->block_size != SECTOR_SIZE) {
         /*
         * All you would have to do to support larger sectors is to tweak the 
         * struct uio* below to copy to a different buffer, and then copy

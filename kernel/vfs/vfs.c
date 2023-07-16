@@ -73,7 +73,7 @@
 */
 struct mounted_device {
 	/* The vnode representing the device / root directory of a filesystem */
-	struct vnode* node;
+	struct open_file* node;
 
 	/* What the device / filesystem mount is called */
 	char* name;
@@ -218,7 +218,7 @@ int vfs_get_final_component(const char* path, char* output_buffer, int max_outpu
 * Takes in a device name, without the colon, and returns its vnode.
 * If no such device is mounted, it returns NULL.
 */
-static struct vnode* vfs_get_device_from_name(const char* name) {
+static struct open_file* vfs_get_device_from_name(const char* name) {
 	assert(name != NULL);
 
 	/*
@@ -273,20 +273,21 @@ static int vfs_get_vnode_from_path(const char* path, struct vnode** out, bool wa
 	int path_ptr = 0;
 	char component_buffer[MAX_COMPONENT_LENGTH];
 
-	struct vnode* current_vnode = NULL;
 	int err = vfs_get_path_component(path, &path_ptr, component_buffer, MAX_COMPONENT_LENGTH, ':');
 	if (err != 0) {
 		return err;
 	}
 
-	current_vnode = vfs_get_device_from_name(component_buffer);
+	struct open_file* current_file = vfs_get_device_from_name(component_buffer);
 
 	/*
 	* No root device found, so we can't continue.
 	*/
-	if (current_vnode == NULL) {
+	if (current_file == NULL || current_file->node == NULL) {
 		return ENODEV;
 	}
+
+	struct vnode* current_vnode = current_file->node;
 
 	/*
 	* This will be dereferenced either as we go through the loop, or
@@ -396,7 +397,7 @@ static int vfs_get_vnode_from_path(const char* path, struct vnode** out, bool wa
 /*
 * TODO: this will need some work.
 */
-int vfs_mount_filesystem(const char* filesystem_name, int (*vnode_creator)(struct vnode*, struct vnode**)) {
+int vfs_mount_filesystem(const char* filesystem_name, int (*vnode_creator)(struct open_file*, struct open_file**)) {
 	char raw_name[MAX_COMPONENT_LENGTH + 8];
 
 	if (strlen(filesystem_name) >= MAX_COMPONENT_LENGTH - 4) {
@@ -425,9 +426,9 @@ int vfs_mount_filesystem(const char* filesystem_name, int (*vnode_creator)(struc
 	* TODO: open / reference count this so you can't unmount a raw disk while
 	*       it has a filesystem mounted
 	*/
-	struct vnode* raw_device = vfs_get_device_from_name(raw_name);
+	struct open_file* raw_device = vfs_get_device_from_name(raw_name);
 
-	struct vnode* root_directory;
+	struct open_file* root_directory;
 	int status = vnode_creator(raw_device, &root_directory);
 	if (status != 0) {
 		spinlock_release(&vfs_lock);
@@ -466,13 +467,13 @@ int vfs_add_virtual_mount_point(const char* mount_name, const char* filename) {
 		return status;
 	}
 
-    struct vnode* file;
+    struct open_file* file;
     status = vfs_open(filename, O_RDONLY, 0, &file);
     if (status != 0) {
         return status;
     }
 
-    uint8_t type = vnode_op_dirent_type(file);
+    uint8_t type = vnode_op_dirent_type(file->node);
     if (type != DT_DIR) {
         return ENOTDIR;
     }
@@ -530,7 +531,12 @@ int vfs_add_device(struct std_device_interface* dev, const char* name)
 
 	struct mounted_device* mount = malloc(sizeof(struct mounted_device));
 	mount->name = strdup(name);
-	mount->node = dev_create_vnode(dev);
+
+	/*
+	 * If the device doesn't actually support read/write, its own implementation
+	 * can just return EINVAL or similar. 
+	 */
+	mount->node = open_file_create(dev_create_vnode(dev), 0, 0, true, true);
 
 	adt_list_add_back(mount_list, mount);
 	
@@ -566,9 +572,11 @@ int vfs_remove_device(const char* name) {
 		if (!strcmp(mount->name, name)) {
 			/*
 			* Decrement the reference that was initially created way back in
-			* vfs_add_device in the call to dev_create_vnode.
+			* vfs_add_device in the call to dev_create_vnode (the vnode dereference),
+			* and then the open file that was created alongside it.
 			*/
-			vnode_dereference(mount->node);
+			vnode_dereference(mount->node->node);
+			open_file_dereference(mount->node);
 
 			adt_list_remove_element(mount_list, mount);
 			free(mount->name);
@@ -584,12 +592,13 @@ int vfs_remove_device(const char* name) {
 	return ENODEV;
 }
 
-int vfs_close(struct vnode* node) {
-	if (node == NULL) {
+int vfs_close(struct open_file* file) {
+	if (file == NULL || file->node == NULL) {
 		return EINVAL;
 	}
 
-    vnode_dereference(node);
+    vnode_dereference(file->node);
+	open_file_dereference(file);
 	return 0;
 }
 
@@ -597,7 +606,7 @@ int vfs_close(struct vnode* node) {
 /*
 * Open a file from a path. Currently only accepts absolute paths.
 */
-int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out) {
+int vfs_open(const char* path, int flags, mode_t mode, struct open_file** out) {
 	if (path == NULL || out == NULL || strlen(path) <= 0) {
 		return EINVAL;
 	}
@@ -666,10 +675,10 @@ int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out) {
 		return status;
 	}
 
-	node->can_read = (flags & O_ACCMODE) != O_WRONLY;
-	node->can_write = (flags & O_ACCMODE) != O_RDONLY;
+	bool can_read = (flags & O_ACCMODE) != O_WRONLY;
+	bool can_write = (flags & O_ACCMODE) != O_RDONLY;
 
-	if (vnode_op_dirent_type(node) == DT_DIR && node->can_write) {
+	if (vnode_op_dirent_type(node) == DT_DIR && can_write) {
 		/*
 		* You cannot write to a directory. This also prevents truncation.
 		*/
@@ -678,7 +687,7 @@ int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out) {
 	}
 	
 	if (flags & O_TRUNC) {
-		if (node->can_write) {
+		if (can_write) {
 			// TODO: status = vnode_truncate(node)
 			// if (status) { return status; }
 		} else {
@@ -690,10 +699,7 @@ int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out) {
 
     /* TODO: clear out the flags that don't normally get saved */
 
-    node->initial_mode = mode;
-    node->flags = flags;
-
-	*out = node;
+	*out = open_file_create(node, mode, flags, can_read, can_write);
 	return 0;
 }
 
@@ -703,51 +709,98 @@ int vfs_open(const char* path, int flags, mode_t mode, struct vnode** out) {
 * The O_APPEND flag is handled in the system call layer, as seek positions must
 * be handled before we reach the uio stage.
 */
-int vfs_write(struct vnode* node, struct uio* io) {
-	if (io == NULL || io->address == NULL) {
+int vfs_write(struct open_file* file, struct uio* io) {
+	if (io == NULL || io->address == NULL || file == NULL || file->node == NULL) {
 		return EINVAL;
 	}
-    if (!node->can_write) {
+    if (!file->can_write) {
         return EBADF;
     }
     // TODO: lock??
 
-	return vnode_op_write(node, io);
+	if (vnode_op_dirent_type(file->node) == DT_DIR) {
+		return EISDIR;
+	}
+
+	return vnode_op_write(file->node, io);
 }
 
 /*
 * Read data from the file.
 */
-int vfs_read(struct vnode* node, struct uio* io) {
-	if (io == NULL || io->address == NULL) {
+int vfs_read(struct open_file* file, struct uio* io) {
+	if (io == NULL || io->address == NULL || file == NULL || file->node == NULL) {
 		return EINVAL;
 	}
-    if (!node->can_read) {
+    if (!file->can_read) {
         return EBADF;
     }
 
-	if (vnode_op_dirent_type(node) == DT_DIR) {
+	if (vnode_op_dirent_type(file->node) == DT_DIR) {
 		return EISDIR;
 	}
 
-	return vnode_op_read(node, io);
+	return vnode_op_read(file->node, io);
 }
 
 
 /*
 * Read data from a directory.
 */
-int vfs_readdir(struct vnode* node, struct uio* io) {
-	if (io == NULL || io->address == NULL) {
+int vfs_readdir(struct open_file* file, struct uio* io) {
+	if (io == NULL || io->address == NULL || file == NULL || file->node == NULL) {
 		return EINVAL;
 	}
-    if (!node->can_read) {
+    if (!file->can_read) {
         return EBADF;
     }
 
-	if (vnode_op_dirent_type(node) != DT_DIR) {
+	if (vnode_op_dirent_type(file->node) != DT_DIR) {
 		return ENOTDIR;
 	}
 	
-	return vnode_op_readdir(node, io);
+	return vnode_op_readdir(file->node, io);
+}
+
+
+void open_file_reference(struct open_file* file) {
+	assert(file != NULL);
+
+    spinlock_acquire(&file->reference_count_lock);
+    file->reference_count++;
+    spinlock_release(&file->reference_count_lock);
+}
+
+void open_file_dereference(struct open_file* file) {
+    assert(file != NULL);
+
+	spinlock_acquire(&file->reference_count_lock);
+
+    assert(file->reference_count > 0);
+    file->reference_count--;
+
+    if (file->reference_count == 0) {
+        /*
+        * Must release the lock before we delete it so we can put interrupts back on
+        */
+        spinlock_release(&file->reference_count_lock);
+
+        free(file);
+        return;
+    }
+
+    spinlock_release(&file->reference_count_lock);
+}
+
+struct open_file* open_file_create(struct vnode* node, int mode, int flags, bool can_read, bool can_write) {
+	struct open_file* file = malloc(sizeof(struct open_file));
+	file->reference_count = 1;
+	file->node = node;
+	file->can_read = can_read;
+	file->can_write = can_write;
+	file->initial_mode = mode;
+	file->flags = flags;
+	file->seek_position = 0;
+	spinlock_init(&file->reference_count_lock, "vnode reference count lock");
+	return file;
 }

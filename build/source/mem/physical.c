@@ -76,6 +76,26 @@ static bool phys_is_page_free(size_t page_num)
 int num_pages_used = 0;
 int num_pages_total = 0;
 
+uint32_t bitmap_checksum = 0;
+
+static uint32_t phys_compute_current_checksum() {
+	uint32_t checksum = 0xDEADBEEF;
+	for (int i = 0; i < ALLOCATION_BITMAP_SIZE; ++i) {
+		checksum *= 3;
+		checksum ^= page_allocation_bitmap[i];
+		checksum += 248900;
+	}
+	return checksum;
+}
+
+static void phys_set_new_checksum() {
+	bitmap_checksum = phys_compute_current_checksum();
+}
+
+static void phys_verify_checksum() {
+	assert(bitmap_checksum == phys_compute_current_checksum());
+}
+
 void phys_init(void)
 {
 	spinlock_init(&phys_lock, "physical memory lock");
@@ -112,6 +132,7 @@ void phys_init(void)
 		}
 	}
 
+	phys_set_new_checksum();
 	spinlock_release(&phys_lock);
 }
 
@@ -130,6 +151,7 @@ void phys_init(void)
 size_t phys_allocate_page(void)
 {
 	spinlock_acquire(&phys_lock);
+	phys_verify_checksum();
 
 	++num_pages_used;
 
@@ -150,17 +172,21 @@ size_t phys_allocate_page(void)
 
 		if (phys_is_page_free(page_num)) {
 			phys_mark_as_used(page_num);
+			phys_set_new_checksum();
 			spinlock_release(&phys_lock);
 			return page_num * ARCH_PAGE_SIZE;
 		}
     } 
-
+	phys_set_new_checksum();
 	spinlock_release(&phys_lock);
 
+	kprintf("PAGE REPLACEMENT ***********\n");
 	/*
 	* No pages left. Stick one on the disk.
 	*/
     size_t ret = vas_perform_page_replacement();
+
+	phys_verify_checksum();
 
 	kprintfnv("allocated page 0x%X\n", ret);
 
@@ -170,6 +196,7 @@ size_t phys_allocate_page(void)
 void phys_free_page(size_t phys_addr)
 {
 	spinlock_acquire(&phys_lock);
+	phys_verify_checksum();
 
 	--num_pages_used;
 
@@ -177,6 +204,6 @@ void phys_free_page(size_t phys_addr)
 	
 	assert(phys_is_page_free(page_num));
 	phys_mark_as_free(page_num);
-
+	phys_set_new_checksum();
 	spinlock_release(&phys_lock);
 }

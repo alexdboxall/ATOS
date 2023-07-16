@@ -24,12 +24,12 @@
 *         error code        on failure
 */
 int sys_tcgetattr(size_t args[4]) {
-    struct vnode* node = filedesc_convert_to_vnode(current_cpu->current_thread->process->fdtable, args[0]);
+    struct open_file* node = filedesc_get_open_file(current_cpu->current_thread->process->fdtable, args[0]);
     if (node == NULL) {
         return EBADF;
     }
 
-    struct termios* tty_termios = node->dev->termios;
+    struct termios* tty_termios = node->node->dev->termios;
     if (tty_termios == NULL) {
         return ENOTTY;
     }
