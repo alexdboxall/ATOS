@@ -37,87 +37,80 @@ LOAD region/region.o
 LOAD /opt/homebrew/Cellar/i686-elf-gcc/13.1.0/lib/gcc/i686-elf/13.1.0/libgcc.a
                 0xd0000000                        . = 0xd0000000
 
-.text           0xd0000000     0x139a
+.text           0xd0000000      0xeba
  *(.text)
- .text          0xd0000000      0x83a main.o
-                0xd0000000                stack_push
-                0xd000002e                stack_pop
-                0xd0000060                window_paint
-                0xd00002f9                invalidate_part_of_screen
-                0xd00003dc                window_paint_all
-                0xd0000416                demo_window_draw
-                0xd0000546                window_add_child
-                0xd0000564                create_window
-                0xd0000736                _driver_entry_point
- .text          0xd000083a       0x42 region/cursor.o
-                0xd000083a                region_create_cursor_black
-                0xd0000859                region_create_cursor_white
- .text          0xd000087c       0x91 region/draw.o
-                0xd000087c                region_fill
- .text          0xd000090d      0x96a region/region.o
-                0xd000090d                sqrt_fp8
-                0xd0000992                region_destroy
-                0xd00009a1                region_is_empty
-                0xd00009e4                region_create_oval
-                0xd0000af7                region_create_rounded_rectangle
-                0xd0000c20                region_create_rectangle
-                0xd0000c96                region_create_empty
-                0xd0000cb3                region_add_data_block
-                0xd0000d7b                region_add_padding_data_block
-                0xd0000d9f                region_add_data_block_from_existing
-                0xd0000dfd                region_operation_check_special_case
-                0xd0000e86                region_operation_on_data_block
-                0xd00010b0                region_operate
- *fill*         0xd0001277        0x9 
- .text          0xd0001280      0x11a /opt/homebrew/Cellar/i686-elf-gcc/13.1.0/lib/gcc/i686-elf/13.1.0/libgcc.a(_udivdi3.o)
-                0xd0001280                __udivdi3
+ .text          0xd0000000      0x356 main.o
+                0xd000011a                add_window
+                0xd000026c                _driver_entry_point
+ .text          0xd0000356       0x42 region/cursor.o
+                0xd0000356                region_create_cursor_black
+                0xd0000375                region_create_cursor_white
+ .text          0xd0000398       0x91 region/draw.o
+                0xd0000398                region_fill
+ .text          0xd0000429      0x96a region/region.o
+                0xd0000429                sqrt_fp8
+                0xd00004ae                region_destroy
+                0xd00004bd                region_is_empty
+                0xd0000500                region_create_oval
+                0xd0000613                region_create_rounded_rectangle
+                0xd000073c                region_create_rectangle
+                0xd00007b2                region_create_empty
+                0xd00007cf                region_add_data_block
+                0xd0000897                region_add_padding_data_block
+                0xd00008bb                region_add_data_block_from_existing
+                0xd0000919                region_operation_check_special_case
+                0xd00009a2                region_operation_on_data_block
+                0xd0000bcc                region_operate
+ *fill*         0xd0000d93        0xd 
+ .text          0xd0000da0      0x11a /opt/homebrew/Cellar/i686-elf-gcc/13.1.0/lib/gcc/i686-elf/13.1.0/libgcc.a(_udivdi3.o)
+                0xd0000da0                __udivdi3
  *(.rodata)
  *(.symtab)
  *(.strtab)
 
-.plt            0xd00013a0        0x0
- .plt           0xd00013a0        0x0 main.o
+.plt            0xd0000ec0        0x0
+ .plt           0xd0000ec0        0x0 main.o
 
-.plt.got        0xd00013a0        0x0
- .plt.got       0xd00013a0        0x0 main.o
+.plt.got        0xd0000ec0        0x0
+ .plt.got       0xd0000ec0        0x0 main.o
 
-.gnu.version_d  0xd000139c        0x0
+.gnu.version_d  0xd0000ebc        0x0
  .gnu.version_d
-                0xd000139c        0x0 main.o
+                0xd0000ebc        0x0 main.o
 
-.gnu.version    0xd000139a        0x0
- .gnu.version   0xd000139a        0x0 main.o
+.gnu.version    0xd0000eba        0x0
+ .gnu.version   0xd0000eba        0x0 main.o
 
-.gnu.version_r  0xd000139c        0x0
+.gnu.version_r  0xd0000ebc        0x0
  .gnu.version_r
-                0xd000139c        0x0 main.o
+                0xd0000ebc        0x0 main.o
 
-.dynsym         0xd000139c      0x230
- .dynsym        0xd000139c      0x230 main.o
+.dynsym         0xd0000ebc      0x1b0
+ .dynsym        0xd0000ebc      0x1b0 main.o
 
-.dynstr         0xd00015cc      0x254
- .dynstr        0xd00015cc      0x254 main.o
+.dynstr         0xd000106c      0x1d9
+ .dynstr        0xd000106c      0x1d9 main.o
 
-.hash           0xd0001820       0xd8
- .hash          0xd0001820       0xd8 main.o
+.hash           0xd0001248       0xb8
+ .hash          0xd0001248       0xb8 main.o
 
-.eh_frame       0xd00018f8        0x0
- .eh_frame      0xd00018f8        0x0 main.o
- .eh_frame      0xd00018f8        0x0 main.o
+.eh_frame       0xd0001300        0x0
+ .eh_frame      0xd0001300        0x0 main.o
+ .eh_frame      0xd0001300        0x0 main.o
 
-.rodata.str1.1  0xd00018f8       0x87
+.rodata.str1.1  0xd0001300       0x87
  .rodata.str1.1
-                0xd00018f8       0x87 region/region.o
+                0xd0001300       0x87 region/region.o
                                  0x8a (size before relaxing)
 
-.eh_frame       0xd0001980       0x64
- .eh_frame      0xd0001980       0x64 /opt/homebrew/Cellar/i686-elf-gcc/13.1.0/lib/gcc/i686-elf/13.1.0/libgcc.a(_udivdi3.o)
+.eh_frame       0xd0001388       0x64
+ .eh_frame      0xd0001388       0x64 /opt/homebrew/Cellar/i686-elf-gcc/13.1.0/lib/gcc/i686-elf/13.1.0/libgcc.a(_udivdi3.o)
 
-.rel.dyn        0xd00019e4      0x310
- .rel.plt       0xd00019e4        0x0 main.o
- .rel.got       0xd00019e4        0x0 main.o
- .rel.ifunc     0xd00019e4        0x0 main.o
- .rel.text      0xd00019e4      0x310 main.o
+.rel.dyn        0xd00013ec      0x1f8
+ .rel.plt       0xd00013ec        0x0 main.o
+ .rel.got       0xd00013ec        0x0 main.o
+ .rel.ifunc     0xd00013ec        0x0 main.o
+ .rel.text      0xd00013ec      0x1f8 main.o
 
 .data           0xd0002000        0x0
  *(.data)
@@ -140,20 +133,18 @@ LOAD /opt/homebrew/Cellar/i686-elf-gcc/13.1.0/lib/gcc/i686-elf/13.1.0/libgcc.a
 .data.rel.ro    0xd0002078        0x0
  .data.rel.ro   0xd0002078        0x0 main.o
 
-.bss            0xd0003000     0xc020
+.bss            0xd0003000        0x0
  *(COMMON)
  *(.bss)
- .bss           0xd0003000     0xc020 main.o
-                0xd0003000                stack_ptr
-                0xd0003020                stack
- .bss           0xd000f020        0x0 region/cursor.o
- .bss           0xd000f020        0x0 region/draw.o
- .bss           0xd000f020        0x0 region/region.o
- .bss           0xd000f020        0x0 /opt/homebrew/Cellar/i686-elf-gcc/13.1.0/lib/gcc/i686-elf/13.1.0/libgcc.a(_udivdi3.o)
+ .bss           0xd0003000        0x0 main.o
+ .bss           0xd0003000        0x0 region/cursor.o
+ .bss           0xd0003000        0x0 region/draw.o
+ .bss           0xd0003000        0x0 region/region.o
+ .bss           0xd0003000        0x0 /opt/homebrew/Cellar/i686-elf-gcc/13.1.0/lib/gcc/i686-elf/13.1.0/libgcc.a(_udivdi3.o)
  *(.bootstrap_stack)
 
-.dynbss         0xd000f020        0x0
- .dynbss        0xd000f020        0x0 main.o
+.dynbss         0xd0003000        0x0
+ .dynbss        0xd0003000        0x0 main.o
 
 /DISCARD/
  *(.comment)

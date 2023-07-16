@@ -1,0 +1,1646 @@
+
+shell.exe:	file format elf32-i386
+
+Disassembly of section .text:
+
+10000000 <.text>:
+10000000: 55                           	push	ebp
+10000001: 89 e5                        	mov	ebp, esp
+10000003: 53                           	push	ebx
+10000004: 51                           	push	ecx
+10000005: 56                           	push	esi
+10000006: 57                           	push	edi
+10000007: 8b 45 08                     	mov	eax, dword ptr [ebp + 8]
+1000000a: 8b 5d 0c                     	mov	ebx, dword ptr [ebp + 12]
+1000000d: 8b 4d 10                     	mov	ecx, dword ptr [ebp + 16]
+10000010: 8b 75 14                     	mov	esi, dword ptr [ebp + 20]
+10000013: 8b 7d 18                     	mov	edi, dword ptr [ebp + 24]
+10000016: cd 60                        	int	96
+10000018: 5f                           	pop	edi
+10000019: 5e                           	pop	esi
+1000001a: 59                           	pop	ecx
+1000001b: 5b                           	pop	ebx
+1000001c: 5d                           	pop	ebp
+1000001d: c3                           	ret
+1000001e: 66 90                        	nop
+10000020: 55                           	push	ebp
+10000021: 89 e5                        	mov	ebp, esp
+10000023: 57                           	push	edi
+10000024: 56                           	push	esi
+10000025: 53                           	push	ebx
+10000026: 83 ec 2c                     	sub	esp, 44
+10000029: 8b 45 08                     	mov	eax, dword ptr [ebp + 8]
+1000002c: 8b 7d 0c                     	mov	edi, dword ptr [ebp + 12]
+1000002f: 8b 75 14                     	mov	esi, dword ptr [ebp + 20]
+10000032: 8b 5d 10                     	mov	ebx, dword ptr [ebp + 16]
+10000035: 89 45 dc                     	mov	dword ptr [ebp - 36], eax
+10000038: 89 fa                        	mov	edx, edi
+1000003a: 85 f6                        	test	esi, esi
+1000003c: 75 3a                        	jne	0x10000078 <.text+0x78>
+1000003e: 39 df                        	cmp	edi, ebx
+10000040: 0f 83 92 00 00 00            	jae	0x100000d8 <.text+0xd8>
+10000046: c7 45 e4 00 00 00 00         	mov	dword ptr [ebp - 28], 0
+1000004d: f7 f3                        	div	ebx
+1000004f: 8b 75 18                     	mov	esi, dword ptr [ebp + 24]
+10000052: 89 45 e0                     	mov	dword ptr [ebp - 32], eax
+10000055: 85 f6                        	test	esi, esi
+10000057: 74 0c                        	je	0x10000065 <.text+0x65>
+10000059: 8b 45 18                     	mov	eax, dword ptr [ebp + 24]
+1000005c: 89 10                        	mov	dword ptr [eax], edx
+1000005e: c7 40 04 00 00 00 00         	mov	dword ptr [eax + 4], 0
+10000065: 8b 45 e0                     	mov	eax, dword ptr [ebp - 32]
+10000068: 8b 55 e4                     	mov	edx, dword ptr [ebp - 28]
+1000006b: 83 c4 2c                     	add	esp, 44
+1000006e: 5b                           	pop	ebx
+1000006f: 5e                           	pop	esi
+10000070: 5f                           	pop	edi
+10000071: 5d                           	pop	ebp
+10000072: c3                           	ret
+10000073: 8d 74 26 00                  	lea	esi, [esi + eiz]
+10000077: 90                           	nop
+10000078: 39 f7                        	cmp	edi, esi
+1000007a: 73 24                        	jae	0x100000a0 <.text+0xa0>
+1000007c: 8b 5d 18                     	mov	ebx, dword ptr [ebp + 24]
+1000007f: 85 db                        	test	ebx, ebx
+10000081: 74 0b                        	je	0x1000008e <.text+0x8e>
+10000083: 8b 45 18                     	mov	eax, dword ptr [ebp + 24]
+10000086: 8b 75 dc                     	mov	esi, dword ptr [ebp - 36]
+10000089: 89 78 04                     	mov	dword ptr [eax + 4], edi
+1000008c: 89 30                        	mov	dword ptr [eax], esi
+1000008e: c7 45 e4 00 00 00 00         	mov	dword ptr [ebp - 28], 0
+10000095: c7 45 e0 00 00 00 00         	mov	dword ptr [ebp - 32], 0
+1000009c: eb c7                        	jmp	0x10000065 <.text+0x65>
+1000009e: 66 90                        	nop
+100000a0: 0f bd ce                     	bsr	ecx, esi
+100000a3: 83 f1 1f                     	xor	ecx, 31
+100000a6: 89 4d e4                     	mov	dword ptr [ebp - 28], ecx
+100000a9: 75 55                        	jne	0x10000100 <.text+0x100>
+100000ab: 39 fe                        	cmp	esi, edi
+100000ad: 0f 82 0d 01 00 00            	jb	0x100001c0 <.text+0x1c0>
+100000b3: c7 45 e0 00 00 00 00         	mov	dword ptr [ebp - 32], 0
+100000ba: 39 5d dc                     	cmp	dword ptr [ebp - 36], ebx
+100000bd: 0f 83 fd 00 00 00            	jae	0x100001c0 <.text+0x1c0>
+100000c3: 8b 4d 18                     	mov	ecx, dword ptr [ebp + 24]
+100000c6: 85 c9                        	test	ecx, ecx
+100000c8: 74 9b                        	je	0x10000065 <.text+0x65>
+100000ca: 8b 5d 18                     	mov	ebx, dword ptr [ebp + 24]
+100000cd: 89 03                        	mov	dword ptr [ebx], eax
+100000cf: 89 53 04                     	mov	dword ptr [ebx + 4], edx
+100000d2: eb 91                        	jmp	0x10000065 <.text+0x65>
+100000d4: 8d 74 26 00                  	lea	esi, [esi + eiz]
+100000d8: 89 d9                        	mov	ecx, ebx
+100000da: 85 db                        	test	ebx, ebx
+100000dc: 75 0b                        	jne	0x100000e9 <.text+0xe9>
+100000de: b8 01 00 00 00               	mov	eax, 1
+100000e3: 31 d2                        	xor	edx, edx
+100000e5: f7 f3                        	div	ebx
+100000e7: 89 c1                        	mov	ecx, eax
+100000e9: 89 f8                        	mov	eax, edi
+100000eb: 31 d2                        	xor	edx, edx
+100000ed: f7 f1                        	div	ecx
+100000ef: 89 c7                        	mov	edi, eax
+100000f1: 8b 45 dc                     	mov	eax, dword ptr [ebp - 36]
+100000f4: 89 7d e4                     	mov	dword ptr [ebp - 28], edi
+100000f7: f7 f1                        	div	ecx
+100000f9: e9 51 ff ff ff               	jmp	0x1000004f <.text+0x4f>
+100000fe: 66 90                        	nop
+10000100: 8b 45 e4                     	mov	eax, dword ptr [ebp - 28]
+10000103: ba 20 00 00 00               	mov	edx, 32
+10000108: 29 c2                        	sub	edx, eax
+1000010a: 89 c1                        	mov	ecx, eax
+1000010c: 89 d8                        	mov	eax, ebx
+1000010e: d3 e6                        	shl	esi, cl
+10000110: 89 d1                        	mov	ecx, edx
+10000112: 89 55 d0                     	mov	dword ptr [ebp - 48], edx
+10000115: d3 e8                        	shr	eax, cl
+10000117: 09 c6                        	or	esi, eax
+10000119: 89 f8                        	mov	eax, edi
+1000011b: 89 75 d8                     	mov	dword ptr [ebp - 40], esi
+1000011e: 8b 75 e4                     	mov	esi, dword ptr [ebp - 28]
+10000121: 89 f1                        	mov	ecx, esi
+10000123: d3 e3                        	shl	ebx, cl
+10000125: 89 d1                        	mov	ecx, edx
+10000127: d3 e8                        	shr	eax, cl
+10000129: 89 5d d4                     	mov	dword ptr [ebp - 44], ebx
+1000012c: 89 f1                        	mov	ecx, esi
+1000012e: 89 d3                        	mov	ebx, edx
+10000130: 89 fa                        	mov	edx, edi
+10000132: 89 f7                        	mov	edi, esi
+10000134: 8b 75 dc                     	mov	esi, dword ptr [ebp - 36]
+10000137: d3 e2                        	shl	edx, cl
+10000139: 89 d9                        	mov	ecx, ebx
+1000013b: 89 c3                        	mov	ebx, eax
+1000013d: d3 ee                        	shr	esi, cl
+1000013f: 89 f1                        	mov	ecx, esi
+10000141: 8b 75 dc                     	mov	esi, dword ptr [ebp - 36]
+10000144: 09 d1                        	or	ecx, edx
+10000146: 89 ca                        	mov	edx, ecx
+10000148: 89 f9                        	mov	ecx, edi
+1000014a: d3 e6                        	shl	esi, cl
+1000014c: 89 d0                        	mov	eax, edx
+1000014e: 89 da                        	mov	edx, ebx
+10000150: f7 75 d8                     	div	dword ptr [ebp - 40]
+10000153: 89 d3                        	mov	ebx, edx
+10000155: 89 45 e0                     	mov	dword ptr [ebp - 32], eax
+10000158: 89 c1                        	mov	ecx, eax
+1000015a: 89 75 cc                     	mov	dword ptr [ebp - 52], esi
+1000015d: f7 65 d4                     	mul	dword ptr [ebp - 44]
+10000160: 89 55 dc                     	mov	dword ptr [ebp - 36], edx
+10000163: 89 c7                        	mov	edi, eax
+10000165: 39 d3                        	cmp	ebx, edx
+10000167: 72 06                        	jb	0x1000016f <.text+0x16f>
+10000169: 75 15                        	jne	0x10000180 <.text+0x180>
+1000016b: 39 c6                        	cmp	esi, eax
+1000016d: 73 11                        	jae	0x10000180 <.text+0x180>
+1000016f: 8d 71 ff                     	lea	esi, [ecx - 1]
+10000172: 2b 45 d4                     	sub	eax, dword ptr [ebp - 44]
+10000175: 1b 55 d8                     	sbb	edx, dword ptr [ebp - 40]
+10000178: 89 75 e0                     	mov	dword ptr [ebp - 32], esi
+1000017b: 89 c7                        	mov	edi, eax
+1000017d: 89 55 dc                     	mov	dword ptr [ebp - 36], edx
+10000180: 8b 45 18                     	mov	eax, dword ptr [ebp + 24]
+10000183: 85 c0                        	test	eax, eax
+10000185: 74 25                        	je	0x100001ac <.text+0x1ac>
+10000187: 0f b6 4d d0                  	movzx	ecx, byte ptr [ebp - 48]
+1000018b: 8b 75 e4                     	mov	esi, dword ptr [ebp - 28]
+1000018e: 89 d8                        	mov	eax, ebx
+10000190: 8b 55 cc                     	mov	edx, dword ptr [ebp - 52]
+10000193: 29 fa                        	sub	edx, edi
+10000195: 1b 45 dc                     	sbb	eax, dword ptr [ebp - 36]
+10000198: 89 c3                        	mov	ebx, eax
+1000019a: d3 e3                        	shl	ebx, cl
+1000019c: 89 f1                        	mov	ecx, esi
+1000019e: 8b 75 18                     	mov	esi, dword ptr [ebp + 24]
+100001a1: d3 ea                        	shr	edx, cl
+100001a3: d3 e8                        	shr	eax, cl
+100001a5: 09 da                        	or	edx, ebx
+100001a7: 89 46 04                     	mov	dword ptr [esi + 4], eax
+100001aa: 89 16                        	mov	dword ptr [esi], edx
+100001ac: c7 45 e4 00 00 00 00         	mov	dword ptr [ebp - 28], 0
+100001b3: e9 ad fe ff ff               	jmp	0x10000065 <.text+0x65>
+100001b8: 8d b4 26 00 00 00 00         	lea	esi, [esi + eiz]
+100001bf: 90                           	nop
+100001c0: 8b 45 dc                     	mov	eax, dword ptr [ebp - 36]
+100001c3: 89 fa                        	mov	edx, edi
+100001c5: c7 45 e0 01 00 00 00         	mov	dword ptr [ebp - 32], 1
+100001cc: 29 d8                        	sub	eax, ebx
+100001ce: 19 f2                        	sbb	edx, esi
+100001d0: e9 ee fe ff ff               	jmp	0x100000c3 <.text+0xc3>
+
+Disassembly of section .text._start:
+
+100001d5 <.text._start>:
+100001d5: 55                           	push	ebp
+100001d6: 89 e5                        	mov	ebp, esp
+100001d8: 83 ec 10                     	sub	esp, 16
+100001db: 68 10 11 00 10               	push	268439824
+100001e0: 68 12 11 00 10               	push	268439826
+100001e5: e8 15 02 00 00               	call	0x100003ff
+100001ea: a3 90 12 00 10               	mov	dword ptr [268440208], eax
+100001ef: 58                           	pop	eax
+100001f0: 5a                           	pop	edx
+100001f1: 68 17 11 00 10               	push	268439831
+100001f6: 68 12 11 00 10               	push	268439826
+100001fb: e8 ff 01 00 00               	call	0x100003ff
+10000200: 59                           	pop	ecx
+10000201: a3 8c 12 00 10               	mov	dword ptr [268440204], eax
+10000206: 58                           	pop	eax
+10000207: 68 17 11 00 10               	push	268439831
+1000020c: 68 12 11 00 10               	push	268439826
+10000211: e8 e9 01 00 00               	call	0x100003ff
+10000216: 6a 01                        	push	1
+10000218: 6a 02                        	push	2
+1000021a: 6a 00                        	push	0
+1000021c: 50                           	push	eax
+1000021d: a3 88 12 00 10               	mov	dword ptr [268440200], eax
+10000222: e8 86 02 00 00               	call	0x100004ad
+10000227: 83 c4 18                     	add	esp, 24
+1000022a: 31 c0                        	xor	eax, eax
+1000022c: 6a 00                        	push	0
+1000022e: 6a 00                        	push	0
+10000230: a3 9c 12 00 10               	mov	dword ptr [268440220], eax
+10000235: e8 20 00 00 00               	call	0x1000025a
+1000023a: 89 04 24                     	mov	dword ptr [esp], eax
+1000023d: e8 1b 0d 00 00               	call	0x10000f5d
+
+Disassembly of section .text.eval:
+
+10000242 <.text.eval>:
+10000242: 55                           	push	ebp
+10000243: 89 e5                        	mov	ebp, esp
+10000245: 83 ec 10                     	sub	esp, 16
+10000248: ff 75 08                     	push	dword ptr [ebp + 8]
+1000024b: 68 19 11 00 10               	push	268439833
+10000250: e8 f4 0c 00 00               	call	0x10000f49
+10000255: 83 c4 10                     	add	esp, 16
+10000258: c9                           	leave
+10000259: c3                           	ret
+
+Disassembly of section .text.startup.main:
+
+1000025a <.text.startup.main>:
+1000025a: 8d 4c 24 04                  	lea	ecx, [esp + 4]
+1000025e: 83 e4 f0                     	and	esp, -16
+10000261: ff 71 fc                     	push	dword ptr [ecx - 4]
+10000264: 55                           	push	ebp
+10000265: 89 e5                        	mov	ebp, esp
+10000267: 53                           	push	ebx
+10000268: 51                           	push	ecx
+10000269: 81 ec 00 02 00 00            	sub	esp, 512
+1000026f: 83 ec 0c                     	sub	esp, 12
+10000272: 8d 9d f8 fd ff ff            	lea	ebx, [ebp - 520]
+10000278: 68 1d 11 00 10               	push	268439837
+1000027d: e8 c7 0c 00 00               	call	0x10000f49
+10000282: 58                           	pop	eax
+10000283: ff 35 8c 12 00 10            	push	dword ptr [268440204]
+10000289: e8 bb 02 00 00               	call	0x10000549
+1000028e: 83 c4 0c                     	add	esp, 12
+10000291: ff 35 90 12 00 10            	push	dword ptr [268440208]
+10000297: 68 ff 01 00 00               	push	511
+1000029c: 53                           	push	ebx
+1000029d: e8 d3 04 00 00               	call	0x10000775
+100002a2: 5a                           	pop	edx
+100002a3: ff 35 90 12 00 10            	push	dword ptr [268440208]
+100002a9: e8 dd 01 00 00               	call	0x1000048b
+100002ae: 83 c4 10                     	add	esp, 16
+100002b1: 85 c0                        	test	eax, eax
+100002b3: 74 0a                        	je	0x100002bf <.text.startup.main+0x65>
+100002b5: 83 ec 0c                     	sub	esp, 12
+100002b8: 6a 00                        	push	0
+100002ba: e8 9e 0c 00 00               	call	0x10000f5d
+100002bf: 83 ec 0c                     	sub	esp, 12
+100002c2: 53                           	push	ebx
+100002c3: e8 7a ff ff ff               	call	0x10000242 <.text.eval>
+100002c8: 83 c4 10                     	add	esp, 16
+100002cb: eb a2                        	jmp	0x1000026f <.text.startup.main+0x15>
+
+Disassembly of section .text._file_read:
+
+100002cd <.text._file_read>:
+100002cd: 55                           	push	ebp
+100002ce: 89 e5                        	mov	ebp, esp
+100002d0: 8b 45 08                     	mov	eax, dword ptr [ebp + 8]
+100002d3: 8b 00                        	mov	eax, dword ptr [eax]
+100002d5: 89 45 08                     	mov	dword ptr [ebp + 8], eax
+100002d8: 5d                           	pop	ebp
+100002d9: e9 d2 0d 00 00               	jmp	0x100010b0
+
+Disassembly of section .text._file_write:
+
+100002de <.text._file_write>:
+100002de: 55                           	push	ebp
+100002df: 89 e5                        	mov	ebp, esp
+100002e1: 8b 45 08                     	mov	eax, dword ptr [ebp + 8]
+100002e4: 8b 00                        	mov	eax, dword ptr [eax]
+100002e6: 89 45 08                     	mov	dword ptr [ebp + 8], eax
+100002e9: 5d                           	pop	ebp
+100002ea: e9 f1 0d 00 00               	jmp	0x100010e0
+
+Disassembly of section .text.fopen_existing_stream:
+
+100002ef <.text.fopen_existing_stream>:
+100002ef: 55                           	push	ebp
+100002f0: 89 e5                        	mov	ebp, esp
+100002f2: 57                           	push	edi
+100002f3: 89 c7                        	mov	edi, eax
+100002f5: 56                           	push	esi
+100002f6: 89 d6                        	mov	esi, edx
+100002f8: 53                           	push	ebx
+100002f9: 83 ec 1c                     	sub	esp, 28
+100002fc: 85 d2                        	test	edx, edx
+100002fe: 0f 94 c0                     	sete	al
+10000301: 85 c9                        	test	ecx, ecx
+10000303: 0f 94 c2                     	sete	dl
+10000306: 08 d0                        	or	al, dl
+10000308: 75 66                        	jne	0x10000370 <.text.fopen_existing_stream+0x81>
+1000030a: 85 ff                        	test	edi, edi
+1000030c: 74 62                        	je	0x10000370 <.text.fopen_existing_stream+0x81>
+1000030e: 83 ec 0c                     	sub	esp, 12
+10000311: c7 41 04 ff ff ff ff         	mov	dword ptr [ecx + 4], 4294967295
+10000318: 89 cb                        	mov	ebx, ecx
+1000031a: 66 c7 41 08 00 00            	mov	word ptr [ecx + 8], 0
+10000320: 68 00 02 00 00               	push	512
+10000325: e8 5a 0c 00 00               	call	0x10000f84
+1000032a: 31 c9                        	xor	ecx, ecx
+1000032c: c7 43 18 00 02 00 00         	mov	dword ptr [ebx + 24], 512
+10000333: 89 43 10                     	mov	dword ptr [ebx + 16], eax
+10000336: 31 c0                        	xor	eax, eax
+10000338: 89 4b 14                     	mov	dword ptr [ebx + 20], ecx
+1000033b: c6 43 1c 01                  	mov	byte ptr [ebx + 28], 1
+1000033f: 89 43 3c                     	mov	dword ptr [ebx + 60], eax
+10000342: 89 34 24                     	mov	dword ptr [esp], esi
+10000345: e8 f6 0c 00 00               	call	0x10001040
+1000034a: 83 c4 10                     	add	esp, 16
+1000034d: 85 c0                        	test	eax, eax
+1000034f: 74 1f                        	je	0x10000370 <.text.fopen_existing_stream+0x81>
+10000351: 83 ec 0c                     	sub	esp, 12
+10000354: 56                           	push	esi
+10000355: e8 e6 0c 00 00               	call	0x10001040
+1000035a: 83 c4 10                     	add	esp, 16
+1000035d: 83 f8 03                     	cmp	eax, 3
+10000360: 77 0e                        	ja	0x10000370 <.text.fopen_existing_stream+0x81>
+10000362: 8a 06                        	mov	al, byte ptr [esi]
+10000364: 3c 72                        	cmp	al, 114
+10000366: 74 16                        	je	0x1000037e <.text.fopen_existing_stream+0x8f>
+10000368: 3c 77                        	cmp	al, 119
+1000036a: 74 16                        	je	0x10000382 <.text.fopen_existing_stream+0x93>
+1000036c: 3c 61                        	cmp	al, 97
+1000036e: 74 19                        	je	0x10000389 <.text.fopen_existing_stream+0x9a>
+10000370: c7 05 9c 12 00 10 07 00 00 00	mov	dword ptr [268440220], 7
+1000037a: 31 db                        	xor	ebx, ebx
+1000037c: eb 77                        	jmp	0x100003f5 <.text.fopen_existing_stream+0x106>
+1000037e: 31 d2                        	xor	edx, edx
+10000380: eb 0c                        	jmp	0x1000038e <.text.fopen_existing_stream+0x9f>
+10000382: ba 25 00 00 00               	mov	edx, 37
+10000387: eb 05                        	jmp	0x1000038e <.text.fopen_existing_stream+0x9f>
+10000389: ba 45 00 00 00               	mov	edx, 69
+1000038e: 8a 46 01                     	mov	al, byte ptr [esi + 1]
+10000391: 46                           	inc	esi
+10000392: 84 c0                        	test	al, al
+10000394: 74 15                        	je	0x100003ab <.text.fopen_existing_stream+0xbc>
+10000396: 3c 2b                        	cmp	al, 43
+10000398: 75 08                        	jne	0x100003a2 <.text.fopen_existing_stream+0xb3>
+1000039a: 83 e2 fc                     	and	edx, -4
+1000039d: 83 ca 02                     	or	edx, 2
+100003a0: eb ec                        	jmp	0x1000038e <.text.fopen_existing_stream+0x9f>
+100003a2: 3c 78                        	cmp	al, 120
+100003a4: 75 e8                        	jne	0x1000038e <.text.fopen_existing_stream+0x9f>
+100003a6: 83 ca 08                     	or	edx, 8
+100003a9: eb e3                        	jmp	0x1000038e <.text.fopen_existing_stream+0x9f>
+100003ab: 80 7b 48 00                  	cmp	byte ptr [ebx + 72], 0
+100003af: 89 53 28                     	mov	dword ptr [ebx + 40], edx
+100003b2: 74 07                        	je	0x100003bb <.text.fopen_existing_stream+0xcc>
+100003b4: 31 d2                        	xor	edx, edx
+100003b6: 89 53 0c                     	mov	dword ptr [ebx + 12], edx
+100003b9: eb 3a                        	jmp	0x100003f5 <.text.fopen_existing_stream+0x106>
+100003bb: 50                           	push	eax
+100003bc: 68 b6 01 00 00               	push	438
+100003c1: 52                           	push	edx
+100003c2: 89 55 e4                     	mov	dword ptr [ebp - 28], edx
+100003c5: 57                           	push	edi
+100003c6: e8 88 0c 00 00               	call	0x10001053
+100003cb: 83 c4 10                     	add	esp, 16
+100003ce: 89 c6                        	mov	esi, eax
+100003d0: 83 f8 ff                     	cmp	eax, -1
+100003d3: 74 a5                        	je	0x1000037a <.text.fopen_existing_stream+0x8b>
+100003d5: 8b 55 e4                     	mov	edx, dword ptr [ebp - 28]
+100003d8: 83 e2 03                     	and	edx, 3
+100003db: 74 13                        	je	0x100003f0 <.text.fopen_existing_stream+0x101>
+100003dd: 83 ec 0c                     	sub	esp, 12
+100003e0: 50                           	push	eax
+100003e1: e8 9d 0c 00 00               	call	0x10001083
+100003e6: 31 d2                        	xor	edx, edx
+100003e8: 83 c4 10                     	add	esp, 16
+100003eb: 85 c0                        	test	eax, eax
+100003ed: 0f 95 c2                     	setne	dl
+100003f0: 89 53 0c                     	mov	dword ptr [ebx + 12], edx
+100003f3: 89 33                        	mov	dword ptr [ebx], esi
+100003f5: 8d 65 f4                     	lea	esp, [ebp - 12]
+100003f8: 89 d8                        	mov	eax, ebx
+100003fa: 5b                           	pop	ebx
+100003fb: 5e                           	pop	esi
+100003fc: 5f                           	pop	edi
+100003fd: 5d                           	pop	ebp
+100003fe: c3                           	ret
+
+Disassembly of section .text.fopen:
+
+100003ff <.text.fopen>:
+100003ff: 55                           	push	ebp
+10000400: 89 e5                        	mov	ebp, esp
+10000402: 56                           	push	esi
+10000403: 53                           	push	ebx
+10000404: 8b 5d 08                     	mov	ebx, dword ptr [ebp + 8]
+10000407: 8b 75 0c                     	mov	esi, dword ptr [ebp + 12]
+1000040a: 83 ec 0c                     	sub	esp, 12
+1000040d: 6a 4c                        	push	76
+1000040f: e8 70 0b 00 00               	call	0x10000f84
+10000414: 83 c4 10                     	add	esp, 16
+10000417: 89 f2                        	mov	edx, esi
+10000419: 89 c1                        	mov	ecx, eax
+1000041b: 31 c0                        	xor	eax, eax
+1000041d: 89 41 40                     	mov	dword ptr [ecx + 64], eax
+10000420: 89 d8                        	mov	eax, ebx
+10000422: c7 41 44 ff ff ff ff         	mov	dword ptr [ecx + 68], 4294967295
+10000429: c6 41 48 00                  	mov	byte ptr [ecx + 72], 0
+1000042d: c7 41 20 cd 02 00 10         	mov	dword ptr [ecx + 32], 268436173
+10000434: c7 41 24 de 02 00 10         	mov	dword ptr [ecx + 36], 268436190
+1000043b: 8d 65 f8                     	lea	esp, [ebp - 8]
+1000043e: 5b                           	pop	ebx
+1000043f: 5e                           	pop	esi
+10000440: 5d                           	pop	ebp
+10000441: e9 a9 fe ff ff               	jmp	0x100002ef <.text.fopen_existing_stream>
+
+Disassembly of section .text.ftrylockfile:
+
+10000446 <.text.ftrylockfile>:
+10000446: 55                           	push	ebp
+10000447: 89 e5                        	mov	ebp, esp
+10000449: 8b 45 08                     	mov	eax, dword ptr [ebp + 8]
+1000044c: 8b 50 40                     	mov	edx, dword ptr [eax + 64]
+1000044f: 85 d2                        	test	edx, edx
+10000451: 74 0c                        	je	0x1000045f <.text.ftrylockfile+0x19>
+10000453: 8b 48 44                     	mov	ecx, dword ptr [eax + 68]
+10000456: ba 01 00 00 00               	mov	edx, 1
+1000045b: 85 c9                        	test	ecx, ecx
+1000045d: 75 0e                        	jne	0x1000046d <.text.ftrylockfile+0x27>
+1000045f: 8b 50 40                     	mov	edx, dword ptr [eax + 64]
+10000462: 42                           	inc	edx
+10000463: 89 50 40                     	mov	dword ptr [eax + 64], edx
+10000466: 31 d2                        	xor	edx, edx
+10000468: 89 50 44                     	mov	dword ptr [eax + 68], edx
+1000046b: 31 d2                        	xor	edx, edx
+1000046d: 89 d0                        	mov	eax, edx
+1000046f: 5d                           	pop	ebp
+10000470: c3                           	ret
+
+Disassembly of section .text.flockfile:
+
+10000471 <.text.flockfile>:
+10000471: 55                           	push	ebp
+10000472: 89 e5                        	mov	ebp, esp
+10000474: 83 ec 08                     	sub	esp, 8
+10000477: 83 ec 0c                     	sub	esp, 12
+1000047a: ff 75 08                     	push	dword ptr [ebp + 8]
+1000047d: e8 c4 ff ff ff               	call	0x10000446 <.text.ftrylockfile>
+10000482: 83 c4 10                     	add	esp, 16
+10000485: 85 c0                        	test	eax, eax
+10000487: 75 ee                        	jne	0x10000477 <.text.flockfile+0x6>
+10000489: c9                           	leave
+1000048a: c3                           	ret
+
+Disassembly of section .text.feof:
+
+1000048b <.text.feof>:
+1000048b: 55                           	push	ebp
+1000048c: 89 e5                        	mov	ebp, esp
+1000048e: 53                           	push	ebx
+1000048f: 83 ec 10                     	sub	esp, 16
+10000492: 8b 5d 08                     	mov	ebx, dword ptr [ebp + 8]
+10000495: 53                           	push	ebx
+10000496: e8 d6 ff ff ff               	call	0x10000471 <.text.flockfile>
+1000049b: 8b 43 40                     	mov	eax, dword ptr [ebx + 64]
+1000049e: 0f b6 53 08                  	movzx	edx, byte ptr [ebx + 8]
+100004a2: 48                           	dec	eax
+100004a3: 89 43 40                     	mov	dword ptr [ebx + 64], eax
+100004a6: 89 d0                        	mov	eax, edx
+100004a8: 8b 5d fc                     	mov	ebx, dword ptr [ebp - 4]
+100004ab: c9                           	leave
+100004ac: c3                           	ret
+
+Disassembly of section .text.setvbuf:
+
+100004ad <.text.setvbuf>:
+100004ad: 55                           	push	ebp
+100004ae: 89 e5                        	mov	ebp, esp
+100004b0: 57                           	push	edi
+100004b1: 56                           	push	esi
+100004b2: 53                           	push	ebx
+100004b3: 83 ec 28                     	sub	esp, 40
+100004b6: 8b 7d 08                     	mov	edi, dword ptr [ebp + 8]
+100004b9: 8b 5d 0c                     	mov	ebx, dword ptr [ebp + 12]
+100004bc: 57                           	push	edi
+100004bd: e8 af ff ff ff               	call	0x10000471 <.text.flockfile>
+100004c2: 83 c4 10                     	add	esp, 16
+100004c5: 85 ff                        	test	edi, edi
+100004c7: 74 07                        	je	0x100004d0 <.text.setvbuf+0x23>
+100004c9: 8b 77 3c                     	mov	esi, dword ptr [edi + 60]
+100004cc: 85 f6                        	test	esi, esi
+100004ce: 74 16                        	je	0x100004e6 <.text.setvbuf+0x39>
+100004d0: 8b 47 40                     	mov	eax, dword ptr [edi + 64]
+100004d3: 83 ce ff                     	or	esi, -1
+100004d6: c7 05 9c 12 00 10 14 00 00 00	mov	dword ptr [268440220], 20
+100004e0: 48                           	dec	eax
+100004e1: 89 47 40                     	mov	dword ptr [edi + 64], eax
+100004e4: eb 59                        	jmp	0x1000053f <.text.setvbuf+0x92>
+100004e6: 80 7f 1c 00                  	cmp	byte ptr [edi + 28], 0
+100004ea: 74 0e                        	je	0x100004fa <.text.setvbuf+0x4d>
+100004ec: 83 ec 0c                     	sub	esp, 12
+100004ef: ff 77 10                     	push	dword ptr [edi + 16]
+100004f2: e8 03 0b 00 00               	call	0x10000ffa
+100004f7: 83 c4 10                     	add	esp, 16
+100004fa: 85 db                        	test	ebx, ebx
+100004fc: ba 20 00 00 00               	mov	edx, 32
+10000501: 0f 94 47 1c                  	sete	byte ptr [edi + 28]
+10000505: 39 55 14                     	cmp	dword ptr [ebp + 20], edx
+10000508: 0f 43 55 14                  	cmovae	edx, dword ptr [ebp + 20]
+1000050c: 85 db                        	test	ebx, ebx
+1000050e: 75 17                        	jne	0x10000527 <.text.setvbuf+0x7a>
+10000510: 83 ec 0c                     	sub	esp, 12
+10000513: 8d 42 01                     	lea	eax, [edx + 1]
+10000516: 89 55 e4                     	mov	dword ptr [ebp - 28], edx
+10000519: 50                           	push	eax
+1000051a: e8 65 0a 00 00               	call	0x10000f84
+1000051f: 8b 55 e4                     	mov	edx, dword ptr [ebp - 28]
+10000522: 83 c4 10                     	add	esp, 16
+10000525: 89 c3                        	mov	ebx, eax
+10000527: 31 c0                        	xor	eax, eax
+10000529: 89 5f 10                     	mov	dword ptr [edi + 16], ebx
+1000052c: 89 47 14                     	mov	dword ptr [edi + 20], eax
+1000052f: 8b 45 10                     	mov	eax, dword ptr [ebp + 16]
+10000532: 89 57 18                     	mov	dword ptr [edi + 24], edx
+10000535: 89 47 0c                     	mov	dword ptr [edi + 12], eax
+10000538: 8b 47 40                     	mov	eax, dword ptr [edi + 64]
+1000053b: 48                           	dec	eax
+1000053c: 89 47 40                     	mov	dword ptr [edi + 64], eax
+1000053f: 8d 65 f4                     	lea	esp, [ebp - 12]
+10000542: 89 f0                        	mov	eax, esi
+10000544: 5b                           	pop	ebx
+10000545: 5e                           	pop	esi
+10000546: 5f                           	pop	edi
+10000547: 5d                           	pop	ebp
+10000548: c3                           	ret
+
+Disassembly of section .text.fflush:
+
+10000549 <.text.fflush>:
+10000549: 55                           	push	ebp
+1000054a: 89 e5                        	mov	ebp, esp
+1000054c: 53                           	push	ebx
+1000054d: 53                           	push	ebx
+1000054e: 8b 5d 08                     	mov	ebx, dword ptr [ebp + 8]
+10000551: 85 db                        	test	ebx, ebx
+10000553: 75 0c                        	jne	0x10000561 <.text.fflush+0x18>
+10000555: c7 05 9c 12 00 10 01 00 00 00	mov	dword ptr [268440220], 1
+1000055f: eb 49                        	jmp	0x100005aa <.text.fflush+0x61>
+10000561: 83 ec 0c                     	sub	esp, 12
+10000564: 53                           	push	ebx
+10000565: e8 07 ff ff ff               	call	0x10000471 <.text.flockfile>
+1000056a: 8b 43 3c                     	mov	eax, dword ptr [ebx + 60]
+1000056d: 83 c4 10                     	add	esp, 16
+10000570: 85 c0                        	test	eax, eax
+10000572: 74 0a                        	je	0x1000057e <.text.fflush+0x35>
+10000574: 83 f8 01                     	cmp	eax, 1
+10000577: 75 10                        	jne	0x10000589 <.text.fflush+0x40>
+10000579: 31 c9                        	xor	ecx, ecx
+1000057b: 89 4b 14                     	mov	dword ptr [ebx + 20], ecx
+1000057e: 8b 43 40                     	mov	eax, dword ptr [ebx + 64]
+10000581: 48                           	dec	eax
+10000582: 89 43 40                     	mov	dword ptr [ebx + 64], eax
+10000585: 31 c0                        	xor	eax, eax
+10000587: eb 54                        	jmp	0x100005dd <.text.fflush+0x94>
+10000589: 83 f8 02                     	cmp	eax, 2
+1000058c: 75 43                        	jne	0x100005d1 <.text.fflush+0x88>
+1000058e: 52                           	push	edx
+1000058f: ff 73 14                     	push	dword ptr [ebx + 20]
+10000592: ff 73 10                     	push	dword ptr [ebx + 16]
+10000595: 53                           	push	ebx
+10000596: ff 53 24                     	call	dword ptr [ebx + 36]
+10000599: 83 c4 10                     	add	esp, 16
+1000059c: 40                           	inc	eax
+1000059d: 75 10                        	jne	0x100005af <.text.fflush+0x66>
+1000059f: c6 43 09 01                  	mov	byte ptr [ebx + 9], 1
+100005a3: 8b 43 40                     	mov	eax, dword ptr [ebx + 64]
+100005a6: 48                           	dec	eax
+100005a7: 89 43 40                     	mov	dword ptr [ebx + 64], eax
+100005aa: 83 c8 ff                     	or	eax, -1
+100005ad: eb 2e                        	jmp	0x100005dd <.text.fflush+0x94>
+100005af: 31 c0                        	xor	eax, eax
+100005b1: 80 7b 48 00                  	cmp	byte ptr [ebx + 72], 0
+100005b5: 89 43 14                     	mov	dword ptr [ebx + 20], eax
+100005b8: 74 c4                        	je	0x1000057e <.text.fflush+0x35>
+100005ba: 8b 43 34                     	mov	eax, dword ptr [ebx + 52]
+100005bd: 3b 43 30                     	cmp	eax, dword ptr [ebx + 48]
+100005c0: 73 bc                        	jae	0x1000057e <.text.fflush+0x35>
+100005c2: 8b 53 2c                     	mov	edx, dword ptr [ebx + 44]
+100005c5: 8d 48 01                     	lea	ecx, [eax + 1]
+100005c8: 89 4b 34                     	mov	dword ptr [ebx + 52], ecx
+100005cb: c6 04 02 00                  	mov	byte ptr [edx + eax], 0
+100005cf: eb ad                        	jmp	0x1000057e <.text.fflush+0x35>
+100005d1: c7 05 9c 12 00 10 14 00 00 00	mov	dword ptr [268440220], 20
+100005db: eb c6                        	jmp	0x100005a3 <.text.fflush+0x5a>
+100005dd: 8b 5d fc                     	mov	ebx, dword ptr [ebp - 4]
+100005e0: c9                           	leave
+100005e1: c3                           	ret
+
+Disassembly of section .text.fputc:
+
+100005e2 <.text.fputc>:
+100005e2: 55                           	push	ebp
+100005e3: 89 e5                        	mov	ebp, esp
+100005e5: 56                           	push	esi
+100005e6: 53                           	push	ebx
+100005e7: 83 ec 1c                     	sub	esp, 28
+100005ea: 8b 5d 0c                     	mov	ebx, dword ptr [ebp + 12]
+100005ed: 8b 75 08                     	mov	esi, dword ptr [ebp + 8]
+100005f0: 53                           	push	ebx
+100005f1: e8 7b fe ff ff               	call	0x10000471 <.text.flockfile>
+100005f6: 89 f0                        	mov	eax, esi
+100005f8: c7 43 3c 02 00 00 00         	mov	dword ptr [ebx + 60], 2
+100005ff: 83 c4 10                     	add	esp, 16
+10000602: 88 45 f7                     	mov	byte ptr [ebp - 9], al
+10000605: 8b 43 0c                     	mov	eax, dword ptr [ebx + 12]
+10000608: 83 f8 02                     	cmp	eax, 2
+1000060b: 75 17                        	jne	0x10000624 <.text.fputc+0x42>
+1000060d: 8d 45 f7                     	lea	eax, [ebp - 9]
+10000610: 51                           	push	ecx
+10000611: 6a 01                        	push	1
+10000613: 50                           	push	eax
+10000614: 53                           	push	ebx
+10000615: ff 53 24                     	call	dword ptr [ebx + 36]
+10000618: 83 c4 10                     	add	esp, 16
+1000061b: 40                           	inc	eax
+1000061c: 0f 85 a6 00 00 00            	jne	0x100006c8 <.text.fputc+0xe6>
+10000622: eb 2c                        	jmp	0x10000650 <.text.fputc+0x6e>
+10000624: 83 f8 01                     	cmp	eax, 1
+10000627: 75 5d                        	jne	0x10000686 <.text.fputc+0xa4>
+10000629: 8b 43 14                     	mov	eax, dword ptr [ebx + 20]
+1000062c: 3b 43 18                     	cmp	eax, dword ptr [ebx + 24]
+1000062f: 73 10                        	jae	0x10000641 <.text.fputc+0x5f>
+10000631: 8d 48 01                     	lea	ecx, [eax + 1]
+10000634: 8b 53 10                     	mov	edx, dword ptr [ebx + 16]
+10000637: 89 4b 14                     	mov	dword ptr [ebx + 20], ecx
+1000063a: 89 f1                        	mov	ecx, esi
+1000063c: 88 0c 02                     	mov	byte ptr [edx + eax], cl
+1000063f: eb 2e                        	jmp	0x1000066f <.text.fputc+0x8d>
+10000641: 83 ec 0c                     	sub	esp, 12
+10000644: 53                           	push	ebx
+10000645: e8 ff fe ff ff               	call	0x10000549 <.text.fflush>
+1000064a: 83 c4 10                     	add	esp, 16
+1000064d: 40                           	inc	eax
+1000064e: 75 10                        	jne	0x10000660 <.text.fputc+0x7e>
+10000650: c6 43 09 01                  	mov	byte ptr [ebx + 9], 1
+10000654: 8b 43 40                     	mov	eax, dword ptr [ebx + 64]
+10000657: 83 ce ff                     	or	esi, -1
+1000065a: 48                           	dec	eax
+1000065b: 89 43 40                     	mov	dword ptr [ebx + 64], eax
+1000065e: eb 6f                        	jmp	0x100006cf <.text.fputc+0xed>
+10000660: 52                           	push	edx
+10000661: 52                           	push	edx
+10000662: 53                           	push	ebx
+10000663: 56                           	push	esi
+10000664: e8 79 ff ff ff               	call	0x100005e2 <.text.fputc>
+10000669: 83 c4 10                     	add	esp, 16
+1000066c: 40                           	inc	eax
+1000066d: 74 e5                        	je	0x10000654 <.text.fputc+0x72>
+1000066f: 80 7d f7 0a                  	cmp	byte ptr [ebp - 9], 10
+10000673: 75 53                        	jne	0x100006c8 <.text.fputc+0xe6>
+10000675: 83 ec 0c                     	sub	esp, 12
+10000678: 53                           	push	ebx
+10000679: e8 cb fe ff ff               	call	0x10000549 <.text.fflush>
+1000067e: 83 c4 10                     	add	esp, 16
+10000681: 40                           	inc	eax
+10000682: 75 44                        	jne	0x100006c8 <.text.fputc+0xe6>
+10000684: eb ce                        	jmp	0x10000654 <.text.fputc+0x72>
+10000686: 85 c0                        	test	eax, eax
+10000688: 75 3e                        	jne	0x100006c8 <.text.fputc+0xe6>
+1000068a: 8b 43 14                     	mov	eax, dword ptr [ebx + 20]
+1000068d: 3b 43 18                     	cmp	eax, dword ptr [ebx + 24]
+10000690: 73 10                        	jae	0x100006a2 <.text.fputc+0xc0>
+10000692: 8d 48 01                     	lea	ecx, [eax + 1]
+10000695: 8b 53 10                     	mov	edx, dword ptr [ebx + 16]
+10000698: 89 4b 14                     	mov	dword ptr [ebx + 20], ecx
+1000069b: 89 f1                        	mov	ecx, esi
+1000069d: 88 0c 02                     	mov	byte ptr [edx + eax], cl
+100006a0: eb 26                        	jmp	0x100006c8 <.text.fputc+0xe6>
+100006a2: 83 ec 0c                     	sub	esp, 12
+100006a5: 53                           	push	ebx
+100006a6: e8 9e fe ff ff               	call	0x10000549 <.text.fflush>
+100006ab: 83 c4 10                     	add	esp, 16
+100006ae: 40                           	inc	eax
+100006af: 74 a3                        	je	0x10000654 <.text.fputc+0x72>
+100006b1: 8b 43 40                     	mov	eax, dword ptr [ebx + 64]
+100006b4: 48                           	dec	eax
+100006b5: 89 43 40                     	mov	dword ptr [ebx + 64], eax
+100006b8: 50                           	push	eax
+100006b9: 50                           	push	eax
+100006ba: 53                           	push	ebx
+100006bb: 56                           	push	esi
+100006bc: e8 21 ff ff ff               	call	0x100005e2 <.text.fputc>
+100006c1: 83 c4 10                     	add	esp, 16
+100006c4: 89 c6                        	mov	esi, eax
+100006c6: eb 07                        	jmp	0x100006cf <.text.fputc+0xed>
+100006c8: 8b 43 40                     	mov	eax, dword ptr [ebx + 64]
+100006cb: 48                           	dec	eax
+100006cc: 89 43 40                     	mov	dword ptr [ebx + 64], eax
+100006cf: 8d 65 f8                     	lea	esp, [ebp - 8]
+100006d2: 89 f0                        	mov	eax, esi
+100006d4: 5b                           	pop	ebx
+100006d5: 5e                           	pop	esi
+100006d6: 5d                           	pop	ebp
+100006d7: c3                           	ret
+
+Disassembly of section .text.fgetc:
+
+100006d8 <.text.fgetc>:
+100006d8: 55                           	push	ebp
+100006d9: 89 e5                        	mov	ebp, esp
+100006db: 56                           	push	esi
+100006dc: 53                           	push	ebx
+100006dd: 8b 5d 08                     	mov	ebx, dword ptr [ebp + 8]
+100006e0: 83 ec 0c                     	sub	esp, 12
+100006e3: 53                           	push	ebx
+100006e4: e8 88 fd ff ff               	call	0x10000471 <.text.flockfile>
+100006e9: 8b 73 04                     	mov	esi, dword ptr [ebx + 4]
+100006ec: c6 43 08 00                  	mov	byte ptr [ebx + 8], 0
+100006f0: 83 c4 10                     	add	esp, 16
+100006f3: c7 43 3c 01 00 00 00         	mov	dword ptr [ebx + 60], 1
+100006fa: 83 fe ff                     	cmp	esi, -1
+100006fd: 74 09                        	je	0x10000708 <.text.fgetc+0x30>
+100006ff: c7 43 04 ff ff ff ff         	mov	dword ptr [ebx + 4], 4294967295
+10000706: eb 38                        	jmp	0x10000740 <.text.fgetc+0x68>
+10000708: 83 7b 14 00                  	cmp	dword ptr [ebx + 20], 0
+1000070c: 75 3b                        	jne	0x10000749 <.text.fgetc+0x71>
+1000070e: 83 7b 0c 02                  	cmp	dword ptr [ebx + 12], 2
+10000712: 8b 53 20                     	mov	edx, dword ptr [ebx + 32]
+10000715: b8 01 00 00 00               	mov	eax, 1
+1000071a: 74 03                        	je	0x1000071f <.text.fgetc+0x47>
+1000071c: 8b 43 18                     	mov	eax, dword ptr [ebx + 24]
+1000071f: 51                           	push	ecx
+10000720: 50                           	push	eax
+10000721: ff 73 10                     	push	dword ptr [ebx + 16]
+10000724: 53                           	push	ebx
+10000725: ff d2                        	call	edx
+10000727: 83 c4 10                     	add	esp, 16
+1000072a: 83 f8 ff                     	cmp	eax, -1
+1000072d: 75 06                        	jne	0x10000735 <.text.fgetc+0x5d>
+1000072f: c6 43 09 01                  	mov	byte ptr [ebx + 9], 1
+10000733: eb 0b                        	jmp	0x10000740 <.text.fgetc+0x68>
+10000735: 89 43 14                     	mov	dword ptr [ebx + 20], eax
+10000738: 85 c0                        	test	eax, eax
+1000073a: 75 0d                        	jne	0x10000749 <.text.fgetc+0x71>
+1000073c: c6 43 08 01                  	mov	byte ptr [ebx + 8], 1
+10000740: 8b 43 40                     	mov	eax, dword ptr [ebx + 64]
+10000743: 48                           	dec	eax
+10000744: 89 43 40                     	mov	dword ptr [ebx + 64], eax
+10000747: eb 23                        	jmp	0x1000076c <.text.fgetc+0x94>
+10000749: 8b 43 14                     	mov	eax, dword ptr [ebx + 20]
+1000074c: 8b 53 10                     	mov	edx, dword ptr [ebx + 16]
+1000074f: 48                           	dec	eax
+10000750: 0f be 32                     	movsx	esi, byte ptr [edx]
+10000753: 89 43 14                     	mov	dword ptr [ebx + 20], eax
+10000756: 51                           	push	ecx
+10000757: 50                           	push	eax
+10000758: 8d 42 01                     	lea	eax, [edx + 1]
+1000075b: 50                           	push	eax
+1000075c: 52                           	push	edx
+1000075d: e8 99 08 00 00               	call	0x10000ffb
+10000762: 8b 43 40                     	mov	eax, dword ptr [ebx + 64]
+10000765: 83 c4 10                     	add	esp, 16
+10000768: 48                           	dec	eax
+10000769: 89 43 40                     	mov	dword ptr [ebx + 64], eax
+1000076c: 8d 65 f8                     	lea	esp, [ebp - 8]
+1000076f: 89 f0                        	mov	eax, esi
+10000771: 5b                           	pop	ebx
+10000772: 5e                           	pop	esi
+10000773: 5d                           	pop	ebp
+10000774: c3                           	ret
+
+Disassembly of section .text.fgets:
+
+10000775 <.text.fgets>:
+10000775: 55                           	push	ebp
+10000776: 89 e5                        	mov	ebp, esp
+10000778: 57                           	push	edi
+10000779: 31 ff                        	xor	edi, edi
+1000077b: 56                           	push	esi
+1000077c: 53                           	push	ebx
+1000077d: 83 ec 0c                     	sub	esp, 12
+10000780: 8b 5d 08                     	mov	ebx, dword ptr [ebp + 8]
+10000783: 8b 75 10                     	mov	esi, dword ptr [ebp + 16]
+10000786: 8b 45 0c                     	mov	eax, dword ptr [ebp + 12]
+10000789: 48                           	dec	eax
+1000078a: 39 f8                        	cmp	eax, edi
+1000078c: 7e 37                        	jle	0x100007c5 <.text.fgets+0x50>
+1000078e: 83 ec 0c                     	sub	esp, 12
+10000791: 56                           	push	esi
+10000792: e8 41 ff ff ff               	call	0x100006d8 <.text.fgetc>
+10000797: c6 44 3b 01 00               	mov	byte ptr [ebx + edi + 1], 0
+1000079c: 83 c4 10                     	add	esp, 16
+1000079f: 88 04 3b                     	mov	byte ptr [ebx + edi], al
+100007a2: 80 7e 09 00                  	cmp	byte ptr [esi + 9], 0
+100007a6: 74 04                        	je	0x100007ac <.text.fgets+0x37>
+100007a8: 31 db                        	xor	ebx, ebx
+100007aa: eb 19                        	jmp	0x100007c5 <.text.fgets+0x50>
+100007ac: 83 ec 0c                     	sub	esp, 12
+100007af: 56                           	push	esi
+100007b0: e8 d6 fc ff ff               	call	0x1000048b <.text.feof>
+100007b5: 83 c4 10                     	add	esp, 16
+100007b8: 85 c0                        	test	eax, eax
+100007ba: 75 ec                        	jne	0x100007a8 <.text.fgets+0x33>
+100007bc: 80 3c 3b 0a                  	cmp	byte ptr [ebx + edi], 10
+100007c0: 74 03                        	je	0x100007c5 <.text.fgets+0x50>
+100007c2: 47                           	inc	edi
+100007c3: eb c1                        	jmp	0x10000786 <.text.fgets+0x11>
+100007c5: 8d 65 f4                     	lea	esp, [ebp - 12]
+100007c8: 89 d8                        	mov	eax, ebx
+100007ca: 5b                           	pop	ebx
+100007cb: 5e                           	pop	esi
+100007cc: 5f                           	pop	edi
+100007cd: 5d                           	pop	ebp
+100007ce: c3                           	ret
+
+Disassembly of section .text.vfprintf:
+
+100007cf <.text.vfprintf>:
+100007cf: 55                           	push	ebp
+100007d0: 89 e5                        	mov	ebp, esp
+100007d2: 57                           	push	edi
+100007d3: 56                           	push	esi
+100007d4: 53                           	push	ebx
+100007d5: 81 ec b8 00 00 00            	sub	esp, 184
+100007db: 8b 5d 10                     	mov	ebx, dword ptr [ebp + 16]
+100007de: ff 75 08                     	push	dword ptr [ebp + 8]
+100007e1: e8 8b fc ff ff               	call	0x10000471 <.text.flockfile>
+100007e6: 31 c9                        	xor	ecx, ecx
+100007e8: 83 c4 10                     	add	esp, 16
+100007eb: 89 8d 74 ff ff ff            	mov	dword ptr [ebp - 140], ecx
+100007f1: 89 8d 7c ff ff ff            	mov	dword ptr [ebp - 132], ecx
+100007f7: 8b 45 0c                     	mov	eax, dword ptr [ebp + 12]
+100007fa: 8b b5 74 ff ff ff            	mov	esi, dword ptr [ebp - 140]
+10000800: 0f be 04 30                  	movsx	eax, byte ptr [eax + esi]
+10000804: 84 c0                        	test	al, al
+10000806: 0f 84 09 07 00 00            	je	0x10000f15 <.text.vfprintf+0x746>
+1000080c: 3c 25                        	cmp	al, 37
+1000080e: 75 27                        	jne	0x10000837 <.text.vfprintf+0x68>
+10000810: 8b 8d 74 ff ff ff            	mov	ecx, dword ptr [ebp - 140]
+10000816: c6 85 58 ff ff ff 00         	mov	byte ptr [ebp - 168], 0
+1000081d: 31 f6                        	xor	esi, esi
+1000081f: c6 85 64 ff ff ff 00         	mov	byte ptr [ebp - 156], 0
+10000826: c6 85 70 ff ff ff 00         	mov	byte ptr [ebp - 144], 0
+1000082d: 41                           	inc	ecx
+1000082e: c6 85 68 ff ff ff 00         	mov	byte ptr [ebp - 152], 0
+10000835: eb 44                        	jmp	0x1000087b <.text.vfprintf+0xac>
+10000837: 52                           	push	edx
+10000838: 52                           	push	edx
+10000839: ff 75 08                     	push	dword ptr [ebp + 8]
+1000083c: 50                           	push	eax
+1000083d: e9 2f 02 00 00               	jmp	0x10000a71 <.text.vfprintf+0x2a2>
+10000842: bf 09 28 01 00               	mov	edi, 75785
+10000847: 0f a3 d7                     	bt	edi, edx
+1000084a: 0f 92 c2                     	setb	dl
+1000084d: 84 d2                        	test	dl, dl
+1000084f: 74 59                        	je	0x100008aa <.text.vfprintf+0xdb>
+10000851: 3c 23                        	cmp	al, 35
+10000853: 0f 84 85 04 00 00            	je	0x10000cde <.text.vfprintf+0x50f>
+10000859: 3c 30                        	cmp	al, 48
+1000085b: 0f 84 71 04 00 00            	je	0x10000cd2 <.text.vfprintf+0x503>
+10000861: 3c 2d                        	cmp	al, 45
+10000863: 74 39                        	je	0x1000089e <.text.vfprintf+0xcf>
+10000865: 3c 20                        	cmp	al, 32
+10000867: 74 3d                        	je	0x100008a6 <.text.vfprintf+0xd7>
+10000869: 3c 2b                        	cmp	al, 43
+1000086b: 8a 85 58 ff ff ff            	mov	al, byte ptr [ebp - 168]
+10000871: 0f 44 c2                     	cmove	eax, edx
+10000874: 88 85 58 ff ff ff            	mov	byte ptr [ebp - 168], al
+1000087a: 41                           	inc	ecx
+1000087b: 8b 45 0c                     	mov	eax, dword ptr [ebp + 12]
+1000087e: 0f be 04 08                  	movsx	eax, byte ptr [eax + ecx]
+10000882: 8d 50 e0                     	lea	edx, [eax - 32]
+10000885: 80 fa 10                     	cmp	dl, 16
+10000888: 76 b8                        	jbe	0x10000842 <.text.vfprintf+0x73>
+1000088a: 8d 50 cf                     	lea	edx, [eax - 49]
+1000088d: 80 fa 08                     	cmp	dl, 8
+10000890: 76 47                        	jbe	0x100008d9 <.text.vfprintf+0x10a>
+10000892: c7 85 6c ff ff ff ff ff ff ff	mov	dword ptr [ebp - 148], 4294967295
+1000089c: eb 70                        	jmp	0x1000090e <.text.vfprintf+0x13f>
+1000089e: 88 95 64 ff ff ff            	mov	byte ptr [ebp - 156], dl
+100008a4: eb d4                        	jmp	0x1000087a <.text.vfprintf+0xab>
+100008a6: 89 d6                        	mov	esi, edx
+100008a8: eb d0                        	jmp	0x1000087a <.text.vfprintf+0xab>
+100008aa: c7 85 6c ff ff ff ff ff ff ff	mov	dword ptr [ebp - 148], 4294967295
+100008b4: 3c 2a                        	cmp	al, 42
+100008b6: 75 56                        	jne	0x1000090e <.text.vfprintf+0x13f>
+100008b8: 8b 3b                        	mov	edi, dword ptr [ebx]
+100008ba: 8d 43 04                     	lea	eax, [ebx + 4]
+100008bd: 89 bd 6c ff ff ff            	mov	dword ptr [ebp - 148], edi
+100008c3: 85 ff                        	test	edi, edi
+100008c5: 79 0d                        	jns	0x100008d4 <.text.vfprintf+0x105>
+100008c7: f7 9d 6c ff ff ff            	neg	dword ptr [ebp - 148]
+100008cd: c6 85 64 ff ff ff 01         	mov	byte ptr [ebp - 156], 1
+100008d4: 41                           	inc	ecx
+100008d5: 89 c3                        	mov	ebx, eax
+100008d7: eb 35                        	jmp	0x1000090e <.text.vfprintf+0x13f>
+100008d9: 83 e8 30                     	sub	eax, 48
+100008dc: 41                           	inc	ecx
+100008dd: 89 85 6c ff ff ff            	mov	dword ptr [ebp - 148], eax
+100008e3: 8b 45 0c                     	mov	eax, dword ptr [ebp + 12]
+100008e6: 8d 79 01                     	lea	edi, [ecx + 1]
+100008e9: 89 7d 8c                     	mov	dword ptr [ebp - 116], edi
+100008ec: 0f be 04 08                  	movsx	eax, byte ptr [eax + ecx]
+100008f0: 8d 50 d0                     	lea	edx, [eax - 48]
+100008f3: 80 fa 09                     	cmp	dl, 9
+100008f6: 77 16                        	ja	0x1000090e <.text.vfprintf+0x13f>
+100008f8: 6b 95 6c ff ff ff 0a         	imul	edx, dword ptr [ebp - 148], 10
+100008ff: 8b 4d 8c                     	mov	ecx, dword ptr [ebp - 116]
+10000902: 8d 44 02 d0                  	lea	eax, [edx + eax - 48]
+10000906: 89 85 6c ff ff ff            	mov	dword ptr [ebp - 148], eax
+1000090c: eb d5                        	jmp	0x100008e3 <.text.vfprintf+0x114>
+1000090e: 8b 45 0c                     	mov	eax, dword ptr [ebp + 12]
+10000911: c7 45 88 ff ff ff ff         	mov	dword ptr [ebp - 120], 4294967295
+10000918: 80 3c 08 2e                  	cmp	byte ptr [eax + ecx], 46
+1000091c: 75 48                        	jne	0x10000966 <.text.vfprintf+0x197>
+1000091e: 80 7c 08 01 2a               	cmp	byte ptr [eax + ecx + 1], 42
+10000923: 8d 51 01                     	lea	edx, [ecx + 1]
+10000926: 75 0a                        	jne	0x10000932 <.text.vfprintf+0x163>
+10000928: 8b 03                        	mov	eax, dword ptr [ebx]
+1000092a: 8d 51 02                     	lea	edx, [ecx + 2]
+1000092d: 83 c3 04                     	add	ebx, 4
+10000930: eb 25                        	jmp	0x10000957 <.text.vfprintf+0x188>
+10000932: 31 c0                        	xor	eax, eax
+10000934: 8b 7d 0c                     	mov	edi, dword ptr [ebp + 12]
+10000937: 8a 0c 17                     	mov	cl, byte ptr [edi + edx]
+1000093a: 8d 7a 01                     	lea	edi, [edx + 1]
+1000093d: 88 4d 8c                     	mov	byte ptr [ebp - 116], cl
+10000940: 83 e9 30                     	sub	ecx, 48
+10000943: 80 f9 09                     	cmp	cl, 9
+10000946: 77 0f                        	ja	0x10000957 <.text.vfprintf+0x188>
+10000948: 6b c0 0a                     	imul	eax, eax, 10
+1000094b: 0f be 4d 8c                  	movsx	ecx, byte ptr [ebp - 116]
+1000094f: 89 fa                        	mov	edx, edi
+10000951: 8d 44 08 d0                  	lea	eax, [eax + ecx - 48]
+10000955: eb dd                        	jmp	0x10000934 <.text.vfprintf+0x165>
+10000957: 85 c0                        	test	eax, eax
+10000959: b9 ff ff ff ff               	mov	ecx, 4294967295
+1000095e: 0f 49 c8                     	cmovns	ecx, eax
+10000961: 89 4d 88                     	mov	dword ptr [ebp - 120], ecx
+10000964: 89 d1                        	mov	ecx, edx
+10000966: 80 bd 70 ff ff ff 00         	cmp	byte ptr [ebp - 144], 0
+1000096d: 74 18                        	je	0x10000987 <.text.vfprintf+0x1b8>
+1000096f: 8a 95 70 ff ff ff            	mov	dl, byte ptr [ebp - 144]
+10000975: 31 c0                        	xor	eax, eax
+10000977: 80 bd 64 ff ff ff 00         	cmp	byte ptr [ebp - 156], 0
+1000097e: 0f 45 d0                     	cmovne	edx, eax
+10000981: 88 95 70 ff ff ff            	mov	byte ptr [ebp - 144], dl
+10000987: 89 f0                        	mov	eax, esi
+10000989: 84 c0                        	test	al, al
+1000098b: 74 0d                        	je	0x1000099a <.text.vfprintf+0x1cb>
+1000098d: 8a 85 58 ff ff ff            	mov	al, byte ptr [ebp - 168]
+10000993: 84 c0                        	test	al, al
+10000995: b0 00                        	mov	al, 0
+10000997: 0f 45 f0                     	cmovne	esi, eax
+1000099a: 8a 95 70 ff ff ff            	mov	dl, byte ptr [ebp - 144]
+100009a0: 31 c0                        	xor	eax, eax
+100009a2: 8d 79 01                     	lea	edi, [ecx + 1]
+100009a5: 83 7d 88 ff                  	cmp	dword ptr [ebp - 120], -1
+100009a9: 89 bd 74 ff ff ff            	mov	dword ptr [ebp - 140], edi
+100009af: 0f 45 d0                     	cmovne	edx, eax
+100009b2: 8b 45 0c                     	mov	eax, dword ptr [ebp + 12]
+100009b5: 8a 04 08                     	mov	al, byte ptr [eax + ecx]
+100009b8: 88 95 70 ff ff ff            	mov	byte ptr [ebp - 144], dl
+100009be: 3c 74                        	cmp	al, 116
+100009c0: 7f 2d                        	jg	0x100009ef <.text.vfprintf+0x220>
+100009c2: 3c 67                        	cmp	al, 103
+100009c4: 7f 0c                        	jg	0x100009d2 <.text.vfprintf+0x203>
+100009c6: 3c 4c                        	cmp	al, 76
+100009c8: 74 57                        	je	0x10000a21 <.text.vfprintf+0x252>
+100009ca: 3c 5a                        	cmp	al, 90
+100009cc: 75 4b                        	jne	0x10000a19 <.text.vfprintf+0x24a>
+100009ce: b0 7a                        	mov	al, 122
+100009d0: eb 4f                        	jmp	0x10000a21 <.text.vfprintf+0x252>
+100009d2: 8b 95 74 ff ff ff            	mov	edx, dword ptr [ebp - 140]
+100009d8: 03 55 0c                     	add	edx, dword ptr [ebp + 12]
+100009db: 89 d7                        	mov	edi, edx
+100009dd: 8d 50 98                     	lea	edx, [eax - 104]
+100009e0: 80 fa 0c                     	cmp	dl, 12
+100009e3: 77 34                        	ja	0x10000a19 <.text.vfprintf+0x24a>
+100009e5: 0f b6 d2                     	movzx	edx, dl
+100009e8: ff 24 95 60 11 00 10         	jmp	dword ptr [4*edx + 268439904]
+100009ef: 3c 7a                        	cmp	al, 122
+100009f1: 75 26                        	jne	0x10000a19 <.text.vfprintf+0x24a>
+100009f3: eb 2c                        	jmp	0x10000a21 <.text.vfprintf+0x252>
+100009f5: 80 3f 68                     	cmp	byte ptr [edi], 104
+100009f8: 75 27                        	jne	0x10000a21 <.text.vfprintf+0x252>
+100009fa: 8d 41 02                     	lea	eax, [ecx + 2]
+100009fd: 89 85 74 ff ff ff            	mov	dword ptr [ebp - 140], eax
+10000a03: b0 48                        	mov	al, 72
+10000a05: eb 1a                        	jmp	0x10000a21 <.text.vfprintf+0x252>
+10000a07: 80 3f 6c                     	cmp	byte ptr [edi], 108
+10000a0a: 75 15                        	jne	0x10000a21 <.text.vfprintf+0x252>
+10000a0c: 8d 41 02                     	lea	eax, [ecx + 2]
+10000a0f: 89 85 74 ff ff ff            	mov	dword ptr [ebp - 140], eax
+10000a15: b0 71                        	mov	al, 113
+10000a17: eb 08                        	jmp	0x10000a21 <.text.vfprintf+0x252>
+10000a19: 89 8d 74 ff ff ff            	mov	dword ptr [ebp - 140], ecx
+10000a1f: 31 c0                        	xor	eax, eax
+10000a21: 8b 7d 0c                     	mov	edi, dword ptr [ebp + 12]
+10000a24: 8b 8d 74 ff ff ff            	mov	ecx, dword ptr [ebp - 140]
+10000a2a: 8a 0c 0f                     	mov	cl, byte ptr [edi + ecx]
+10000a2d: 88 4d 8c                     	mov	byte ptr [ebp - 116], cl
+10000a30: 80 f9 78                     	cmp	cl, 120
+10000a33: 0f 8f ba 02 00 00            	jg	0x10000cf3 <.text.vfprintf+0x524>
+10000a39: 80 f9 62                     	cmp	cl, 98
+10000a3c: 7f 13                        	jg	0x10000a51 <.text.vfprintf+0x282>
+10000a3e: 80 f9 25                     	cmp	cl, 37
+10000a41: 74 27                        	je	0x10000a6a <.text.vfprintf+0x29b>
+10000a43: 80 f9 58                     	cmp	cl, 88
+10000a46: 0f 84 be 02 00 00            	je	0x10000d0a <.text.vfprintf+0x53b>
+10000a4c: e9 a2 02 00 00               	jmp	0x10000cf3 <.text.vfprintf+0x524>
+10000a51: 8b 7d 8c                     	mov	edi, dword ptr [ebp - 116]
+10000a54: 8d 57 9d                     	lea	edx, [edi - 99]
+10000a57: 80 fa 15                     	cmp	dl, 21
+10000a5a: 0f 87 9a 00 00 00            	ja	0x10000afa <.text.vfprintf+0x32b>
+10000a60: 0f b6 d2                     	movzx	edx, dl
+10000a63: ff 24 95 94 11 00 10         	jmp	dword ptr [4*edx + 268439956]
+10000a6a: 50                           	push	eax
+10000a6b: 50                           	push	eax
+10000a6c: ff 75 08                     	push	dword ptr [ebp + 8]
+10000a6f: 6a 25                        	push	37
+10000a71: e8 6c fb ff ff               	call	0x100005e2 <.text.fputc>
+10000a76: ff 85 7c ff ff ff            	inc	dword ptr [ebp - 132]
+10000a7c: 83 c4 10                     	add	esp, 16
+10000a7f: e9 43 02 00 00               	jmp	0x10000cc7 <.text.vfprintf+0x4f8>
+10000a84: 8b 13                        	mov	edx, dword ptr [ebx]
+10000a86: 3c 74                        	cmp	al, 116
+10000a88: 7f 44                        	jg	0x10000ace <.text.vfprintf+0x2ff>
+10000a8a: 3c 67                        	cmp	al, 103
+10000a8c: 7f 0e                        	jg	0x10000a9c <.text.vfprintf+0x2cd>
+10000a8e: 3c 48                        	cmp	al, 72
+10000a90: 75 3c                        	jne	0x10000ace <.text.vfprintf+0x2ff>
+10000a92: 8a 85 7c ff ff ff            	mov	al, byte ptr [ebp - 132]
+10000a98: 88 02                        	mov	byte ptr [edx], al
+10000a9a: eb 1a                        	jmp	0x10000ab6 <.text.vfprintf+0x2e7>
+10000a9c: 83 e8 68                     	sub	eax, 104
+10000a9f: 3c 0c                        	cmp	al, 12
+10000aa1: 77 2b                        	ja	0x10000ace <.text.vfprintf+0x2ff>
+10000aa3: 0f b6 c0                     	movzx	eax, al
+10000aa6: ff 24 85 ec 11 00 10         	jmp	dword ptr [4*eax + 268440044]
+10000aad: 8b 85 7c ff ff ff            	mov	eax, dword ptr [ebp - 132]
+10000ab3: 66 89 02                     	mov	word ptr [edx], ax
+10000ab6: 83 c3 04                     	add	ebx, 4
+10000ab9: e9 09 02 00 00               	jmp	0x10000cc7 <.text.vfprintf+0x4f8>
+10000abe: 8b 85 7c ff ff ff            	mov	eax, dword ptr [ebp - 132]
+10000ac4: 89 02                        	mov	dword ptr [edx], eax
+10000ac6: c1 f8 1f                     	sar	eax, 31
+10000ac9: 89 42 04                     	mov	dword ptr [edx + 4], eax
+10000acc: eb e8                        	jmp	0x10000ab6 <.text.vfprintf+0x2e7>
+10000ace: 8b 85 7c ff ff ff            	mov	eax, dword ptr [ebp - 132]
+10000ad4: 89 02                        	mov	dword ptr [edx], eax
+10000ad6: eb de                        	jmp	0x10000ab6 <.text.vfprintf+0x2e7>
+10000ad8: 8b 03                        	mov	eax, dword ptr [ebx]
+10000ada: c6 45 a8 00                  	mov	byte ptr [ebp - 88], 0
+10000ade: 83 c3 04                     	add	ebx, 4
+10000ae1: 8d 75 a7                     	lea	esi, [ebp - 89]
+10000ae4: c6 45 8c 00                  	mov	byte ptr [ebp - 116], 0
+10000ae8: 88 45 a7                     	mov	byte ptr [ebp - 89], al
+10000aeb: eb 16                        	jmp	0x10000b03 <.text.vfprintf+0x334>
+10000aed: 8b 33                        	mov	esi, dword ptr [ebx]
+10000aef: 83 c3 04                     	add	ebx, 4
+10000af2: 83 7d 88 ff                  	cmp	dword ptr [ebp - 120], -1
+10000af6: 75 2c                        	jne	0x10000b24 <.text.vfprintf+0x355>
+10000af8: eb 05                        	jmp	0x10000aff <.text.vfprintf+0x330>
+10000afa: be 20 11 00 10               	mov	esi, 268439840
+10000aff: c6 45 8c 00                  	mov	byte ptr [ebp - 116], 0
+10000b03: c6 85 7b ff ff ff 00         	mov	byte ptr [ebp - 133], 0
+10000b0a: 31 ff                        	xor	edi, edi
+10000b0c: 83 ec 0c                     	sub	esp, 12
+10000b0f: 56                           	push	esi
+10000b10: e8 2b 05 00 00               	call	0x10001040
+10000b15: c7 45 80 ff ff ff ff         	mov	dword ptr [ebp - 128], 4294967295
+10000b1c: 83 c4 10                     	add	esp, 16
+10000b1f: 89 45 88                     	mov	dword ptr [ebp - 120], eax
+10000b22: eb 13                        	jmp	0x10000b37 <.text.vfprintf+0x368>
+10000b24: 8b 45 88                     	mov	eax, dword ptr [ebp - 120]
+10000b27: c6 45 8c 00                  	mov	byte ptr [ebp - 116], 0
+10000b2b: 31 ff                        	xor	edi, edi
+10000b2d: c6 85 7b ff ff ff 00         	mov	byte ptr [ebp - 133], 0
+10000b34: 89 45 80                     	mov	dword ptr [ebp - 128], eax
+10000b37: 8b 8d 6c ff ff ff            	mov	ecx, dword ptr [ebp - 148]
+10000b3d: 8b 45 88                     	mov	eax, dword ptr [ebp - 120]
+10000b40: 29 c1                        	sub	ecx, eax
+10000b42: 80 bd 7b ff ff ff 01         	cmp	byte ptr [ebp - 133], 1
+10000b49: 83 d1 ff                     	adc	ecx, -1
+10000b4c: 80 7d 8c 00                  	cmp	byte ptr [ebp - 116], 0
+10000b50: 0f 95 c0                     	setne	al
+10000b53: 31 d2                        	xor	edx, edx
+10000b55: 22 85 68 ff ff ff            	and	al, byte ptr [ebp - 152]
+10000b5b: 88 85 6c ff ff ff            	mov	byte ptr [ebp - 148], al
+10000b61: 74 0a                        	je	0x10000b6d <.text.vfprintf+0x39e>
+10000b63: 31 d2                        	xor	edx, edx
+10000b65: 80 7d 8c 6f                  	cmp	byte ptr [ebp - 116], 111
+10000b69: 0f 95 c2                     	setne	dl
+10000b6c: 42                           	inc	edx
+10000b6d: 29 d1                        	sub	ecx, edx
+10000b6f: 80 bd 64 ff ff ff 01         	cmp	byte ptr [ebp - 156], 1
+10000b76: 89 4d 88                     	mov	dword ptr [ebp - 120], ecx
+10000b79: 74 2a                        	je	0x10000ba5 <.text.vfprintf+0x3d6>
+10000b7b: 80 bd 70 ff ff ff 00         	cmp	byte ptr [ebp - 144], 0
+10000b82: 74 13                        	je	0x10000b97 <.text.vfprintf+0x3c8>
+10000b84: 89 f8                        	mov	eax, edi
+10000b86: ba 38 11 00 10               	mov	edx, 268439864
+10000b8b: 84 c0                        	test	al, al
+10000b8d: b8 30 11 00 10               	mov	eax, 268439856
+10000b92: 0f 44 c2                     	cmove	eax, edx
+10000b95: eb 13                        	jmp	0x10000baa <.text.vfprintf+0x3db>
+10000b97: 80 bd 64 ff ff ff 00         	cmp	byte ptr [ebp - 156], 0
+10000b9e: b8 38 11 00 10               	mov	eax, 268439864
+10000ba3: 74 05                        	je	0x10000baa <.text.vfprintf+0x3db>
+10000ba5: b8 34 11 00 10               	mov	eax, 268439860
+10000baa: 89 85 70 ff ff ff            	mov	dword ptr [ebp - 144], eax
+10000bb0: 0f be 45 8c                  	movsx	eax, byte ptr [ebp - 116]
+10000bb4: 89 85 68 ff ff ff            	mov	dword ptr [ebp - 152], eax
+10000bba: 8b 85 70 ff ff ff            	mov	eax, dword ptr [ebp - 144]
+10000bc0: 8a 00                        	mov	al, byte ptr [eax]
+10000bc2: 84 c0                        	test	al, al
+10000bc4: 0f 84 fd 00 00 00            	je	0x10000cc7 <.text.vfprintf+0x4f8>
+10000bca: 3c 73                        	cmp	al, 115
+10000bcc: 75 61                        	jne	0x10000c2f <.text.vfprintf+0x460>
+10000bce: 80 bd 7b ff ff ff 00         	cmp	byte ptr [ebp - 133], 0
+10000bd5: 8b bd 7c ff ff ff            	mov	edi, dword ptr [ebp - 132]
+10000bdb: 74 16                        	je	0x10000bf3 <.text.vfprintf+0x424>
+10000bdd: 50                           	push	eax
+10000bde: 47                           	inc	edi
+10000bdf: 50                           	push	eax
+10000be0: ff 75 08                     	push	dword ptr [ebp + 8]
+10000be3: 0f be 85 7b ff ff ff         	movsx	eax, byte ptr [ebp - 133]
+10000bea: 50                           	push	eax
+10000beb: e8 f2 f9 ff ff               	call	0x100005e2 <.text.fputc>
+10000bf0: 83 c4 10                     	add	esp, 16
+10000bf3: 80 bd 6c ff ff ff 00         	cmp	byte ptr [ebp - 148], 0
+10000bfa: 0f 84 b6 00 00 00            	je	0x10000cb6 <.text.vfprintf+0x4e7>
+10000c00: 80 7d 8c 6f                  	cmp	byte ptr [ebp - 116], 111
+10000c04: 74 10                        	je	0x10000c16 <.text.vfprintf+0x447>
+10000c06: 50                           	push	eax
+10000c07: 47                           	inc	edi
+10000c08: 50                           	push	eax
+10000c09: ff 75 08                     	push	dword ptr [ebp + 8]
+10000c0c: 6a 30                        	push	48
+10000c0e: e8 cf f9 ff ff               	call	0x100005e2 <.text.fputc>
+10000c13: 83 c4 10                     	add	esp, 16
+10000c16: 51                           	push	ecx
+10000c17: 47                           	inc	edi
+10000c18: 51                           	push	ecx
+10000c19: ff 75 08                     	push	dword ptr [ebp + 8]
+10000c1c: ff b5 68 ff ff ff            	push	dword ptr [ebp - 152]
+10000c22: e8 bb f9 ff ff               	call	0x100005e2 <.text.fputc>
+10000c27: 83 c4 10                     	add	esp, 16
+10000c2a: e9 87 00 00 00               	jmp	0x10000cb6 <.text.vfprintf+0x4e7>
+10000c2f: 3c 64                        	cmp	al, 100
+10000c31: 74 08                        	je	0x10000c3b <.text.vfprintf+0x46c>
+10000c33: 8b 55 88                     	mov	edx, dword ptr [ebp - 120]
+10000c36: 0f be f8                     	movsx	edi, al
+10000c39: eb 3d                        	jmp	0x10000c78 <.text.vfprintf+0x4a9>
+10000c3b: 31 d2                        	xor	edx, edx
+10000c3d: 8b 85 7c ff ff ff            	mov	eax, dword ptr [ebp - 132]
+10000c43: 8d 3c 10                     	lea	edi, [eax + edx]
+10000c46: 0f be 04 16                  	movsx	eax, byte ptr [esi + edx]
+10000c4a: 84 c0                        	test	al, al
+10000c4c: 74 68                        	je	0x10000cb6 <.text.vfprintf+0x4e7>
+10000c4e: 83 7d 80 ff                  	cmp	dword ptr [ebp - 128], -1
+10000c52: 75 1d                        	jne	0x10000c71 <.text.vfprintf+0x4a2>
+10000c54: 89 95 64 ff ff ff            	mov	dword ptr [ebp - 156], edx
+10000c5a: 52                           	push	edx
+10000c5b: 52                           	push	edx
+10000c5c: ff 75 08                     	push	dword ptr [ebp + 8]
+10000c5f: 50                           	push	eax
+10000c60: e8 7d f9 ff ff               	call	0x100005e2 <.text.fputc>
+10000c65: 8b 95 64 ff ff ff            	mov	edx, dword ptr [ebp - 156]
+10000c6b: 83 c4 10                     	add	esp, 16
+10000c6e: 42                           	inc	edx
+10000c6f: eb cc                        	jmp	0x10000c3d <.text.vfprintf+0x46e>
+10000c71: 39 55 80                     	cmp	dword ptr [ebp - 128], edx
+10000c74: 7f de                        	jg	0x10000c54 <.text.vfprintf+0x485>
+10000c76: eb 3e                        	jmp	0x10000cb6 <.text.vfprintf+0x4e7>
+10000c78: 85 d2                        	test	edx, edx
+10000c7a: 7e 1d                        	jle	0x10000c99 <.text.vfprintf+0x4ca>
+10000c7c: 89 95 64 ff ff ff            	mov	dword ptr [ebp - 156], edx
+10000c82: 50                           	push	eax
+10000c83: 50                           	push	eax
+10000c84: ff 75 08                     	push	dword ptr [ebp + 8]
+10000c87: 57                           	push	edi
+10000c88: e8 55 f9 ff ff               	call	0x100005e2 <.text.fputc>
+10000c8d: 8b 95 64 ff ff ff            	mov	edx, dword ptr [ebp - 156]
+10000c93: 83 c4 10                     	add	esp, 16
+10000c96: 4a                           	dec	edx
+10000c97: eb df                        	jmp	0x10000c78 <.text.vfprintf+0x4a9>
+10000c99: 8b 4d 88                     	mov	ecx, dword ptr [ebp - 120]
+10000c9c: 31 c0                        	xor	eax, eax
+10000c9e: 83 7d 88 00                  	cmp	dword ptr [ebp - 120], 0
+10000ca2: 0f 49 45 88                  	cmovns	eax, dword ptr [ebp - 120]
+10000ca6: 8b bd 7c ff ff ff            	mov	edi, dword ptr [ebp - 132]
+10000cac: 8d 51 ff                     	lea	edx, [ecx - 1]
+10000caf: 29 c2                        	sub	edx, eax
+10000cb1: 01 c7                        	add	edi, eax
+10000cb3: 89 55 88                     	mov	dword ptr [ebp - 120], edx
+10000cb6: ff 85 70 ff ff ff            	inc	dword ptr [ebp - 144]
+10000cbc: 89 bd 7c ff ff ff            	mov	dword ptr [ebp - 132], edi
+10000cc2: e9 f3 fe ff ff               	jmp	0x10000bba <.text.vfprintf+0x3eb>
+10000cc7: ff 85 74 ff ff ff            	inc	dword ptr [ebp - 140]
+10000ccd: e9 25 fb ff ff               	jmp	0x100007f7 <.text.vfprintf+0x28>
+10000cd2: 88 95 70 ff ff ff            	mov	byte ptr [ebp - 144], dl
+10000cd8: 8a 95 68 ff ff ff            	mov	dl, byte ptr [ebp - 152]
+10000cde: 88 95 68 ff ff ff            	mov	byte ptr [ebp - 152], dl
+10000ce4: e9 91 fb ff ff               	jmp	0x1000087a <.text.vfprintf+0xab>
+10000ce9: c6 45 8c 00                  	mov	byte ptr [ebp - 116], 0
+10000ced: 83 7d 88 ff                  	cmp	dword ptr [ebp - 120], -1
+10000cf1: eb 1b                        	jmp	0x10000d0e <.text.vfprintf+0x53f>
+10000cf3: c6 45 8c 00                  	mov	byte ptr [ebp - 116], 0
+10000cf7: 31 ff                        	xor	edi, edi
+10000cf9: be 20 11 00 10               	mov	esi, 268439840
+10000cfe: c6 85 7b ff ff ff 00         	mov	byte ptr [ebp - 133], 0
+10000d05: e9 02 fe ff ff               	jmp	0x10000b0c <.text.vfprintf+0x33d>
+10000d0a: 83 7d 88 ff                  	cmp	dword ptr [ebp - 120], -1
+10000d0e: 0f 85 70 01 00 00            	jne	0x10000e84 <.text.vfprintf+0x6b5>
+10000d14: c7 45 88 01 00 00 00         	mov	dword ptr [ebp - 120], 1
+10000d1b: 3c 74                        	cmp	al, 116
+10000d1d: 7f 64                        	jg	0x10000d83 <.text.vfprintf+0x5b4>
+10000d1f: 3c 67                        	cmp	al, 103
+10000d21: 7f 09                        	jg	0x10000d2c <.text.vfprintf+0x55d>
+10000d23: 3c 48                        	cmp	al, 72
+10000d25: 75 5c                        	jne	0x10000d83 <.text.vfprintf+0x5b4>
+10000d27: 0f b6 03                     	movzx	eax, byte ptr [ebx]
+10000d2a: eb 14                        	jmp	0x10000d40 <.text.vfprintf+0x571>
+10000d2c: 83 e8 68                     	sub	eax, 104
+10000d2f: 3c 0c                        	cmp	al, 12
+10000d31: 77 50                        	ja	0x10000d83 <.text.vfprintf+0x5b4>
+10000d33: 0f b6 c0                     	movzx	eax, al
+10000d36: ff 24 85 20 12 00 10         	jmp	dword ptr [4*eax + 268440096]
+10000d3d: 0f b7 03                     	movzx	eax, word ptr [ebx]
+10000d40: 31 ff                        	xor	edi, edi
+10000d42: 89 45 80                     	mov	dword ptr [ebp - 128], eax
+10000d45: 89 7d 84                     	mov	dword ptr [ebp - 124], edi
+10000d48: eb 43                        	jmp	0x10000d8d <.text.vfprintf+0x5be>
+10000d4a: 8b 03                        	mov	eax, dword ptr [ebx]
+10000d4c: 8b 53 04                     	mov	edx, dword ptr [ebx + 4]
+10000d4f: 83 c3 08                     	add	ebx, 8
+10000d52: 89 45 80                     	mov	dword ptr [ebp - 128], eax
+10000d55: 89 55 84                     	mov	dword ptr [ebp - 124], edx
+10000d58: eb 36                        	jmp	0x10000d90 <.text.vfprintf+0x5c1>
+10000d5a: 8b 03                        	mov	eax, dword ptr [ebx]
+10000d5c: 89 45 80                     	mov	dword ptr [ebp - 128], eax
+10000d5f: c1 f8 1f                     	sar	eax, 31
+10000d62: 89 45 84                     	mov	dword ptr [ebp - 124], eax
+10000d65: eb 26                        	jmp	0x10000d8d <.text.vfprintf+0x5be>
+10000d67: 83 7d 88 ff                  	cmp	dword ptr [ebp - 120], -1
+10000d6b: c6 85 68 ff ff ff 01         	mov	byte ptr [ebp - 152], 1
+10000d72: c6 45 8c 78                  	mov	byte ptr [ebp - 116], 120
+10000d76: 0f 85 8d 01 00 00            	jne	0x10000f09 <.text.vfprintf+0x73a>
+10000d7c: c7 45 88 01 00 00 00         	mov	dword ptr [ebp - 120], 1
+10000d83: 8b 03                        	mov	eax, dword ptr [ebx]
+10000d85: 31 d2                        	xor	edx, edx
+10000d87: 89 55 84                     	mov	dword ptr [ebp - 124], edx
+10000d8a: 89 45 80                     	mov	dword ptr [ebp - 128], eax
+10000d8d: 83 c3 04                     	add	ebx, 4
+10000d90: 8a 85 58 ff ff ff            	mov	al, byte ptr [ebp - 168]
+10000d96: c6 85 7b ff ff ff 2b         	mov	byte ptr [ebp - 133], 43
+10000d9d: 84 c0                        	test	al, al
+10000d9f: 75 0b                        	jne	0x10000dac <.text.vfprintf+0x5dd>
+10000da1: 89 f0                        	mov	eax, esi
+10000da3: c1 e0 05                     	shl	eax, 5
+10000da6: 88 85 7b ff ff ff            	mov	byte ptr [ebp - 133], al
+10000dac: 8d 45 a7                     	lea	eax, [ebp - 89]
+10000daf: 51                           	push	ecx
+10000db0: 8d 7d c7                     	lea	edi, [ebp - 57]
+10000db3: be 3c 11 00 10               	mov	esi, 268439868
+10000db8: 6a 20                        	push	32
+10000dba: 6a 00                        	push	0
+10000dbc: 50                           	push	eax
+10000dbd: e8 69 02 00 00               	call	0x1000102b
+10000dc2: 83 c4 10                     	add	esp, 16
+10000dc5: 80 7d 8c 00                  	cmp	byte ptr [ebp - 116], 0
+10000dc9: b9 21 00 00 00               	mov	ecx, 33
+10000dce: f3 a4                        	rep		movsb	byte ptr es:[edi], byte ptr [esi]
+10000dd0: b8 0a 00 00 00               	mov	eax, 10
+10000dd5: 74 10                        	je	0x10000de7 <.text.vfprintf+0x618>
+10000dd7: 31 c0                        	xor	eax, eax
+10000dd9: 80 7d 8c 6f                  	cmp	byte ptr [ebp - 116], 111
+10000ddd: 0f 95 c0                     	setne	al
+10000de0: 8d 04 c5 08 00 00 00         	lea	eax, [8*eax + 8]
+10000de7: 31 c9                        	xor	ecx, ecx
+10000de9: 80 7d 8c 78                  	cmp	byte ptr [ebp - 116], 120
+10000ded: 89 85 50 ff ff ff            	mov	dword ptr [ebp - 176], eax
+10000df3: 0f 94 c1                     	sete	cl
+10000df6: 31 ff                        	xor	edi, edi
+10000df8: c1 f8 1f                     	sar	eax, 31
+10000dfb: 89 ce                        	mov	esi, ecx
+10000dfd: 89 85 54 ff ff ff            	mov	dword ptr [ebp - 172], eax
+10000e03: 0f a4 f7 04                  	shld	edi, esi, 4
+10000e07: c1 e6 04                     	shl	esi, 4
+10000e0a: 89 bd 5c ff ff ff            	mov	dword ptr [ebp - 164], edi
+10000e10: 89 b5 58 ff ff ff            	mov	dword ptr [ebp - 168], esi
+10000e16: be 1f 00 00 00               	mov	esi, 31
+10000e1b: 8b 45 88                     	mov	eax, dword ptr [ebp - 120]
+10000e1e: 8b 55 84                     	mov	edx, dword ptr [ebp - 124]
+10000e21: 8d 4c 06 e1                  	lea	ecx, [esi + eax - 31]
+10000e25: 8b 45 80                     	mov	eax, dword ptr [ebp - 128]
+10000e28: 09 d0                        	or	eax, edx
+10000e2a: 74 46                        	je	0x10000e72 <.text.vfprintf+0x6a3>
+10000e2c: 83 ec 0c                     	sub	esp, 12
+10000e2f: 8d 45 90                     	lea	eax, [ebp - 112]
+10000e32: 4e                           	dec	esi
+10000e33: 50                           	push	eax
+10000e34: ff b5 54 ff ff ff            	push	dword ptr [ebp - 172]
+10000e3a: ff b5 50 ff ff ff            	push	dword ptr [ebp - 176]
+10000e40: ff 75 84                     	push	dword ptr [ebp - 124]
+10000e43: ff 75 80                     	push	dword ptr [ebp - 128]
+10000e46: e8 d5 f1 ff ff               	call	0x10000020 <.text+0x20>
+10000e4b: 83 c4 20                     	add	esp, 32
+10000e4e: 89 45 80                     	mov	dword ptr [ebp - 128], eax
+10000e51: 8b 85 58 ff ff ff            	mov	eax, dword ptr [ebp - 168]
+10000e57: 03 45 90                     	add	eax, dword ptr [ebp - 112]
+10000e5a: 89 55 84                     	mov	dword ptr [ebp - 124], edx
+10000e5d: 89 c2                        	mov	edx, eax
+10000e5f: b8 e8 ff ff ff               	mov	eax, 4294967272
+10000e64: 01 d0                        	add	eax, edx
+10000e66: 8d 0c 28                     	lea	ecx, [eax + ebp]
+10000e69: 8a 49 df                     	mov	cl, byte ptr [ecx - 33]
+10000e6c: 88 4c 35 a7                  	mov	byte ptr [ebp + esi - 89], cl
+10000e70: eb a9                        	jmp	0x10000e1b <.text.vfprintf+0x64c>
+10000e72: 85 c9                        	test	ecx, ecx
+10000e74: 7f b6                        	jg	0x10000e2c <.text.vfprintf+0x65d>
+10000e76: 8d 74 35 a7                  	lea	esi, [ebp + esi - 89]
+10000e7a: bf 01 00 00 00               	mov	edi, 1
+10000e7f: e9 88 fc ff ff               	jmp	0x10000b0c <.text.vfprintf+0x33d>
+10000e84: c6 85 70 ff ff ff 00         	mov	byte ptr [ebp - 144], 0
+10000e8b: e9 8b fe ff ff               	jmp	0x10000d1b <.text.vfprintf+0x54c>
+10000e90: 83 7d 88 ff                  	cmp	dword ptr [ebp - 120], -1
+10000e94: c6 45 8c 00                  	mov	byte ptr [ebp - 116], 0
+10000e98: 75 66                        	jne	0x10000f00 <.text.vfprintf+0x731>
+10000e9a: c7 45 88 01 00 00 00         	mov	dword ptr [ebp - 120], 1
+10000ea1: 3c 74                        	cmp	al, 116
+10000ea3: 7f 2d                        	jg	0x10000ed2 <.text.vfprintf+0x703>
+10000ea5: 3c 67                        	cmp	al, 103
+10000ea7: 7f 09                        	jg	0x10000eb2 <.text.vfprintf+0x6e3>
+10000ea9: 3c 48                        	cmp	al, 72
+10000eab: 75 25                        	jne	0x10000ed2 <.text.vfprintf+0x703>
+10000ead: 0f be 03                     	movsx	eax, byte ptr [ebx]
+10000eb0: eb 22                        	jmp	0x10000ed4 <.text.vfprintf+0x705>
+10000eb2: 83 e8 68                     	sub	eax, 104
+10000eb5: 3c 0c                        	cmp	al, 12
+10000eb7: 77 19                        	ja	0x10000ed2 <.text.vfprintf+0x703>
+10000eb9: 0f b6 c0                     	movzx	eax, al
+10000ebc: ff 24 85 54 12 00 10         	jmp	dword ptr [4*eax + 268440148]
+10000ec3: 0f bf 03                     	movsx	eax, word ptr [ebx]
+10000ec6: eb 0c                        	jmp	0x10000ed4 <.text.vfprintf+0x705>
+10000ec8: 8b 03                        	mov	eax, dword ptr [ebx]
+10000eca: 8b 53 04                     	mov	edx, dword ptr [ebx + 4]
+10000ecd: 83 c3 08                     	add	ebx, 8
+10000ed0: eb 06                        	jmp	0x10000ed8 <.text.vfprintf+0x709>
+10000ed2: 8b 03                        	mov	eax, dword ptr [ebx]
+10000ed4: 99                           	cdq
+10000ed5: 83 c3 04                     	add	ebx, 4
+10000ed8: 85 d2                        	test	edx, edx
+10000eda: 78 0b                        	js	0x10000ee7 <.text.vfprintf+0x718>
+10000edc: 89 45 80                     	mov	dword ptr [ebp - 128], eax
+10000edf: 89 55 84                     	mov	dword ptr [ebp - 124], edx
+10000ee2: e9 a9 fe ff ff               	jmp	0x10000d90 <.text.vfprintf+0x5c1>
+10000ee7: f7 d8                        	neg	eax
+10000ee9: c6 85 7b ff ff ff 2d         	mov	byte ptr [ebp - 133], 45
+10000ef0: 83 d2 00                     	adc	edx, 0
+10000ef3: 89 45 80                     	mov	dword ptr [ebp - 128], eax
+10000ef6: f7 da                        	neg	edx
+10000ef8: 89 55 84                     	mov	dword ptr [ebp - 124], edx
+10000efb: e9 ac fe ff ff               	jmp	0x10000dac <.text.vfprintf+0x5dd>
+10000f00: c6 85 70 ff ff ff 00         	mov	byte ptr [ebp - 144], 0
+10000f07: eb 98                        	jmp	0x10000ea1 <.text.vfprintf+0x6d2>
+10000f09: c6 85 70 ff ff ff 00         	mov	byte ptr [ebp - 144], 0
+10000f10: e9 6e fe ff ff               	jmp	0x10000d83 <.text.vfprintf+0x5b4>
+10000f15: 8b 45 08                     	mov	eax, dword ptr [ebp + 8]
+10000f18: 8b 75 08                     	mov	esi, dword ptr [ebp + 8]
+10000f1b: 8b 40 40                     	mov	eax, dword ptr [eax + 64]
+10000f1e: 48                           	dec	eax
+10000f1f: 89 46 40                     	mov	dword ptr [esi + 64], eax
+10000f22: 8b 85 7c ff ff ff            	mov	eax, dword ptr [ebp - 132]
+10000f28: 8d 65 f4                     	lea	esp, [ebp - 12]
+10000f2b: 5b                           	pop	ebx
+10000f2c: 5e                           	pop	esi
+10000f2d: 5f                           	pop	edi
+10000f2e: 5d                           	pop	ebp
+10000f2f: c3                           	ret
+
+Disassembly of section .text.vprintf:
+
+10000f30 <.text.vprintf>:
+10000f30: 55                           	push	ebp
+10000f31: 89 e5                        	mov	ebp, esp
+10000f33: 83 ec 0c                     	sub	esp, 12
+10000f36: ff 75 0c                     	push	dword ptr [ebp + 12]
+10000f39: ff 75 08                     	push	dword ptr [ebp + 8]
+10000f3c: ff 35 8c 12 00 10            	push	dword ptr [268440204]
+10000f42: e8 88 f8 ff ff               	call	0x100007cf <.text.vfprintf>
+10000f47: c9                           	leave
+10000f48: c3                           	ret
+
+Disassembly of section .text.printf:
+
+10000f49 <.text.printf>:
+10000f49: 55                           	push	ebp
+10000f4a: 89 e5                        	mov	ebp, esp
+10000f4c: 83 ec 10                     	sub	esp, 16
+10000f4f: 8d 45 0c                     	lea	eax, [ebp + 12]
+10000f52: 50                           	push	eax
+10000f53: ff 75 08                     	push	dword ptr [ebp + 8]
+10000f56: e8 d5 ff ff ff               	call	0x10000f30 <.text.vprintf>
+10000f5b: c9                           	leave
+10000f5c: c3                           	ret
+
+Disassembly of section .text.exit:
+
+10000f5d <.text.exit>:
+10000f5d: 55                           	push	ebp
+10000f5e: 89 e5                        	mov	ebp, esp
+10000f60: 83 ec 14                     	sub	esp, 20
+10000f63: 6a 00                        	push	0
+10000f65: e8 df f5 ff ff               	call	0x10000549 <.text.fflush>
+10000f6a: 83 c4 10                     	add	esp, 16
+10000f6d: 83 ec 0c                     	sub	esp, 12
+10000f70: 6a 00                        	push	0
+10000f72: 6a 00                        	push	0
+10000f74: 6a 00                        	push	0
+10000f76: 6a 00                        	push	0
+10000f78: 6a 00                        	push	0
+10000f7a: e8 81 f0 ff ff               	call	0x10000000 <.text>
+10000f7f: 83 c4 20                     	add	esp, 32
+10000f82: eb e9                        	jmp	0x10000f6d <.text.exit+0x10>
+
+Disassembly of section .text.malloc:
+
+10000f84 <.text.malloc>:
+10000f84: 55                           	push	ebp
+10000f85: 89 e5                        	mov	ebp, esp
+10000f87: 53                           	push	ebx
+10000f88: 83 ec 14                     	sub	esp, 20
+10000f8b: 8b 45 08                     	mov	eax, dword ptr [ebp + 8]
+10000f8e: 85 c0                        	test	eax, eax
+10000f90: 75 02                        	jne	0x10000f94 <.text.malloc+0x10>
+10000f92: eb fe                        	jmp	0x10000f92 <.text.malloc+0xe>
+10000f94: 89 c3                        	mov	ebx, eax
+10000f96: f7 db                        	neg	ebx
+10000f98: 83 e3 0f                     	and	ebx, 15
+10000f9b: 01 c3                        	add	ebx, eax
+10000f9d: a1 98 12 00 10               	mov	eax, dword ptr [268440216]
+10000fa2: 85 c0                        	test	eax, eax
+10000fa4: 74 0a                        	je	0x10000fb0 <.text.malloc+0x2c>
+10000fa6: 01 d8                        	add	eax, ebx
+10000fa8: 3b 05 94 12 00 10            	cmp	eax, dword ptr [268440212]
+10000fae: 72 38                        	jb	0x10000fe8 <.text.malloc+0x64>
+10000fb0: 83 ec 0c                     	sub	esp, 12
+10000fb3: 8d 45 f4                     	lea	eax, [ebp - 12]
+10000fb6: 50                           	push	eax
+10000fb7: 8d 45 f0                     	lea	eax, [ebp - 16]
+10000fba: 50                           	push	eax
+10000fbb: 8d 04 1b                     	lea	eax, [ebx + ebx]
+10000fbe: 6a 00                        	push	0
+10000fc0: 50                           	push	eax
+10000fc1: 6a 07                        	push	7
+10000fc3: e8 38 f0 ff ff               	call	0x10000000 <.text>
+10000fc8: 83 c4 20                     	add	esp, 32
+10000fcb: 85 c0                        	test	eax, eax
+10000fcd: 74 09                        	je	0x10000fd8 <.text.malloc+0x54>
+10000fcf: a3 9c 12 00 10               	mov	dword ptr [268440220], eax
+10000fd4: 31 c0                        	xor	eax, eax
+10000fd6: eb 1d                        	jmp	0x10000ff5 <.text.malloc+0x71>
+10000fd8: 8b 45 f0                     	mov	eax, dword ptr [ebp - 16]
+10000fdb: a3 98 12 00 10               	mov	dword ptr [268440216], eax
+10000fe0: 8b 45 f4                     	mov	eax, dword ptr [ebp - 12]
+10000fe3: a3 94 12 00 10               	mov	dword ptr [268440212], eax
+10000fe8: a1 98 12 00 10               	mov	eax, dword ptr [268440216]
+10000fed: 01 c3                        	add	ebx, eax
+10000fef: 89 1d 98 12 00 10            	mov	dword ptr [268440216], ebx
+10000ff5: 8b 5d fc                     	mov	ebx, dword ptr [ebp - 4]
+10000ff8: c9                           	leave
+10000ff9: c3                           	ret
+
+Disassembly of section .text.free:
+
+10000ffa <.text.free>:
+10000ffa: c3                           	ret
+
+Disassembly of section .text.memmove:
+
+10000ffb <.text.memmove>:
+10000ffb: 55                           	push	ebp
+10000ffc: 89 e5                        	mov	ebp, esp
+10000ffe: 57                           	push	edi
+10000fff: 8b 55 08                     	mov	edx, dword ptr [ebp + 8]
+10001002: 8b 45 10                     	mov	eax, dword ptr [ebp + 16]
+10001005: 56                           	push	esi
+10001006: 8b 75 0c                     	mov	esi, dword ptr [ebp + 12]
+10001009: 39 d6                        	cmp	esi, edx
+1000100b: 72 0b                        	jb	0x10001018 <.text.memmove+0x1d>
+1000100d: 01 d0                        	add	eax, edx
+1000100f: 89 d7                        	mov	edi, edx
+10001011: 39 c7                        	cmp	edi, eax
+10001013: 74 10                        	je	0x10001025 <.text.memmove+0x2a>
+10001015: a4                           	movsb	byte ptr es:[edi], byte ptr [esi]
+10001016: eb f9                        	jmp	0x10001011 <.text.memmove+0x16>
+10001018: 83 e8 01                     	sub	eax, 1
+1000101b: 72 08                        	jb	0x10001025 <.text.memmove+0x2a>
+1000101d: 8a 0c 06                     	mov	cl, byte ptr [esi + eax]
+10001020: 88 0c 02                     	mov	byte ptr [edx + eax], cl
+10001023: eb f3                        	jmp	0x10001018 <.text.memmove+0x1d>
+10001025: 5e                           	pop	esi
+10001026: 89 d0                        	mov	eax, edx
+10001028: 5f                           	pop	edi
+10001029: 5d                           	pop	ebp
+1000102a: c3                           	ret
+
+Disassembly of section .text.memset:
+
+1000102b <.text.memset>:
+1000102b: 55                           	push	ebp
+1000102c: 89 e5                        	mov	ebp, esp
+1000102e: 57                           	push	edi
+1000102f: 8a 45 0c                     	mov	al, byte ptr [ebp + 12]
+10001032: 8b 4d 10                     	mov	ecx, dword ptr [ebp + 16]
+10001035: 8b 7d 08                     	mov	edi, dword ptr [ebp + 8]
+10001038: f3 aa                        	rep		stosb	byte ptr es:[edi], al
+1000103a: 8b 45 08                     	mov	eax, dword ptr [ebp + 8]
+1000103d: 5f                           	pop	edi
+1000103e: 5d                           	pop	ebp
+1000103f: c3                           	ret
+
+Disassembly of section .text.strlen:
+
+10001040 <.text.strlen>:
+10001040: 55                           	push	ebp
+10001041: 31 c0                        	xor	eax, eax
+10001043: 89 e5                        	mov	ebp, esp
+10001045: 8b 55 08                     	mov	edx, dword ptr [ebp + 8]
+10001048: 80 3c 02 00                  	cmp	byte ptr [edx + eax], 0
+1000104c: 74 03                        	je	0x10001051 <.text.strlen+0x11>
+1000104e: 40                           	inc	eax
+1000104f: eb f7                        	jmp	0x10001048 <.text.strlen+0x8>
+10001051: 5d                           	pop	ebp
+10001052: c3                           	ret
+
+Disassembly of section .text.open:
+
+10001053 <.text.open>:
+10001053: 55                           	push	ebp
+10001054: 89 e5                        	mov	ebp, esp
+10001056: 83 ec 24                     	sub	esp, 36
+10001059: 8d 45 f4                     	lea	eax, [ebp - 12]
+1000105c: 50                           	push	eax
+1000105d: ff 75 10                     	push	dword ptr [ebp + 16]
+10001060: ff 75 0c                     	push	dword ptr [ebp + 12]
+10001063: ff 75 08                     	push	dword ptr [ebp + 8]
+10001066: 6a 02                        	push	2
+10001068: e8 93 ef ff ff               	call	0x10000000 <.text>
+1000106d: 8b 55 f4                     	mov	edx, dword ptr [ebp - 12]
+10001070: 83 c4 20                     	add	esp, 32
+10001073: 85 c0                        	test	eax, eax
+10001075: 74 08                        	je	0x1000107f <.text.open+0x2c>
+10001077: a3 9c 12 00 10               	mov	dword ptr [268440220], eax
+1000107c: 83 ca ff                     	or	edx, -1
+1000107f: c9                           	leave
+10001080: 89 d0                        	mov	eax, edx
+10001082: c3                           	ret
+
+Disassembly of section .text.isatty:
+
+10001083 <.text.isatty>:
+10001083: 55                           	push	ebp
+10001084: 89 e5                        	mov	ebp, esp
+10001086: 83 ec 14                     	sub	esp, 20
+10001089: 6a 00                        	push	0
+1000108b: 6a 00                        	push	0
+1000108d: 6a 00                        	push	0
+1000108f: ff 75 08                     	push	dword ptr [ebp + 8]
+10001092: 6a 08                        	push	8
+10001094: e8 67 ef ff ff               	call	0x10000000 <.text>
+10001099: 83 c4 20                     	add	esp, 32
+1000109c: ba 01 00 00 00               	mov	edx, 1
+100010a1: 85 c0                        	test	eax, eax
+100010a3: 74 07                        	je	0x100010ac <.text.isatty+0x29>
+100010a5: a3 9c 12 00 10               	mov	dword ptr [268440220], eax
+100010aa: 31 d2                        	xor	edx, edx
+100010ac: c9                           	leave
+100010ad: 89 d0                        	mov	eax, edx
+100010af: c3                           	ret
+
+Disassembly of section .text.read:
+
+100010b0 <.text.read>:
+100010b0: 55                           	push	ebp
+100010b1: 89 e5                        	mov	ebp, esp
+100010b3: 83 ec 24                     	sub	esp, 36
+100010b6: 8d 45 f4                     	lea	eax, [ebp - 12]
+100010b9: 50                           	push	eax
+100010ba: ff 75 08                     	push	dword ptr [ebp + 8]
+100010bd: ff 75 10                     	push	dword ptr [ebp + 16]
+100010c0: ff 75 0c                     	push	dword ptr [ebp + 12]
+100010c3: 6a 03                        	push	3
+100010c5: e8 36 ef ff ff               	call	0x10000000 <.text>
+100010ca: 8b 55 f4                     	mov	edx, dword ptr [ebp - 12]
+100010cd: 83 c4 20                     	add	esp, 32
+100010d0: 85 c0                        	test	eax, eax
+100010d2: 74 08                        	je	0x100010dc <.text.read+0x2c>
+100010d4: a3 9c 12 00 10               	mov	dword ptr [268440220], eax
+100010d9: 83 ca ff                     	or	edx, -1
+100010dc: c9                           	leave
+100010dd: 89 d0                        	mov	eax, edx
+100010df: c3                           	ret
+
+Disassembly of section .text.write:
+
+100010e0 <.text.write>:
+100010e0: 55                           	push	ebp
+100010e1: 89 e5                        	mov	ebp, esp
+100010e3: 83 ec 24                     	sub	esp, 36
+100010e6: 8d 45 f4                     	lea	eax, [ebp - 12]
+100010e9: 50                           	push	eax
+100010ea: ff 75 08                     	push	dword ptr [ebp + 8]
+100010ed: ff 75 10                     	push	dword ptr [ebp + 16]
+100010f0: ff 75 0c                     	push	dword ptr [ebp + 12]
+100010f3: 6a 04                        	push	4
+100010f5: e8 06 ef ff ff               	call	0x10000000 <.text>
+100010fa: 8b 55 f4                     	mov	edx, dword ptr [ebp - 12]
+100010fd: 83 c4 20                     	add	esp, 32
+10001100: 85 c0                        	test	eax, eax
+10001102: 74 08                        	je	0x1000110c <.text.write+0x2c>
+10001104: a3 9c 12 00 10               	mov	dword ptr [268440220], eax
+10001109: 83 ca ff                     	or	edx, -1
+1000110c: c9                           	leave
+1000110d: 89 d0                        	mov	eax, edx
+1000110f: c3                           	ret

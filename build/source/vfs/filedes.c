@@ -130,9 +130,7 @@ int filedesc_table_deregister_file(struct filedes_table* table, struct open_file
 * and closes the ones that have the flag set.
 */
 int filedes_handle_exec(struct filedes_table* table) {
-    kprintf("ABOUT TO ACQUIRE THE FILEDES LOCK IN filedes_handle_exec\n");
     spinlock_acquire(&table->lock);
-    kprintf("ACQUIRED\n");
 
     for (int i = 0; i < MAX_FD_PER_PROCESS; ++i) {
         if (table->entries[i].file != NULL) {
@@ -144,7 +142,6 @@ int filedes_handle_exec(struct filedes_table* table) {
     }
 
     spinlock_release(&table->lock);
-    kprintf("RELEASED.\n");
 
     return 0;
 }

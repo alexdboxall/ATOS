@@ -32,8 +32,6 @@ int sys_sbrk(size_t args[4]) {
         return ENOSYS;
     }
 
-    kprintf("CALLING SBRK!\n");
-
     struct uio io = uio_construct_write_to_usermode((size_t*) args[2], sizeof(size_t), 0);
     size_t current_sbrk = current_cpu->current_thread->process->sbrk;
     int result = uio_move(&current_sbrk, &io, sizeof(size_t));
@@ -51,6 +49,5 @@ int sys_sbrk(size_t args[4]) {
 
     io = uio_construct_write_to_usermode((size_t*) args[3], sizeof(size_t), 0);
     size_t resulting_sbrk = current_cpu->current_thread->process->sbrk;
-    kprintf("sbrk will return 0x%X\n", resulting_sbrk);
     return uio_move(&resulting_sbrk, &io, sizeof(size_t));
 }

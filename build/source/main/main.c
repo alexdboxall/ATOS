@@ -171,6 +171,9 @@ void basic_shell(void* arg) {
         } else if (!strcmp(buffer, "user")) {
             struct process* p = process_create();
             process_create_thread(p, thread_execute_in_usermode, NULL);
+			while (1) {
+				;
+			}
             continue;
 
 		} else if (!strcmp(buffer, "restart")) {

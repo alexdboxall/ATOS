@@ -44,7 +44,7 @@ int fputc(int c, FILE *stream);
 int fgetc(FILE* stream);
 
 
-
+char* fgets(char* buffer, int n, FILE* stream);
 int getc(FILE* stream);
 int getchar(void);
 int ungetc(int c, FILE* stream);

@@ -211,8 +211,6 @@ int thread_execve(const char* filename, char* const argv[], char* const envp[], 
     (void) argv;
     (void) envp;
 
-    kprintf("ABOUT TO LOAD PROGRAM.\n");
-
     return load_program(filename, entry_point, &current_cpu->current_thread->process->sbrk);
 }
 
@@ -230,7 +228,7 @@ void thread_execute_in_usermode(void* ignored_arg) {
     current_cpu->current_thread->stack_pointer = new_stack;
     spinlock_release(&scheduler_lock);
 
-    char* const argv[] = {"hd0:/System/usertest.exe", NULL};
+    char* const argv[] = {"hd0:/System/shell.exe", NULL};
     char* const envp[] = {NULL};
     size_t entry_point;
     int result = thread_execve(argv[0], argv, envp, &entry_point);
@@ -240,7 +238,6 @@ void thread_execute_in_usermode(void* ignored_arg) {
     }
 
     arch_flush_tlb();
-    kprintf("ABOUT TO START EXECVE'D PROGRAM: ENTRY 0x%X, STACK 0x%X\n", entry_point, new_stack);
     arch_switch_to_usermode(entry_point, new_stack);
 
     thread_terminate();

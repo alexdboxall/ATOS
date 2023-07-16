@@ -35,10 +35,10 @@ int sys_read(size_t args[4]) {
         return result;
     }
 
-    io = uio_construct_write_to_usermode((size_t*) args[3], sizeof(size_t), 0);
     size_t br = args[1] - io.length_remaining;
-
     node->seek_position += br;
 
+    io = uio_construct_write_to_usermode((size_t*) args[3], sizeof(size_t), 0);
+    
     return uio_move(&br, &io, sizeof(size_t));
 }

@@ -1,5 +1,6 @@
 #include <video.h>
 #include <kprintf.h>
+#include <thread.h>
 
 #include "region/draw.h"
 #include "region/region.h"

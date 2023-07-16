@@ -12,6 +12,7 @@
 #include "region/cursor.h"
 #include "region/draw.h"
 
+/*
 struct window {
     struct region rgn;
     uint32_t colour;
@@ -75,19 +76,6 @@ struct region window_paint(struct window win, struct region bound, struct region
 }
 
 void invalidate_part_of_screen(struct window root_window, int x, int y, int w, int h) {
-    /*
-    * TODO: we should be able to optimise this by only invalidating a certain window,
-    * not the whole thing (i.e. the way we do it now, if something changes under another
-    * window, the thing on top will still be repainted)
-    * 
-    * Or just have an 'dirty' flag on each window (or even region), and only paint it and 
-    * its children if it is dirty??
-    * 
-    * We just have to be careful with alpha. (It might be that we check for any higher windows
-    * that overlap the invalidated sections, and if there is alpha, it is also redrawn, i.e.
-    * acts as if it has the dirty flag set).
-    */
-
     struct region empty = region_create_rectangle(0, 0, 0, 0);
     struct region invalidation = region_create_rectangle(x, y, w, h);
     window_paint(root_window, invalidation, empty);
@@ -162,60 +150,80 @@ struct window create_window(int x, int y, int w, int h, bool has_focus) {
     window_add_child(&win, win_sub);
     return win;
 }
+*/
+
+struct colour_region {
+    struct region rgn;
+    uint32_t colour;
+};
+
+
+void add_window(struct colour_region* rgns[], int* index, int x, int y, int w, int h, bool has_focus) {
+    int shadow_width = has_focus ? 12 : 8;
+
+    struct region previous = region_create_rounded_rectangle(x, y, w, h, 10 + shadow_width);
+
+    for (int i = 1; i < shadow_width + 1; ++i) {
+        struct region current = region_create_rounded_rectangle(x + i, y + i, w - 2 * i, h - 2 * i, 10 + shadow_width - i);
+        struct region clipped = region_operate(previous, current, REGION_OP_DIFFERENCE);
+
+        struct colour_region* col_rgn = malloc(sizeof(struct colour_region));
+        col_rgn->colour = (i * i / 4 + 1) << 24;
+        col_rgn->rgn = clipped;
+
+        rgns[*index] = col_rgn;
+        *index += 1;
+
+        region_destroy(previous);
+        previous = current;
+    }
+
+    struct region rgn = region_create_rounded_rectangle(x + shadow_width, y + shadow_width, w - shadow_width * 2, h - shadow_width * 2, 10);
+    struct colour_region* col_rgn = malloc(sizeof(struct colour_region));
+    col_rgn->colour = 0xFFF2F0F0;
+    col_rgn->rgn = rgn;
+    rgns[*index] = col_rgn;
+    *index += 1;
+}
+
+/*
+* 'Rgns' must end with a NULL to indicate the end of the list
+*/
+static void paint_all(int index, struct colour_region* rgns[], struct region mask) {
+    if (rgns[index] == NULL) {
+        return;
+    }
+    
+    struct region current = rgns[index]->rgn;
+    uint32_t colour = rgns[index]->colour;
+    bool transparent = (colour >> 24) != 0xFF;
+
+    struct region current_clipped = region_operate(current, mask, REGION_OP_INTERSECT);
+    struct region visible_remainder = region_operate(mask, current, REGION_OP_DIFFERENCE);
+
+    paint_all(index + 1, rgns, transparent ? mask : visible_remainder);
+    region_fill(&current_clipped, colour);
+
+    region_destroy(current_clipped);
+    region_destroy(visible_remainder);
+}
+
 
 void _driver_entry_point() {
-    struct region bg = region_create_rectangle(0, 0, 1200, 800);
+    struct region bg_ = region_create_rectangle(0, 0, 1200, 800);
+    struct colour_region bg;
+    bg.rgn = bg_;
+    bg.colour = 0xFF008080;
 
-    /*struct region cursor_b = region_create_cursor_black(50, 40);
-    struct region cursor_w = region_create_cursor_white(50, 40);
-    struct region cursor_union = region_operate(cursor_b, cursor_w, REGION_OP_UNION);
+    struct colour_region* rgns[256];
+    int index = 0;
+    memset(rgns, 0, sizeof(rgns));
 
-    struct window cursor_b_win = {
-        .children = {NULL},
-        .num_children = 0,
-        .colour = 0xFF000000,
-        .rgn = cursor_b
-    };
+    add_window(rgns, &index, 150, 150, 700, 500, true);
+    add_window(rgns, &index, 50, 50, 400, 300, false);
+    rgns[index++] = &bg;
 
-    struct window cursor_w_win = {
-        .children = {NULL},
-        .num_children = 0,
-        .colour = 0xFFFFFFFF,
-        .rgn = cursor_w
-    };
+    struct region dirty_rgn = region_create_rectangle(0, 0, 1200, 800);
 
-    struct window cursor_window = {
-        .children = {&cursor_w_win, &cursor_b_win},
-        .num_children = 2,
-        .colour = 0xFFFF0000,
-        .rgn = bg
-    };*/
-
-    struct window r1_win = create_window(100, 100, 500, 400, false);
-    struct window r2_win = create_window(200, 130, 700, 400, false);
-    struct window r3_win = create_window(300, 250, 400, 350, true);
-
-    struct window bg_win = {
-        .children = {&r3_win, &r2_win, &r1_win},
-        .num_children = 4,
-        .colour = 0xFF60D0F0,
-        .rgn = bg
-    };
-
-    window_paint_all(bg_win);
-
-    /*struct region bg = region_create_rectangle(0, 0, 1200, 800);
-    region_fill(&bg, 0xFF60D0F0);
-    
-    demo_window_draw(100, 100, 500, 400, false);
-    demo_window_draw(200, 130, 700, 400, false);
-    demo_window_draw(300, 250, 400, 350, true);*/
-
-    /*struct region a = region_create_rectangle(400, 300, 100, 100);
-    struct region b = region_create_rectangle(450, 350, 100, 100);
-    struct region c = region_operate(b, a, REGION_OP_DIFFERENCE);
-
-    region_fill(&a, 0xFF0000FF);
-    region_fill(&b, 0xFF00FF00);
-    region_fill(&c, 0xFFFF0000);*/
+    paint_all(0, rgns, dirty_rgn);
 }

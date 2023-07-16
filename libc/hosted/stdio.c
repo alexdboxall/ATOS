@@ -495,6 +495,7 @@ int fgetc(FILE* stream) {
     flockfile(stream);
 
     stream->buffer_direction = BUFFER_DIR_READ;
+    stream->eof = false;
 
     if (stream->ungetc != EOF) {
         int c = stream->ungetc;
@@ -512,6 +513,7 @@ int fgetc(FILE* stream) {
         }
         stream->buffer_used = bytes_read;
         if (bytes_read == 0) {
+            stream->eof = true;
             funlockfile(stream);
             return EOF;
         }
@@ -521,6 +523,37 @@ int fgetc(FILE* stream) {
     memmove(stream->buffer, stream->buffer + 1, --stream->buffer_used);
     funlockfile(stream);
     return c;
+}
+
+char* fgets(char* buffer, int n, FILE* stream) {
+    /*
+    The fgets() function shall read bytes from stream into the array
+       pointed to by s until n-1 bytes are read, or a <newline> is read
+       and transferred to s, or an end-of-file condition is encountered.
+       A null byte shall be written immediately after the last byte read
+       into the array.  If the end-of-file condition is encountered
+       before any bytes are read, the contents of the array pointed to
+       by s shall not be changed.
+    */
+
+    int i = 0;
+    for (; i < n - 1; ++i) {
+        buffer[i] = fgetc(stream);
+        buffer[i + 1] = 0;
+
+        if (stream->error) {
+            //errno = ??;
+            return NULL;
+        }
+        if (feof(stream)) {
+            return NULL;
+        }
+        if (buffer[i] == '\n') {
+            break;
+        }
+    }
+
+    return buffer;
 }
 
 int getc(FILE* stream) {

@@ -38,7 +38,6 @@ int load_program(const char* filename, size_t* entry_point, size_t* sbrk_point) 
 
     free(buffer);
     vfs_close(file);
-    kprintf("PROGRAM LOADED.\n");
     return result;
 }
 
